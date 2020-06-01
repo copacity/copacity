@@ -1,0 +1,22 @@
+
+
+
+<ion-content>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+  <ion-list>
+    <ion-item *ngFor="let item of items | async">
+      <ion-label>{{item.name}}</ion-label>
+      <ion-label>{{item.price}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

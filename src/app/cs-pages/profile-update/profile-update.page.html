@@ -1,0 +1,53 @@
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 20px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Actualizar
+      Perfil</a>
+
+    <form [formGroup]="form">
+      <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+        <ion-list lines="full" class="ion-no-margin ion-no-padding">
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Tel </ion-label>
+            <ion-input type="number" formControlName="phone1"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Tel 2 </ion-label>
+            <ion-input type="number" formControlName="phone2"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Whatsapp </ion-label>
+            <ion-input type="number" formControlName="whatsapp"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+          class="content content-box round-small shadow-large">
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone1').errors">
+            <span *ngIf="form.get('phone1').hasError('max')">Tel 1 debe ser maximo de 15 caracteres</span>
+          </p>
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone2').errors">
+            <span *ngIf="form.get('phone2').hasError('max')">Tel 2 debe ser maximo de 15 caracteres</span>
+          </p>
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('whatsapp').errors">
+            <span *ngIf="form.get('whatssapp').hasError('max')">Whatsapp debe ser maximo de 15 caracteres</span>
+          </p>
+        </div>
+      </div>
+    </form>
+    <ion-toolbar>
+      <ion-title>
+        <a (click)="updateUser()"
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small shadow-large button-full button-s">ACTUALIZAR!</a>
+      </ion-title>
+    </ion-toolbar>
+  </div>
+</div>

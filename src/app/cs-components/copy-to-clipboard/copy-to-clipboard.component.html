@@ -1,0 +1,16 @@
+<ion-list>
+  <ion-item-sliding>
+    <ion-item>
+      <ion-card style="width: 100%;">
+        <ion-card-content>
+          <a (click)="copyToClipBoard()"
+            style="color:black;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s"><i class="fa fa-copy"
+              style="color: black;font-size: 1.5em;"></i> copiar texto</a>
+
+          <textarea id="textLink" style="font-size: 1.2em;font-weight: 700;height: 250px;padding-top: 20px;" type="text" [value]='linkText'></textarea>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-item-sliding>
+</ion-list>

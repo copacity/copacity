@@ -1,0 +1,72 @@
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;"></div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 20px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Secciones</a>
+
+    <!-- <ion-list class="top-10">
+      <ion-item slot="end">
+        <div style="text-align: -webkit-right;width: 100%;">
+          <a style="background-color: red;width: 170px;" (click)="openProductCategoriesCreatePage()"
+            class="button button-round-small shadow-large button-full button-s">Nueva Sección</a>
+        </div>
+      </ion-item>
+    </ion-list> -->
+
+    <table class="table-borders-dark store-product-table top-30"
+      style="padding-left: 5px;padding-right: 5px;border: solid 1px rgba(0,0,0,0.08);">
+      <tr>
+        <!-- <td colspan="2" style="text-align: left;padding-left: 10px;">
+          <h4 class="bold" style="color: black;margin-top: 0px;">Opciones</h4>
+        </td> -->
+        <td colspan="2" style="text-align: -webkit-right;padding-right: 5px;">
+          <a (click)="openProductCategoriesCreatePage()" class="button button-round-small button-xs button-full"
+            style="color: white;background-color: red;font-size: 10px;width: 90px;">Agregar</a>
+        </td>
+      </tr>
+      <tr *ngIf="(productCategories | async)?.length == 0">
+        <td  colspan="2">
+          <span style="color: red;font-size: 1.3em;">No tienes categorias agregadas</span>
+        </td>
+      </tr>
+      <tr *ngFor="let productCategory of productCategories | async;">
+        <td style="vertical-align: top;" class="bold color-theme">{{ productCategory.name }}</td>
+        <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
+          <a class="icon icon-s icon-round shadow-small" (click)="presentDeleteProductCategoryPrompt(productCategory)">
+            <i class="fa fa-trash" style="color: black"></i></a>
+          <a class="icon icon-s icon-round shadow-small" (click)="openProductCategoriesCreatePage(productCategory.id)">
+            <i class="fa fa-edit" style="color: black"></i></a>
+        </td>
+      </tr>
+
+    </table>
+
+    <!-- <table class="table-borders" style="font-size: 18px;">
+      <tr *ngFor="let productCategory of productCategories | async;">
+        <td style="text-align: left;vertical-align: top;">
+          <table style="font-size: 1em;margin-bottom: 0px;">
+
+            <tr>
+              <td style="text-align: left;">{{ productCategory.name }}</td>
+            </tr>
+            <tr>
+              <td style="text-align: right;">
+                <a (click)="presentDeleteProductCategoryPrompt(productCategory)"
+                  class="icon icon-s icon-round shadow-small">
+                  <i class="fa fa-trash" style="color: black"></i></a>
+                <a (click)="openProductCategoriesCreatePage(productCategory.id)"
+                  class="icon icon-s icon-round shadow-small">
+                  <i class="fa fa-edit" style="color: black"></i></a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table> -->
+  </div>
+</div>

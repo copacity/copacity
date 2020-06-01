@@ -1,0 +1,8 @@
+{
+  "appId": "com.copadomicilios.app",
+  "appName": "copabacana-stores",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

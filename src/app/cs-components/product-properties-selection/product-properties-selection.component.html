@@ -1,0 +1,41 @@
+<div class="profile-popover bottom-10">
+
+  <i (click)="close()" class="fa fa-times-circle"
+    style="right: 0px;position: absolute;top: 0;font-size: 1.6em;padding: 2px;z-index: 9;"></i>
+
+  <ion-list>
+    <ion-list-header style="margin: 10px;top: -5px; padding-right: 50px;">{{navParams.data.product.name}}
+    </ion-list-header>
+
+    <ion-item *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
+      <ion-label>{{productProperty.name}}</ion-label>
+      <ion-select (ionChange)="propertyChange($event, productProperty)" mode="ios" interface="action-sheet" cancelText="Cancelar"
+        style="padding-right: 10px;">
+        <ion-select-option
+          value="{{productPropertyOption.name}}|{{productPropertyOption.id}}|{{productPropertyOption.price}}"
+          *ngFor="let productPropertyOption of productProperty.productPropertyOptions">
+          {{productPropertyOption.name}}<span *ngIf="productPropertyOption.price > 0"> -
+            {{productPropertyOption.price | currency: 'USD': 'symbol' : '1.0-0' }}</span></ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Cantidad</ion-label>
+      <ion-select (ionChange)="quantityChange($event)" mode="ios" interface="action-sheet" value="1" cancelText="Cancelar"
+        style="padding-right: 10px;">
+        <ion-select-option value="{{number}}" *ngFor="let number of getNumbers()">{{number}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="validationMessage">
+      <span style="color: red;padding-top: 10px;">{{validationMessage}}</span>
+    </ion-item>
+  </ion-list>
+  <ion-toolbar style="padding-top: 20px;">
+    <ion-title>
+      <a (click)="accept()"
+        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+        class="button button-round-small shadow-large button-full button-s">Aceptar!</a>
+    </ion-title>
+  </ion-toolbar>
+</div>

@@ -1,0 +1,66 @@
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 20px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Direcciones</a>
+
+    <ion-list class="top-10">
+      <ion-item slot="end">
+        <div style="text-align: -webkit-right;width: 100%;">
+          <a style="background-color: red;width: 170px;" (click)="openAddressCreatePage()"
+            class="button button-round-small shadow-large button-full button-s">Nueva Direccion</a>
+        </div>
+      </ion-item>
+    </ion-list>
+    <ion-radio-group (ionChange)="addressChecked($event)" [formControl]="idAddressChecked">
+      <table class="table-borders" style="font-size: 18px;">
+        <tr *ngFor="let address of appService.addressCollection | async">
+          <td style="vertical-align: top;padding-right: 10px;">
+            <ion-radio style="height: 30px;width: 30px;" checked="true" class="top-5" slot="start"
+              value="{{address.id}}"></ion-radio>
+          </td>
+          <td style="text-align: left;vertical-align: top;">
+            <table style="font-size: 1em;margin-bottom: 0px;">
+              <tr>
+                <td style="text-align: left;"><b>Nombre:</b> {{address.name}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;"><b>Apellido: </b> {{ address.lastName }}</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;"><b>Tel: </b> {{ address.phone1 }}</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;"><b>Tel2: </b> {{ address.phone2 }}</td>
+              </tr>
+              <!-- <tr>
+                <td style="text-align: left;"><b>Sector: </b> {{ address.idSector | sectorName }}</td>
+              </tr> -->
+              <tr>
+                <td style="text-align: left;"><b>Dirección: </b> {{ address.address }}</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;"><b>Adicional: </b>{{ address.description }}</td>
+              </tr>
+              <tr>
+                <td style="text-align: right;">
+                  <a (click)="deleteAddress(address)" class="icon icon-s icon-round shadow-small">
+                    <i class="fa fa-trash" style="color: black"></i></a>
+                  <a (click)="openAddressCreatePage(address.id)" class="icon icon-s icon-round shadow-small">
+                    <i class="fa fa-edit" style="color: black"></i></a>
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+      </table>
+    </ion-radio-group>
+  </div>
+</div>

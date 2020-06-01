@@ -1,0 +1,11 @@
+@import "../../../assets/template/styles/styleTemplate.css";
+
+ion-content { --background: transparent;}
+
+ion-toolbar{
+    --background: red;
+}
+
+.unchecked {
+    text-decoration: line-through;
+}

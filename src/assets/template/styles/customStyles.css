@@ -1,0 +1,66 @@
+.signin-popover .popover-content {   
+    max-width: 390px;
+    min-width:390px ;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.signup-popover .popover-content {   
+    max-width: 390px;
+    min-width:390px ;
+    background-color: transparent; 
+    box-shadow: none;
+}
+
+.recoverPassword-popover .popover-content {   
+    max-width: 410px;
+    min-width: 410px ;
+    background-color: transparent; 
+    box-shadow: none;
+}
+
+@media screen and (max-width: 420px) {
+    .signin-popover .popover-content {   
+        max-width: 90%;
+        min-width: 90%;
+        background-color: transparent;
+        box-shadow: none;
+    }
+    
+    .signup-popover .popover-content {   
+        max-width: 90%;
+        min-width: 90%;
+        background-color: transparent; 
+        box-shadow: none;
+    }
+
+    .recoverPassword-popover .popover-content {   
+        max-width: 90%;
+        min-width: 90% ;
+        background-color: transparent; 
+        box-shadow: none;
+    }
+}
+
+.notification-popover .popover-content {
+    width: 300px;
+    box-shadow: none;
+} 
+
+.cs-popovers .popover-content {   
+    width: 90%;
+    height: 100%;
+    background-color: transparent; 
+    box-shadow: none;
+}
+
+@media screen and (min-width: 650px) {
+    .cs-popovers .popover-content {   
+        width: 650px;
+        height: 100%;
+        background-color: transparent; 
+        box-shadow: none;
+    }
+}
+
+

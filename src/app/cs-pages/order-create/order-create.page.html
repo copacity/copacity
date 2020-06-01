@@ -1,0 +1,376 @@
+<ion-header style="background-color: white;">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <i class="fa fa-arrow-left" style="color: black;font-size: 1.8em;"></i>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="presentMenuNotifications($event)" class="menu-notifications">
+        <span style="font-size: 1em; color: black;">
+          <i class="fa fa-bell" style="font-size: 1.2em"></i>
+          <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
+            slot="end">{{appService.notificationsCount | async}}</ion-badge>
+        </span>
+
+      </ion-button>
+      <ion-button (click)="presentMenuUser($event)">
+        <span style="font-size: 1em; color: black;">
+          <i class="fa fa-user" style="font-size: 1.2em"></i>
+        </span>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title style="font-size: medium;">
+      <a routerLink="/home" class="header-title ultrabold"><span style="color: red;">COPA</span>DOMICILIOS</a>
+    </ion-title>
+  </ion-toolbar>
+
+  <!-- Left Side Menu Only To Big Browsers -->
+  <div id="main-menu-large">
+    <ion-header>
+      <ion-toolbar>
+        <div class="content top-30" *ngIf="appService?.currentUser">
+          <div class="user-slider owl-carousel  bottom-0">
+            <div class="user-list-left">
+              <img
+                [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
+                alt="img" class="shadow-small">
+              <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
+              <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
+            </div>
+          </div>
+        </div>
+
+        <ion-title *ngIf="!appService?.currentUser">
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESION</a>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <ion-list>
+        <ion-item style="padding: 3px;" routerLink="/home">
+          <i class="fa fa-home"></i>
+          <ion-label style="padding-left:10px">Inicio</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
+          <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
+          <ion-label style="padding-left:15px">Mis Pedidos</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
+          routerLink="/store/{{ appService._userStoreId }}">
+          <i class="fa fa-store"></i>
+          <ion-label style="padding-left:10px">Mi Tienda</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" routerLink="/contact">
+          <i class="fa fa-paper-plane"></i>
+          <ion-label style="padding-left:10px">Sugerencias</ion-label>
+        </ion-item>
+        <!-- <ion-item style="padding: 3px;">
+          <i class="fa fa-info-circle"></i>
+          <ion-label style="padding-left:10px">Acerca de</ion-label>
+        </ion-item> -->
+        <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
+          <i class="fa fa-sign-out-alt"></i>
+          <ion-label style="padding-left:10px">Cerrar Sesion</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-toolbar style="padding-top: 30px;">
+        <div class="footer" style="padding: 8px 8px 8px 8px;">
+
+          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+            <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+          </div>
+
+          <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+              style="color: red;">COPA</span>DOMICILIOS</a>
+          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">La forma mas rápida de
+            comprar</p>
+
+          <div class="footer-socials" style="padding-left: 20px;">
+            <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+                class="fa fa-phone"></i></a>
+            <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
+                class="fab fa-whatsapp"></i></a>
+            <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
+                class="fa fa-share-alt"></i></a>
+          </div>
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Version</b>
+            {{ appService.appVersion }}
+          </p>
+          <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
+            &copy; Enabled <span id="copyright-year">2020</span>.
+            All Rights Reserved.
+          </p>
+        </div>
+      </ion-toolbar>
+    </ion-content>
+  </div>
+
+  <!-- Right Side Menu Only To Big Browsers -->
+  <div id="main-menu-large-right">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title style="text-align: center;">
+          <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <app-menu-notifications></app-menu-notifications>
+    </ion-content>
+  </div>
+</ion-header>
+
+<super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
+  <super-tabs-toolbar>
+    <super-tab-button>
+      <ion-label style="font-size: small; font-weight: 700; color: black;"><b style="font-size: large;">1.</b> Detalle
+      </ion-label>
+    </super-tab-button>
+    <super-tab-button>
+      <ion-label style="font-size: small; font-weight: 700; color: black;"><b style="font-size: large;">2.</b> Metodo
+        Pago
+      </ion-label>
+    </super-tab-button>
+    <super-tab-button>
+      <ion-label style="font-size: small; font-weight: 700; color: black;"><b style="font-size: large;">3.</b>
+        Finalizar
+      </ion-label>
+    </super-tab-button>
+  </super-tabs-toolbar>
+  <super-tabs-container>
+    <super-tab style="background-color: transparent;">
+      <div class="profile-1 bottom-30">
+
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+          <i (click)="selectTab(1)" class="fa fa-long-arrow-alt-right"
+            style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-right: 10px;"></i>
+
+          <a style="background-color: white; color: black;font-size: 15px; color: black;border-radius:15px"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">DETALLE</a>
+
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+
+              <div class="content contact-message" style="margin: 0px 15px 10px 15px;">
+                <div class="content content-box round-small shadow-large" style="padding: 5px;">
+                  <h1 class="center-text bolder top-10"
+                    style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">{{store?.name}}</h1>
+                  <p class="center-text bottom-10" style="font-size: 1.2em;color: black;">
+                    Gracias por usar nuestro servicio.
+                  </p>
+                </div>
+              </div>
+
+              <table class="table-borders bottom-10" style="font-size: 1.2em;">
+                <tr>
+                  <td style="vertical-align: top;text-align: left;margin: 10px;padding: 0px 0px 0px 0px;">
+                    <div class="input-style has-icon input-style-1 input-required">
+                      <i class="input-icon fa fa-ticket-alt" style="margin-top: 16px;"></i>
+                      <span>Código de cupón:</span>
+                      <input type="name" placeholder="Código de cupón">
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 0px 0px 0px 0px;">
+                    <a style="background-color: red;color:white;padding: 8px 8px;width: 75px;"
+                      class="button button-round-small shadow-large button-full button-s">Aplicar</a>
+                  </td>
+                </tr>
+              </table>
+              <!-- <div class="content contact-message">
+                <div class="content content-box round-small shadow-large" style="padding: 5px;">
+
+                  <ion-list>
+                    <ion-item>
+                      <ion-label position="floating" style="color: black;">Código de cupón:
+                      </ion-label>
+                      <ion-input type="text"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                      Aplicar
+                    </ion-item>
+                  </ion-list>
+                </div>
+              </div> -->
+
+              <table class="table-borders" style="font-size: 18px;">
+                <tr>
+                  <th style="text-align: left; padding-left: 5px;">Producto</th>
+                  <th style="text-align: right;">V/U</th>
+                  <th style="text-align: right;" style="width: 20px;">#</th>
+                  <th style="text-align: right;">Total</th>
+                </tr>
+                <tr *ngFor="let cartProduct of cart;">
+                  <td style="text-align: left; padding-left: 5px;vertical-align: top">{{cartProduct.product.name}}
+                    <span *ngFor="let property of cartProduct.propertiesSelection;"
+                      style="font-size: .7em;font-weight: 700;color: blue;">, {{property.propertyName }}:
+                      {{property.propertyOptionName }}
+                    </span>
+
+                    <span *ngIf="cartProduct.product?.discount && cartProduct.product?.discount > 0"
+                      style="font-size: .7em;font-weight: 700;color: black;background-color: yellow;">
+                      (-{{cartProduct.product.discount}}%)</span>
+                  </td>
+                  <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
+                    {{ cartService.getProductSubTotalUnity(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
+                  <td style="vertical-align: top">{{cartProduct.quantity}}</td>
+                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
+                    {{ cartService.getProductTotal(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
+                </tr>
+              </table>
+              <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
+                <!-- <div class="store-cart-total">
+                  <strong>Subtotal</strong>
+                  <span>{{ cartService.getSubTotal() | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
+                  <div class="clear"></div>
+                </div> -->
+                <div class="store-cart-total">
+                  <strong>Domicilio</strong>
+                  <span>{{ appService.currentStore.deliveryPrice | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
+                  <div class="clear"></div>
+                </div>
+                <div class="store-cart-total">
+                  <strong class="color-highlight">Ahorraste</strong>
+                  <span class="color-highlight">
+                    {{ cartService.getDiscount() | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                  <div class="clear"></div>
+                </div>
+                <div style="background-color: red;" class="divider opacity-350"></div>
+                <div class="store-cart-total bottom-20" style="font-size: 25px;">
+                  <strong class="uppercase bold">Total</strong>
+                  <span class="uppercase bold">{{ cartService.getTotal() | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </super-tab>
+    <super-tab style="background-color: transparent;">
+      <div class="profile-1 bottom-30">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+          <i (click)="selectTab(0)" class="fa fa-long-arrow-alt-left"
+          style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
+
+          <i (click)="selectTab(2)" class="fa fa-long-arrow-alt-right"
+          style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-right: 10px;"></i>
+
+          <a style="background-color: white; color: black;font-size: 15px;color: black;border-radius:15px"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">METODO
+            DE PAGO</a>
+
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+
+              <div class="content header-clear-small">
+                <div class="link-list link-list-3">
+                  <a class="round-small shadow-tiny">
+                    <i class="fa fa-check-circle" style="color: green;"></i>
+                    <span style="font-size: 18px;">Contra-entrega</span>
+                  </a>
+                </div>
+                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
+                  <a class="round-small shadow-tiny">
+                    <span style="font-size: 18px;; color: gray;">Tarjeta de credito</span>
+                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
+                  </a>
+                </div>
+                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
+                  <a class="round-small shadow-tiny">
+                    <span style="font-size: 18px;; color: gray;">Debito (PSE)</span>
+                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </super-tab>
+    <super-tab style="background-color: transparent;">
+      <div class="profile-1 bottom-30">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+          <i (click)="selectTab(1)" class="fa fa-long-arrow-alt-left"
+          style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
+
+          <a style="background-color: white; color: black;font-size: 15px; color: black;border-radius:15px"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FINALIZAR</a>
+
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+
+              <div class="link-list link-list-3" style="border: red;">
+                <strong *ngIf="!appService.addressChecked"
+                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;">Por
+                  favor seleccione una
+                  direccion!</strong>
+                <a (click)="openAddressListPage()" class="round-small shadow-tiny">
+                  <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
+                  <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Enviar a:</strong>
+                  <span
+                    style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
+                  <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
+                </a>
+              </div>
+
+              <div>
+                <div class="link-list link-list-3">
+
+                  <ion-list>
+                    <ion-item>
+                      <ion-label position="floating" style="color: gray;">Agrega una nota:<small style="color: gray;">
+                          ({{messageToStore.value.length}}/500)</small></ion-label>
+                      <ion-textarea [formControl]="messageToStore"></ion-textarea>
+                    </ion-item>
+                  </ion-list>
+
+                  <div>
+                    <p style="color: red;font-size: 1.3em;" *ngIf="messageToStore.errors">
+                      <span style="padding-left: 20px;color: red;" *ngIf="messageToStore.hasError('maxlength')">El
+                        mensaje debe ser maximo de 500
+                        caracteres</span>
+                    </p>
+                  </div>
+
+                  <!-- 
+                  <a class="round-small shadow-tiny">
+                    <i class="fa fa-check-circle" style="color: green;"></i>
+                    <span style="    font-size: 18px;">Entrega a domicilio</span>
+                  </a>
+                  <a class="round-small shadow-tiny">
+                    <span style="font-size: 18px;; color: gray;">Recoger en tienda</span>
+                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
+                  </a> -->
+
+                  <!-- <div style="background-color: red;" class="divider opacity-350"></div> -->
+                  <a (click)="sendOrder()"
+                    style="color:white;background-color: red;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+                    class="button button-round-small shadow-large button-full button-s">Hacer Pedido</a>
+                  <br />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </super-tab>
+  </super-tabs-container>
+</super-tabs>

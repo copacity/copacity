@@ -1,0 +1,242 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <i class="fa fa-arrow-left" style="color: black;font-size: 1.5em;"></i>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button #cart (click)="openCart()" *ngIf="!isAdmin">
+        <i class="fa fa-shopping-cart" style="color: black;"></i>
+        <ion-badge *ngIf="(cartSevice.getCartItemCount() | async) > 0" id="badge-cart" color="danger" slot="end">
+          {{ cartSevice.getCartItemCount() | async }}
+        </ion-badge>
+      </ion-button>
+      <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
+        <i class="fa fa-bell" style="color: black"></i>
+        <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
+          slot="end">{{appService.notificationsCount | async}}</ion-badge>
+      </ion-button>
+      <ion-button (click)="presentMenuUser($event)">
+        <i class="fa fa-user" style="color: black"></i>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title style="font-size: medium;">
+      <a routerLink="/home" class="header-title bold"><span style="color: red;">COPA</span>DOMICILIOS</a>
+    </ion-title>
+  </ion-toolbar>
+
+  <!-- Left Side Menu Only To Big Browsers -->
+  <div id="main-menu-large">
+    <ion-header>
+      <ion-toolbar>
+        <div class="content top-30" *ngIf="appService?.currentUser">
+          <div class="user-slider owl-carousel  bottom-0">
+            <div class="user-list-left">
+              <img
+                [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
+                alt="img" class="shadow-small">
+              <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
+              <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
+            </div>
+          </div>
+        </div>
+
+        <ion-title *ngIf="!appService?.currentUser">
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESION</a>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <ion-list>
+        <ion-item style="padding: 3px;" routerLink="/home">
+          <i class="fa fa-home"></i>
+          <ion-label style="padding-left:10px">Inicio</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
+          <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
+          <ion-label style="padding-left:15px">Mis Pedidos</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
+          routerLink="/store/{{ appService._userStoreId }}">
+          <i class="fa fa-store"></i>
+          <ion-label style="padding-left:10px">Mi Tienda</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" routerLink="/contact">
+          <i class="fa fa-paper-plane"></i>
+          <ion-label style="padding-left:10px">Sugerencias</ion-label>
+        </ion-item>
+        <!-- <ion-item style="padding: 3px;">
+          <i class="fa fa-info-circle"></i>
+          <ion-label style="padding-left:10px">Acerca de</ion-label>
+        </ion-item> -->
+        <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
+          <i class="fa fa-sign-out-alt"></i>
+          <ion-label style="padding-left:10px">Cerrar Sesion</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-toolbar style="padding-top: 30px;">
+        <div class="footer" style="padding: 8px 8px 8px 8px;">
+
+          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+            <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+          </div>
+
+          <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+              style="color: red;">COPA</span>DOMICILIOS</a>
+          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">La forma mas rápida de
+            comprar</p>
+
+          <div class="footer-socials" style="padding-left: 20px;">
+            <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+                class="fa fa-phone"></i></a>
+            <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
+                class="fab fa-whatsapp"></i></a>
+            <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
+                class="fa fa-share-alt"></i></a>
+          </div>
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Version</b>
+            {{ appService.appVersion }}
+          </p>
+          <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
+            &copy; Enabled <span id="copyright-year">2020</span>.
+            All Rights Reserved.
+          </p>
+        </div>
+      </ion-toolbar>
+    </ion-content>
+  </div>
+
+  <!-- Right Side Menu Only To Big Browsers -->
+  <div id="main-menu-large-right">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title style="text-align: center;">
+          <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <app-menu-notifications></app-menu-notifications>
+    </ion-content>
+  </div>
+</ion-header>
+
+<super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
+  <super-tabs-container>
+    <super-tab>
+      <ion-content class="content-background">
+
+        <ion-slides #sliderProductDetail [options]="appService.slideOpts" style="max-width: 650px;">
+          <ion-slide *ngFor="let banner of appService.banners | async">
+            <img src="{{banner.image}}">
+          </ion-slide>
+        </ion-slides>
+
+        <div class="profile-1 bottom-30 top-30">
+          <!-- <div class="profile-header" style="background-color: transparent;margin: 0px 0px 0px 0px;">
+
+            <ion-slides #sliderProductDetail [options]="appService.slideOpts" style="height: 150px;">
+              <ion-slide style="padding-right: 10px;padding-left: 10px;padding-top: 10px;"
+                *ngFor="let banner of appService.banners | async">
+                <img src="{{banner.image}}" class="round-medium">
+              </ion-slide>
+            </ion-slides>
+          </div>
+          <div class="profile-header-clear" style="height: 180px;"></div> -->
+          <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+
+            <a (click)="shareProduct($event)"
+              style="background-color: white; color: black;font-size: 15px;border-radius:15px"
+              class="profile-button button shadow-large button-m button-round round-medium uppercase bolder button-center-medium">
+              <i class="fa fa-share-alt" style="padding-right: 10px;color: black;"></i>
+              <strong>Compartir</strong>
+            </a>
+
+            <ion-slides *ngIf="productImageCollection.length != 0" #sliderImageProductUpdate [options]="slideOpts"
+              pager="true" style="padding-top: 20px;">
+              <ion-slide *ngFor="let productImage of productImageCollection">
+                <img class="round-medium" [src]="productImage.image" alt="img">
+                <!-- <em (click)="removeProductImage(productImage)" class="round-small" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
+                  top: 0px;right: 0px">
+                  <i class="fa fa-times-circle" style="margin: 5px;color: black;font-size: 2em;"></i></em> -->
+              </ion-slide>
+            </ion-slides>
+
+            <img *ngIf="productImageCollection.length == 0" class="profile-image-product preload-image"
+              src="../../../assets/icon/no-image.png" alt="img">
+
+            <div class="profile-body-no-apply">
+
+              <div class="store-product">
+                <h2 class="store-product-title" style="font-size: 1.5em;padding-top: 5px;">{{product?.name }}</h2>
+
+                <span class="store-product-price">
+                  <em *ngIf="product?.discount && product?.discount > 0"
+                    style="font-size: 1.2em;color: black;font-weight: 500;">Antes
+                    <del>{{product?.price | currency: 'USD' : 'symbol' : '1.0-0'}}</del></em>
+
+                  <strong *ngIf="!product?.discount || product?.discount <= 0"
+                    style="padding-top: 5px;">{{product?.price | currency: 'USD' : 'symbol' : '1.0-0'}}</strong>
+                  <strong *ngIf="product?.discount && product?.discount > 0"
+                    style="padding-top: 5px;">{{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</strong>
+                </span>
+                <!-- <span class="store-product-reviews">
+                  <strong>4.98<i class="fa fa-star"></i></strong>
+                  <a href="#">Based on: 421 Reviews</a>
+                </span> -->
+                <span *ngIf="product?.discount && product?.discount > 0" class="store-product-discount"
+                  style="color: black; background-color: yellow;font-size: 1em;font-weight: bold;top:70px">{{ product?.discount }}%
+                  Descuento</span>
+              </div>
+
+              <div *ngIf="product?.description">
+                <div *ngIf="(!product?.discount || product?.discount <= 0)" class="divider top-10"></div>
+                <div *ngIf="(product?.discount && product?.discount > 0)" class="divider top-50"></div>
+
+                <h4 class="bold color-highlight">Descripción del producto</h4>
+                <div class="container">
+                  <p>
+                    {{product?.description}}
+                  </p>
+                </div>
+              </div>
+
+              <div *ngIf="productProperties.length != 0">
+                <div class="divider top-50"></div>
+                <h4 class="bold color-highlight">Caracteristicas</h4>
+                <table class="table-borders-dark store-product-table" style="border: solid 1px rgba(0,0,0,0.08);">
+                  <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
+                    <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}</td>
+                    <td style="vertical-align: top;">
+                      <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
+                        class="{{productPropertyOption.deleted?'hidden':''}}">
+                        {{productPropertyOption.name}}<b
+                          *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+                        <br />
+                      </div>
+
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <a (click)="addToCart($event)"
+                style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+                class="button button-round-small shadow-large button-full button-s">AGREGAR AL CARRITO!</a>
+              <div class="divider divider-margins top-15"></div>
+            </div>
+            <div class="top-20"></div>
+          </div>
+        </div>
+      </ion-content>
+    </super-tab>
+  </super-tabs-container>
+</super-tabs>

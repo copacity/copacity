@@ -1,0 +1,69 @@
+<div class="profile-auth bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 20px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">REGISTRO</a>
+
+    <div id="menu-signup" class="round-medium menu-active" data-menu-effect="menu-over"
+      style="opacity: 1; display: block;">
+      <div class="content top-20" style="margin: 0px 0px 0px 0px;">
+        <p class="center-text font-15 under-heading bottom-30">
+          ¿No tienes una cuenta? Regístrese a continuación.
+        </p>
+
+        <div class="input-style has-icon input-style-1 input-required">
+          <i class="input-icon fa fa-user font-18"></i>
+          <span style="font-size: 18px;">Usuario</span>
+          <em style="font-size: 15px;">(requerido)</em>
+          <input style="font-size: 18px;" id="_user" type="name" placeholder="Usuario">
+        </div>
+        <div class="input-style has-icon input-style-1 input-required">
+          <i class="input-icon fa fa-at font-18"></i>
+          <span style="font-size: 18px;">Email</span>
+          <em style="font-size: 15px;">(requerido)</em>
+          <input style="font-size: 18px;" id="_email" type="email" placeholder="Email">
+        </div>
+        <div class="input-style has-icon input-style-1 input-required">
+          <i class="input-icon fa fa-lock font-18"></i>
+          <span style="font-size: 18px;">Contraseña</span>
+          <em style="font-size: 15px;">(requerido)</em>
+          <input style="font-size: 18px;" id="_password" type="password" placeholder="Contraseña">
+        </div>
+        <div class="input-style has-icon input-style-1 input-required">
+          <i class="input-icon fa fa-lock font-18"></i>
+          <span style="font-size: 18px;">Repetir Contraseña</span>
+          <em style="font-size: 15px;">(requerido)</em>
+          <input style="font-size: 18px;" id="_repeatPassword" type="password" placeholder="Repetir Contraseña">
+        </div>
+
+        <div class="top-20 bottom-20">
+          <a (click)="close()" data-menu="menu-signin" class="center-text font-15 color-gray2-dark">
+            ¿Ya registrado? ingrese aquí.</a>
+        </div>
+
+        <div class="clear"></div>
+        <a (click)="signupEmail()" style="font-size: 18px;"
+          class="button button-full button-s shadow-large button-round-small bg-green1-dark top-10">REGISTRARSE</a>
+
+        <a (click)="signupGoogle()" style="font-size: 12px;"
+          class="button button-full button-m shadow-large button-round-small button-icon bg-google button-s"><i
+            class="fab fa-google"></i>REGISTRO CON GOOGLE</a>
+
+        <a (click)="signupFacebook()" style="font-size: 12px;"
+          class="button button-full button-m shadow-large button-round-small button-icon bg-facebook button-s"><i
+            class="fab fa-facebook"></i>REGISTRO CON FACEBOOK</a>
+      </div>
+      <p class="top-10" style="color: black;">
+        Al registrarse o iniciar sesión usted esta aceptando las <a (click)="popoverPrivacyPolicy()"> políticas de
+          privacidad </a> y <a (click)="popoverTermsService()">términos de uso
+        </a></p>
+    </div>
+
+  </div>
+</div>

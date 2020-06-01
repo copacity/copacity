@@ -1,0 +1,320 @@
+<ion-header class="ion-header" style="background-color:white">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button class="menu-icon-bars">
+          <span style="font-size: 1em; color: black;">
+            <i class="fa fa-bars" style="font-size: 1.2em"></i>
+          </span>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <!-- <ion-button routerLink="/search/0">
+        <span style="font-size: 1em; color: black;">
+          <i class="fa fa-search" style="font-size: 1.2em"></i>
+        </span>
+      </ion-button> -->
+      <!-- <ion-button (click)="fullScreen()">
+        <span style="font-size: 1em; color: black;">
+          <i class="fa fa-arrows-alt" style="font-size: 1.2em"></i>
+        </span>
+      </ion-button> -->
+      <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
+        <span style="font-size: 1em; color: black;">
+          <i class="fa fa-bell" style="font-size: 1.2em"></i>
+          <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
+            slot="end">{{appService.notificationsCount | async}}</ion-badge>
+        </span>
+      </ion-button>
+      <ion-button (click)="presentMenuUser($event)">
+        <span style="font-size: 1em; color: black;">
+          <i class="fa fa-user" style="font-size: 1.2em"></i>
+        </span>
+      </ion-button>
+      <ion-button (click)="shareApp($event)">
+        <i class="fa fa-share-alt" style="font-size: 1.2em; color: black;"></i>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <a class="header-title bold"><span style="color: red;">COPA</span>DOMICILIOS</a>
+    </ion-title>
+  </ion-toolbar>
+
+  <!-- Left Side Menu Only To Big Browsers -->
+  <div id="main-menu-large">
+    <ion-header>
+      <ion-toolbar>
+        <div class="content top-30" *ngIf="appService?.currentUser">
+          <div class="user-slider owl-carousel  bottom-0">
+            <div class="user-list-left">
+              <img
+                [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
+                alt="img" class="shadow-small">
+              <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
+              <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
+            </div>
+          </div>
+        </div>
+
+        <ion-title *ngIf="!appService?.currentUser">
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESION</a>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <ion-list>
+        <ion-item style="padding: 3px;" routerLink="/home">
+          <i class="fa fa-home"></i>
+          <ion-label style="padding-left:10px">Inicio</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
+          <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
+          <ion-label style="padding-left:15px">Mis Pedidos</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
+          routerLink="/store/{{ appService._userStoreId }}">
+          <i class="fa fa-store"></i>
+          <ion-label style="padding-left:10px">Mi Tienda</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" routerLink="/contact">
+          <i class="fa fa-paper-plane"></i>
+          <ion-label style="padding-left:10px">Sugerencias</ion-label>
+        </ion-item>
+        <!-- <ion-item style="padding: 3px;">
+          <i class="fa fa-info-circle"></i>
+          <ion-label style="padding-left:10px">Acerca de</ion-label>
+        </ion-item> -->
+        <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
+          <i class="fa fa-sign-out-alt"></i>
+          <ion-label style="padding-left:10px">Cerrar Sesion</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-toolbar style="padding-top: 30px;">
+        <div class="footer" style="padding: 8px 8px 8px 8px;">
+
+          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+            <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+          </div>
+
+          <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+              style="color: red;">COPA</span>DOMICILIOS</a>
+          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">La forma mas rápida de
+            comprar</p>
+
+          <div class="footer-socials" style="padding-left: 20px;">
+            <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+                class="fa fa-phone"></i></a>
+            <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
+                class="fab fa-whatsapp"></i></a>
+            <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
+                class="fa fa-share-alt"></i></a>
+          </div>
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Version</b>
+            {{ appService.appVersion }}
+          </p>
+          <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
+            &copy; Enabled <span id="copyright-year">2020</span>.
+            All Rights Reserved.
+          </p>
+        </div>
+      </ion-toolbar>
+    </ion-content>
+  </div>
+
+  <!-- Right Side Menu Only To Big Browsers -->
+  <div id="main-menu-large-right">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title style="text-align: center;">
+          <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <app-menu-notifications></app-menu-notifications>
+    </ion-content>
+  </div>
+</ion-header>
+
+<super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
+  <super-tabs-container>
+    <super-tab>
+      <ion-content id="content-home" class="content-background">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+          <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="crescent"
+            refreshingText="Buscando actualizaciones...">
+          </ion-refresher-content>
+        </ion-refresher>
+
+        <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 650px;">
+          <ion-slide *ngFor="let banner of appService.banners | async">
+            <img src="{{banner.image}}">
+          </ion-slide>
+        </ion-slides>
+
+        <div class="profile-1 bottom-30 top-30">
+          <a
+            style="background-color: white; color: black;font-size: 15px;border-top-left-radius: 15px;
+            border-top-right-radius: 15px;"
+            class="profile-button button button-m uppercase bolder button-center-small">
+            <strong>TIENDAS</strong>
+          </a>
+
+
+          <!-- <div class="profile-header" style="background-color: transparent;">
+           
+          </div> -->
+          <!-- <div class="profile-header-clear" ></div> -->
+          <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+
+            <div style="padding-top: 10px;">
+              <a *ngIf="(!appService.currentUser || !appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
+                style="text-align: end;"><b>CREAR TIENDA GRATIS</b>
+              </a>
+
+              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
+                routerLink="/store/{{ appService._userStoreId }}" style="text-align: end;"><b>IR A MI TIENDA</b>
+              </a>
+            </div>
+
+
+            <!-- <a routerLink="/store/{{ appService._userStoreId }}"
+              style="background-color: transparent; color: black;font-size: 20px;"
+              class="profile-button-store button button-m button-round round-medium uppercase bolder button-center-small">
+
+              <div class="user-list-left" style="text-align: -webkit-center;">
+                <img src="../../../assets/icons/icon-128x128.png" alt="img" class="shadow-small" style="width: 100px;">
+              </div>
+            </a> -->
+
+
+
+            <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
+              routerLink="/store/{{ appService._userStoreId }}"
+              style="background-color: transparent; color: black;font-size: 20px;"
+              class="profile-button-store button button-m button-round round-medium uppercase bolder button-center-medium">
+
+              <i class="fa fa-store" style="padding-right: 5px;font-size: 1.8em;padding-top: 10px;"></i>
+              <p style="margin-bottom: 0px">
+                <strong><b style="font-size: 18px;color: red;">IR A MI TIENDA</b></strong>
+              </p>
+            </a> -->
+
+            <!-- <a *ngIf="(!appService.currentUser || !appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
+              style="background-color: white; color: black;font-size: 20px;"
+              class="profile-button-store button shadow-medium button-m button-round round-medium uppercase bolder button-center-medium">
+
+              <i class="fa fa-store" style="padding-right: 5px;font-size: 1.8em;padding-top: 10px;"></i>
+              <p style="margin-bottom: 0px">
+                <strong><b style="font-size: 18px;color: red;">CREAR TIENDA GRATIS!</b></strong>
+              </p>
+            </a> -->
+
+            <div id="page">
+              <!-- FILTERS DISABLED TEMPORALLY -->
+              <!-- <ion-grid style="padding-left: 5px; padding-right: 5px;padding-bottom: 5px;padding-top: 10px;">
+                <ion-row>
+                  <ion-col>
+                    <div>
+                      <ion-label style="color: black;font-weight: 700;font-size: 1.2em;">Barrio/Sector:
+                      </ion-label>
+                      <ion-select cancelText="Cancelar" value="0" okText="Okay!" (ionChange)="sector_OnChange($event)"
+                        mode="ios" interface='action-sheet' style="font-size: 1.4em;color: black;padding-right: 10px;">
+                        <ion-select-option value="0">Todos</ion-select-option>
+                        <ion-select-option *ngFor="let sector of appService.sectors | async;" value="{{sector.id}}">
+                          {{sector.name}}</ion-select-option>
+                      </ion-select>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div>
+                      <ion-label style="color: black;font-weight: 700;font-size: 1.2em;">Sección:
+                      </ion-label>
+                      <ion-select cancelText="Cancelar" value="0" okText="Okay!"
+                        (ionChange)="storeCategory_OnChange($event)" mode="ios" interface='action-sheet'
+                        style="font-size: 1.4em;color:black;padding-right: 10px;padding-right: 10px;">
+                        <ion-select-option value="0">Todas</ion-select-option>
+                        <ion-select-option *ngFor="let storeCategory of appService.storeCategories | async;"
+                          value="{{storeCategory.id}}">
+                          {{storeCategory.name}}</ion-select-option>
+                      </ion-select>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <div class="divider bottom-10" style="height: 2px;background-color: red;"></div>
+              <ion-searchbar class="round-medium" style="padding-top: 10px;" animated placeholder="Cual tienda buscas?"
+                (ionChange)="searchStores($event)" debounce="1000">
+              </ion-searchbar> -->
+              <div class="content" style="margin: 0px 0px 0px 0px;">
+
+                <div class="content top-30" style="margin: 0px 5px 0px 5px;">
+                  <div *ngIf="searchingStores">
+                    <div class="one-half" *ngFor="let item of [1,2,3,4,5,6]">
+                      <div class="blog-col-item">
+                        <a>
+                          <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
+                          <ion-label>
+                            <h3>
+                              <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                            </h3>
+                            <p>
+                              <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                            </p>
+                            <p>
+                              <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                            </p>
+                          </ion-label>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="(stores && stores.length == 0)" class="boxed-text-huge"
+                    style="padding-top: 20px;color: red;padding-bottom: 20px;">
+                    <h4>No se encontraron resultados</h4>
+                  </div>
+
+                  <!-- {{ !store?'hidden':'' }} -->
+                  <div class="one-half {{ (i %2 != 0? 'last-column':'' )}}" *ngFor="let store of stores; let i = index">
+                    <div class="blog-col-item" style="margin-bottom: 0px">
+                      <a (click)="goToStore($event, store)">
+                        <img src="{{store?.logo?store.logo:'../../../assets/icon/no-image.png'}}"
+                          class="responsive-image preload-image shadow-large round-medium img-store" alt="img">
+
+                        <strong
+                          class="strong-store">{{((store?.name.length<=30)?store?.name:store?.name.substring(0, 30) + '...')}}</strong>
+                        <!-- <div class="review-stars" style="padding-top: 10px;">
+                              5.0 &nbsp;
+                              <i class="fa fa-star color-yellow1-dark"></i>
+                              <i class="fa fa-star color-yellow1-dark"></i>
+                              <i class="fa fa-star color-yellow1-dark"></i>
+                              <i class="fa fa-star color-yellow1-dark"></i>
+                              <i class="fa fa-star color-yellow1-dark"></i>
+                              &nbsp;(34)
+                            </div> -->
+                      </a>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <ion-infinite-scroll threshold="1%" position="bottom" (ionInfinite)="loadData($event)">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas tiendas...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll> -->
+      </ion-content>
+    </super-tab>
+  </super-tabs-container>
+</super-tabs>
