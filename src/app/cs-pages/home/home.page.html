@@ -158,6 +158,12 @@
           </ion-slide>
         </ion-slides> -->
 
+        <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
+          <ion-slide *ngFor="let store of stores;">
+            <img src="{{store.logo}}">
+          </ion-slide>
+        </ion-slides>
+
         <div class="profile-1 bottom-30 top-30">
           <a
             style="background-color: white; color: black;font-size: 15px;border-top-left-radius: 15px;
@@ -175,7 +181,7 @@
 
             <div style="padding-top: 10px;">
               <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
-                style="text-align: end;"><b>CREAR TIENDA GRATIS</b>
+                style="text-align: end;"><b>CREAR TIENDA</b>
               </a>
 
               <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
