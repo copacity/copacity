@@ -443,8 +443,8 @@ export class StorePage implements OnInit {
 
   shareApp(e) {
     this.ngNavigatorShareService.share({
-      title: "COPADOMICILIOS",
-      text: 'Hola ingresa a COPADOMICILIOS.COM y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio!',
+      title: "COPACITY",
+      text: 'Hola ingresa a copacity.net y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -657,7 +657,7 @@ export class StorePage implements OnInit {
         this.presentAlert("Antes de crear un producto debes tener al menos una Sección o Categroría creada, puedes ir al boton 'Crear Sección o Categroría' para continuar", "", () => { })
       }
     } else {
-      this.presentAlert("Ha llegado al limite máximo de productos en su tienda, Si necesita crear mas productos comuníquese con COPADOMICILIOS para incrementar la capacidad. Gracias.", "", () => { })
+      this.presentAlert("Ha llegado al limite máximo de productos en su tienda, Si necesita crear mas productos comuníquese con CopaCity para incrementar la capacidad. Gracias.", "", () => { })
     }
   }
 
@@ -901,10 +901,10 @@ export class StorePage implements OnInit {
   // }
 
   openStorePointsPage() {
-    this.presentAlert("El equipo de copadomicilios esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
+    this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
   }
 
   openStoreCouponsPage() {
-    this.presentAlert("El equipo de copadomicilios esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
+    this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
   }
 }

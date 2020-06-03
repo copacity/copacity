@@ -58,16 +58,16 @@ ion-list {
     padding-top: 126px;
 }
 
-@media screen and (min-width: 650px) {
+@media screen and (min-width: 450px) {
     .profile-1 {
-		width: 650px;
+		width: 450px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);
 	}
 
 	.new-store-profile{
-		width: 650px;
+		width: 450px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);	

@@ -135,8 +135,8 @@ export class ProductCreatePage implements OnInit {
 
   shareApp(e) {
     this.ngNavigatorShareService.share({
-      title: "COPADOMICILIOS",
-      text: 'Hola ingresa a COPADOMICILIOS.COM y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio!',
+      title: "COPACITY",
+      text: 'Hola ingresa a copacity.net y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -151,7 +151,7 @@ export class ProductCreatePage implements OnInit {
   }
 
   async openCopyToClipBoard(e) {
-    let text = 'Hola ingresa a COPADOMICILIOS.COM, y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio! ' + this.appService._appInfo.domain;
+    let text = 'Hola ingresa a copacity.net, y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio! ' + this.appService._appInfo.domain;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,

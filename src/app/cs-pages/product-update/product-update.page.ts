@@ -177,7 +177,7 @@ export class ProductUpdatePage implements OnInit {
             files: filesArray,
             title: this.appService.currentStore.name,
             text: "Aprovecha y adquiere aquí " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
-              this.navParams.data.discount + "% de descuento!!") : "") + ". Visita nuestra tienda virtual " + this.appService.currentStore.name + " en Copadomicilios. Para ver mas detalles de este producto ingresa a: ",
+              this.navParams.data.discount + "% de descuento!!") : "") + ". Visita nuestra tienda virtual " + this.appService.currentStore.name + " en CopaCity. Para ver mas detalles de este producto ingresa a: ",
             url: this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id
           })
             .then(() => console.log('Share was successful.'))
@@ -195,7 +195,7 @@ export class ProductUpdatePage implements OnInit {
   async openCopyToClipBoardProduct(e) {
 
     let text = "Aprovecha y adquiere aquí " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
-      this.navParams.data.discount + "% de descuento!!") : "") + ". Visita nuestra tienda virtual " + this.appService.currentStore.name + " en Copadomicilios. Para ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id;
+      this.navParams.data.discount + "% de descuento!!") : "") + ". Visita nuestra tienda virtual " + this.appService.currentStore.name + " en CopaCity. Para ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,
@@ -215,8 +215,8 @@ export class ProductUpdatePage implements OnInit {
 
   shareApp(e) {
     this.ngNavigatorShareService.share({
-      title: "COPADOMICILIOS",
-      text: 'Hola ingresa a COPADOMICILIOS.COM y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio!',
+      title: "COPACITY",
+      text: 'Hola ingresa a copacity.net y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -231,7 +231,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   async openCopyToClipBoard(e) {
-    let text = 'Hola ingresa a COPADOMICILIOS.COM, y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio! ' + this.appService._appInfo.domain;
+    let text = 'Hola ingresa a copacity.net, y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio! ' + this.appService._appInfo.domain;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,

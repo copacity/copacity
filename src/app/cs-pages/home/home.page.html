@@ -37,7 +37,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title>
-      <a class="header-title bold"><span style="color: red;">COPA</span>DOMICILIOS</a>
+      <a class="header-title bold"><span style="color: red;">COPA</span>CITY</a>
     </ion-title>
   </ion-toolbar>
 
@@ -75,11 +75,11 @@
           <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
           <ion-label style="padding-left:15px">Mis Pedidos</ion-label>
         </ion-item>
-        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
+        <!-- <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
           routerLink="/store/{{ appService._userStoreId }}">
           <i class="fa fa-store"></i>
           <ion-label style="padding-left:10px">Mi Tienda</ion-label>
-        </ion-item>
+        </ion-item> -->
         <ion-item style="padding: 3px;" routerLink="/contact">
           <i class="fa fa-paper-plane"></i>
           <ion-label style="padding-left:10px">Sugerencias</ion-label>
@@ -101,9 +101,8 @@
           </div>
 
           <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
-              style="color: red;">COPA</span>DOMICILIOS</a>
-          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">La forma mas rápida de
-            comprar</p>
+              style="color: red;">COPA</span>CITY</a>
+          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
 
           <div class="footer-socials" style="padding-left: 20px;">
             <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
@@ -153,11 +152,11 @@
           </ion-refresher-content>
         </ion-refresher>
 
-        <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 650px;">
+        <!-- <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
           <ion-slide *ngFor="let banner of appService.banners | async">
             <img src="{{banner.image}}">
           </ion-slide>
-        </ion-slides>
+        </ion-slides> -->
 
         <div class="profile-1 bottom-30 top-30">
           <a
@@ -175,13 +174,13 @@
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
             <div style="padding-top: 10px;">
-              <a *ngIf="(!appService.currentUser || !appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
+              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
                 style="text-align: end;"><b>CREAR TIENDA GRATIS</b>
               </a>
 
-              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
+              <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
                 routerLink="/store/{{ appService._userStoreId }}" style="text-align: end;"><b>IR A MI TIENDA</b>
-              </a>
+              </a> -->
             </div>
 
 

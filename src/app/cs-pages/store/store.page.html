@@ -26,7 +26,7 @@
     </ion-buttons>
 
     <ion-title style="font-size: medium;">
-      <a routerLink="/home" class="header-title bold"><span style="color: red;">COPA</span>DOMICILIOS</a>
+      <a routerLink="/home" class="header-title bold"><span style="color: red;">COPA</span>CITY</a>
       <!-- <span style="padding-left: 5px;font-size: medium;">{{store?.name}}</span> -->
     </ion-title>
   </ion-toolbar>
@@ -65,11 +65,11 @@
           <i style="padding-left: 5px;" style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
           <ion-label style="padding-left:15px">Mis Pedidos</ion-label>
         </ion-item>
-        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
+        <!-- <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
           routerLink="/store/{{ appService._userStoreId }}">
           <i class="fa fa-store"></i>
           <ion-label style="padding-left:10px">Mi Tienda</ion-label>
-        </ion-item>
+        </ion-item> -->
         <ion-item style="padding: 3px;" routerLink="/contact">
           <i class="fa fa-paper-plane"></i>
           <ion-label style="padding-left:10px">Sugerencias</ion-label>
@@ -91,9 +91,8 @@
           </div>
 
           <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
-              style="color: red;">COPA</span>DOMICILIOS</a>
-          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">La forma mas rápida de
-            comprar</p>
+              style="color: red;">COPA</span>CITY</a>
+          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
 
           <div class="footer-socials" style="padding-left: 20px;">
             <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
@@ -322,7 +321,7 @@
                     <tr *ngIf="!isAdmin">
                       <td>
                         <a (click)="addToCart($event, product)"
-                          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+                          style="background-color: red;color:white;"
                           class="button button-round-small shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
                           <i class="fa fa-shopping-cart add-button"
                             style="color: white;padding-right: 5px;"></i>AGREGAR</a>
