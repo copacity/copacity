@@ -132,10 +132,13 @@
         </div>
       </div>
       <ion-title>
+        <a (click)="close()"
+          style="background-color: white;color:black;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small shadow-large button-full button-s">Seguir comprando</a>
         <a (click)="goToCreateOrder()"
           *ngIf="(cartService.getTotal() >= (appService.currentStore.orderMinAmount?appService.currentStore.orderMinAmount:0) && cart.length != 0)"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">CONTINUAR!</a>
+          style="color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small shadow-large button-full button-s bg-highlight">LISTO, HACER PEDIDO!</a>
       </ion-title>
     </ion-toolbar>
   </div>

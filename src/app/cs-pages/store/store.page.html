@@ -143,198 +143,221 @@
           </ion-refresher-content>
         </ion-refresher>
 
-        <div style="background-color:white" class="new-store-profile">
-          <div class="page-content" style="padding-top: 5px;">
-            <div class="profile-header">
-              <div class="profile-left">
-                <h1>{{store?.name}}
-                </h1>
-                <p>
-                  {{(store?.description.length >=80)?((store?.description.substring(0,50) + '... ')):(store?.description  + '...')}}
-                  <a style="float:none" (click)="openStoreInformationComponent($event)">Leer mas</a>
-                </p>
+        <div class="profile-2">
+          <img style="width: 150px;" class="profile-image preload-image"
+            [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
 
-                <a *ngIf="isAdmin" (click)="openStoreUpdatePage()" style="margin-right: 0px" class="color-theme"><i class="fa fa-edit"
-                    style="color: black;padding-left: 5px;padding-right: 5px;"></i> <span>Editar</span></a>
+          <div *ngIf="isAdmin" class="under-slider-button">
+            <div class="cta-socials" style="text-align: center;">
 
-                <a (click)="shareStore($event)" class="color-theme">
-                  <i style="padding-right: 5px;color: black;padding-left: 5px;"
-                    class="fa fa-share-alt" ></i> <span>Compartir</span></a>
+              <a class="icon icon-s icon-round shadow-small" style="background-color: white;">
 
+                <label for="file-upload">
+                <i style="color: black;" class="fa fa-upload"></i> </label>
+                <input (change)="uploadFile($event)" id="file-upload" type="file" />
+              </a>
+            </div>
+          </div>
+         
+        </div>
+
+        <!-- <div class="profile-right" style="text-align: center;">
+          <a>
+            <img style="margin: 0;" class="img-profile-store profile-image preload-image round-medium shadow-large" [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'">
+          </a>
+
+          <a class="color-theme" *ngIf="isAdmin" style="padding-top: 10px;">
+            <label for="file-upload">
+              <i class="fa fa-upload" style="color: black;padding-right: 5px;"></i> <small>Subir logo</small>
+            </label>
+            <input (change)="uploadFile($event)" id="file-upload" type="file" />
+          </a>
+        </div> -->
+
+        <div class="profile-1 bottom-30 top-30">
+          <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+
+            <a (click)="shareStore($event)"
+              style="background-color: white; color: black; font-size: 15px;border-radius:15px"
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">{{store?.name}}</a>
+
+            <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
+              style="text-align: end;"><b>CREAR TIENDA</b>
+            </a> -->
+
+            <a *ngIf="isAdmin" (click)="openStoreUpdatePage()" style="text-align: end;padding-top: 10px;"
+              class="color-theme">
+              <i class="fa fa-edit" style="color: black;padding-left: 5px;padding-right: 5px;"></i> <span
+                style="color: blue;">Editar</span></a>
+
+            <div style="padding-top: 10px;">
+              <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
+                style="text-align: end;"><b>CREAR TIENDA</b>
+              </a> -->
+
+              <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
+                routerLink="/store/{{ appService._userStoreId }}" style="text-align: end;"><b>IR A MI TIENDA</b>
+              </a> -->
+            </div>
+
+            <div class="bottom-0">
+              <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 20px;">
+                <div class="one-half">
+                  <a (click)="openProductCreatePage()" class="button button-round-small button-full"
+                    style="color: white;background-color: red;font-size: 10px;margin-bottom: 0px;">+ Producto</a>
+                </div>
+                <div class="one-half last-column">
+                  <a (click)="openProductCategoriesdPage()"
+                    class="button  button-round-small button-border button-full bottom-0"
+                    style="color: white;background-color: red;font-size: 10px;margin-bottom: 0px;">+ sección&nbsp;</a>
+                </div>
                 <div class="clear"></div>
               </div>
-              <div class="profile-right" style="text-align: center;">
-                <a>
-                  <img style="margin: 0;" class="img-profile-store profile-image preload-image round-medium shadow-large" [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'">
-                </a>
 
-                <a class="color-theme" *ngIf="isAdmin" style="padding-top: 10px;">
-                  <label for="file-upload">
-                    <i class="fa fa-upload" style="color: black;padding-right: 5px;"></i> <small>Suibr logo</small>
-                  </label>
-                  <input (change)="uploadFile($event)" id="file-upload" type="file" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="bottom-0">
-            <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 20px;">
-              <div class="one-half">
-                <a (click)="openProductCreatePage()" class="button button-round-small button-full"
-                  style="color: white;background-color: red;font-size: 10px;margin-bottom: 0px;">+ Producto</a>
-              </div>
-              <div class="one-half last-column">
-                <a (click)="openProductCategoriesdPage()"
-                  class="button  button-round-small button-border button-full bottom-0"
-                  style="color: white;background-color: red;font-size: 10px;margin-bottom: 0px;">+ sección&nbsp;</a>
+              <div style="margin: 0px 15px 0px 15px;padding-top: 20px;">
+                <div class="one-half">
+                  <a (click)="openStorePointsPage()" class="button button-round-small button-full"
+                    style="color: red;font-size: 10px;border: double;margin-bottom: 0px;">
+                    <i class="fas fa-gift" style="font-size: 1.5em;color: red;"></i><span>&nbsp;PUNTOS&nbsp;</span>
+                  </a>
+                </div>
+                <div class="one-half last-column">
+                  <a (click)="openStoreCouponsPage()"
+                    class="button button-round-small button-border button-full bottom-0"
+                    style="color: red;font-size: 10px;border: dotted;margin-bottom: 0px;">
+                    <i class="fa fa-cut" style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES</span></a>
+                </div>
+                <div class="clear"></div>
               </div>
               <div class="clear"></div>
             </div>
 
-            <div style="margin: 0px 15px 0px 15px;padding-top: 20px;">
-              <div class="one-half">
-                <a (click)="openStorePointsPage()" class="button button-round-small button-full"
-                  style="color: red;font-size: 10px;border: double;margin-bottom: 0px;">
-                  <i class="fas fa-gift" style="font-size: 1.5em;color: red;"></i><span>&nbsp;PUNTOS&nbsp;</span>
-                </a>
-              </div>
-              <div class="one-half last-column">
-                <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
-                  style="color: red;font-size: 10px;border: dotted;margin-bottom: 0px;">
-                  <i class="fa fa-cut" style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES</span></a>
-              </div>
-              <div class="clear"></div>
+            <!-- <div class="divider divider-margins bottom-0"></div> -->
+
+            <div class="content gallery-view-controls" style="padding-top: 10px;">
+              <!-- <a href="#" class="color-highlight gallery-view-1-activate"><i class="fa fa-th"></i></a>
+              <a href="#" class="gallery-view-2-activate"><i class="fa fa-th-large"></i></a>
+              <a href="#" class="gallery-view-3-activate"><i class="fa fa-bars"></i></a> -->
+
+              <ion-list>
+                <ion-item>
+                  <ion-label>Sección:</ion-label>
+                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" value="0" okText="Okay!"
+                    interface='action-sheet' (ionChange)="productCategory_OnChange($event)">
+                    <ion-select-option value="0">Todas</ion-select-option>
+                    <ion-select-option *ngFor="let productCategory of productCategories | async;"
+                      value="{{productCategory.id}}">{{productCategory.name}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+
+              <!-- <div class="clear"></div> -->
             </div>
-            <div class="clear"></div>
-          </div>
 
-          <!-- <div class="divider divider-margins bottom-0"></div> -->
+            <div class="content bottom-10">
+              <div *ngIf="searchingProducts" style="padding-top:10px ;">
+                <div class="one-half" *ngFor="let item of [1,2,3,4,5,6]">
+                  <div class="blog-col-item">
+                    <a>
+                      <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
+                      <ion-label>
+                        <h3>
+                          <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                        </h3>
+                        <p>
+                          <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                        </p>
+                        <p>
+                          <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                        </p>
+                      </ion-label>
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-          <div class="content gallery-view-controls" style="padding-top: 10px;">
-            <!-- <a href="#" class="color-highlight gallery-view-1-activate"><i class="fa fa-th"></i></a>
-            <a href="#" class="gallery-view-2-activate"><i class="fa fa-th-large"></i></a>
-            <a href="#" class="gallery-view-3-activate"><i class="fa fa-bars"></i></a> -->
+              <div class="boxed-text-huge">
+                <label *ngIf="productSearchHits == 0"
+                  style="color: red;padding-top: 20px;font-size: 1.2em;padding-bottom: 20px;">No se
+                  encontraron productos en la sección seleccionada</label>
+              </div>
 
-            <ion-list>
-              <ion-item>
-                <ion-label>Sección:</ion-label>
-                <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" value="0" okText="Okay!"
-                  interface='action-sheet' (ionChange)="productCategory_OnChange($event)">
-                  <ion-select-option value="0">Todas</ion-select-option>
-                  <ion-select-option *ngFor="let productCategory of productCategories | async;"
-                    value="{{productCategory.id}}">{{productCategory.name}}</ion-select-option>
-                </ion-select>
-              </ion-item>
-            </ion-list>
-
-            <!-- <div class="clear"></div> -->
-          </div>
-
-          <div class="content bottom-10">
-
-
-            <div *ngIf="searchingProducts" style="padding-top:10px ;">
-              <div class="one-half" *ngFor="let item of [1,2,3,4,5,6]">
-                <div class="blog-col-item">
+              <!-- {{ !product?'hidden':'' }} -->
+              <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} "
+                *ngFor="let product of products | async; let i = index" style="padding-bottom: 50px">
+                <div class="blog-col-item" style="margin-bottom: 0px;">
                   <a>
-                    <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
-                    <ion-label>
-                      <h3>
-                        <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                      </h3>
-                      <p>
-                        <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                      </p>
-                      <p>
-                        <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                      </p>
-                    </ion-label>
+                    <img (click)="openProduct(product)"
+                      src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}"
+                      class="responsive-image preload-image shadow-large round-medium img-store {{(product?.soldOut)?'sold-out':'' }}"
+                      alt="img">
+
+                    <em style="background-color: white;color: black;font-weight: bold;font-size: 1.2em;"
+                      class="{{(product?.discount && product?.discount > 0)?'line-through':''}} {{(product?.soldOut)?'sold-out':'' }}">
+                      {{ product?.price | currency: 'USD': 'symbol' : '1.0-0' }}</em>
+
+                    <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
+                      style="background-color: yellow;color: black;font-weight: bold;font-size: 1.2em;margin-top: 0px;">
+                      {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</em>
+
+                    <em *ngIf="product?.discount && product?.discount > 0" style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;
+                        top: 25px;right: 0px" class="{{(product?.soldOut)?'sold-out':'' }}">
+                      <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
+
+                    <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
+                      style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 38px;right: 5px;">
+                      -{{ product?.discount }}%</em>
+
+                    <em *ngIf="product?.soldOut"
+                      style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 38px;right: 5px;"
+                      class="{{(product?.discount && product?.discount > 0)?'line-through':''}}">
+                      <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium"
+                        alt="img">
+                    </em>
+
+                    <table style="font-size: 1em;margin-bottom:0px">
+                      <tr>
+                        <td style="text-align: right;padding: 9px 0px 0px 0px;margin-top: 0px">
+                          <a *ngIf="isAdmin" (click)="presentDeleteProductPrompt(product)"
+                            class="icon icon-s icon-round shadow-small">
+                            <i class="fa fa-trash" style="color: black"></i></a>
+                          <a *ngIf="isAdmin" (click)="openProductUpdatePage(product)"
+                            class="icon icon-s icon-round shadow-small">
+                            <i class="fa fa-edit" style="color: black"></i></a>
+                          <ion-list *ngIf="isAdmin">
+                            <ion-item style="text-align: -webkit-right;">
+                              <ion-label style="color: gray;font-size: medium;">Agotado</ion-label>
+                              <ion-toggle (ionChange)="productSoldOut($event, product)" mode="ios" slot="start"
+                                name="blueberry" checked="{{(product?.soldOut)?'true':'false' }}"></ion-toggle>
+                            </ion-item>
+                          </ion-list>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong style="height: 35px;padding-top: 10px;"
+                            class="strong-store {{(product?.soldOut)?'sold-out':'' }}">
+                            {{((product?.name.length<=30)?product?.name:product?.name.substring(0, 30) + '...')}}</strong>
+                        </td>
+                      </tr>
+                      <tr *ngIf="!isAdmin">
+                        <td>
+                          <a (click)="addToCart($event, product)" style="background-color: red;color:white;"
+                            class="button button-round-small shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
+                            <i class="fa fa-shopping-cart add-button"
+                              style="color: white;padding-right: 5px;"></i>AGREGAR</a>
+                        </td>
+                      </tr>
+                    </table>
                   </a>
                 </div>
               </div>
+
+
+              <div class="clear"></div>
             </div>
-
-            <div class="boxed-text-huge" >
-              <label *ngIf="productSearchHits == 0" style="color: red;padding-top: 20px;font-size: 1.2em;padding-bottom: 20px;">No se
-                encontraron productos en la sección seleccionada</label>
-            </div>
-
-            <!-- {{ !product?'hidden':'' }} -->
-            <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} " *ngFor="let product of products | async; let i = index"
-              style="padding-bottom: 50px">
-              <div class="blog-col-item" style="margin-bottom: 0px;">
-                <a>
-                  <img (click)="openProduct(product)"
-                    src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}"
-                    class="responsive-image preload-image shadow-large round-medium img-store {{(product?.soldOut)?'sold-out':'' }}"
-                    alt="img">
-
-                  <em style="background-color: white;color: black;font-weight: bold;font-size: 1.2em;"
-                    class="{{(product?.discount && product?.discount > 0)?'line-through':''}} {{(product?.soldOut)?'sold-out':'' }}">
-                    {{ product?.price | currency: 'USD': 'symbol' : '1.0-0' }}</em>
-
-                  <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
-                    style="background-color: yellow;color: black;font-weight: bold;font-size: 1.2em;margin-top: 0px;">
-                    {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</em>
-
-                  <em *ngIf="product?.discount && product?.discount > 0" style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;
-                      top: 25px;right: 0px" class="{{(product?.soldOut)?'sold-out':'' }}">
-                    <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
-
-                  <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
-                    style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 38px;right: 5px;">
-                    -{{ product?.discount }}%</em>
-
-                  <em *ngIf="product?.soldOut"
-                    style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 38px;right: 5px;"
-                    class="{{(product?.discount && product?.discount > 0)?'line-through':''}}">
-                    <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium"
-                      alt="img">
-                  </em>
-
-                  <table style="font-size: 1em;margin-bottom:0px">
-                    <tr>
-                      <td style="text-align: right;padding: 9px 0px 0px 0px;margin-top: 0px">
-                        <a *ngIf="isAdmin" (click)="presentDeleteProductPrompt(product)"
-                          class="icon icon-s icon-round shadow-small">
-                          <i class="fa fa-trash" style="color: black"></i></a>
-                        <a *ngIf="isAdmin" (click)="openProductUpdatePage(product)"
-                          class="icon icon-s icon-round shadow-small">
-                          <i class="fa fa-edit" style="color: black"></i></a>
-                        <ion-list *ngIf="isAdmin">
-                          <ion-item style="text-align: -webkit-right;">
-                            <ion-label style="color: gray;font-size: medium;">Agotado</ion-label>
-                            <ion-toggle (ionChange)="productSoldOut($event, product)" mode="ios" slot="start"
-                              name="blueberry" checked="{{(product?.soldOut)?'true':'false' }}"></ion-toggle>
-                          </ion-item>
-                        </ion-list>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong style="height: 35px;padding-top: 10px;"
-                          class="strong-store {{(product?.soldOut)?'sold-out':'' }}">
-                          {{((product?.name.length<=30)?product?.name:product?.name.substring(0, 30) + '...')}}</strong>
-                      </td>
-                    </tr>
-                    <tr *ngIf="!isAdmin">
-                      <td>
-                        <a (click)="addToCart($event, product)"
-                          style="background-color: red;color:white;"
-                          class="button button-round-small shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
-                          <i class="fa fa-shopping-cart add-button"
-                            style="color: white;padding-right: 5px;"></i>AGREGAR</a>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </div>
-            </div>
-
-
-            <div class="clear"></div>
           </div>
+          <div class="clear"></div>
         </div>
       </ion-content>
     </super-tab>

@@ -159,25 +159,26 @@
         </ion-slides> -->
 
         <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
-          <ion-slide *ngFor="let store of stores;">
+          <ion-slide (click)="goToStore($event, store)" *ngFor="let store of stores;">
             <img src="{{store.logo}}">
           </ion-slide>
         </ion-slides>
 
         <div class="profile-1 bottom-30 top-30">
-          <a
+          <!-- <a
             style="background-color: white; color: black;font-size: 15px;border-top-left-radius: 15px;
             border-top-right-radius: 15px;"
-            class="profile-button button button-m uppercase bolder button-center-small">
-            <strong>TIENDAS</strong>
-          </a>
-
+            class="profile-button button button-m uppercase bolder button-center-large">
+            <strong>MARCAS AUTORIZADAS</strong>
+          </a> -->
 
           <!-- <div class="profile-header" style="background-color: transparent;">
            
           </div> -->
           <!-- <div class="profile-header-clear" ></div> -->
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+            <a style="background-color: white; color: black; font-size: 15px;border-radius:15px"
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">MARCAS AUTORIZADAS</a>
 
             <div style="padding-top: 10px;">
               <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
@@ -288,7 +289,7 @@
                   </div>
 
                   <!-- {{ !store?'hidden':'' }} -->
-                  <div class="one-half {{ (i %2 != 0? 'last-column':'' )}}" *ngFor="let store of stores; let i = index">
+                  <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} bottom-10" *ngFor="let store of stores; let i = index">
                     <div class="blog-col-item" style="margin-bottom: 0px">
                       <a (click)="goToStore($event, store)">
                         <img src="{{store?.logo?store.logo:'../../../assets/icon/no-image.png'}}"

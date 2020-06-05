@@ -71,11 +71,13 @@ export class CartPage implements OnInit {
 
   add(cartProduct: CartProduct) {
     cartProduct.quantity += 1;
+    this.cartService.addProductRecalculate(cartProduct);
   }
 
   remove(cartProduct: CartProduct) {
     if (cartProduct.quantity > 1) {
       cartProduct.quantity -= 1;
+      this.cartService.addProductRecalculate(cartProduct);
     }
   }
 }
