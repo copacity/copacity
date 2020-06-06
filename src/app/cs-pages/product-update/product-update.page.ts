@@ -397,9 +397,10 @@ export class ProductUpdatePage implements OnInit {
       this.imagePath = event.target.files;
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (_event) => {
-        this.storageService.ResizeImage2(reader.result.toString(), this.appService.currentUser.id, 500, 500).then((image) => {
-          this.openCropperImageComponent(image);
-        });
+        // this.storageService.ResizeImage2(reader.result.toString(), this.appService.currentUser.id, 500, 500).then((image) => {
+        //   this.openCropperImageComponent(image);
+        // });
+        this.openCropperImageComponent(reader.result);
       }
     } else {
       this.presentAlert("No puedes subir mas de 10 imagenes para el mismo producto", "", () => { });

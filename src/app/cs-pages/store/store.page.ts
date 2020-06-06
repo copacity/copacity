@@ -743,9 +743,10 @@ export class StorePage implements OnInit {
     this.imagePath = event.target.files;
     reader.readAsDataURL(this.file.file);
     reader.onload = (_event) => {
-      this.storageService.ResizeImage2(reader.result.toString(), this.appService.currentStore.id, 500, 500).then((image) => {
-        this.openCropperImageComponent(image);
-      });
+      // this.storageService.ResizeImage2(reader.result.toString(), this.appService.currentStore.id, 500, 500).then((image) => {
+      //   this.openCropperImageComponent(image);
+      // });
+      this.openCropperImageComponent(reader.result);
     }
   }
 

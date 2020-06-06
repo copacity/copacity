@@ -116,7 +116,7 @@ export class StorageService {
           0, 0, width, height);
 
         // output the canvas pixels as an image. params: format, quality
-        this.base64ResizedImage = outputCanvas.toDataURL('image/jpeg', 0.85);
+        this.base64ResizedImage = outputCanvas.toDataURL('image/jpeg', 1.0);
 
         this.Imagen =  this.sanitizer.bypassSecurityTrustResourceUrl(this.base64ResizedImage);
         //this.Imagen = this.base64ResizedImage;
@@ -197,7 +197,7 @@ export class StorageService {
           0, 0, width, height);
 
         // output the canvas pixels as an image. params: format, quality
-        this.base64ResizedImage = outputCanvas.toDataURL('image/jpeg', 0.85);
+        this.base64ResizedImage = outputCanvas.toDataURL('image/jpeg', 1.0);
 
         this.Imagen =  this.sanitizer.bypassSecurityTrustResourceUrl(this.base64ResizedImage);
         //this.Imagen = this.base64ResizedImage;
