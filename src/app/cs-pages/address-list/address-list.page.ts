@@ -102,8 +102,8 @@ export class AddressListPage implements OnInit {
       .then((data) => {
         const idAddress = data['data'];
 
-        if(idAddress){
-          if(this.appService.addressCount == 0){
+        if(idAddress) {
+          if(this.appService.addressCount <= 1){
             this.addressesService.update(this.appService.currentUser.id, idAddress , { checked: true}).then(() => {
               this.appService.addressCount ++;
               this.appService.idAddressChecked =  idAddress;
