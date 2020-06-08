@@ -20,7 +20,7 @@ import { AngularFireMessaging } from '@angular/fire/messaging';
 })
 export class AppService {
   // APP VERSION
-  appVersion: string = "1.0.1 Beta"
+  appVersion: string = "1.0.2 Beta"
 
   // APP DATA
   storeCategories: Observable<StoreCategory[]> = null;
