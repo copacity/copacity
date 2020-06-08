@@ -424,7 +424,7 @@ export class StorePage implements OnInit {
     if (this.store.status == StoreStatus.Published) {
       this.ngNavigatorShareService.share({
         title: this.store.name,
-        text: 'Hola! Somos ' + this.store.name + '. Aquí podrás comprar nuestros productos y recibirlos a domicilio al instante!',
+        text: 'En Copacity tenemos para ti variedad de productos de la marca: ' + this.store.name + '. Ingresa y sorprendete con todas nuestras promociones, cupones y regalos!',
         url: this.appService._appInfo.domain + "/store/" + this.store.id
       }).then((response) => {
         console.log(response);
@@ -444,7 +444,7 @@ export class StorePage implements OnInit {
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
-      text: 'Hola ingresa a copacity.net y podrás buscar tiendas en Copacabana, comprar productos y recibirlos a domicilio!',
+      text: 'Hola ingresa a copacity.net donde podrás ver nuestras marcas autorizadas con variedad de productos para ti, promociones, cupones de descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
