@@ -5,18 +5,6 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./cs-pages/home/home.module').then( m => m.HomePageModule)},
   {
-    path: 'stores',
-    loadChildren: () => import('./_TESTS/stores/stores.module').then( m => m.StoresPageModule)
-  },
-  {
-    path: 'add-store',
-    loadChildren: () => import('./_TESTS/add-store/add-store.module').then( m => m.AddStorePageModule)
-  },
-  {
-    path: 'dashboard',
-    loadChildren: () => import('./_TESTS/dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  },
-  {
     path: 'store/:id',
     loadChildren: () => import('./cs-pages/store/store.module').then( m => m.StorePageModule)
   },
@@ -59,10 +47,6 @@ const routes: Routes = [
   {
     path: 'product-detail/:id',
     loadChildren: () => import('./cs-pages/product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
-  },  
-  {
-     path: 'test',
-    loadChildren: () => import('./_TESTS/test/test.module').then( m => m.TestPageModule)
   },
   {
     path: 'order-detail',
@@ -99,7 +83,8 @@ const routes: Routes = [
   {
     path: 'terms-service',
     loadChildren: () => import('./cs-pages/terms-service/terms-service.module').then( m => m.TermsServicePageModule)
-  },  {
+  },
+  {
     path: 'order-list',
     loadChildren: () => import('./cs-pages/order-list/order-list.module').then( m => m.OrderListPageModule)
   },

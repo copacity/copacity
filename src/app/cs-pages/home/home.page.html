@@ -32,9 +32,9 @@
           <i class="fa fa-user" style="font-size: 1.2em"></i>
         </span>
       </ion-button>
-      <ion-button (click)="shareApp($event)">
+      <!-- <ion-button (click)="shareApp($event)">
         <i class="fa fa-share-alt" style="font-size: 1.2em; color: black;"></i>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
     <ion-title>
       <a class="header-title bold"><span style="color: red;">COPA</span>CITY</a>
@@ -177,7 +177,7 @@
           </div> -->
           <!-- <div class="profile-header-clear" ></div> -->
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-            <a style="background-color: white; color: black; font-weight: bold;border-radius:15px"
+            <a (click)="shareApp($event)" style="background-color: white; color: black; font-weight: bold;border-radius:15px"
               class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">MARCAS AUTORIZADAS</a>
 
             <div style="padding-top: 10px;text-align: -webkit-right;">
