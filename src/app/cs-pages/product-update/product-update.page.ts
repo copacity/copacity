@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavParams, AlertController, PopoverController, ToastController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
-import { ProductCategory, File, Product, ProductImage, ProductPropertyOption, ProductProperty } from 'src/app/app-intefaces';
+import { ProductCategory, ProductImage, ProductProperty } from 'src/app/app-intefaces';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { ProductCategoriesService } from 'src/app/cs-services/productCategories.service';
@@ -28,7 +28,6 @@ export class ProductUpdatePage implements OnInit {
   productCategories: Observable<ProductCategory[]> = null;
   form: FormGroup;
   productImageCollection: ProductImage[] = [];
-  file: File;
   public imagePath;
   productProperties: ProductProperty[] = []
 
@@ -139,7 +138,6 @@ export class ProductUpdatePage implements OnInit {
       };
 
       resolve(new File([blob], "data.png", metadata));
-
     }, 'image/png')
   }
 
@@ -155,6 +153,7 @@ export class ProductUpdatePage implements OnInit {
           }, 300);
         };
 
+        console.log(this.navParams.data.image);
         img.src = this.navParams.data.image;
       } else {
         resolve("");
@@ -167,17 +166,14 @@ export class ProductUpdatePage implements OnInit {
       this.createFile().then(file => {
         let navigator: any = window.navigator;
         let filesArray = [];
-
-        if (file) {
-          filesArray.push(file);
-        }
+        filesArray.push(file);
 
         if (navigator.canShare && navigator.canShare({ files: filesArray })) {
           navigator.share({
             files: filesArray,
             title: this.appService.currentStore.name,
-            text: "Aprovecha y adquiere aquí " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
-              this.navParams.data.discount + "% de descuento!!") : "") + ". Visita nuestra tienda virtual " + this.appService.currentStore.name + " en CopaCity. Para ver mas detalles de este producto ingresa a: ",
+            text: "Aprovecha y adquiere en Copacity.net " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
+              this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados de la marca " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
             url: this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id
           })
             .then(() => console.log('Share was successful.'))
@@ -194,8 +190,8 @@ export class ProductUpdatePage implements OnInit {
 
   async openCopyToClipBoardProduct(e) {
 
-    let text = "Aprovecha y adquiere aquí " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
-      this.navParams.data.discount + "% de descuento!!") : "") + ". Visita nuestra tienda virtual " + this.appService.currentStore.name + " en CopaCity. Para ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id;
+    let text = "Aprovecha y adquiere en Copacity.net " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
+      this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados de la marca " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,
@@ -216,7 +212,7 @@ export class ProductUpdatePage implements OnInit {
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
-      text: 'Hola ingresa a copacity.net donde podrás ver nuestras marcas autorizadas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
+      text: 'Hola! Somos copacity.net, tu Centro Comercial Virtual, allí podrás ver nuestras marcas autorizadas con una gran variedad de productos para tí, promociones, cupones con descuentos, tambien podrás acumular puntos y obtener regalos, y lo mejor!, todo te lo llevamos hasta la puerta de tu casa!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -231,7 +227,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   async openCopyToClipBoard(e) {
-    let text = 'Hola ingresa a copacity.net donde podrás ver nuestras marcas autorizadas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa! ' + this.appService._appInfo.domain;
+    let text = 'Hola! Somos copacity.net, tu Centro Comercial Virtual, allí podrás ver nuestras marcas autorizadas con una gran variedad de productos para tí, promociones, cupones con descuentos, tambien podrás acumular puntos y obtener regalos, y lo mejor!, todo te lo llevamos hasta la puerta de tu casa! ' + this.appService._appInfo.domain;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,

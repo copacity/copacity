@@ -271,8 +271,8 @@ export class ProductDetailPage implements OnInit {
           navigator.share({
             files: filesArray,
             title: this.appService.currentStore.name,
-            text: "Aprovecha y adquiere aquí " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-              this.product.discount + "% de descuento!!") : "") + ". Tenemos mas productos relacionados de la marca " + this.appService.currentStore.name + " en CopaCity. Para ver mas detalles de este producto ingresa a: ",
+            text: "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
+              this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados de la marca " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
             url: this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id
           })
             .then(() => console.log('Share was successful.'))
@@ -305,8 +305,8 @@ export class ProductDetailPage implements OnInit {
 
   async openCopyToClipBoardProduct(e) {
 
-    let text = "Aprovecha y adquiere aquí " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-      this.product.discount + "% de descuento!!") : "") + ". Tenemos mas productos relacionados de la marca: " + this.appService.currentStore.name + " en CopaCity. Para ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id;
+    let text = "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
+      this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados de la marca: " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,
@@ -327,7 +327,7 @@ export class ProductDetailPage implements OnInit {
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
-      text: 'Hola ingresa a copacity.net donde podrás ver nuestras marcas autorizadas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
+      text: 'Hola! Somos copacity.net, tu Centro Comercial Virtual, allí podrás ver nuestras marcas autorizadas con una gran variedad de productos para tí, promociones, cupones con descuentos, tambien podrás acumular puntos y obtener regalos, y lo mejor!, todo te lo llevamos hasta la puerta de tu casa!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -342,7 +342,7 @@ export class ProductDetailPage implements OnInit {
   }
 
   async openCopyToClipBoard(e) {
-    let text = 'Hola ingresa a copacity.net donde podrás ver nuestras marcas autorizadas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa! ' + this.appService._appInfo.domain;
+    let text = 'Hola! Somos copacity.net, tu Centro Comercial Virtual, allí podrás ver nuestras marcas autorizadas con una gran variedad de productos para tí, promociones, cupones con descuentos, tambien podrás acumular puntos y obtener regalos, y lo mejor!, todo te lo llevamos hasta la puerta de tu casa! ' + this.appService._appInfo.domain;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,
