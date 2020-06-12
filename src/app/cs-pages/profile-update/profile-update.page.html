@@ -15,6 +15,11 @@
       <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
         <ion-list lines="full" class="ion-no-margin ion-no-padding">
           <ion-item>
+            <ion-label position="floating" style="color: gray;">Nombre <b style="color: red;">(*)</b>
+            </ion-label>
+            <ion-input formControlName="name"></ion-input>
+          </ion-item>
+          <ion-item>
             <ion-label position="floating" style="color: gray;">Tel </ion-label>
             <ion-input type="number" formControlName="phone1"></ion-input>
           </ion-item>
@@ -30,6 +35,11 @@
 
         <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
           class="content content-box round-small shadow-large">
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
+            <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
+            <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 30
+              caracteres</span>
+          </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone1').errors">
             <span *ngIf="form.get('phone1').hasError('max')">Tel 1 debe ser maximo de 15 caracteres</span>
           </p>

@@ -169,7 +169,7 @@
             style="background-color: white; color: black;font-size: 15px;border-top-left-radius: 15px;
             border-top-right-radius: 15px;"
             class="profile-button button button-m uppercase bolder button-center-large">
-            <strong>MARCAS AUTORIZADAS</strong>
+            <strong>tiendas</strong>
           </a> -->
 
           <!-- <div class="profile-header" style="background-color: transparent;">
@@ -178,12 +178,12 @@
           <!-- <div class="profile-header-clear" ></div> -->
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
             <a (click)="shareApp($event)" style="background-color: white; color: black; font-weight: bold;border-radius:15px"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">MARCAS AUTORIZADAS</a>
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">tiendas</a>
 
             <div style="padding-top: 10px;text-align: -webkit-right;">
               <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" 
               style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openStoreCreatePage()"
-              class="button button-round-small button-s">+ MARCA</a>
+              class="button button-round-small button-s">+ TIENDA</a>
 
               <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
                 routerLink="/store/{{ appService._userStoreId }}" style="text-align: end;"><b>IR A MI TIENDA</b>

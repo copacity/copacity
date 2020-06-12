@@ -44,6 +44,7 @@ export class ProfileUpdatePage implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
+      name: [this.appService.currentUser.name, [Validators.required, Validators.maxLength(30)]],
       phone1: [this.appService.currentUser.phone1, [Validators.max(999999999999999)]],
       phone2: [this.appService.currentUser.phone2, [Validators.max(999999999999999)]],
       whatsapp: [this.appService.currentUser.whatsapp, [Validators.max(999999999999999)]]
@@ -55,6 +56,7 @@ export class ProfileUpdatePage implements OnInit {
     if (this.form.valid) {
       this.loaderComponent.startLoading("Estamos actualizando su tienda por favor espere un momento...");
 
+      this.appService.currentUser.name = this.form.value.name;
       this.appService.currentUser.phone1 = this.form.value.phone1 ? this.form.value.phone1 : 0;
       this.appService.currentUser.phone2 = this.form.value.phone2 ? this.form.value.phone2 : 0;
       this.appService.currentUser.whatsapp = this.form.value.whatsapp ? this.form.value.whatsapp : 0;

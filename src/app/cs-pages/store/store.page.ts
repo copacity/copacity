@@ -425,7 +425,7 @@ export class StorePage implements OnInit {
     if (this.store.status == StoreStatus.Published) {
       this.ngNavigatorShareService.share({
         title: this.store.name,
-        text: 'En Copacity tenemos para ti una gran variedad de productos de la marca: ' + this.store.name + '. Ingresa y sorprendete con todas nuestras promociones, cupones y regalos! Copacity, Tu Centro Comercial Virtual',
+        text: 'Hola! Visita nuestra tienda: ' + this.store.name + ' y sorprendete con todos los productos, promociones, cupones y regalos que tenemos para ti!. En Copacity, Tu Centro Comercial Virtual',
         url: this.appService._appInfo.domain + "/store/" + this.store.id
       }).then((response) => {
         console.log(response);
@@ -445,7 +445,7 @@ export class StorePage implements OnInit {
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
-      text: 'Hola ingresa a copacity.net donde podrás ver nuestras marcas autorizadas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
+      text: 'Hola ingresa a copacity.net donde podrás ver nuestras tiendas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -459,8 +459,8 @@ export class StorePage implements OnInit {
       });
   }
 
-  async openCopyToClipBoard(e) {
-    let text = 'En Copacity tenemos para ti una gran variedad de productos de la marca: ' + this.store.name + '. Ingresa y sorprendete con todas nuestras promociones, cupones y regalos! Copacity, Tu Centro Comercial Virtual. ' + this.appService._appInfo.domain + "/store/" + this.store.id;
+  async openCopyToClipBoard(e) {            
+    let text = 'Hola! Visita nuestra tienda: ' + this.store.name + ' y sorprendete con todos los productos, promociones, cupones y regalos que tenemos para ti!. En Copacity, Tu Centro Comercial Virtual. ' + this.appService._appInfo.domain + "/store/" + this.store.id;
 
     let modal = await this.popoverController.create({
       component: CopyToClipboardComponent,

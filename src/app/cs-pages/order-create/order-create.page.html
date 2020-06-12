@@ -160,7 +160,7 @@
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
 
-              <div class="content contact-message" style="margin: 0px 15px 10px 15px;">
+              <!-- <div class="content contact-message" style="margin: 0px 15px 10px 15px;">
                 <div class="content content-box round-small shadow-large" style="padding: 5px;">
                   <h1 class="center-text bolder top-10"
                     style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">{{store?.name}}</h1>
@@ -168,9 +168,15 @@
                     Gracias por usar nuestro servicio.
                   </p>
                 </div>
-              </div>
+              </div> -->
 
               <table class="table-borders bottom-10" style="font-size: 1.2em;">
+                <tr>
+                  <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
+                    <a style="color:white;padding: 8px 8px;background-color: red;"
+                    class="button button-round-small shadow-large button-full button-s"> <i class="fa fa-cut" style="font-size: 1.5em;"></i> Ver Cupones</a>
+                  </td>
+                </tr>
                 <tr>
                   <td style="vertical-align: top;text-align: left;margin: 10px;padding: 0px 0px 0px 0px;">
                     <div class="input-style has-icon input-style-1 input-required">
@@ -181,8 +187,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 0px 0px 0px 0px;">
-                    <a style="background-color: red;color:white;padding: 8px 8px;width: 75px;"
+                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
+                    <a style="color:white;padding: 8px 8px;width: 75px;background-color: red;"
                       class="button button-round-small shadow-large button-full button-s">Aplicar</a>
                   </td>
                 </tr>
@@ -264,10 +270,10 @@
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
           <i (click)="selectTab(0)" class="fa fa-long-arrow-alt-left"
-          style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
+            style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
 
           <i (click)="selectTab(2)" class="fa fa-long-arrow-alt-right"
-          style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-right: 10px;"></i>
+            style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-right: 10px;"></i>
 
           <a style="background-color: white; color: black;font-size: 15px;color: black;border-radius:15px"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">METODO
@@ -308,7 +314,7 @@
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
           <i (click)="selectTab(1)" class="fa fa-long-arrow-alt-left"
-          style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
+            style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
 
           <a style="background-color: white; color: black;font-size: 15px; color: black;border-radius:15px"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FINALIZAR</a>
