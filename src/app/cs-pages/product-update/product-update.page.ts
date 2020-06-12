@@ -25,6 +25,7 @@ export class ProductUpdatePage implements OnInit {
   @ViewChild('sliderImageProductUpdate', null) sliderProducts: any;
 
   isAdmin: boolean = false;
+  isGift: boolean;
   productCategories: Observable<ProductCategory[]> = null;
   form: FormGroup;
   productImageCollection: ProductImage[] = [];
@@ -46,6 +47,8 @@ export class ProductUpdatePage implements OnInit {
     public appService: AppService,
     private navParams: NavParams,
     private loader: LoaderComponent) {
+
+    this.isGift = navParams.data.isGift;
 
     this.buildForm();
     this.productCategories = this.productCategoriesService.getAll(this.appService.currentStore.id);
@@ -275,13 +278,24 @@ export class ProductUpdatePage implements OnInit {
   }
 
   private buildForm() {
-    this.form = this.formBuilder.group({
-      name: [this.navParams.data.name, [Validators.required, Validators.maxLength(30)]],
-      category: [this.navParams.data.idProductCategory.toString(), [Validators.required]],
-      price: [this.navParams.data.price, [Validators.required]],
-      description: [this.navParams.data.description, [Validators.maxLength(500)]],
-      discount: [this.navParams.data.discount ? this.navParams.data.discount.toString() : '0'],
-    });
+
+    if (!this.isGift) {
+      this.form = this.formBuilder.group({
+        name: [this.navParams.data.name, [Validators.required, Validators.maxLength(30)]],
+        category: [this.navParams.data.idProductCategory.toString(), [Validators.required]],
+        price: [this.navParams.data.price, [Validators.required]],
+        description: [this.navParams.data.description, [Validators.maxLength(500)]],
+        discount: [this.navParams.data.discount ? this.navParams.data.discount.toString() : '0'],
+      });
+    } else {
+      this.form = this.formBuilder.group({
+        name: [this.navParams.data.name, [Validators.required, Validators.maxLength(30)]],
+        category: [this.navParams.data.idProductCategory.toString()],
+        price: [this.navParams.data.price, [Validators.required]],
+        description: [this.navParams.data.description, [Validators.maxLength(500)]],
+        discount: [this.navParams.data.discount ? this.navParams.data.discount.toString() : '0'],
+      });
+    }
   }
 
   updateProduct() {

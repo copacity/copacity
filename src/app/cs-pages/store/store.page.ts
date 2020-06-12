@@ -34,6 +34,7 @@ import { CropperImageComponent } from 'src/app/cs-components/cropper-image/cropp
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { StoreInformationComponent } from 'src/app/cs-components/store-information/store-information.component';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
+import { StorePointsPage } from '../store-points/store-points.page';
 
 @Component({
   selector: 'app-store',
@@ -444,7 +445,7 @@ export class StorePage implements OnInit {
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
-      text: 'Hola! Somos copacity.net, tu Centro Comercial Virtual, allí podrás ver nuestras marcas autorizadas con una gran variedad de productos para tí, promociones, cupones con descuentos, tambien podrás acumular puntos y obtener regalos, y lo mejor!, todo te lo llevamos hasta la puerta de tu casa!',
+      text: 'Hola ingresa a copacity.net donde podrás ver nuestras marcas autorizadas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -641,6 +642,7 @@ export class StorePage implements OnInit {
         //this.router.navigate(['/product-create', this.appService.currentStore.id]);
         let modal = await this.popoverController.create({
           component: ProductCreatePage,
+          componentProps: { isGift: false },
           cssClass: 'cs-popovers',
           backdropDismiss: false,
         });
@@ -710,7 +712,7 @@ export class StorePage implements OnInit {
   }
 
   productSoldOut(e: any, product: Product) {
-    this.productsService.update(this.appService.currentStore.id, product.id, { soldOut: e.detail.checked });
+    this.productsService.update(this.appService.currentStore.id, product.id, { soldOut: !e.detail.checked });
   }
 
   async presentDeleteProductPrompt(product: Product) {
@@ -901,8 +903,22 @@ export class StorePage implements OnInit {
   //   } catch (error) { }
   // }
 
-  openStorePointsPage() {
-    this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
+  async openStorePointsPage() {
+    let modal = await this.popoverController.create({
+      component: StorePointsPage,
+      componentProps: { isAdmin: this.isAdmin },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
+
+    //this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
   }
 
   openStoreCouponsPage() {

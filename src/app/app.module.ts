@@ -34,6 +34,8 @@ import { PipesModule } from './cs-pipes/pipes.module';
 import { ProfileUpdatePageModule } from './cs-pages/profile-update/profile-update.module';
 import { TermsServicePageModule } from './cs-pages/terms-service/terms-service.module';
 import { PrivacyPolicyPageModule } from './cs-pages/privacy-policy/privacy-policy.module';
+import { StorePointsPageModule } from './cs-pages/store-points/store-points.module';
+import { StoreCouponsPageModule } from './cs-pages/store-coupons/store-coupons.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -72,6 +74,8 @@ import { PrivacyPolicyPageModule } from './cs-pages/privacy-policy/privacy-polic
     ProfileUpdatePageModule,
     TermsServicePageModule,
     PrivacyPolicyPageModule,
+    StorePointsPageModule,
+    StoreCouponsPageModule,
     PipesModule
   ],
   providers: [

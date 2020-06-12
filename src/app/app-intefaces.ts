@@ -101,6 +101,7 @@ export interface Product {
   deleted: boolean;
   discount: number;
   soldOut: boolean;
+  isGift: boolean;
 }
 
 export interface ProductImage {

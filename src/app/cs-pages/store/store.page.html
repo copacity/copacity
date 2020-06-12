@@ -190,15 +190,15 @@
               <i class="fa fa-edit" style="color: black;padding-left: 5px;padding-right: 5px;"></i> <span
                 style="color: blue;">Editar</span></a>
 
-            <div style="padding-top: 10px;">
-              <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
+            <!-- <div style="padding-top: 10px;">
+              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" (click)="openStoreCreatePage()"
                 style="text-align: end;"><b>CREAR TIENDA</b>
-              </a> -->
+              </a>
 
-              <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
+              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
                 routerLink="/store/{{ appService._userStoreId }}" style="text-align: end;"><b>IR A MI TIENDA</b>
-              </a> -->
-            </div>
+              </a>
+            </div> -->
 
             <div class="bottom-0">
               <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 20px;">
@@ -218,7 +218,7 @@
                 <div class="one-half">
                   <a (click)="openStorePointsPage()" class="button button-round-small button-full"
                     style="color: red;font-size: 10px;border: double;margin-bottom: 0px;">
-                    <i class="fas fa-gift" style="font-size: 1.5em;color: red;"></i><span>&nbsp;PUNTOS&nbsp;</span>
+                    <i class="fas fa-gift" style="font-size: 1.5em;color: red;"></i><span>&nbsp;REGALOS</span>
                   </a>
                 </div>
                 <div class="one-half last-column">
@@ -326,9 +326,9 @@
                             <i class="fa fa-edit" style="color: black"></i></a>
                           <ion-list *ngIf="isAdmin">
                             <ion-item style="text-align: -webkit-right;">
-                              <ion-label style="color: gray;font-size: medium;">Agotado</ion-label>
+                              <ion-label style="color: gray;font-size: medium;">Activo</ion-label>
                               <ion-toggle (ionChange)="productSoldOut($event, product)" mode="ios" slot="start"
-                                name="blueberry" checked="{{(product?.soldOut)?'true':'false' }}"></ion-toggle>
+                                name="blueberry" checked="{{(product?.soldOut)?'false':'true' }}"></ion-toggle>
                             </ion-item>
                           </ion-list>
                         </td>

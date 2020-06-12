@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductCategory, Product, File, ProductImage, ProductProperty } from 'src/app/app-intefaces';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, PopoverController, ToastController } from '@ionic/angular';
+import { AlertController, PopoverController, ToastController, NavParams } from '@ionic/angular';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { ProductCategoriesService } from 'src/app/cs-services/productCategories.service';
 import { ProductsService } from 'src/app/cs-services/products.service';
@@ -38,10 +38,12 @@ export class ProductCreatePage implements OnInit {
   productId: string;
 
   imgURL: any[] = [];
+  isGift: boolean;
 
   constructor(private popoverCtrl: PopoverController,
     public alertController: AlertController,
     private router: Router,
+    public navParams: NavParams,
     private formBuilder: FormBuilder,
     private angularFireAuth: AngularFireAuth,
     private productsService: ProductsService,
@@ -54,6 +56,7 @@ export class ProductCreatePage implements OnInit {
     public appService: AppService,
     private loader: LoaderComponent) {
 
+    this.isGift = this.navParams.data.isGift;
     this.buildForm();
     this.productCategories = this.productCategoriesService.getAll(this.appService.currentStore.id);
   }
@@ -246,19 +249,30 @@ export class ProductCreatePage implements OnInit {
 
   private buildForm() {
 
-    this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(30)]],
-      category: ['', [Validators.required]],
-      price: ['', [Validators.required]],
-      description: ['', [Validators.maxLength(500)]],
-      discount: ['0'],
-    });
+    if (!this.isGift) {
+      this.form = this.formBuilder.group({
+        name: ['', [Validators.required, Validators.maxLength(30)]],
+        category: ['', [Validators.required]],
+        price: ['', [Validators.required]],
+        description: ['', [Validators.maxLength(500)]],
+        discount: ['0'],
+      });
+    } else {
+      this.form = this.formBuilder.group({
+        name: ['', [Validators.required, Validators.maxLength(30)]],
+        category: [''],
+        price: ['', [Validators.required]],
+        description: ['', [Validators.maxLength(500)]],
+        discount: ['0'],
+      });
+    }
+
   }
 
   createProduct() {
 
     if (this.form.valid) {
-      this.loader.startLoading("Estamos creando su producto por favor espere un momento...");
+      this.loader.startLoading("Estamos creando su producto/regalo por favor espere un momento...");
 
       setTimeout(() => {
 
@@ -274,7 +288,8 @@ export class ProductCreatePage implements OnInit {
           price: this.form.value.price,
           idProductCategory: this.form.value.category,
           discount: this.form.value.discount,
-          soldOut: false
+          soldOut: false,
+          isGift: this.isGift
         }
 
         this.productsService.create(this.appService.currentStore.id, newProduct).then(async (doc) => {
@@ -286,14 +301,14 @@ export class ProductCreatePage implements OnInit {
                 if (this.imgURL.length != 0) {
                   this.saveImages(doc.id, 0).then(() => {
                     this.loader.stopLoading();
-                    this.presentAlert("El producto ha sido creado exitosamente", "", () => {
+                    this.presentAlert("El producto/regalo ha sido creado exitosamente", "", () => {
                       //this.router.navigate(['/store', this.appService.currentStore.id]);
                       this.popoverCtrl.dismiss(doc.id);
                     })
                   });
                 } else {
                   this.loader.stopLoading();
-                  this.presentAlert("El producto ha sido creado exitosamente", "", () => {
+                  this.presentAlert("El producto/regalo ha sido creado exitosamente", "", () => {
                     this.popoverCtrl.dismiss(doc.id);
                     //this.router.navigate(['/store', this.appService.currentStore.id]);
                   });
@@ -403,7 +418,7 @@ export class ProductCreatePage implements OnInit {
         this.openCropperImageComponent(reader.result);
       }
     } else {
-      this.presentAlert("No puedes subir mas de 10 imagenes para el mismo producto", "", () => { });
+      this.presentAlert("No puedes subir mas de 10 imagenes para el mismo producto/regalo", "", () => { });
     }
   }
 

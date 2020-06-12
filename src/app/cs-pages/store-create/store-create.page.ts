@@ -114,7 +114,7 @@ export class StoreCreatePage implements OnInit {
           deliveryPrice: 0,
           orderMinAmount: 0,
           productsCount: 0,
-          productsLimit: 250
+          productsLimit: 100
         }
 
         this.storesService.create(newStore).then(async (doc) => {

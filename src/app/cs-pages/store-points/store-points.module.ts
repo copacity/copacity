@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { StorePointsPageRoutingModule } from './store-points-routing.module';
 
 import { StorePointsPage } from './store-points.page';
+import { ComponentsModule } from 'src/app/cs-components/components.module';
 
 @NgModule({
   imports: [
