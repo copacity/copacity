@@ -1,5 +1,5 @@
 <div class="round-medium" style="background-color: white;">
-  <div style="margin: 5px;padding-bottom: 100px;padding-top: 10px;">
+  <div style="margin: 5px;padding-bottom: 50px;padding-top: 10px;">
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
@@ -14,11 +14,9 @@
           class="fa fa-phone"></i></a>
       <a style="margin-right: 0px;margin: 5px;" href="https://wa.me/57{{ store?.whatsapp }}"
         class="icon icon-round icon-s bg-whatsapp"><i class="fab fa-whatsapp"></i></a>
-
     </div>
 
     <div *ngIf="isAdmin" [ngSwitch]="store.status">
-
       <div class="divider"></div>
       <div *ngSwitchCase="1">
         <div class="content content-box bg-gradient-blue2 shadow-large">
@@ -68,14 +66,10 @@
       </div>
     </div>
 
-    <div class="boxed-text-huge">
+    <!-- <div class="boxed-text-huge">
       <a style="color: red;">
         {{ storeCategoryName }}
       </a>
-      <!-- <a href="#" class="chip chip-small bg-gray1-dark">
-      <i class="fa fa-check bg-green1-dark"></i>
-      <span style="font-size: 15px;" class="color-black">{{ sectorName }}</span>
-    </a> -->
 
       <div class="divider bottom-30"></div>
 
@@ -117,6 +111,6 @@
           <span style="font-size: 18px;">{{store?.address}}</span>
         </a>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

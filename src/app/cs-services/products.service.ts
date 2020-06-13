@@ -224,7 +224,9 @@ export class ProductsService {
     let productProperties = this.angularFirestore
       .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
-      .collection('properties', ref => ref.where('deleted', '==', false))
+      .collection('properties', ref => ref
+      .where('deleted', '==', false)
+      .orderBy("name"))
 
     return productProperties.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -240,7 +242,10 @@ export class ProductsService {
     let productProperties = this.angularFirestore
       .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
-      .collection('properties', ref => ref.where('userSelectable', '==', true).where('deleted', '==', false))
+      .collection('properties', ref => ref
+      .where('userSelectable', '==', true)
+      .where('deleted', '==', false)
+      .orderBy("name"))
 
     return productProperties.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -257,7 +262,9 @@ export class ProductsService {
       .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties').doc(idProductProperty)
-      .collection('propertyOptions', ref => ref.where('deleted', '==', false))
+      .collection('propertyOptions', ref => ref
+      .where('deleted', '==', false)
+      .orderBy("name"))
 
     return productPropertyOptions.snapshotChanges().pipe(
       map(actions => actions.map(a => {

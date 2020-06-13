@@ -8,6 +8,7 @@ export interface AppInfo {
   domain: string;
   termsServiceTemplate: string;
   privacyPolicyTemplate: string;
+  tax: number;
 }
 
 export interface File {
@@ -155,6 +156,15 @@ export interface User {
   dateCreated: Date;
   deleted: boolean;
   isAdmin:boolean;
+}
+
+export interface StorePoint {
+  id: string;
+  idStore: string;
+  points: number;
+  lastUpdated: Date;
+  dateCreated: Date;
+  deleted: boolean;
 }
 
 export interface Address {

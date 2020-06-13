@@ -403,7 +403,7 @@ export class StorePage implements OnInit {
     let modal = await this.popoverController.create({
       component: StoreInformationComponent,
       cssClass: 'cs-popovers',
-      event: event,
+      //event: event,
       componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName },
       // backdropDismiss: false
     });

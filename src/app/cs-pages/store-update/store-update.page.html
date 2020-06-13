@@ -30,10 +30,10 @@
             <ion-label position="floating" style="color: gray;">Tel <b style="color: red;">(*)</b></ion-label>
             <ion-input type="number" formControlName="phone1"></ion-input>
           </ion-item>
-          <ion-item>
+          <!-- <ion-item>
             <ion-label position="floating" style="color: gray;">Tel 2 </ion-label>
             <ion-input type="number" formControlName="phone2"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <ion-item>
             <ion-label position="floating" style="color: gray;">Whatsapp </ion-label>
             <ion-input type="number" formControlName="whatsapp"></ion-input>
@@ -43,7 +43,7 @@
             <ion-input formControlName="facebook"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label position="floating" style="color: gray;">Valor Domicilio</ion-label>
+            <ion-label position="floating" style="color: gray;">Valor Envío</ion-label>
             <ion-input formControlName="deliveryPrice" type="number"></ion-input>
           </ion-item>
           <ion-item>
@@ -91,7 +91,7 @@
             <span *ngIf="form.get('facebook').hasError('maxlength')">Facebook debe ser maximo de 250 caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('deliveryPrice').errors">
-            <span *ngIf="form.get('deliveryPrice').hasError('max')">Valor Domicilio debe ser maximo de 10
+            <span *ngIf="form.get('deliveryPrice').hasError('max')">Valor Envío debe ser maximo de 10
               caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('orderMinAmount').errors">
