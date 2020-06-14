@@ -69,16 +69,19 @@ export class ProductUpdatePage implements OnInit {
     });
 
     let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
-    result.subscribe((productImageResult: ProductImage[]) => {
-
+    let subs = result.subscribe((productImageResult: ProductImage[]) => {
       setTimeout(() => {
-        if (productImageResult.length != 0) {
-          this.productImageCollection = productImageResult
-          this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image });
-        } else {
-          this.productImageCollection = productImageResult
-        }
+        this.productImageCollection = productImageResult
+        // if (productImageResult.length != 0) {
+        //   this.productImageCollection = productImageResult
+        //   this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image });
+        //   this.navParams.data.image = productImageResult[productImageResult.length - 1].image;
+        // } else {
+        //   this.productImageCollection = productImageResult
+        // }
       }, 300);
+
+      subs.unsubscribe();
     });
   }
 
@@ -125,6 +128,13 @@ export class ProductUpdatePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  changeCoverImage(img: string) {
+    this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: img }).then(() => {
+      this.presentToast("La foto de portada fue cambiada", "");
+      this.navParams.data.image = img;
+    });
   }
 
   getImage(img, resolve) {
@@ -361,11 +371,28 @@ export class ProductUpdatePage implements OnInit {
                   this.navParams.data.image = url.toString();
                   this.loader.stopLoading();
 
-                  setTimeout(() => {
-                    if (this.productImageCollection.length > 1) {
-                      this.sliderProducts.slideTo(this.productImageCollection.length);
-                    }
-                  }, 300);
+                  let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+                  let subs = result.subscribe((productImageResult: ProductImage[]) => {
+                    setTimeout(() => {
+                      if (productImageResult.length != 0) {
+                        this.productImageCollection = productImageResult
+                        this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image }).then(() => {
+                          this.navParams.data.image = productImageResult[productImageResult.length - 1].image;
+                          if (this.productImageCollection.length > 1) {
+                            this.sliderProducts.slideTo(this.productImageCollection.length);
+                          }
+                        });
+                      } else {
+                        this.productImageCollection = productImageResult
+                        if (this.productImageCollection.length > 1) {
+                          this.sliderProducts.slideTo(this.productImageCollection.length);
+                        }
+                      }
+
+                    }, 300);
+
+                    subs.unsubscribe();
+                  });
                 });
               });
             });
@@ -383,11 +410,47 @@ export class ProductUpdatePage implements OnInit {
           this.navParams.data.image = '';
           this.productService.deleteProductImage(this.appService.currentStore.id, this.navParams.data.id, productImage.id).then(() => {
             this.storageService.deleteImageFromStorage(productImage.id);
+
+            let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+            let subs = result.subscribe((productImageResult: ProductImage[]) => {
+              setTimeout(() => {
+                if (productImageResult.length != 0) {
+                  this.productImageCollection = productImageResult
+                  if (productImage.image === this.navParams.data.image) {
+                    this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image });
+                    this.navParams.data.image = productImageResult[productImageResult.length - 1].image;
+                  }
+                } else {
+                  this.productImageCollection = productImageResult
+                }
+              }, 300);
+
+              subs.unsubscribe();
+            });
           });
         });
       } else {
         this.productService.deleteProductImage(this.appService.currentStore.id, this.navParams.data.id, productImage.id).then(() => {
           this.storageService.deleteImageFromStorage(productImage.id);
+
+          let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+          let subs = result.subscribe((productImageResult: ProductImage[]) => {
+            setTimeout(() => {
+              if (productImageResult.length != 0) {
+                this.productImageCollection = productImageResult
+
+                if (productImage.image === this.navParams.data.image) {
+                  this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image });
+                  this.navParams.data.image = productImageResult[productImageResult.length - 1].image;
+                }
+              } else {
+                this.productImageCollection = productImageResult
+              }
+            }, 300);
+
+            subs.unsubscribe();
+          });
+
         });
       }
     });

@@ -10,7 +10,9 @@ export class ImageViewerComponent implements OnInit {
   images: string[];
   constructor(public popoverController: PopoverController, 
     public navParams: NavParams) { 
-      this.images = this.navParams.data.images
+      setTimeout(() => {
+        this.images = this.navParams.data.images
+      }, 300);
     }
 
   ngOnInit() {}
@@ -26,15 +28,15 @@ export class ImageViewerComponent implements OnInit {
     pager: true,
     // loop: true,
     // speed: 3000
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'fraction',
-      renderFraction: function (currentClass, totalClass) {
-        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;">' +
-          '<span  class="' + currentClass + '"></span>' +
-          ' / ' +
-          '<span class="' + totalClass + '"></span></div></div>';
-      }
-    }
+    // pagination: {
+    //   el: '.swiper-pagination',
+    //   type: 'fraction',
+    //   renderFraction: function (currentClass, totalClass) {
+    //     return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;">' +
+    //       '<span  class="' + currentClass + '"></span>' +
+    //       ' / ' +
+    //       '<span class="' + totalClass + '"></span></div></div>';
+    //   }
+    // }
   };
 }

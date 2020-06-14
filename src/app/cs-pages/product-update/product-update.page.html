@@ -23,6 +23,20 @@
               <em (click)="removeProductImage(productImage)" class="round-small" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
                   top: 0px;left: 0px">
                 <i class="fa fa-times-circle" style="margin: 5px;color: red;font-size: 1.5em;"></i></em>
+
+              <em class="round-small" style="margin: 5px;background-color: white;position: absolute;font-weight: bold;font-size: 1.2em;
+                  top: 0px;right: 0px">
+
+                <ion-list style="padding-top: 0px; padding-bottom: 0px;">
+                  <ion-item>
+                    <ion-label>Portada</ion-label>
+                    <ion-checkbox (click)="changeCoverImage(productImage?.image)" disabled="{{ (navParams.data.image === productImage?.image)?'true':'false'}}" checked="{{ (navParams.data.image === productImage?.image)?'true':'false'}}" color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
+                  </ion-item>
+                </ion-list>
+
+                <!-- <ion-checkbox color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
+                <span>Portada</span> -->
+              </em>
             </ion-slide>
           </ion-slides>
 
@@ -53,7 +67,8 @@
           <div class="content header-clear-small">
             <ion-list lines="full" class="ion-no-margin ion-no-padding">
               <ion-item>
-                <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b style="color: red;">(*)</b>
+                <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b
+                    style="color: red;">(*)</b>
                 </ion-label>
                 <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
               </ion-item>
@@ -67,7 +82,8 @@
                 </ion-select>
               </ion-item>
               <ion-item>
-                <ion-label position="floating" style="color: gray;">{{ (!isGift)?'Precio':'Puntos' }} <b style="color: red;">(*)</b>
+                <ion-label position="floating" style="color: gray;">{{ (!isGift)?'Precio':'Puntos' }} <b
+                    style="color: red;">(*)</b>
                 </ion-label>
                 <ion-input formControlName="price" type="number" style="font-size: 15px;"></ion-input>
               </ion-item>
@@ -87,7 +103,8 @@
           </div>
         </form>
 
-        <table *ngIf="!isGift" class="table-borders-dark store-product-table" style="border: solid 1px rgba(0,0,0,0.08);">
+        <table *ngIf="!isGift" class="table-borders-dark store-product-table"
+          style="border: solid 1px rgba(0,0,0,0.08);">
           <tr>
             <td colspan="2" style="text-align: left;">
               <h4 class="bold" style="color: black;margin-top: 0px;">Caracteristicas</h4>
@@ -98,19 +115,22 @@
             </td>
           </tr>
           <tr *ngIf="productProperties.length == 0">
-            <td  colspan="3">
+            <td colspan="3">
               <span style="color: red;font-size: 1.3em;">No hay caracteristicas agregadas</span>
             </td>
           </tr>
-          
+
           <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
-            <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}<span *ngIf="productProperty.isMandatory" style="color: red;">(*)</span></td>
+            <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}<span
+                *ngIf="productProperty.isMandatory" style="color: red;">(*)</span></td>
             <td style="vertical-align: top;">
-              <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions" class="{{productPropertyOption.deleted?'hidden':''}}">
-                {{productPropertyOption.name}}<b *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
-                <br/>
+              <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
+                class="{{productPropertyOption.deleted?'hidden':''}}">
+                {{productPropertyOption.name}}<b
+                  *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+                <br />
               </div>
-              
+
             </td>
             <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
               <a (click)="productPropertyDelete(productProperty)" class="icon icon-s icon-round shadow-small">
