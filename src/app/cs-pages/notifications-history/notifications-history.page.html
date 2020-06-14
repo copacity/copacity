@@ -164,7 +164,7 @@
                     <div
                       class="user-group-manager {{ notification?.status == 1?'border-red1-light':notification?.status == 2?'border-green1-light':'' }}"
                       style="border-width: 5px;">
-                      <img class="shadow-large"
+                      <img style="z-index: 9;" (click)="openImageViewer(notification?.photoUrl?notification?.photoUrl:'../../../assets/icon/no-image.png')" class="shadow-large"
                         src="{{notification?.photoUrl?notification?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
                       <h4 class="color-theme">{{ notification?.userName }}</h4>
                     </div>

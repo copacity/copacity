@@ -67,10 +67,9 @@ export class ProductPropertiesSelectionComponent implements OnInit {
   }
 
   getNumbers() {
-
     let numbers = [];
 
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= this.navParams.data.limitQuantity; i++) {
       numbers.push(i);
     }
 

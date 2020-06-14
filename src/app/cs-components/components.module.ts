@@ -16,6 +16,7 @@ import { StoreInformationComponent } from './store-information/store-information
 import { ProductPropertyComponent } from './product-property/product-property.component';
 import { ProductPropertyOptionComponent } from './product-property-option/product-property-option.component';
 import { ProductPropertiesSelectionComponent } from './product-properties-selection/product-properties-selection.component';
+import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProductPropertiesSelectionComponent } from './product-properties-select
     StoreInformationComponent,
     ProductPropertyComponent,
     ProductPropertyOptionComponent,
-    ProductPropertiesSelectionComponent
+    ProductPropertiesSelectionComponent,
+    ImageViewerComponent
   ],
   imports: [
     IonicModule,
@@ -51,7 +53,8 @@ import { ProductPropertiesSelectionComponent } from './product-properties-select
     StoreInformationComponent,
     ProductPropertyComponent,
     ProductPropertyOptionComponent,
-    ProductPropertiesSelectionComponent
+    ProductPropertiesSelectionComponent,
+    ImageViewerComponent
   ],
   entryComponents: [
     SigninComponent,
@@ -65,7 +68,8 @@ import { ProductPropertiesSelectionComponent } from './product-properties-select
     StoreInformationComponent,
     ProductPropertyComponent,
     ProductPropertyOptionComponent,
-    ProductPropertiesSelectionComponent
+    ProductPropertiesSelectionComponent,
+    ImageViewerComponent
   ]
 })
 export class ComponentsModule { }

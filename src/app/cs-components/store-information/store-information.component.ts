@@ -19,7 +19,6 @@ export class StoreInformationComponent implements OnInit {
   constructor(public popoverController: PopoverController, 
     public navParams: NavParams,
     private loaderComponent: LoaderComponent,
-    private route: ActivatedRoute,
     private storesService: StoresService,
     ) {
     this.isAdmin = this.navParams.data.isAdmin;

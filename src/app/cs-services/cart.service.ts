@@ -25,6 +25,7 @@ export class CartService {
   clearCart(): void {
     this.cart = [];
     this.cartItemCount = new BehaviorSubject(0);
+    this.data = [];
   }
 
   getCartItemCount() {
@@ -33,14 +34,14 @@ export class CartService {
 
   getTotal() {
     if (this.appService.currentStore) {
-      return this.cart.reduce((i, j) => i + this.getProductSubTotal(j), 0) + (this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0) - this.getDiscount();
+      return this.cart.reduce((i, j) => i + ((!j.product.isGift)? this.getProductSubTotal(j): 0), 0) + (this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0) - this.getDiscount();
     }
 
     return 0;
   }
 
   getTotalDetail(deliveryPrice: number) {
-    return this.cart.reduce((i, j) => i + (j.checked ? this.getProductSubTotal(j) : 0), 0) + (deliveryPrice ? deliveryPrice : 0) - this.getDiscountDetail();
+    return this.cart.reduce((i, j) => i + ((j.checked && !j.product.isGift) ? this.getProductSubTotal(j) : 0), 0) + (deliveryPrice ? deliveryPrice : 0) - this.getDiscountDetail();
   }
 
   getProductSubTotal(cartProduct: CartProduct) {
@@ -87,19 +88,30 @@ export class CartService {
   }
 
   getDiscountDetail() {
-    return this.cart.reduce((i, j) => i + ((j.checked && j.product.discount && j.product.discount > 0) ? (this.getProductDiscount(j)) : 0), 0);
+    return this.cart.reduce((i, j) => i + ((j.checked && !j.product.isGift && j.product.discount && j.product.discount > 0) ? (this.getProductDiscount(j)) : 0), 0);
   }
 
   getDiscount() {
     if (this.appService.currentStore) {
-      return this.cart.reduce((i, j) => i + ((j.product.discount && j.product.discount > 0) ? (this.getProductDiscount(j)) : 0), 0);
+      return this.cart.reduce((i, j) => i + ((!j.product.isGift && j.product.discount && j.product.discount > 0) ? (this.getProductDiscount(j)) : 0), 0);
     }
 
     return 0;
   }
 
   getPoints(): number {
-    return this.cart.reduce((i, j) => i + (j.product.isGift) ? j.product.price : 0, 0);
+    return this.cart.reduce((i, j) => i + ((j.product.isGift) ? j.product.price * j.quantity : 0), 0);
+  }
+
+  hasGifts(): boolean {
+    let hasGifts = false;
+    for (let p of this.cart) {
+      if (p.product.isGift) {
+        hasGifts = true;
+      }
+    }
+    
+    return hasGifts;
   }
 
   addProduct(cartProduct: CartProduct) {

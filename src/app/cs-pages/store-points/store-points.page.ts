@@ -3,12 +3,14 @@ import { PopoverController, NavParams, AlertController } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { ProductCreatePage } from '../product-create/product-create.page';
 import { Observable } from 'rxjs';
-import { Product, StorePoint } from 'src/app/app-intefaces';
+import { Product, StorePoint, ProductImage } from 'src/app/app-intefaces';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { ProductUpdatePage } from '../product-update/product-update.page';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { CartService } from 'src/app/cs-services/cart.service';
+import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
+import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-store-points',
@@ -36,6 +38,7 @@ export class StorePointsPage implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
   async presentDeleteProductPrompt(product: Product) {
@@ -65,6 +68,32 @@ export class StorePointsPage implements OnInit {
     modal.present();
   }
 
+  async openImageViewer(product: Product) {
+    let images: string[] = [];
+
+    let result = this.productsService.getProductImages(this.appService.currentStore.id, product.id);
+
+    let subs = result.subscribe(async (productImages: ProductImage[]) => {
+      productImages.forEach(img => {
+        images.push(img.image);
+      });
+
+      let modal = await this.popoverController.create({
+        component: ImageViewerComponent,
+        componentProps: { images: images },
+        cssClass: 'cs-popovers',
+      });
+  
+      modal.onDidDismiss()
+        .then((data) => {
+          const updated = data['data'];
+        });
+  
+      modal.present();
+      subs.unsubscribe();
+    });
+  }
+
   productSoldOut(e: any, product: Product) {
     this.productsService.update(this.appService.currentStore.id, product.id, { soldOut: !e.detail.checked });
   }
@@ -72,7 +101,6 @@ export class StorePointsPage implements OnInit {
   GetPoints() {
     return new Promise(resolve => {
       let subscribe = this.usersService.getStorePoints(this.appService.currentUser.id).subscribe(StorePoints => {
-        let hasStorepoints: boolean = false;
 
         let currentStorePoint: StorePoint = {
           id: '',
@@ -86,12 +114,10 @@ export class StorePointsPage implements OnInit {
         StorePoints.forEach(storePoint => {
           if (storePoint.idStore === this.appService.currentStore.id) {
             currentStorePoint = storePoint
-            hasStorepoints = true;
           }
         });
 
         this.points = currentStorePoint.points - this.cartService.getPoints();
-
         subscribe.unsubscribe();
       });
     });
@@ -135,8 +161,47 @@ export class StorePointsPage implements OnInit {
     await alert.present();
   }
 
+  async addToCart(e: any, product: Product) {
+
+    if (!product.soldOut) {
+      let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
+
+      let subscribe = productPropertiesResult.subscribe(async productProperties => {
+        productProperties.forEach(productProperty => {
+          let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
+          let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+            productProperty.productPropertyOptions = productPropertyOptions;
+            subscribe2.unsubscribe();
+          });
+        });
+
+        productProperties = productProperties;
+        subscribe.unsubscribe();
+
+        let modal = await this.popoverController.create({
+          component: ProductPropertiesSelectionComponent,
+          mode: 'ios',
+          event: e,
+          componentProps: { product: product, productProperties: productProperties, limitQuantity: parseInt((this.points/product.price).toString()) }
+        });
+
+        modal.onDidDismiss()
+          .then((data) => {
+            const result = data['data'];
+
+            if (result) {
+              this.cartService.addProduct(result);
+              this.GetPoints();
+              this.presentAlert("Tu regalo ha sido agregado al carrito, gracias por comprar en Copacity", '',()=>{});
+            }
+          });
+
+        modal.present();
+      });
+    }
+  }
+
   getProducts() {
-    //this.lastProductToken = (this.products.length != 0 ? this.products[this.products.length - 1].name : '');
     this.products = null;
     this.searchingProducts = true;
     this.productSearchHits = 0;

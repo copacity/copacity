@@ -157,7 +157,7 @@
               <strong>Perfil</strong>
             </a>
 
-            <img class="img-profile-store profile-image preload-image round-medium"
+            <img (click)="openImageViewer()" class="img-profile-store profile-image preload-image round-medium"
             [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'" alt="img">
 
             <div class="under-slider-button" style="z-index: 100;padding-left: 8px;text-align: center;">

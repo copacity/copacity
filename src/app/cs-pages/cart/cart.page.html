@@ -16,24 +16,23 @@
         <table>
           <tr>
             <td style="vertical-align: top;width: 120px;text-align: left;">
-              <img class="round-small preload-image"
+              <img (click)="openImageViewer(cartProduct.product)" class="round-small preload-image"
                 src="{{cartProduct.product.image?cartProduct.product.image:'../../../assets/icon/no-image.png'}}"
                 alt="img" style="height: 100px;width: 100px;">
               <a (click)="removeCartItem(cartProduct)"
                 style="padding-top: 5px;font-size: 1em;color: red;font-weight: bold;">Borrar</a>
             </td>
-            <td>
+            <td style="vertical-align: top;">
               <table>
                 <tr>
                   <td style="text-align: left;padding: 0px 0px 0px 0px;"> <span
                       style="font-size: 1.2em;font-weight: 700;color: black;">{{cartProduct.product.name}}</span>
                   </td>
                   <td style="text-align: right;vertical-align: top;padding: 0px 0px 0px 0px;">
-                    <span
-                      style="font-size: 1.2em;font-weight: 700;color: black;">{{cartProduct.product.price | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                    <span *ngIf="!cartProduct.product?.isGift" style="font-size: 1.2em;font-weight: 700;color: black;">{{cartProduct.product.price | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
-                <tr *ngFor="let property of cartProduct.propertiesSelection; let i = index">
+                <tr *ngFor="let property of cartProduct.propertiesSelection; let i = index" class="{{(cartProduct.product?.isGift)?'hidden':'' }}">
                   <td style="text-align: left;padding: 0px 0px 0px 0px;">
                     <span style="font-size: 1em;font-weight: 700;color: blue;">
                       {{property.propertyName }}: {{property.propertyOptionName }} </span>
@@ -43,7 +42,31 @@
                       style="font-size: 1.2em;font-weight: 700;color: black;">{{ property.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
-                <tr>
+                <tr *ngIf="(cartProduct.product?.isGift)">
+                  <td style="text-align: left;padding: 0px 0px 0px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Puntos:</span>
+                  </td>
+                  <td colspan="2"
+                    style="text-align: right;padding: 0px 0px 0px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ cartProduct.product.price }}</span>
+                  </td>
+                </tr>
+                <tr *ngIf="(cartProduct.product?.isGift)">
+                  <td style="text-align: left;padding: 0px 0px 0px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Cantidad:</span>
+                  </td>
+                  <td colspan="2"
+                    style="text-align: right;padding: 0px 0px 0px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ cartProduct.quantity }}</span>
+                  </td>
+                </tr>
+                <tr *ngIf="(cartProduct.product?.isGift)">
+                  <td colspan="3"
+                    style="text-align: left;padding: 20px 0px 0px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;font-weight: bold;color:black" class="round-small">🎁 REGALO! 🥳🎉</span>
+                  </td>
+                </tr>
+                <tr *ngIf="!cartProduct.product?.isGift">
                   <td colspan="2" style="text-align: center;padding: 10px 0px 10px 0px;width: 120px;">
                     <div class="store-cart-qty-cart">
                       <a (click)="add(cartProduct)"><i class="fa fa-plus"></i></a>
@@ -52,7 +75,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr *ngIf="(cartProduct.product?.discount && cartProduct.product?.discount > 0)">
+                <tr *ngIf="((cartProduct.product?.discount && cartProduct.product?.discount > 0)) && !cartProduct.product?.isGift">
                   <td style="text-align: left;padding: 0px 0px 0px 0px;">
                     <div class="divider" style="margin-bottom: 10px;background-color:white"></div>
                     <span style="font-size: 1em;font-weight: 700;color: black;"></span>
@@ -64,7 +87,7 @@
                       style="font-size: 1.2em;font-weight: 700;color: black;">{{ cartService.getProductSubTotal(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
-                <tr *ngIf="(cartProduct.product?.discount && cartProduct.product?.discount > 0)">
+                <tr *ngIf="((cartProduct.product?.discount && cartProduct.product?.discount > 0) && !cartProduct.product?.isGift)">
                   <td style="text-align: left;padding: 0px 0px 0px 0px;">
                     <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Descuento:</span>
                   </td>
@@ -76,7 +99,7 @@
                     <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">-{{ cartService.getProductDiscount(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
-                <tr>
+                <tr *ngIf="!cartProduct.product?.isGift">
                   <td style="text-align: left;padding: 0px 0px 0px 0px;">
                     <span style="font-size: 1em;font-weight: 700;color: black;">Total:</span>
                   </td>
@@ -92,7 +115,7 @@
       </div>
 
       <div class="content content-box bg-gradient-orange shadow-large"
-        *ngIf="(cartService.getTotal() < appService.currentStore.orderMinAmount?appService.currentStore.orderMinAmount:0 || cartService.getTotal() == 0)">
+        *ngIf="((cartService.getTotal() < appService.currentStore.orderMinAmount?appService.currentStore.orderMinAmount:0 || cartService.getTotal() == 0) && !cartService.hasGifts())">
         <h2 class="color-white bold top-10">Recuerda!</h2>
         <p class="color-white bottom-10" style="font-size: 16px;">
           El valor minimo para hacer un pedido en <b>{{appService.currentStore.name}}</b> es de
@@ -135,12 +158,12 @@
       </div>
       <ion-title>
         <a (click)="close()"
-          style="background-color: white;color:black;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          style="background-color: white;color:black;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;border: double;border-color: red;"
           class="button button-round-small shadow-large button-full button-s">Seguir comprando</a>
         <a (click)="goToCreateOrder()"
-          *ngIf="(cartService.getTotal() >= (appService.currentStore.orderMinAmount?appService.currentStore.orderMinAmount:0) && cart.length != 0)"
-          style="color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s bg-highlight">LISTO, HACER PEDIDO!</a>
+          *ngIf="((cartService.getTotal() >= (appService.currentStore.orderMinAmount?appService.currentStore.orderMinAmount:0) && cart.length != 0) || cartService.hasGifts())"
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small shadow-large button-full button-s">LISTO, HACER PEDIDO!</a>
       </ion-title>
     </ion-toolbar>
   </div>

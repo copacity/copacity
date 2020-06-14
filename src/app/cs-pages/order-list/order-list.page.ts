@@ -15,6 +15,7 @@ import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboar
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { Router } from '@angular/router';
+import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-order-list',
@@ -229,6 +230,24 @@ export class OrderListPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async openImageViewer(img: string) {
+    let images: string[] = [];
+    images.push(img);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
   }
 
   shareApp(e) {

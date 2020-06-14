@@ -35,6 +35,7 @@ import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { StoreInformationComponent } from 'src/app/cs-components/store-information/store-information.component';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
 import { StorePointsPage } from '../store-points/store-points.page';
+import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-store',
@@ -142,24 +143,6 @@ export class StorePage implements OnInit {
 
         this.initialize();
       });
-    });
-
-    this.storesService.getById(this.route.snapshot.params.id).then(result => {
-      this.store = result;
-
-      if (this.appService.currentUser && (this.store.idUser == this.appService.currentUser.id)) {
-        this.isAdmin = true;
-      } else {
-        this.isAdmin = false;
-      }
-
-      if (this.store.status != StoreStatus.Published) {
-        if (!this.isAdmin) {
-          this.router.navigate(['/home']);
-        }
-      }
-
-      this.initialize();
     });
   }
 
@@ -502,7 +485,7 @@ export class StorePage implements OnInit {
           component: ProductPropertiesSelectionComponent,
           mode: 'ios',
           event: e,
-          componentProps: { product: product, productProperties: productProperties }
+          componentProps: { product: product, productProperties: productProperties, limitQuantity: 100 }
         });
 
         modal.onDidDismiss()
@@ -890,13 +873,43 @@ export class StorePage implements OnInit {
   //--------------------------------------------------------------
   //--------------------------------       SLIDER VALIDATIONS
 
-  // ionViewDidEnter() {
-  //   try {
-  //     this.slider.startAutoplay();
-  //     this.slider2.startAutoplay();
-  //     this.slider3.startAutoplay();
-  //   } catch (error) { }
-  // }
+  ionViewDidEnter() {
+    this.storesService.getById(this.route.snapshot.params.id).then(result => {
+      this.store = result;
+
+      if (this.appService.currentUser && (this.store.idUser == this.appService.currentUser.id)) {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+
+      if (this.store.status != StoreStatus.Published) {
+        if (!this.isAdmin) {
+          this.router.navigate(['/home']);
+        }
+      }
+
+      this.initialize();
+    });
+  }
+
+  async openImageViewer(img: string) {
+    let images: string[] = [];
+    images.push(img);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
+  }
 
   async openStorePointsPage() {
     if (this.appService.currentUser) {
@@ -909,7 +922,7 @@ export class StorePage implements OnInit {
 
       modal.onDidDismiss()
         .then((data) => {
-          const updated = data['data'];
+          const result = data['data'];
         });
 
       modal.present();

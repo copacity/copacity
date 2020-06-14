@@ -23,10 +23,7 @@
     <div *ngIf="!isAdmin && points <= 0" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <h1 class="center-text bolder top-10" style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">
-          No Tienes puntos aun!</h1>
-        <p class="center-text bottom-10" style="font-size: 1.2em;color: black;padding-top: 10px;">
-          Por cada compra que hagas a traves de CopaCity, puedes acumular puntos para luego redimirlos aqui
-        </p>
+          No tienes puntos</h1>
       </div>
     </div>
 
@@ -83,7 +80,7 @@
 
           <tr *ngFor="let product of products | async; let i = index">
             <td style="vertical-align: top;width: 120px;text-align: left;">
-              <img class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}" src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
+              <img (click)="openImageViewer(product)" class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}" src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
                 style="height: 100px;width: 100px;">
             </td>
             <td>
@@ -111,7 +108,7 @@
                       <i class="fa fa-edit" style="color: black"></i>
                     </a>
 
-                    <a *ngIf="(!isAdmin && !product?.soldOut) && product?.price <= points" style="color:white;"
+                    <a (click)="addToCart($event, product)" *ngIf="(!isAdmin && !product?.soldOut) && product?.price <= points" style="color:white;"
                       class="button button-round-small shadow-large bg-highlight button-full button-s">
                       RECLAMAR</a>
                   </td>

@@ -1,0 +1,13 @@
+<div class="round-medium" style="background-color: white;">
+  <div style="margin: 5px;padding-top: 20px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <ion-slides [options]="slideOpts" pager="true"
+      style="padding-top: 20px;">
+      <ion-slide *ngFor="let image of images">
+        <img class="round-medium" [src]="image" alt="img">
+      </ion-slide>
+    </ion-slides>
+  </div>
+</div>

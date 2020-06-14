@@ -197,7 +197,7 @@
                     <div
                       class="user-group-manager {{ order?.status == 1?'border-red1-light':order?.status == 2?'border-green1-light':order?.status == 3?'border-dark2-dark':'' }}"
                       style="border-width: 5px;">
-                      <img class="shadow-large"
+                      <img style="z-index: 9;" (click) = "openImageViewer(order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png')" class="shadow-large"
                         src="{{order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
                       <h4 class="color-theme">{{ order?.userName }}</h4>
                     </div>

@@ -128,88 +128,46 @@
 </ion-header>
 
 <super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
-  <super-tabs-toolbar>
-    <super-tab-button>
-      <ion-label style="font-size: small; font-weight: 700; color: black;"><b style="font-size: large;">1.</b> Detalle
-      </ion-label>
-    </super-tab-button>
-    <super-tab-button>
-      <ion-label style="font-size: small; font-weight: 700; color: black;"><b style="font-size: large;">2.</b> Metodo
-        Pago
-      </ion-label>
-    </super-tab-button>
-    <super-tab-button>
-      <ion-label style="font-size: small; font-weight: 700; color: black;"><b style="font-size: large;">3.</b>
-        Finalizar
-      </ion-label>
-    </super-tab-button>
-  </super-tabs-toolbar>
   <super-tabs-container>
     <super-tab style="background-color: transparent;">
-      <div class="profile-1 bottom-30">
-
+      <div class="profile-1">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-          <i (click)="selectTab(1)" class="fa fa-long-arrow-alt-right"
-            style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-right: 10px;"></i>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
 
-          <a style="background-color: white; color: black;font-size: 15px; color: black;border-radius:15px"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">DETALLE</a>
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">DIRECCION</a>
 
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+              <div class="link-list link-list-3" style="border: red;">
+                <strong *ngIf="!appService.addressChecked"
+                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;">Por
+                  favor seleccione una
+                  direccion!</strong>
+                <a (click)="openAddressListPage()" class="round-small shadow-tiny">
+                  <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
+                  <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Enviar a:</strong>
+                  <span
+                    style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
+                  <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-              <!-- <div class="content contact-message" style="margin: 0px 15px 10px 15px;">
-                <div class="content content-box round-small shadow-large" style="padding: 5px;">
-                  <h1 class="center-text bolder top-10"
-                    style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">{{store?.name}}</h1>
-                  <p class="center-text bottom-10" style="font-size: 1.2em;color: black;">
-                    Gracias por usar nuestro servicio.
-                  </p>
-                </div>
-              </div> -->
+      <div class="profile-1" style="top: -35px;">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
 
-              <table class="table-borders bottom-10" style="font-size: 1.2em;">
-                <tr>
-                  <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
-                    <a style="color:white;padding: 8px 8px;background-color: red;"
-                    class="button button-round-small shadow-large button-full button-s"> <i class="fa fa-cut" style="font-size: 1.5em;"></i> Ver Cupones</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top;text-align: left;margin: 10px;padding: 0px 0px 0px 0px;">
-                    <div class="input-style has-icon input-style-1 input-required">
-                      <i class="input-icon fa fa-ticket-alt" style="margin-top: 16px;"></i>
-                      <span>Código de cupón:</span>
-                      <input type="name" placeholder="Código de cupón">
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
-                    <a style="color:white;padding: 8px 8px;width: 75px;background-color: red;"
-                      class="button button-round-small shadow-large button-full button-s">Aplicar</a>
-                  </td>
-                </tr>
-              </table>
-              <!-- <div class="content contact-message">
-                <div class="content content-box round-small shadow-large" style="padding: 5px;">
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FACTURA</a>
 
-                  <ion-list>
-                    <ion-item>
-                      <ion-label position="floating" style="color: black;">Código de cupón:
-                      </ion-label>
-                      <ion-input type="text"></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                      Aplicar
-                    </ion-item>
-                  </ion-list>
-                </div>
-              </div> -->
-
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
               <table class="table-borders" style="font-size: 18px;">
                 <tr>
                   <th style="text-align: left; padding-left: 5px;">Producto</th>
@@ -227,12 +185,18 @@
                     <span *ngIf="cartProduct.product?.discount && cartProduct.product?.discount > 0"
                       style="font-size: .7em;font-weight: 700;color: black;background-color: yellow;">
                       (-{{cartProduct.product.discount}}%)</span>
+
+                    <span *ngIf="cartProduct.product?.isGift"
+                      style="font-size: .7em;font-weight: 700;color: black;background-color: yellow;">🎁 REGALO!
+                      🥳🎉</span>
                   </td>
                   <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ cartService.getProductSubTotalUnity(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
+                    {{ ((!cartProduct.product?.isGift)? (cartService.getProductSubTotalUnity(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
+                  </td>
                   <td style="vertical-align: top">{{cartProduct.quantity}}</td>
                   <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ cartService.getProductTotal(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
+                    {{ ((!cartProduct.product?.isGift)? (cartService.getProductTotal(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
+                  </td>
                 </tr>
               </table>
               <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
@@ -268,25 +232,57 @@
           </div>
         </div>
       </div>
-    </super-tab>
-    <super-tab style="background-color: transparent;">
-      <div class="profile-1 bottom-30">
+
+      <div class="profile-1" style="top: -70px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-          <i (click)="selectTab(0)" class="fa fa-long-arrow-alt-left"
-            style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
 
-          <i (click)="selectTab(2)" class="fa fa-long-arrow-alt-right"
-            style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-right: 10px;"></i>
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">CUPONES</a>
 
-          <a style="background-color: white; color: black;font-size: 15px;color: black;border-radius:15px"
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+              <table class="table-borders bottom-10" style="font-size: 1.2em;">
+                <tr>
+                  <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
+                    <a style="padding: 8px 8px;border: dotted;"
+                      class="button button-round-small shadow-large button-full button-s color-highlight"> <i class="fa fa-cut"
+                        style="font-size: 1.5em;"></i> Ver Cupones</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;text-align: left;margin: 10px;padding: 0px 0px 0px 0px;">
+                    <div class="input-style has-icon input-style-1 input-required">
+                      <i class="input-icon fa fa-ticket-alt" style="margin-top: 16px;"></i>
+                      <span>Código de cupón:</span>
+                      <input type="name" placeholder="Código de cupón">
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
+                    <a style="color:white;padding: 8px 8px;width: 75px;"
+                      class="button button-round-small shadow-large button-full button-s bg-highlight">Aplicar</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-1" style="top: -105px;">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
+          
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">METODO
             DE PAGO</a>
 
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-
               <div class="content header-clear-small">
                 <div class="link-list link-list-3">
                   <a class="round-small shadow-tiny">
@@ -312,38 +308,18 @@
           </div>
         </div>
       </div>
-    </super-tab>
-    <super-tab style="background-color: transparent;">
-      <div class="profile-1 bottom-30">
+
+      <div class="profile-1 bottom-20" style="top: -140px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-          <i (click)="selectTab(1)" class="fa fa-long-arrow-alt-left"
-            style="left: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;padding-left: 10px;"></i>
-
-          <a style="background-color: white; color: black;font-size: 15px; color: black;border-radius:15px"
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FINALIZAR</a>
 
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-
-              <div class="link-list link-list-3" style="border: red;">
-                <strong *ngIf="!appService.addressChecked"
-                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;">Por
-                  favor seleccione una
-                  direccion!</strong>
-                <a (click)="openAddressListPage()" class="round-small shadow-tiny">
-                  <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
-                  <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Enviar a:</strong>
-                  <span
-                    style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
-                  <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
-                </a>
-              </div>
-
               <div>
                 <div class="link-list link-list-3">
-
                   <ion-list>
                     <ion-item>
                       <ion-label position="floating" style="color: gray;">Agrega una nota:<small style="color: gray;">
@@ -360,17 +336,6 @@
                     </p>
                   </div>
 
-                  <!-- 
-                  <a class="round-small shadow-tiny">
-                    <i class="fa fa-check-circle" style="color: green;"></i>
-                    <span style="    font-size: 18px;">Entrega a domicilio</span>
-                  </a>
-                  <a class="round-small shadow-tiny">
-                    <span style="font-size: 18px;; color: gray;">Recoger en tienda</span>
-                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
-                  </a> -->
-
-                  <!-- <div style="background-color: red;" class="divider opacity-350"></div> -->
                   <a (click)="sendOrder()"
                     style="color:white;background-color: red;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
                     class="button button-round-small shadow-large button-full button-s">Hacer Pedido</a>

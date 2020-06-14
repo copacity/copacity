@@ -16,6 +16,7 @@ import { NgNavigatorShareService } from 'ng-navigator-share';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-profile',
@@ -257,6 +258,24 @@ export class ProfilePage implements OnInit {
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------       SLIDER VALIDATIONS
+
+  async openImageViewer() {
+    let images: string[] = [];
+    images.push(this.appService.currentUser.photoUrl);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
+  }
 
   ionViewDidEnter() {
     try { this.slider.startAutoplay(); } catch (error) { }

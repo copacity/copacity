@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppService } from 'src/app/cs-services/app.service';
-import { Store, Order, CartProduct, Notification } from 'src/app/app-intefaces';
+import { Store, Order, CartProduct, Notification, StorePoint } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -17,6 +17,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { FormControl, Validators } from '@angular/forms';
+import { UsersService } from 'src/app/cs-services/users.service';
 
 @Component({
   selector: 'app-order-create',
@@ -33,6 +34,7 @@ export class OrderCreatePage implements OnInit {
   constructor(public appService: AppService,
     public alertController: AlertController,
     public cartService: CartService,
+    private usersService: UsersService,
     private ngNavigatorShareService: NgNavigatorShareService,
     public popoverController: PopoverController,
     private loaderComponent: LoaderComponent,
@@ -47,7 +49,6 @@ export class OrderCreatePage implements OnInit {
     // this.locationStrategy.onPopState(() => {
     //   history.pushState(null, null, window.location.href);
     // });
-
 
     this.store = this.appService.currentStore;
     this.cart = this.cartService.getCart();
@@ -137,7 +138,7 @@ export class OrderCreatePage implements OnInit {
     toast.present();
   }
 
-  selectTab(index: number){
+  selectTab(index: number) {
     this.superTabs.selectTab(index)
   }
 
@@ -240,14 +241,18 @@ export class OrderCreatePage implements OnInit {
                   notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
                   notification.idOrder = doc.id;
 
+                  // 4. COnfigure Notification
                   this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {
                     // 5. Added cart Products into cartProducts sub-collection into order
                     this.addCartProducts(doc.id, 0).then(result => {
                       if (result) {
-                        this.loaderComponent.stopLoading();
-                        this.cartService.clearCart();
-                        this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
-                          this.location.back();
+                        // 6. Of the order has gifts then the process go to discount points to the user
+                        this.discountPoints().then(() => {
+                          this.loaderComponent.stopLoading();
+                          this.cartService.clearCart();
+                          this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
+                            this.location.back();
+                          });
                         });
                       }
                     });
@@ -267,8 +272,30 @@ export class OrderCreatePage implements OnInit {
     }
   }
 
-  async presentAlert(title: string, message: string, done: Function, buttonOkName?: string) {
+  discountPoints() {
+    return new Promise(resolve => {
+      let subscribe = this.usersService.getStorePoints(this.appService.currentUser.id).subscribe(StorePoints => {
 
+        let hasPoints = false;
+        StorePoints.forEach(storePoint => {
+          if (storePoint.idStore === this.appService.currentStore.id) {
+            let points = storePoint.points - this.cartService.getPoints();
+            this.usersService.updateStorePoint(this.appService.currentUser.id, storePoint.id, { points: points }).then(() => {
+              resolve();
+            });
+          }
+        });
+
+        if (!hasPoints) {
+          resolve();
+        }
+
+        subscribe.unsubscribe();
+      });
+    });
+  }
+
+  async presentAlert(title: string, message: string, done: Function, buttonOkName?: string) {
     const alert = await this.alertController.create({
       header: title,
       message: message,

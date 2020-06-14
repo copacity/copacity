@@ -13,6 +13,7 @@ import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { Router } from '@angular/router';
+import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-notifications-history',
@@ -173,6 +174,23 @@ export class NotificationsHistoryPage implements OnInit {
     await alert.present();
   }
 
+  async openImageViewer(img: string) {
+    let images: string[] = [];
+    images.push(img);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
+  }
 
   shareApp(e) {
     this.ngNavigatorShareService.share({
