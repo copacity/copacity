@@ -40,7 +40,7 @@ export class CartService {
   }
 
   getTotalDetail(deliveryPrice: number) {
-    return this.cart.reduce((i, j) => i + (j.checked ? this.getProductSubTotal(j): 0), 0) + (deliveryPrice ? deliveryPrice : 0) - this.getDiscountDetail();
+    return this.cart.reduce((i, j) => i + (j.checked ? this.getProductSubTotal(j) : 0), 0) + (deliveryPrice ? deliveryPrice : 0) - this.getDiscountDetail();
   }
 
   getProductSubTotal(cartProduct: CartProduct) {
@@ -96,6 +96,10 @@ export class CartService {
     }
 
     return 0;
+  }
+
+  getPoints(): number {
+    return this.cart.reduce((i, j) => i + (j.product.isGift) ? j.product.price : 0, 0);
   }
 
   addProduct(cartProduct: CartProduct) {

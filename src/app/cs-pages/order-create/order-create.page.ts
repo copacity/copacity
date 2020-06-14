@@ -237,7 +237,7 @@ export class OrderCreatePage implements OnInit {
               this.ordersService.update(this.appService.currentStore.id, doc.id, { id: doc.id }).then(result => {
                 // 3. Added checked address into Addresses sub-collection into order
                 this.ordersService.createOrderAddress(this.appService.currentStore.id, doc.id, this.appService.addressChecked).then(result => {
-                  notification.description = "Ha realizado un nuevo pedido Pedido Ref: " + order.ref;
+                  notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
                   notification.idOrder = doc.id;
 
                   this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {

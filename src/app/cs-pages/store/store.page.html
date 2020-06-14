@@ -178,15 +178,25 @@
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
             <a (click)="shareStore($event)"
-              style="background-color: white; color: black; font-size: 15px;border-radius:15px"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">{{store?.name}}</a>
+              style="background-color: white; color: black; font-size: 15px;border-radius:15px;text-align: center;margin-bottom: 0px;"
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-xlarge">{{store?.name}}
+            </a>
 
-            <a (click)="openStoreInformationComponent($event)" style="text-align: end;padding-top: 10px;"
+            <!-- <a (click)="openStoreInformationComponent($event)" style="text-align: end;padding-top: 10px;"
               class="color-theme">
               <i class="fa fa-info-circle" style="color: black;padding-left: 5px;padding-right: 5px;"></i> <span
-                style="color: blue;">Información</span></a>
+                style="color: blue;">Información</span></a> -->
 
             <div class="top-10"></div>
+            <div style="margin: 0px 15px 0px 15px;padding-top: 5px;">
+              <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-border button-full bottom-0"
+                style="color: red;font-size: 10px;border: double;margin-bottom: 0px;">
+                <i class="fa fa-info-circle" style="color: red;padding-left: 5px;padding-right: 5px;"></i> <span
+                  style="color: red;">Información</span>
+              </a>
+              <div class="clear"></div>
+            </div>
+
             <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
               <div class="one-half">
                 <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
@@ -232,8 +242,6 @@
                 </div>
                 <div class="clear"></div>
               </div>
-
-
               <div class="clear"></div>
             </div>
 

@@ -10,12 +10,22 @@
     <a style="background-color: white; color: black;font-size: 16px;"
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">REGALOS</a>
 
-    <div *ngIf="!isAdmin" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+    <div *ngIf="!isAdmin && points > 0" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <h1 class="center-text bolder top-10" style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">
-          Tienes <b style="font-weight: bolder;">2.000</b> puntos!</h1>
+          Tienes <b style="font-weight: bolder;">{{ points }}</b> puntos!</h1>
         <p class="center-text bottom-10" style="font-size: 1.2em;color: black;padding-top: 10px;">
           Redimelos y disfruta de los fabulosos regalos que tenemos para ti
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="!isAdmin && points <= 0" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
+        <h1 class="center-text bolder top-10" style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">
+          No Tienes puntos aun!</h1>
+        <p class="center-text bottom-10" style="font-size: 1.2em;color: black;padding-top: 10px;">
+          Por cada compra que hagas a traves de CopaCity, puedes acumular puntos para luego redimirlos aqui
         </p>
       </div>
     </div>
@@ -101,7 +111,7 @@
                       <i class="fa fa-edit" style="color: black"></i>
                     </a>
 
-                    <a *ngIf="(!isAdmin && !product?.soldOut)" style="color:white;"
+                    <a *ngIf="(!isAdmin && !product?.soldOut) && product?.price <= points" style="color:white;"
                       class="button button-round-small shadow-large bg-highlight button-full button-s">
                       RECLAMAR</a>
                   </td>

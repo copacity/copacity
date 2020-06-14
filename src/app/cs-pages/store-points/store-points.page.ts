@@ -3,10 +3,12 @@ import { PopoverController, NavParams, AlertController } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { ProductCreatePage } from '../product-create/product-create.page';
 import { Observable } from 'rxjs';
-import { Product } from 'src/app/app-intefaces';
+import { Product, StorePoint } from 'src/app/app-intefaces';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { ProductUpdatePage } from '../product-update/product-update.page';
+import { UsersService } from 'src/app/cs-services/users.service';
+import { CartService } from 'src/app/cs-services/cart.service';
 
 @Component({
   selector: 'app-store-points',
@@ -18,15 +20,19 @@ export class StorePointsPage implements OnInit {
   products: Observable<Product[]>;
   searchingProducts: boolean = false;
   productSearchHits: number = 0;
+  points: number = 0;
 
   constructor(public popoverController: PopoverController,
     public appService: AppService,
+    public cartService: CartService,
+    private usersService: UsersService,
     public alertController: AlertController,
     public navParams: NavParams,
     private storesService: StoresService,
     private productsService: ProductsService) {
     this.isAdmin = this.navParams.data.isAdmin;
     this.getProducts();
+    this.GetPoints();
   }
 
   ngOnInit() {
@@ -61,6 +67,34 @@ export class StorePointsPage implements OnInit {
 
   productSoldOut(e: any, product: Product) {
     this.productsService.update(this.appService.currentStore.id, product.id, { soldOut: !e.detail.checked });
+  }
+
+  GetPoints() {
+    return new Promise(resolve => {
+      let subscribe = this.usersService.getStorePoints(this.appService.currentUser.id).subscribe(StorePoints => {
+        let hasStorepoints: boolean = false;
+
+        let currentStorePoint: StorePoint = {
+          id: '',
+            idStore: this.appService.currentStore.id,
+            points: 0,
+            deleted: false,
+            dateCreated: new Date(),
+            lastUpdated: new Date(),
+        };
+
+        StorePoints.forEach(storePoint => {
+          if (storePoint.idStore === this.appService.currentStore.id) {
+            currentStorePoint = storePoint
+            hasStorepoints = true;
+          }
+        });
+
+        this.points = currentStorePoint.points - this.cartService.getPoints();
+
+        subscribe.unsubscribe();
+      });
+    });
   }
 
   async presentAlert(title: string, message: string, done: Function) {

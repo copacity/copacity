@@ -39,7 +39,13 @@ export class UsersService {
   public createStorePoint(idUser: string, storePoint: StorePoint): Promise<DocumentReference> {
     return this.angularFirestore
       .collection('users').doc(idUser)
-      .collection('points').add(storePoint);
+      .collection('storePoints').add(storePoint);
+  }
+
+  public updateStorePoint(idUser: string, idStorePoint: string, data: any) {
+    return this.angularFirestore
+      .collection('users').doc(idUser)
+      .collection('storePoints').doc(idStorePoint).update(data);
   }
 
   public getStorePoints(idUser:string): Observable<StorePoint[]> {

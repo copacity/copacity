@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, AlertController, PopoverController } from '@ionic/angular';
-import { Order, CartProduct, User, Address, Notification, Store } from 'src/app/app-intefaces';
+import { Order, CartProduct, User, Address, Notification, Store, StorePoint } from 'src/app/app-intefaces';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Observable } from 'rxjs';
@@ -43,11 +43,11 @@ export class OrderDetailPage implements OnInit {
         this.usersService.getById(orderResult.idUser).then(result => {
           this.user = result;
         });
-  
+
         this.order = orderResult;
         this.cartProducts = this.ordersService.getCartProducts(this.store.id, this.navParams.data.id);
         this.addresses = this.ordersService.getAddresses(this.store.id, this.navParams.data.id);
-  
+
         this.cartProducts.subscribe((cartP) => {
           // this.total = cartP.reduce((i, j) => i + (j.checked ? j.product.price * j.quantity : 0), 0);
           // this.discount = cartP.reduce((i, j) => i + ((j.checked && j.product.discount && j.product.discount>0)? (j.product.price * j.quantity * (j.product.discount / 100)):0), 0);
@@ -108,18 +108,39 @@ export class OrderDetailPage implements OnInit {
   }
 
   async openMessage(event: any) {
-     
+
     let modal = await this.popoverCtrl.create({
       component: PopoverMessageComponent,
-      cssClass: 'cs-popovers'
+      cssClass: 'cs-popovers',
+      componentProps: { title:'Motivo de rechazo', message: '' },
     });
 
     modal.onDidDismiss()
       .then((data) => {
         const message = data['data'];
 
-        if(message != undefined) {
+        if (message != undefined) {
           this.reject(message);
+        }
+      });
+
+    modal.present();
+  }
+
+  async openMessageSendToClient(event: any) {
+
+    let modal = await this.popoverCtrl.create({
+      component: PopoverMessageComponent,
+      cssClass: 'cs-popovers',
+      componentProps: { title:'Notificacion para el cliente', message: 'Gracias por comprar en nuestra tienda' },
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const message = data['data'];
+
+        if (message != undefined) {
+          this.sendToClient(message);
         }
       });
 
@@ -130,16 +151,15 @@ export class OrderDetailPage implements OnInit {
     return this.total;
   }
 
-  getDiscount(){
+  getDiscount() {
     return this.discount;
   }
 
   checkProduct(event, cartProduct: CartProduct) {
-
     this.ordersService.updateCartProduct(this.store.id, this.order.id, cartProduct.id, { checked: event.target.checked })
   }
 
-  sendToClient() {
+  sendToClient(message: string) {
     let notification: Notification = {
       type: NotificationTypes.OrderCreated,
       id: '',
@@ -151,72 +171,108 @@ export class OrderDetailPage implements OnInit {
       idUser: this.appService.currentUser.id,
       photoUrl: this.store.logo,
       userName: this.store.name,
-      idOrder:'',
+      idOrder: '',
       idUserNotification: this.order.idUser
     }
 
-    this.loaderCOmponent.startLoading("Enviando pedido, por favor espere un momento...")
+    this.loaderCOmponent.startLoading("Confirmando pedido, por favor espere un momento...")
     setTimeout(() => {
       this.ordersService.update(this.store.id, this.order.id, { status: OrderStatus.Sent, lastUpdated: new Date() }).then(result => {
-        notification.description = "Tu pedido va en camino!, Pedido Ref: "+  this.order.ref;
-        notification.idOrder = this.order.id;
-        this.notificationsService.create(this.order.idUser, notification).then(result => {
-
-          this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result =>{
-            result.forEach(notification =>{
-              this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
+        this.addPoints().then(() => {
+          notification.description = "Tu pedido fue confirmado! " + message;
+          notification.idOrder = this.order.id;
+          this.notificationsService.create(this.order.idUser, notification).then(result => {
+            this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result => {
+              result.forEach(notification => {
+                this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
+              });
             });
-          });
-          
-          this.loaderCOmponent.stopLoading();
-          this.presentAlert("El pedido ha sido ENVIADO exitosamente", "", () => {
-            this.popoverCtrl.dismiss(true);
+
+            this.loaderCOmponent.stopLoading();
+            this.presentAlert("El pedido ha sido confirmado exitosamente", "", () => {
+              this.popoverCtrl.dismiss(true);
+            });
           });
         });
       });
     }, 2000);
   }
 
-  reject(message: string) {
-      let notification: Notification = {
-        type: NotificationTypes.OrderCreated,
-        id: '',
-        description: '',
-        deleted: false,
-        idStore: this.store.id,
-        dateCreated: new Date(),
-        status: NotificationStatus.Created,
-        idUser: this.appService.currentUser.id,
-        photoUrl: this.store.logo,
-        userName: this.store.name,
-        idOrder:'',
-        idUserNotification: this.order.idUser,
-      }
+  addPoints() {
+    return new Promise(resolve => {
+      let total = this.cartService.getTotalDetail(this.store.deliveryPrice);
+      let points = total / 500;
 
-      this.loaderCOmponent.startLoading("Cancelando pedido, por favor espere un momento...")
-      setTimeout(() => {
-        this.ordersService.update(this.store.id, this.order.id, { status: OrderStatus.Cancelled, lastUpdated: new Date(), messageRejected:message }).then(result => {
-          notification.description = "Lo sentimos, tu pedido fue cancelado. " + this.store.name + ", Pedido Ref: "+  this.order.ref;
-          notification.idOrder = this.order.id;
-          this.notificationsService.create(this.order.idUser, notification).then(result => {
+      let subscribe = this.usersService.getStorePoints(this.user.id).subscribe(StorePoints => {
+        let hasStorepoints: boolean = false;
 
-            this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result =>{
-              result.forEach(notification =>{
-                this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
-              });
-            });
+        let currentStorePoint: StorePoint = {
+          id: '',
+            idStore: this.store.id,
+            points: 0,
+            deleted: false,
+            dateCreated: new Date(),
+            lastUpdated: new Date(),
+        };
 
-            this.loaderCOmponent.stopLoading();
-            this.presentAlert("El pedido ha sido CANCELADO exitosamente", "", () => {
-              this.popoverCtrl.dismiss(true);
-            });
-          });
+        StorePoints.forEach(storePoint => {
+          if (storePoint.idStore === this.store.id) {
+            currentStorePoint = storePoint
+            hasStorepoints = true;
+          }
         });
-      }, 2000);
+
+        if (hasStorepoints) {
+          this.usersService.updateStorePoint(this.user.id, currentStorePoint.id, { points: currentStorePoint.points + points }).then(() =>{
+            resolve(true);
+          });
+        } else {
+          currentStorePoint.points = currentStorePoint.points + points;
+          this.usersService.createStorePoint(this.user.id, currentStorePoint).then(() =>{
+            resolve(true);
+          });
+        }
+
+        subscribe.unsubscribe();
+      });
+    });
   }
 
-  resendOrder() {
+  reject(message: string) {
+    let notification: Notification = {
+      type: NotificationTypes.OrderCreated,
+      id: '',
+      description: '',
+      deleted: false,
+      idStore: this.store.id,
+      dateCreated: new Date(),
+      status: NotificationStatus.Created,
+      idUser: this.appService.currentUser.id,
+      photoUrl: this.store.logo,
+      userName: this.store.name,
+      idOrder: '',
+      idUserNotification: this.order.idUser,
+    }
 
+    this.loaderCOmponent.startLoading("Cancelando pedido, por favor espere un momento...")
+    setTimeout(() => {
+      this.ordersService.update(this.store.id, this.order.id, { status: OrderStatus.Cancelled, lastUpdated: new Date(), messageRejected: message }).then(result => {
+        notification.description = "Lo sentimos, tu pedido fue cancelado.";
+        notification.idOrder = this.order.id;
+        this.notificationsService.create(this.order.idUser, notification).then(result => {
 
+          this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result => {
+            result.forEach(notification => {
+              this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
+            });
+          });
+
+          this.loaderCOmponent.stopLoading();
+          this.presentAlert("El pedido ha sido CANCELADO exitosamente", "", () => {
+            this.popoverCtrl.dismiss(true);
+          });
+        });
+      });
+    }, 2000);
   }
 }

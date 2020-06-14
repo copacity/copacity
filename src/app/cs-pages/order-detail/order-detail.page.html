@@ -167,10 +167,9 @@
                 class="button bg-green1-dark button-round-small shadow-large button-full button-s">Volver a pedir!</a> -->
           </ion-col>
           <ion-col>
-            <a *ngIf="(order?.status == 1  && appService.currentUser?.id!=user?.id)" (click)="sendToClient()"
+            <a *ngIf="(order?.status == 1  && appService.currentUser?.id!=user?.id)" (click)="openMessageSendToClient($event)"
               style="color:white;font-size: 15px;font-weight: bold;padding: 12px;margin: 10px 15px 10px 15px;"
-              class="button bg-green1-dark button-round-small shadow-large button-full button-s">Enviar Pedido al
-              Cliente!</a>
+              class="button bg-green1-dark button-round-small shadow-large button-full button-s">Confirmar Pedido</a>
           </ion-col>
         </ion-row>
       </ion-grid>

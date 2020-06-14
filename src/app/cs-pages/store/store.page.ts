@@ -412,7 +412,7 @@ export class StorePage implements OnInit {
       .then((data) => {
         const result = data['data'];
 
-        if(result){
+        if (result) {
           this.store = result;
         }
       });
@@ -459,7 +459,7 @@ export class StorePage implements OnInit {
       });
   }
 
-  async openCopyToClipBoard(e) {            
+  async openCopyToClipBoard(e) {
     let text = 'Hola! Visita nuestra tienda: ' + this.store.name + ' y sorprendete con todos los productos, promociones, cupones y regalos que tenemos para ti!. En Copacity, Tu Centro Comercial Virtual. ' + this.appService._appInfo.domain + "/store/" + this.store.id;
 
     let modal = await this.popoverController.create({
@@ -484,11 +484,6 @@ export class StorePage implements OnInit {
   async addToCart(e: any, product: Product) {
 
     if (!product.soldOut) {
-
-      let productProperties: ProductProperty[] = []
-
-      let productPropertySubs: Subscription;
-      let productPropertyOptionSubs: Subscription;
       let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
 
       let subscribe = productPropertiesResult.subscribe(async productProperties => {
@@ -904,21 +899,23 @@ export class StorePage implements OnInit {
   // }
 
   async openStorePointsPage() {
-    let modal = await this.popoverController.create({
-      component: StorePointsPage,
-      componentProps: { isAdmin: this.isAdmin },
-      cssClass: 'cs-popovers',
-      backdropDismiss: false,
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        const updated = data['data'];
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StorePointsPage,
+        componentProps: { isAdmin: this.isAdmin },
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
       });
 
-    modal.present();
+      modal.onDidDismiss()
+        .then((data) => {
+          const updated = data['data'];
+        });
 
-    //this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
+      modal.present();
+    } else {
+      this.SignIn();
+    }
   }
 
   openStoreCouponsPage() {

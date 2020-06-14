@@ -1229,11 +1229,12 @@ h5{font-size:16px; line-height:22px}
 .button-xl{padding:15px 30px; font-size:15px;}
 .button-xxl{padding:17px 34px; font-size:17px;}
 .button-full{display:block!important; text-align:center;}
+.button-center-xlarge{transform:translateX(-50%); width:100%;}
 .button-center-large{transform:translateX(-72%); width:70%;}
 .button-center-medium{transform:translateX(-82%); width:60%;}
 .button-center-small{transform:translateX(-124%); width:40%;}
 .button-center{left:50%; transform:translateX(-46%); text-align:center; padding-left:20px; padding-right:20px;}
-.button-center-large, .button-center-medium, .button-center-small{
+.button-center-xlarge, .button-center-large, .button-center-medium, .button-center-small{
     display:block; left:50%; text-align:center; margin:auto!important;
 }
 .button-icon-left i{padding-right:15px;}

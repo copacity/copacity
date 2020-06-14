@@ -159,8 +159,12 @@
         </ion-slides> -->
 
         <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
-          <ion-slide (click)="goToStore($event, store)" *ngFor="let store of stores;">
-            <img src="{{store.logo}}">
+          <ion-slide (click)="goToStore($event, store)" *ngFor="let store of stores?.slice().reverse();">
+            <div class="profile-2">
+              <img style="width: 150px;margin: 5px 5px 0px 5px;" class="profile-image preload-image"
+                [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
+              </div>
+            <!-- <img src="{{store.logo}}"> -->
           </ion-slide>
         </ion-slides>
 
@@ -177,13 +181,14 @@
           </div> -->
           <!-- <div class="profile-header-clear" ></div> -->
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-            <a (click)="shareApp($event)" style="background-color: white; color: black; font-weight: bold;border-radius:15px"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">tiendas</a>
+            <a (click)="shareApp($event)"
+              style="background-color: white; color: black; font-weight: bold;border-radius:15px"
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-small">tiendas</a>
 
             <div style="padding-top: 10px;text-align: -webkit-right;">
-              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)" 
-              style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openStoreCreatePage()"
-              class="button button-round-small button-s">+ TIENDA</a>
+              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
+                style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openStoreCreatePage()"
+                class="button button-round-small button-s">+ TIENDA</a>
 
               <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
                 routerLink="/store/{{ appService._userStoreId }}" style="text-align: end;"><b>IR A MI TIENDA</b>
@@ -286,7 +291,8 @@
                   </div>
 
                   <!-- {{ !store?'hidden':'' }} -->
-                  <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} bottom-10" *ngFor="let store of stores; let i = index">
+                  <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} bottom-10"
+                    *ngFor="let store of stores; let i = index">
                     <div class="blog-col-item" style="margin-bottom: 0px">
                       <a (click)="goToStore($event, store)">
                         <img src="{{store?.logo?store.logo:'../../../assets/icon/no-image.png'}}"

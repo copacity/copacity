@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-popover-message',
@@ -9,9 +9,12 @@ import { PopoverController } from '@ionic/angular';
 })
 export class PopoverMessageComponent implements OnInit {
   messageRejected: FormControl;
+  title: string;
   
-  constructor(private popoverController: PopoverController) { 
-    this.messageRejected = new FormControl('', [Validators.maxLength(500)]);
+  constructor(private popoverController: PopoverController,
+    private navParams: NavParams) { 
+      this.title = this.navParams.data.title;
+    this.messageRejected = new FormControl(this.navParams.data.message, [Validators.maxLength(500)]);
   }
 
   ngOnInit() {}
