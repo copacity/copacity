@@ -45,7 +45,7 @@ export class ProductUpdatePage implements OnInit {
     private productService: ProductsService,
     public cartService: CartService,
     public appService: AppService,
-    private navParams: NavParams,
+    public navParams: NavParams,
     private loader: LoaderComponent) {
 
     this.isGift = navParams.data.isGift;
