@@ -158,7 +158,7 @@ export class CartService {
   addProductRecalculate(cartProduct: CartProduct) {
     let added = false;
     for (let [index, p] of this.cart.entries()) {
-      if (this.compareProducts(p, cartProduct)) {
+      if (cartProduct.product.id == p.product.id && this.compareProducts(p, cartProduct)) {
         if (p.quantity == 0) {
           this.cart.splice(index, 1);
         } else {

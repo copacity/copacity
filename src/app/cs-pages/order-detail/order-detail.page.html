@@ -117,7 +117,7 @@
           <div class="clear"></div>
         </div>
         <div class="store-cart-total">
-          <strong style="color: red;">IVA</strong>
+          <strong style="color: red;">IVA <small>(Incluido)</small></strong>
           <span>{{ (cartService.getTotalDetail(store?.deliveryPrice) * (appService._appInfo.tax/100 )) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
           <div class="clear"></div>
         </div>
