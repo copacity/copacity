@@ -38,7 +38,7 @@ export class StorePointsPage implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
   async presentDeleteProductPrompt(product: Product) {
@@ -69,29 +69,33 @@ export class StorePointsPage implements OnInit {
   }
 
   async openImageViewer(product: Product) {
-    let images: string[] = [];
+    if (this.isAdmin) {
+      this.openProductUpdatePage(product);
+    } else {
+      let images: string[] = [];
 
-    let result = this.productsService.getProductImages(this.appService.currentStore.id, product.id);
+      let result = this.productsService.getProductImages(this.appService.currentStore.id, product.id);
 
-    let subs = result.subscribe(async (productImages: ProductImage[]) => {
-      productImages.forEach(img => {
-        images.push(img.image);
-      });
-
-      let modal = await this.popoverController.create({
-        component: ImageViewerComponent,
-        componentProps: { images: images },
-        cssClass: 'cs-popovers',
-      });
-  
-      modal.onDidDismiss()
-        .then((data) => {
-          const updated = data['data'];
+      let subs = result.subscribe(async (productImages: ProductImage[]) => {
+        productImages.forEach(img => {
+          images.push(img.image);
         });
-  
-      modal.present();
-      subs.unsubscribe();
-    });
+
+        let modal = await this.popoverController.create({
+          component: ImageViewerComponent,
+          componentProps: { images: images },
+          cssClass: 'cs-popovers',
+        });
+
+        modal.onDidDismiss()
+          .then((data) => {
+            const updated = data['data'];
+          });
+
+        modal.present();
+        subs.unsubscribe();
+      });
+    }
   }
 
   productSoldOut(e: any, product: Product) {
@@ -104,11 +108,11 @@ export class StorePointsPage implements OnInit {
 
         let currentStorePoint: StorePoint = {
           id: '',
-            idStore: this.appService.currentStore.id,
-            points: 0,
-            deleted: false,
-            dateCreated: new Date(),
-            lastUpdated: new Date(),
+          idStore: this.appService.currentStore.id,
+          points: 0,
+          deleted: false,
+          dateCreated: new Date(),
+          lastUpdated: new Date(),
         };
 
         StorePoints.forEach(storePoint => {
@@ -182,7 +186,7 @@ export class StorePointsPage implements OnInit {
           component: ProductPropertiesSelectionComponent,
           mode: 'ios',
           event: e,
-          componentProps: { product: product, productProperties: productProperties, limitQuantity: parseInt((this.points/product.price).toString()) }
+          componentProps: { product: product, productProperties: productProperties, limitQuantity: parseInt((this.points / product.price).toString()) }
         });
 
         modal.onDidDismiss()
@@ -192,7 +196,7 @@ export class StorePointsPage implements OnInit {
             if (result) {
               this.cartService.addProduct(result);
               this.GetPoints();
-              this.presentAlert("Tu regalo ha sido agregado al carrito, gracias por comprar en Copacity", '',()=>{});
+              this.presentAlert("Tu regalo ha sido agregado al carrito, gracias por comprar en Copacity", '', () => { });
             }
           });
 
