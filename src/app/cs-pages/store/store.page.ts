@@ -36,6 +36,7 @@ import { StoreInformationComponent } from 'src/app/cs-components/store-informati
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
 import { StorePointsPage } from '../store-points/store-points.page';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
+import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 
 @Component({
   selector: 'app-store',
@@ -906,6 +907,25 @@ export class StorePage implements OnInit {
     modal.onDidDismiss()
       .then((data) => {
         const updated = data['data'];
+      });
+
+    modal.present();
+  }
+
+  async openBarCodeScanner() {
+    let modal = await this.popoverController.create({
+      component: BarcodeScannerComponent,
+      backdropDismiss: false,
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if(result) {
+          alert("Se encontro el prodcuto: " + result);
+        }
       });
 
     modal.present();

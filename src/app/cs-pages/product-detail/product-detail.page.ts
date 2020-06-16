@@ -18,6 +18,7 @@ import { StoreStatus } from 'src/app/app-enums';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { Subscription } from 'rxjs';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
+import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -387,44 +388,44 @@ export class ProductDetailPage implements OnInit {
 
     let productProperties: ProductProperty[] = []
 
-      let productPropertySubs: Subscription;
-      let productPropertyOptionSubs: Subscription;
-      let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, this.product.id);
+    let productPropertySubs: Subscription;
+    let productPropertyOptionSubs: Subscription;
+    let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, this.product.id);
 
-      let subscribe = productPropertiesResult.subscribe(async productProperties => {
-        productProperties.forEach(productProperty => {
-          let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
-          let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
-            productProperty.productPropertyOptions = productPropertyOptions;
-            subscribe2.unsubscribe();
-          });
+    let subscribe = productPropertiesResult.subscribe(async productProperties => {
+      productProperties.forEach(productProperty => {
+        let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
+        let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+          productProperty.productPropertyOptions = productPropertyOptions;
+          subscribe2.unsubscribe();
         });
-
-        productProperties = productProperties;
-        subscribe.unsubscribe();
-
-        let modal = await this.popoverCtrl.create({
-          component: ProductPropertiesSelectionComponent,
-          mode: 'ios',
-          event: e,
-          componentProps: { product: this.product, productProperties: productProperties},
-          backdropDismiss: false,
-        });
-
-        modal.onDidDismiss()
-          .then((data) => {
-            const result = data['data'];
-
-            if (result) {
-              this.animateCSS('tada');
-              this.cartSevice.addProduct(result);
-              this.presentToast(this.product.name + ' ha sido agregado al carrito!');
-              this.close();
-            }
-          });
-
-        modal.present();
       });
+
+      productProperties = productProperties;
+      subscribe.unsubscribe();
+
+      let modal = await this.popoverCtrl.create({
+        component: ProductPropertiesSelectionComponent,
+        mode: 'ios',
+        event: e,
+        componentProps: { product: this.product, productProperties: productProperties, limitQuantity: 100 },
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+
+          if (result) {
+            this.animateCSS('tada');
+            this.cartSevice.addProduct(result);
+            this.presentToast(this.product.name + ' ha sido agregado al carrito!');
+            this.close();
+          }
+        });
+
+      modal.present();
+    });
 
     // this.animateCSS('tada');
 
@@ -446,6 +447,24 @@ export class ProductDetailPage implements OnInit {
     // this.close();
   }
 
+  async openBarCodeScanner() {
+    let modal = await this.popoverCtrl.create({
+      component: BarcodeScannerComponent,
+      backdropDismiss: false,
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if (result) {
+          alert("Se encontro el prodcuto: " + result);
+        }
+      });
+
+    modal.present();
+  }
 
   animateCSS(animationName: any, keepAnimated = false) {
 

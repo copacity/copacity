@@ -1,0 +1,39 @@
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 16px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">LECTOR
+      QR</a>
+
+    <div class="round-medium" style="background-color: white;">
+      <div style="margin: 5px;padding-top: 40px;">
+        <i (click)="close()" class="fa fa-times-circle"
+          style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+        <ion-button (click)="startScan()" color="primary" expand="full">
+          <ion-icon slot="start" name="qr-scanner"></ion-icon>
+          Iniciar
+        </ion-button>
+
+        <ion-button (click)="reset()" color="warning" expand="full" *ngIf="scanResult">
+          <ion-icon slot="start" name="refresh"></ion-icon>
+          Reiniciar
+        </ion-button>
+
+        <video #video [hidden]="!scanActive" width="100%"></video>
+        <canvas #canvas hidden></canvas>
+
+        <ion-button (click)="stopScan()" color="danger" expand="full" *ngIf="scanActive">
+          <ion-icon slot="start" name="close"></ion-icon>
+          Detener
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</div>

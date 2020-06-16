@@ -18,6 +18,7 @@ import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboar
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { FormControl, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/cs-services/users.service';
+import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 
 @Component({
   selector: 'app-order-create',
@@ -189,6 +190,25 @@ export class OrderCreatePage implements OnInit {
     modal.onDidDismiss()
       .then((data) => {
         const result = data['data'];
+      });
+
+    modal.present();
+  }
+
+  async openBarCodeScanner() {
+    let modal = await this.popoverCtrl.create({
+      component: BarcodeScannerComponent,
+      backdropDismiss: false,
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if (result) {
+          alert("Se encontro el prodcuto: " + result);
+        }
       });
 
     modal.present();

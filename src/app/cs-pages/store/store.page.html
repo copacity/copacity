@@ -189,25 +189,32 @@
 
             <div class="top-10"></div>
             <div style="margin: 0px 15px 0px 15px;padding-top: 5px;">
-              <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-border button-full bottom-0"
-                style="color: red;font-size: 12px;border: double;margin-bottom: 0px;">
-                <i class="fa fa-info-circle" style="color: red;padding-left: 5px;padding-right: 5px;"></i> <span
-                  style="color: red;">Información</span>
-              </a>
+              <div class="one-half">
+                <a (click)="openBarCodeScanner()" class="button button-round-small button-border button-full bottom-0"
+                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
+                  <i class="fa fa-qrcode" style="font-size: 1.5em;color: red;"></i><span>&nbsp;Lector QR&nbsp;&nbsp;</span></a>
+              </div>
+              <div class="one-half last-column">
+                <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
+                  <i class="fas fa-info-circle"
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;Información&nbsp;</span>
+                </a>
+              </div>
               <div class="clear"></div>
             </div>
 
             <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
               <div class="one-half">
                 <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
-                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;">
-                  <i class="fa fa-cut" style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES</span></a>
+                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
+                  <i class="fa fa-cut" style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
               </div>
               <div class="one-half last-column">
                 <a (click)="openStoreUpdatePage()" class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;">
-                  &nbsp;&nbsp;<i class="fas fa-edit"
-                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;EDITAR&nbsp;&nbsp;</span>
+                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
+                  <i class="fas fa-edit"
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;EDITAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </a>
               </div>
               <div class="clear"></div>
@@ -216,15 +223,15 @@
             <div style="margin: 0px 15px 0px 15px;padding-top: 5px;">
               <div class="one-half">
                 <a (click)="openStorePointsPage()" class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;">
-                  &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-gift"
-                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;REGALOS&nbsp;</span>
+                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
+                  <i class="fas fa-gift"
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;REGALOS&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </a>
               </div>
               <div class="one-half last-column">
                 <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
-                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;">
-                  <i class="fa fa-users" style="font-size: 1.5em;color: red;"></i><span>&nbsp;VENDEDORES</span></a>
+                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
+                  <i class="fa fa-users" style="font-size: 1.5em;color: red;"></i><span>&nbsp;VENDEDORES&nbsp;</span></a>
               </div>
               <div class="clear"></div>
             </div>

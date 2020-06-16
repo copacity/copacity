@@ -17,6 +17,7 @@ import { ProductPropertyComponent } from './product-property/product-property.co
 import { ProductPropertyOptionComponent } from './product-property-option/product-property-option.component';
 import { ProductPropertiesSelectionComponent } from './product-properties-selection/product-properties-selection.component';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
+import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     ProductPropertyComponent,
     ProductPropertyOptionComponent,
     ProductPropertiesSelectionComponent,
-    ImageViewerComponent
+    ImageViewerComponent,
+    BarcodeScannerComponent
   ],
   imports: [
     IonicModule,
@@ -54,7 +56,8 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     ProductPropertyComponent,
     ProductPropertyOptionComponent,
     ProductPropertiesSelectionComponent,
-    ImageViewerComponent
+    ImageViewerComponent,
+    BarcodeScannerComponent
   ],
   entryComponents: [
     SigninComponent,
@@ -69,7 +72,8 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     ProductPropertyComponent,
     ProductPropertyOptionComponent,
     ProductPropertiesSelectionComponent,
-    ImageViewerComponent
+    ImageViewerComponent,
+    BarcodeScannerComponent
   ]
 })
 export class ComponentsModule { }
