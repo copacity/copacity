@@ -18,6 +18,8 @@ import { ProductPropertyOptionComponent } from './product-property-option/produc
 import { ProductPropertiesSelectionComponent } from './product-properties-selection/product-properties-selection.component';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
+import { BarcodeGeneratorComponent } from './barcode-generator/barcode-generator.component';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 @NgModule({
   declarations: [
@@ -35,12 +37,14 @@ import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.compo
     ProductPropertyOptionComponent,
     ProductPropertiesSelectionComponent,
     ImageViewerComponent,
-    BarcodeScannerComponent
+    BarcodeScannerComponent,
+    BarcodeGeneratorComponent
   ],
   imports: [
     IonicModule,
     ReactiveFormsModule,
     CommonModule,
+    NgxQRCodeModule,
     RouterModule],
   exports: [
     LoaderComponent,
@@ -57,7 +61,8 @@ import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.compo
     ProductPropertyOptionComponent,
     ProductPropertiesSelectionComponent,
     ImageViewerComponent,
-    BarcodeScannerComponent
+    BarcodeScannerComponent,
+    BarcodeGeneratorComponent
   ],
   entryComponents: [
     SigninComponent,
@@ -73,7 +78,8 @@ import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.compo
     ProductPropertyOptionComponent,
     ProductPropertiesSelectionComponent,
     ImageViewerComponent,
-    BarcodeScannerComponent
+    BarcodeScannerComponent,
+    BarcodeGeneratorComponent
   ]
 })
 export class ComponentsModule { }

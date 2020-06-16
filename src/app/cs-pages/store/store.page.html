@@ -337,7 +337,10 @@
 
                     <table style="font-size: 1em;margin-bottom:0px">
                       <tr>
-                        <td style="text-align: right;padding: 9px 0px 0px 0px;margin-top: 0px">
+                        <td style="text-align: right;padding: 25px 0px 0px 0px;margin-top: 0px">
+                          <a *ngIf="isAdmin" (click)="openBarCodeGenerator(product)"
+                            class="icon icon-s icon-round shadow-small">
+                            <i class="fa fa-qrcode" style="color: black"></i></a>
                           <a *ngIf="isAdmin" (click)="presentDeleteProductPrompt(product)"
                             class="icon icon-s icon-round shadow-small">
                             <i class="fa fa-trash" style="color: black"></i></a>

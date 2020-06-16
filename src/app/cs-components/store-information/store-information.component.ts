@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import { Store } from 'src/app/app-intefaces';
+import { Store, Product } from 'src/app/app-intefaces';
 import { LoaderComponent } from '../loader/loader.component';
 import { StoreStatus } from 'src/app/app-enums';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { ActivatedRoute } from '@angular/router';
+import { BarcodeGeneratorComponent } from '../barcode-generator/barcode-generator.component';
+import { AppService } from 'src/app/cs-services/app.service';
 
 @Component({
   selector: 'app-store-information',
@@ -18,6 +20,7 @@ export class StoreInformationComponent implements OnInit {
 
   constructor(public popoverController: PopoverController, 
     public navParams: NavParams,
+    public appService: AppService,
     private loaderComponent: LoaderComponent,
     private storesService: StoresService,
     ) {
@@ -66,5 +69,23 @@ export class StoreInformationComponent implements OnInit {
         });
       });
     }, 3000);
+  }
+
+  async openBarCodeGenerator(product: Product) {
+    let value = this.appService._appInfo.domain + "/store/" + this.navParams.data.store.id
+
+    let modal = await this.popoverController.create({
+      component: BarcodeGeneratorComponent,
+      backdropDismiss: false,
+      componentProps: { value: value, title: this.navParams.data.store.name },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
   }
 }

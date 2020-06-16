@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { firebaseConfig, environment } from '../environments/environment';
 import { SuperTabsModule } from '@ionic-super-tabs/angular';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -48,6 +49,7 @@ import { StoreCouponsPageModule } from './cs-pages/store-coupons/store-coupons.m
     //ServiceWorkerModule.register('src/firebase-messaging-sw.js', { enabled: environment.production }),
     ServiceWorkerModule.register('combined-sw.js', { enabled: environment.production }),
     ReactiveFormsModule,
+    NgxQRCodeModule,
 
     /* Fire Base Modules */
     AngularFireModule.initializeApp(firebaseConfig),

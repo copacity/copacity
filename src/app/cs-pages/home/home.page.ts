@@ -15,6 +15,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { Observable, Subscription } from 'rxjs';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { LocationStrategy } from '@angular/common';
+import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 
 @Component({
   selector: 'app-home',
@@ -281,6 +282,34 @@ export class HomePage implements OnInit {
     this.idSector = e.target.value;
     this.getStores();
   }
+
+  async openBarCodeScanner() {
+    let modal = await this.popoverController.create({
+      component: BarcodeScannerComponent,
+      backdropDismiss: false,
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if (result) {
+          if (result.indexOf("product-detail") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['product-detail/', value[value.length - 1]]);
+          } else if (result.indexOf("store") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['store/', value[value.length - 1]]);
+          } else {
+            // Pending Implement Coupon Detail
+          }
+        }
+      });
+
+    modal.present();
+  }
+
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------

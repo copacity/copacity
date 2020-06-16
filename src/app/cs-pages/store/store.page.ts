@@ -37,6 +37,7 @@ import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/produ
 import { StorePointsPage } from '../store-points/store-points.page';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
+import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generator/barcode-generator.component';
 
 @Component({
   selector: 'app-store',
@@ -661,23 +662,6 @@ export class StorePage implements OnInit {
 
   async openProductDetailPage(idProduct: string) {
     this.router.navigate(['product-detail/' + idProduct + "&" + this.store.id]);
-
-    // let modal = await this.popoverController.create({
-    //   component: ProductDetailPage,
-    //   componentProps: { id: idProduct, isAdmin: this.isAdmin },
-    //   cssClass: 'cs-popovers'
-    // });
-
-    // modal.onDidDismiss()
-    //   .then((data) => {
-    //     const updated = data['data'];
-
-    //     if (updated) {
-    //       this.animateCSS('tada');
-    //     }
-    //   });
-
-    // modal.present();
   }
 
   async openProduct(product: Product) {
@@ -923,9 +907,35 @@ export class StorePage implements OnInit {
       .then((data) => {
         const result = data['data'];
 
-        if(result) {
-          alert("Se encontro el prodcuto: " + result);
+        if (result) {
+          if (result.indexOf("product-detail") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['product-detail/', value[value.length - 1]]);
+          } else if (result.indexOf("store") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['store/', value[value.length - 1]]);
+          } else {
+            // Pending Implement Coupon Detail
+          }
         }
+      });
+
+    modal.present();
+  }
+
+  async openBarCodeGenerator(product: Product) {
+    let value = this.appService._appInfo.domain + "/product-detail/" + product.id + "&" + this.store.id
+
+    let modal = await this.popoverController.create({
+      component: BarcodeGeneratorComponent,
+      backdropDismiss: false,
+      componentProps: { value: value, title: product.name },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
       });
 
     modal.present();

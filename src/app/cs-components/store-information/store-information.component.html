@@ -16,6 +16,14 @@
         class="icon icon-round icon-s bg-whatsapp"><i class="fab fa-whatsapp"></i></a>
     </div>
 
+    <div class="boxed-text-huge">
+      <div style="padding-top: 10px;text-align: -webkit-center;">
+        <a *ngIf="isAdmin"
+          style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openBarCodeGenerator()"
+          class="button button-round-small button-s"><i class="fa fa-qrcode" style="font-size: 1.5em;"></i>&nbsp;Ver Codigo QR</a>
+      </div>
+    </div>
+
     <div *ngIf="isAdmin" [ngSwitch]="store.status">
       <div class="divider"></div>
       <div *ngSwitchCase="1">
@@ -46,9 +54,7 @@
         <div class="content content-box bg-gradient-green1 shadow-large">
           <p class="color-white bottom-10" style="font-size: 18px;">
             <b style="font-size: 22px;">Excelente!: </b> Tu tienda se ha publicado exitosamente!, ahora todos
-            los usuarios podrán comprar tus productos y recibirlos a su domicilio! Recuerda ejercer con calidad
-            el
-            servicio de domicilios a tus clientes.
+            los usuarios podrán ver tu tienda y comprar tus productos en Copacity!.
           </p>
         </div>
       </div>

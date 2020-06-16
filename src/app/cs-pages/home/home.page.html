@@ -163,7 +163,7 @@
             <div class="profile-2">
               <img style="width: 150px;margin: 5px 5px 0px 5px;" class="profile-image preload-image"
                 [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
-              </div>
+            </div>
             <!-- <img src="{{store.logo}}"> -->
           </ion-slide>
         </ion-slides>
@@ -185,7 +185,11 @@
               style="background-color: white; color: black; font-weight: bold;border-radius:15px"
               class="profile-button button shadow-large button-m button-round uppercase bolder button-center-small">tiendas</a>
 
-            <div style="padding-top: 10px;text-align: -webkit-right;">
+            <a (click)="openBarCodeScanner()"
+              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.5em;padding: 2px;color: red;font-weight: bold;margin: 2px;">
+              <i class="fa fa-qrcode"></i>&nbsp;QR</a>
+
+            <div style="padding-top: 10px;text-align: -webkit-left;">
               <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
                 style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openStoreCreatePage()"
                 class="button button-round-small button-s">+ TIENDA</a>

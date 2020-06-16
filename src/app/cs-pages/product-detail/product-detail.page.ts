@@ -459,7 +459,15 @@ export class ProductDetailPage implements OnInit {
         const result = data['data'];
 
         if (result) {
-          alert("Se encontro el prodcuto: " + result);
+          if (result.indexOf("product-detail") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['product-detail/', value[value.length - 1]]);
+          } else if (result.indexOf("store") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['store/', value[value.length - 1]]);
+          } else {
+            // Pending Implement Coupon Detail
+          }
         }
       });
 

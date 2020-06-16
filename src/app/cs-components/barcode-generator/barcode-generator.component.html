@@ -1,0 +1,40 @@
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 16px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Codigo
+      QR</a>
+
+    <div class="round-medium" style="background-color: white;">
+      <div style="margin: 5px;padding-top: 20px;">
+        <i (click)="close()" class="fa fa-times-circle"
+          style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+        <div class="boxed-text-huge">
+          <label style="color: black;font-size: 1.2em;font-weight: bold;padding-bottom: 20px;">{{ title }}</label>
+        </div>
+
+        <div style="text-align:center">
+          <ngx-qrcode [elementType]="elementType" [value]="value" class="copacity-code-qr">
+          </ngx-qrcode><br>
+        </div>
+
+        <div class="boxed-text-huge">
+          <div style="padding-top: 10px;text-align: -webkit-center;">
+            <a [href]="href" style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="downloadImage()"
+              class="button button-round-small button-s" download="QR_{{ title }}">
+              <i class="fa fa-cloud-download-alt"></i>
+              &nbsp;Descargar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
