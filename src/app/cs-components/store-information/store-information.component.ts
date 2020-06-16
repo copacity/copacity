@@ -71,7 +71,7 @@ export class StoreInformationComponent implements OnInit {
     }, 3000);
   }
 
-  async openBarCodeGenerator(product: Product) {
+  async openBarCodeGenerator() {
     let value = this.appService._appInfo.domain + "/store/" + this.navParams.data.store.id
 
     let modal = await this.popoverController.create({

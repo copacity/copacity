@@ -132,7 +132,6 @@
   </div>
 </ion-header>
 
-
 <super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
   <super-tabs-container>
     <super-tab>
@@ -144,7 +143,8 @@
         </ion-refresher>
 
         <div class="profile-2">
-          <img (click)="openImageViewer(store?.logo?store?.logo:'../../../assets/icon/no-image.png')" style="width: 150px;" class="profile-image preload-image"
+          <img (click)="openImageViewer(store?.logo?store?.logo:'../../../assets/icon/no-image.png')"
+            style="width: 150px;" class="profile-image preload-image"
             [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
 
           <div *ngIf="isAdmin" class="under-slider-button">
@@ -179,22 +179,38 @@
 
             <a (click)="shareStore($event)"
               style="background-color: white; color: black; font-size: 15px;border-radius:15px;text-align: center;margin-bottom: 0px;"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-xlarge">{{store?.name}}
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">{{store?.name}}
             </a>
 
-            <!-- <a (click)="openStoreInformationComponent($event)" style="text-align: end;padding-top: 10px;"
-              class="color-theme">
-              <i class="fa fa-info-circle" style="color: black;padding-left: 5px;padding-right: 5px;"></i> <span
-                style="color: blue;">Información</span></a> -->
+            <a (click)="openBarCodeScanner()"
+              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.5em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
+              <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
-            <div class="top-10"></div>
-            <div style="margin: 0px 15px 0px 15px;padding-top: 5px;">
+            <a *ngIf="isAdmin" (click)="openStoreUpdatePage()"
+              style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.5em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
+              <i class="fa fa-edit"></i></a>
+
+            <div class="top-20"></div>
+            <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
               <div class="one-half">
-                <a (click)="openBarCodeScanner()" class="button button-round-small button-border button-full bottom-0"
+                <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-full"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
-                  <i class="fa fa-qrcode" style="font-size: 1.5em;color: red;"></i><span>&nbsp;Lector QR&nbsp;&nbsp;</span></a>
+                  <i class="fas fa-info-circle"
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;Información&nbsp;</span>
+                </a>
               </div>
               <div class="one-half last-column">
+                <a (click)="openStoreUpdatePage()" class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
+                  <i class="fas fa-file-invoice-dollar"
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;Factura Plan</span>
+                </a>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div *ngIf="!isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
+              <div>
                 <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-full"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
                   <i class="fas fa-info-circle"
@@ -208,14 +224,14 @@
               <div class="one-half">
                 <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
-                  <i class="fa fa-cut" style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+                  <i class="fa fa-cut"
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
               </div>
               <div class="one-half last-column">
-                <a (click)="openStoreUpdatePage()" class="button button-round-small button-full"
+                <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
-                  <i class="fas fa-edit"
-                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;EDITAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </a>
+                  <i class="fa fa-chart-bar" style="font-size: 1.5em;color: red;"></i><span>&nbsp;Reportes&nbsp;&nbsp;
+                    &nbsp;&nbsp;</span></a>
               </div>
               <div class="clear"></div>
             </div>
@@ -231,7 +247,8 @@
               <div class="one-half last-column">
                 <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
-                  <i class="fa fa-users" style="font-size: 1.5em;color: red;"></i><span>&nbsp;VENDEDORES&nbsp;</span></a>
+                  <i class="fa fa-handshake"
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;VENDEDORES&nbsp;</span></a>
               </div>
               <div class="clear"></div>
             </div>
@@ -252,13 +269,7 @@
               <div class="clear"></div>
             </div>
 
-            <!-- <div class="divider divider-margins bottom-0"></div> -->
-
             <div class="content gallery-view-controls" style="padding-top: 10px;">
-              <!-- <a href="#" class="color-highlight gallery-view-1-activate"><i class="fa fa-th"></i></a>
-              <a href="#" class="gallery-view-2-activate"><i class="fa fa-th-large"></i></a>
-              <a href="#" class="gallery-view-3-activate"><i class="fa fa-bars"></i></a> -->
-
               <ion-list>
                 <ion-item>
                   <ion-label>Sección:</ion-label>
@@ -270,8 +281,6 @@
                   </ion-select>
                 </ion-item>
               </ion-list>
-
-              <!-- <div class="clear"></div> -->
             </div>
 
             <div class="content bottom-10">
@@ -302,7 +311,6 @@
                   encontraron productos en la sección seleccionada</label>
               </div>
 
-              <!-- {{ !product?'hidden':'' }} -->
               <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} "
                 *ngFor="let product of products | async; let i = index" style="padding-bottom: 50px">
                 <div class="blog-col-item" style="margin-bottom: 0px;">
@@ -337,7 +345,7 @@
 
                     <table style="font-size: 1em;margin-bottom:0px">
                       <tr>
-                        <td style="text-align: right;padding: 25px 0px 0px 0px;margin-top: 0px">
+                        <td style="text-align: center;padding: 25px 0px 0px 0px;margin-top: 0px">
                           <a *ngIf="isAdmin" (click)="openBarCodeGenerator(product)"
                             class="icon icon-s icon-round shadow-small">
                             <i class="fa fa-qrcode" style="color: black"></i></a>
@@ -347,13 +355,21 @@
                           <a *ngIf="isAdmin" (click)="openProductUpdatePage(product)"
                             class="icon icon-s icon-round shadow-small">
                             <i class="fa fa-edit" style="color: black"></i></a>
-                          <ion-list *ngIf="isAdmin">
+                          <!-- <ion-list *ngIf="isAdmin">
                             <ion-item style="text-align: -webkit-right;">
                               <ion-label style="color: gray;font-size: medium;">Activo</ion-label>
                               <ion-toggle (ionChange)="productSoldOut($event, product)" mode="ios" slot="start"
                                 name="blueberry" checked="{{(product?.soldOut)?'false':'true' }}"></ion-toggle>
                             </ion-item>
-                          </ion-list>
+                          </ion-list> -->
+                        </td>
+                      </tr>
+                      <tr *ngIf="isAdmin">
+                        <td style="padding: 0px 0px 0px 0px;">
+                          <a *ngIf="isAdmin" style="color:red;"
+                            class="button button-round-small shadow-large button-full button-s">
+                            <i class="fa fa-dolly-flatbed add-button"
+                              style="color: black;padding-right: 5px;"></i>Inventario</a>
                         </td>
                       </tr>
                       <tr>
@@ -376,7 +392,6 @@
                 </div>
               </div>
 
-
               <div class="clear"></div>
             </div>
           </div>
@@ -386,22 +401,3 @@
     </super-tab>
   </super-tabs-container>
 </super-tabs>
-
-<!-- <ion-tabs style="z-index: 1;">
-  <ion-tab-bar slot="bottom" style="padding-top: 5px;background-color: red;">
-    <ion-tab-button (click)="alert('test')" style="background-color: red;">
-      <i class="fa fa-ticket-alt" style="font-size: 1.5em;color: white;"></i>
-      <ion-label style="color: white;">Cupones</ion-label>  
-    </ion-tab-button>
-
-    <ion-tab-button tab="home" style="background-color: red;">
-      <i class="fa fa-home" style="font-size: 2em;color: white;"></i>
-      <ion-label style="color: white;">Inicio</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="points" style="background-color: red;">
-      <i class="fas fa-gift" style="font-size: 1.5em;color: white;"></i>
-      <ion-label style="color: white;">Puntos</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs> -->

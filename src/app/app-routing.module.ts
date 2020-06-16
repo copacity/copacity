@@ -95,7 +95,23 @@ const routes: Routes = [
   {
     path: 'store-points',
     loadChildren: () => import('./cs-pages/store-points/store-points.module').then( m => m.StorePointsPageModule)
+  },  {
+    path: 'product-inventory',
+    loadChildren: () => import('./cs-pages/product-inventory/product-inventory.module').then( m => m.ProductInventoryPageModule)
+  },
+  {
+    path: 'store-reports',
+    loadChildren: () => import('./cs-pages/store-reports/store-reports.module').then( m => m.StoreReportsPageModule)
+  },
+  {
+    path: 'store-billing',
+    loadChildren: () => import('./cs-pages/store-billing/store-billing.module').then( m => m.StoreBillingPageModule)
+  },
+  {
+    path: 'store-vendors',
+    loadChildren: () => import('./cs-pages/store-vendors/store-vendors.module').then( m => m.StoreVendorsPageModule)
   }
+
 
 
 ];

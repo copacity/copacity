@@ -166,12 +166,8 @@ export class StorePage implements OnInit {
 
     this.cart = this.cartSevice.getCart();
     this.cartItemCount = this.cartSevice.getCartItemCount();
-    this.loaderComponent.stopLoading();
 
     this.getProducts(this.idProductCategory);
-
-    this.idOrderState = OrderStatus.Pending;
-    //this.getOrders(OrderStatus.Pending);
 
     this.storeCategoryService.getAll().subscribe(storeCategoriesArray => {
       this.appService._storeCategories.forEach(storeCategory => {
@@ -180,18 +176,6 @@ export class StorePage implements OnInit {
         }
       });
     });
-
-    this.sectorService.getAll().subscribe(sectorArray => {
-      this.appService._sectors.forEach(sector => {
-        if (sector.id == this.store.idSector) {
-          this.sectorName = sector.name;
-        }
-      });
-    });
-
-    // Incrementing the visits
-    // if (!this.isAdmin)
-    //   this.storesService.update(this.store.id, { visits: (this.store.visits + 1) });
   }
 
   ngOnInit() {
