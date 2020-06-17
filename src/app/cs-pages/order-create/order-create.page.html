@@ -241,21 +241,19 @@
           <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">CUPONES</a>
 
+          <a (click)="openBarCodeScanner()"
+            style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;;font-weight: bold;margin: 2px;"
+            class="color-highlight">
+            <i class="fa fa-qrcode"></i>&nbsp;QR</a>
+
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
               <table class="table-borders bottom-10" style="font-size: 1.2em;">
                 <tr>
                   <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
-                    <a (click)="openBarCodeScanner()" style="padding: 8px 8px;"
-                      class="button button-round-small button-full button-s bg-highlight"> <i class="fa fa-qrcode"
-                        style="font-size: 1.5em;"></i> Escanear Código QR</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
                     <a style="padding: 8px 8px;border: dotted;"
                       class="button button-round-small button-full button-s color-highlight"> <i class="fa fa-cut"
-                        style="font-size: 1.5em;"></i> Ver Cupones</a>
+                        style="font-size: 1.5em;"></i> Ver Cupones Virtuales</a>
                   </td>
                 </tr>
                 <tr>
@@ -283,7 +281,7 @@
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
-          
+
           <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">METODO
             DE PAGO</a>

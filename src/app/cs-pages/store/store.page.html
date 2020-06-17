@@ -183,11 +183,11 @@
             </a>
 
             <a (click)="openBarCodeScanner()"
-              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.5em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
+              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
               <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
             <a *ngIf="isAdmin" (click)="openStoreUpdatePage()"
-              style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.5em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
+              style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
               <i class="fa fa-edit"></i></a>
 
             <div class="top-20"></div>
@@ -200,7 +200,7 @@
                 </a>
               </div>
               <div class="one-half last-column">
-                <a (click)="openStoreUpdatePage()" class="button button-round-small button-full"
+                <a (click)="openStoreCouponsPage()" class="button button-round-small button-full"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
                   <i class="fas fa-file-invoice-dollar"
                     style="font-size: 1.5em;color: red;"></i><span>&nbsp;Factura Plan</span>
@@ -225,12 +225,12 @@
                 <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
                   <i class="fa fa-cut"
-                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;CUPONES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
               </div>
               <div class="one-half last-column">
                 <a (click)="openStoreCouponsPage()" class="button button-round-small button-border button-full bottom-0"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
-                  <i class="fa fa-chart-bar" style="font-size: 1.5em;color: red;"></i><span>&nbsp;Reportes&nbsp;&nbsp;
+                  <i class="fa fa-chart-bar" style="font-size: 1.5em;color: red;"></i><span>&nbsp;Reportes&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;</span></a>
               </div>
               <div class="clear"></div>
@@ -241,7 +241,7 @@
                 <a (click)="openStorePointsPage()" class="button button-round-small button-full"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
                   <i class="fas fa-gift"
-                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;REGALOS&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;REGALOS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </a>
               </div>
               <div class="one-half last-column">

@@ -143,12 +143,12 @@ export class StorePage implements OnInit {
           }
         }
 
-        this.initialize();
+        this.initialize(true);
       });
     });
   }
 
-  initialize() {
+  initialize(firstTime: boolean) {
     if (this.appService.currentStore && this.appService.currentStore.id != this.store.id) {
       this.cartSevice.clearCart();
     }
@@ -167,7 +167,9 @@ export class StorePage implements OnInit {
     this.cart = this.cartSevice.getCart();
     this.cartItemCount = this.cartSevice.getCartItemCount();
 
-    this.getProducts(this.idProductCategory);
+    if (firstTime) {
+      this.getProducts(this.idProductCategory);
+    }
 
     this.storeCategoryService.getAll().subscribe(storeCategoriesArray => {
       this.appService._storeCategories.forEach(storeCategory => {
@@ -230,7 +232,7 @@ export class StorePage implements OnInit {
             }
           }
 
-          this.initialize();
+          this.initialize(true);
         });
       });
       event.target.complete();
@@ -858,7 +860,7 @@ export class StorePage implements OnInit {
         }
       }
 
-      this.initialize();
+      this.initialize(false);
     });
   }
 
