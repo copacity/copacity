@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Product, ProductImage, ProductProperty, ProductPropertyOption } from '../app-intefaces';
+import { Product, ProductImage, ProductProperty, ProductPropertyOption, CartProduct } from '../app-intefaces';
 import { Observable } from 'rxjs';
 import { map, flatMap, filter } from 'rxjs/operators';
 import { ProductPropertyOptionComponent } from '../cs-components/product-property-option/product-property-option.component';
@@ -257,6 +257,8 @@ export class ProductsService {
     );
   }
 
+  // --------------------- INVENTORY
+
   public getAllProductPropertyOptions(idStore: string, idProduct: string, idProductProperty: string): Observable<ProductPropertyOption[]> {
     let productPropertyOptions = this.angularFirestore
       .collection('stores').doc(idStore)
@@ -272,6 +274,36 @@ export class ProductsService {
         const id = a.payload.doc.id;
 
         return { id, ...data };
+      }))
+    );
+  }
+
+  public updateCartInventory(idStore: string, idProduct: string, idInventory: string, data: any) {
+    return this.angularFirestore.collection('stores').doc(idStore)
+      .collection(this.collectionName).doc(idProduct)
+      .collection('inventory').doc(idInventory).update(data);
+  }
+
+  public addCartInventory(idStore: string, idProduct: string, cartProduct: CartProduct): Promise<DocumentReference> {
+    return this.angularFirestore.collection('stores').doc(idStore)
+      .collection(this.collectionName).doc(idProduct)
+      .collection('inventory').add(cartProduct);
+  }
+
+  public getCartInventory(idStore: string, idProduct: string): Observable<CartProduct[]> {
+    
+    let cartInventoryCollection = this.angularFirestore
+      .collection('stores').doc(idStore)
+      .collection(this.collectionName).doc(idProduct)
+      .collection('inventory', ref => ref
+      .where('deleted', '==', false).orderBy("quantity"))
+
+    return cartInventoryCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as CartProduct;
+        data.id = a.payload.doc.id;
+
+        return data;
       }))
     );
   }

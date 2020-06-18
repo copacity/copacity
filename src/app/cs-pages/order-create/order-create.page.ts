@@ -219,7 +219,7 @@ export class OrderCreatePage implements OnInit {
       if (this.appService.currentUser) {
         if (this.appService.addressChecked) {
 
-          this.loaderComponent.startLoading("Enviando Pedido, por favor espere un momento...")
+          this.loaderComponent.startLoading("Enviando Pedido, por favor espere un momento...");
 
           setTimeout(() => {
             let order: Order = {
@@ -280,7 +280,7 @@ export class OrderCreatePage implements OnInit {
                 });
               });
             });
-          }, 2000);
+          }, 1000);
         } else {
           this.presentAlert("Debes seleccionar una direccion antes de enviar el pedido", "", () => { }, 'Entendido!');
         }

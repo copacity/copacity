@@ -153,7 +153,7 @@
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
             <a (click)="openBarCodeScanner()"
-              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 2px;color: red;font-weight: bold;margin: 2px;">
+              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
               <i class="fa fa-qrcode"></i>&nbsp;QR</a>
             <!-- <i (click)="close()" class="fa fa-times-circle"
               style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
@@ -185,7 +185,7 @@
             <div class="profile-body-no-apply">
 
               <div class="store-product">
-                <h2 class="store-product-title" style="font-size: 1.5em;padding-top: 5px;">{{product?.name }}</h2>
+                <h2 class="store-product-title" style="font-size: 1.5em;padding-top: 5px;padding-right: 140px;">{{product?.name }}</h2>
 
                 <span class="store-product-price">
                   <em *ngIf="product?.discount && product?.discount > 0"

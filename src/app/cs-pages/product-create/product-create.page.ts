@@ -251,7 +251,7 @@ export class ProductCreatePage implements OnInit {
 
     if (!this.isGift) {
       this.form = this.formBuilder.group({
-        name: ['', [Validators.required, Validators.maxLength(30)]],
+        name: ['', [Validators.required, Validators.maxLength(50)]],
         category: ['', [Validators.required]],
         price: ['', [Validators.required]],
         description: ['', [Validators.maxLength(500)]],
@@ -259,7 +259,7 @@ export class ProductCreatePage implements OnInit {
       });
     } else {
       this.form = this.formBuilder.group({
-        name: ['', [Validators.required, Validators.maxLength(30)]],
+        name: ['', [Validators.required, Validators.maxLength(50)]],
         category: [''],
         price: ['', [Validators.required]],
         description: ['', [Validators.maxLength(500)]],
@@ -288,7 +288,7 @@ export class ProductCreatePage implements OnInit {
           price: this.form.value.price,
           idProductCategory: this.form.value.category,
           discount: this.form.value.discount,
-          soldOut: false,
+          soldOut: true,
           isGift: this.isGift
         }
 

@@ -1,14 +1,14 @@
 import { LocationStrategy } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, ModuleWithComponentFactories } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AlertController, PopoverController, ToastController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { AppService } from 'src/app/cs-services/app.service';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { ProductCategoriesService } from 'src/app/cs-services/productCategories.service';
-import { Product, Store, ProductCategory, Order, File, ProductProperty } from 'src/app/app-intefaces';
+import { Product, Store, ProductCategory, Order, File } from 'src/app/app-intefaces';
 import { CartPage } from '../cart/cart.page';
 import { SuperTabs } from '@ionic-super-tabs/angular';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -20,7 +20,7 @@ import { StorageService } from 'src/app/cs-services/storage.service';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { ProductCategoriesPage } from '../product-categories/product-categories.page';
 import { OrdersService } from 'src/app/cs-services/orders.service';
-import { OrderStatus, StoreStatus } from 'src/app/app-enums';
+import { StoreStatus } from 'src/app/app-enums';
 import { OrderDetailPage } from '../order-detail/order-detail.page';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
@@ -38,6 +38,7 @@ import { StorePointsPage } from '../store-points/store-points.page';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generator/barcode-generator.component';
+import { ProductInventoryPage } from '../product-inventory/product-inventory.page';
 
 @Component({
   selector: 'app-store',
@@ -116,7 +117,6 @@ export class StorePage implements OnInit {
     private productCategoriesService: ProductCategoriesService,
     private storeCategoryNamePipe: StoreCategoryNamePipe,
     private sectornamePipe: SectorNamePipe,
-    private sectorService: SectorsService,
     private storeCategoryService: StoreCategoriesService,
     private locationStrategy: LocationStrategy,
     private ordersService: OrdersService
@@ -945,6 +945,22 @@ export class StorePage implements OnInit {
     } else {
       this.SignIn();
     }
+  }
+
+  async openProductInventoryPage(product: Product) {
+    let modal = await this.popoverController.create({
+      component: ProductInventoryPage,
+      componentProps: { product: product },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
   }
 
   openStoreCouponsPage() {

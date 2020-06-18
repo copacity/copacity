@@ -39,7 +39,7 @@ export class ProductPropertyOptionComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      name: [this.productPropertyOption.name, [Validators.required, Validators.maxLength(30)]],
+      name: [this.productPropertyOption.name, [Validators.required, Validators.maxLength(100)]],
       price: [this.productPropertyOption.price, [Validators.max(9999999999)]]
     });
   }

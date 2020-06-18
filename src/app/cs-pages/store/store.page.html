@@ -366,7 +366,7 @@
                       </tr>
                       <tr *ngIf="isAdmin">
                         <td style="padding: 0px 0px 0px 0px;">
-                          <a *ngIf="isAdmin" style="color:red;"
+                          <a (click)="openProductInventoryPage(product)" *ngIf="isAdmin" style="color:red;"
                             class="button button-round-small shadow-large button-full button-s">
                             <i class="fa fa-dolly-flatbed add-button"
                               style="color: black;padding-right: 5px;"></i>Inventario</a>

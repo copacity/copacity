@@ -37,6 +37,8 @@ import { TermsServicePageModule } from './cs-pages/terms-service/terms-service.m
 import { PrivacyPolicyPageModule } from './cs-pages/privacy-policy/privacy-policy.module';
 import { StorePointsPageModule } from './cs-pages/store-points/store-points.module';
 import { StoreCouponsPageModule } from './cs-pages/store-coupons/store-coupons.module';
+import { ProductInventoryPage } from './cs-pages/product-inventory/product-inventory.page';
+import { ProductInventoryPageModule } from './cs-pages/product-inventory/product-inventory.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -59,7 +61,7 @@ import { StoreCouponsPageModule } from './cs-pages/store-coupons/store-coupons.m
     AngularFireMessagingModule,
     SuperTabsModule.forRoot(),
 
-    /**COPABACANA COMPONENTS*/
+    /** COMPONENTS*/
     ComponentsModule,
     CartPageModule,
     StoreCreatePageModule,
@@ -69,6 +71,7 @@ import { StoreCouponsPageModule } from './cs-pages/store-coupons/store-coupons.m
     ProductCategoriesPageModule,
     ProductCategoriesCreatePageModule,
     ProductDetailPageModule,
+    ProductInventoryPageModule,
     OrderDetailPageModule,
     OrderCreatePageModule,
     AddressListPageModule,

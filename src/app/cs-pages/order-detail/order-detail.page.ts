@@ -50,8 +50,6 @@ export class OrderDetailPage implements OnInit {
         this.addresses = this.ordersService.getAddresses(this.store.id, this.navParams.data.id);
 
         this.cartProducts.subscribe((cartP) => {
-          // this.total = cartP.reduce((i, j) => i + (j.checked ? j.product.price * j.quantity : 0), 0);
-          // this.discount = cartP.reduce((i, j) => i + ((j.checked && j.product.discount && j.product.discount>0)? (j.product.price * j.quantity * (j.product.discount / 100)):0), 0);
           this.cartService.setCart(cartP);
         });
       });

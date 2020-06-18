@@ -161,7 +161,7 @@
         <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
           <ion-slide (click)="goToStore($event, store)" *ngFor="let store of stores?.slice().reverse();">
             <div class="profile-2">
-              <img style="width: 150px;margin: 5px 5px 0px 5px;" class="profile-image preload-image"
+              <img style="width: 150px;margin: 5px 0px 5px 0px;" class="profile-image preload-image"
                 [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
             </div>
             <!-- <img src="{{store.logo}}"> -->
@@ -295,7 +295,7 @@
                   </div>
 
                   <!-- {{ !store?'hidden':'' }} -->
-                  <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} bottom-10"
+                  <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} bottom-20"
                     *ngFor="let store of stores; let i = index">
                     <div class="blog-col-item" style="margin-bottom: 0px">
                       <a (click)="goToStore($event, store)">
