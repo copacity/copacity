@@ -68,7 +68,7 @@ export class StoreInformationComponent implements OnInit {
           this.popoverController.dismiss(result);
         });
       });
-    }, 3000);
+    }, 500);
   }
 
   async openBarCodeGenerator() {

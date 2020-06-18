@@ -70,7 +70,7 @@ export class ProfileUpdatePage implements OnInit {
             console.log(error);
             this.presentAlert("Ha ocurrido un error mientras acutalizabamos tu perfil!", error, () => this.popoverCtrl.dismiss(true));
           });
-      }, 2000); // Animation Delay
+      }, 500); // Animation Delay
     } else {
       this.form.markAllAsTouched();
     }

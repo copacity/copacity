@@ -125,7 +125,7 @@ export class ContactPage implements OnInit {
         this.popoverController.dismiss();
         this.presentToast("Has abandonado la sesión!", null);
         this.loader.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -212,7 +212,7 @@ export class ContactPage implements OnInit {
             this.presentAlert("Mensaje enviado exitosamente", () => { });
             this.buildForm();
           });
-        }, 2000);
+        }, 500);
       } else {
         this.form.markAllAsTouched();
       }
@@ -224,7 +224,7 @@ export class ContactPage implements OnInit {
   doRefresh(event) {
     setTimeout(() => {
       event.target.complete();
-    }, 2000);
+    }, 500);
   }
 
   //--------------------------------------------------------------

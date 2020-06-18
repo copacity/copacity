@@ -58,7 +58,7 @@ export class AppComponent {
         this.popoverController.dismiss();
         this.presentToast("Has abandonado la sesión!");
         this.loaderComponent.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 

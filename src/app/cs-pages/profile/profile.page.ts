@@ -121,7 +121,7 @@ export class ProfilePage implements OnInit {
                 this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
               });
             });
-          }, 2000);
+          }, 500);
         }
       });
 
@@ -200,7 +200,7 @@ export class ProfilePage implements OnInit {
   doRefresh(event) {
     setTimeout(() => {
       event.target.complete();
-    }, 2000);
+    }, 500);
   }
 
   async SignIn() {
@@ -220,7 +220,7 @@ export class ProfilePage implements OnInit {
         this.popoverController.dismiss();
         this.presentToast("Has abandonado la sesión!", null);
         this.loaderComponent.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 

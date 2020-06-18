@@ -27,7 +27,6 @@ import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.com
 import { AngularFireAuth } from '@angular/fire/auth';
 import { StoreCategoryNamePipe } from 'src/app/cs-pipes/store-category-name.pipe';
 import { SectorNamePipe } from 'src/app/cs-pipes/sector-name.pipe';
-import { SectorsService } from 'src/app/cs-services/sectors.service';
 import { StoreCategoriesService } from 'src/app/cs-services/storeCategories.service';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { CropperImageComponent } from 'src/app/cs-components/cropper-image/cropper-image.component';
@@ -39,6 +38,7 @@ import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-v
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generator/barcode-generator.component';
 import { ProductInventoryPage } from '../product-inventory/product-inventory.page';
+import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 
 @Component({
   selector: 'app-store',
@@ -107,6 +107,7 @@ export class StorePage implements OnInit {
     public popoverController: PopoverController,
     private route: ActivatedRoute,
     private loaderComponent: LoaderComponent,
+    public cartInventoryService: CartInventoryService,
     public cartSevice: CartService,
     public appService: AppService,
     private storageService: StorageService,
@@ -201,7 +202,7 @@ export class StorePage implements OnInit {
         this.popoverController.dismiss();
         this.presentToast("Has abandonado la sesión!", null);
         this.loaderComponent.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -236,7 +237,7 @@ export class StorePage implements OnInit {
         });
       });
       event.target.complete();
-    }, 2000);
+    }, 500);
   }
 
   close() {
@@ -362,7 +363,7 @@ export class StorePage implements OnInit {
                 this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
               });
             });
-          }, 2000);
+          }, 500);
         }
       });
 
@@ -455,40 +456,48 @@ export class StorePage implements OnInit {
   async addToCart(e: any, product: Product) {
 
     if (!product.soldOut) {
-      let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
+      this.cartInventoryService.clearCart();
+      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, product.id)
+        .subscribe((cartP) => {
 
-      let subscribe = productPropertiesResult.subscribe(async productProperties => {
-        productProperties.forEach(productProperty => {
-          let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
-          let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
-            productProperty.productPropertyOptions = productPropertyOptions;
-            subscribe2.unsubscribe();
+          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
+
+          let subscribe = productPropertiesResult.subscribe(async productProperties => {
+            productProperties.forEach(productProperty => {
+              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
+              let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+                productProperty.productPropertyOptions = productPropertyOptions;
+                subscribe2.unsubscribe();
+              });
+            });
+
+            productProperties = productProperties;
+            subscribe.unsubscribe();
+
+            let modal = await this.popoverController.create({
+              component: ProductPropertiesSelectionComponent,
+              mode: 'ios',
+              event: e,
+              componentProps: { isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
+            });
+
+            modal.onDidDismiss()
+              .then((data) => {
+                const result = data['data'];
+
+                if (result) {
+                  this.animateCSS('tada');
+                  this.cartSevice.addProduct(result);
+                  this.presentToast(product.name + ' ha sido agregado al carrito!', result.product.image);
+                }
+              });
+
+            modal.present();
           });
+
+
+          subs.unsubscribe();
         });
-
-        productProperties = productProperties;
-        subscribe.unsubscribe();
-
-        let modal = await this.popoverController.create({
-          component: ProductPropertiesSelectionComponent,
-          mode: 'ios',
-          event: e,
-          componentProps: { product: product, productProperties: productProperties, limitQuantity: 100 }
-        });
-
-        modal.onDidDismiss()
-          .then((data) => {
-            const result = data['data'];
-
-            if (result) {
-              this.animateCSS('tada');
-              this.cartSevice.addProduct(result);
-              this.presentToast(product.name + ' ha sido agregado al carrito!', result.product.image);
-            }
-          });
-
-        modal.present();
-      });
     }
   }
 
@@ -548,7 +557,7 @@ export class StorePage implements OnInit {
 
     setTimeout(() => {
       this.getProducts(e.target.value)
-    }, 1000);
+    }, 500);
   }
 
   searchProducts(event) {
@@ -573,7 +582,7 @@ export class StorePage implements OnInit {
           }
         });
       });
-    }, 2000);
+    }, 500);
 
 
     // this.appService.appSubcriptions_Products.push(this.productsService.getByProductCategoryId(this.route.snapshot.params.id, idProductCategory, this.productsBatch, this.lastProductToken).subscribe(productArray => {
@@ -722,7 +731,7 @@ export class StorePage implements OnInit {
           this.store = result;
         });
       });
-    }, 3000);
+    }, 500);
   }
 
   loadMoreProducts(event) {
@@ -739,7 +748,7 @@ export class StorePage implements OnInit {
       //this.products = [];
       this.getProducts(this.idProductCategory);
       event.target.complete();
-    }, 2000);
+    }, 500);
   }
 
   //--------------------------------------------------------------
@@ -797,7 +806,7 @@ export class StorePage implements OnInit {
       } else {
         this.searchingOrders = false;
       }
-    }, 1000);
+    }, 500);
   }
 
   async openOrderDetailPage(idOrder: string) {
@@ -837,7 +846,7 @@ export class StorePage implements OnInit {
     setTimeout(() => {
       this.getOrders(this.idOrderState);
       event.target.complete();
-    }, 2000);
+    }, 500);
   }
 
   //--------------------------------------------------------------

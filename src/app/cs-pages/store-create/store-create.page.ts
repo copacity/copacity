@@ -133,7 +133,7 @@ export class StoreCreatePage implements OnInit {
             console.log(error);
             alert(error);
           });
-      }, 2000); // Animation Delay
+      }, 500); // Animation Delay
     } else {
       this.form.markAllAsTouched();
     }

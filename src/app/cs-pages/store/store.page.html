@@ -241,7 +241,7 @@
                 <a (click)="openStorePointsPage()" class="button button-round-small button-full"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
                   <i class="fas fa-gift"
-                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;REGALOS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    style="font-size: 1.5em;color: red;"></i><span>&nbsp;REGALOS&nbsp;</span>
                 </a>
               </div>
               <div class="one-half last-column">
@@ -355,13 +355,6 @@
                           <a *ngIf="isAdmin" (click)="openProductUpdatePage(product)"
                             class="icon icon-s icon-round shadow-small">
                             <i class="fa fa-edit" style="color: black"></i></a>
-                          <!-- <ion-list *ngIf="isAdmin">
-                            <ion-item style="text-align: -webkit-right;">
-                              <ion-label style="color: gray;font-size: medium;">Activo</ion-label>
-                              <ion-toggle (ionChange)="productSoldOut($event, product)" mode="ios" slot="start"
-                                name="blueberry" checked="{{(product?.soldOut)?'false':'true' }}"></ion-toggle>
-                            </ion-item>
-                          </ion-list> -->
                         </td>
                       </tr>
                       <tr *ngIf="isAdmin">

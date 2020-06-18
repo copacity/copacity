@@ -57,16 +57,29 @@
         </div>
       </div>
 
+      <div *ngIf="searching">
+        <div class="one-half" *ngFor="let item of [1,2,3,4,5,6]">
+          <div class="blog-col-item">
+            <a>
+              <ion-label>
+                <h3>
+                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                </h3>
+                <p>
+                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                </p>
+                <p>
+                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                </p>
+              </ion-label>
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div *ngFor="let cartProduct of cartInventoryService.cart; let i = index">
         <table style="margin-bottom: 0px;">
           <tr>
-            <!-- <td style="vertical-align: top;width: 120px;text-align: left;">
-              <img (click)="openImageViewer(cartProduct.product)" class="round-small preload-image"
-                src="../../../assets/icon/box-icon.png"
-                alt="img" style="height: 100px;width: 100px;">
-              <a (click)="removeCartItem(cartProduct)"
-                style="padding-top: 5px;font-size: 1em;color: red;font-weight: bold;">Borrar</a>
-            </td> -->
             <td style="vertical-align: top;">
               <table>
                 <tr>
@@ -100,12 +113,14 @@
         </table>
       </div>
 
-      <div *ngIf="cartInventoryService.cart.length == 0" class="boxed-text-huge"
+      <div *ngIf="cartInventoryService.cart.length == 0 && !searching" class="boxed-text-huge"
         style="padding-top: 20px;color: red;padding-bottom: 20px;">
         <h4>No se tienes mercancia de este producto</h4>
       </div>
 
       <div *ngIf="cartInventoryService.cart.length != 0" class="store-cart-total bottom-40">
+        <div class="divider" style="background-color: red;margin-bottom: 5px"></div>
+
         <strong style="font-size: 1.2em;" class="uppercase ultrabold">Total Unidades</strong>
         <span style="font-size: 1.2em;" class="uppercase ultrabold">{{ cartInventoryService.cartItemCount.value }}</span>
         <div class="clear">
@@ -113,9 +128,9 @@
       </div>
 
       <div class="top-20">
-        <a (click)="close()"
+        <!-- <a (click)="close()"
           style="background-color: white;color:red;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;border: double;border-color: red;"
-          class="button button-round-small shadow-large button-full button-s">CANCELAR</a>
+          class="button button-round-small shadow-large button-full button-s">CANCELAR</a> -->
         <a (click)="saveChanges()"
           style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
           class="button button-round-small shadow-large button-full button-s">GUARDAR CAMBIOS</a>

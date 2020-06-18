@@ -270,7 +270,7 @@ export class SearchPage {
     setTimeout(() => {
       //this.searchTextFunc(this.searchText);
       event.target.complete();
-    }, 1000);
+    }, 500);
   }
 
   async openProductDetailPage(idProduct: string) {

@@ -102,7 +102,7 @@ export class StoreUpdatePage implements OnInit {
             console.log(error);
             this.presentAlert("Ha ocurrido un error mientras acutalizabamos tu tienda!", error, () => this.modalCtrl.dismiss(true));
           });
-      }, 2000); // Animation Delay
+      }, 500); // Animation Delay
     } else {
       this.form.markAllAsTouched();
     }

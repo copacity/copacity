@@ -10,7 +10,7 @@ export class CartInventoryService {
   data: CartProduct[];
 
   public cart = [];
-  private cartItemCount = new BehaviorSubject(0);
+  public cartItemCount = new BehaviorSubject(0);
 
   constructor(private appService: AppService) { }
 

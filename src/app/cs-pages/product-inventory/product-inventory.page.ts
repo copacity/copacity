@@ -16,6 +16,7 @@ import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 })
 export class ProductInventoryPage implements OnInit {
   product: Product;
+  searching: boolean = false;
 
   constructor(public popoverController: PopoverController,
     private navParams: NavParams,
@@ -26,9 +27,11 @@ export class ProductInventoryPage implements OnInit {
     public cartInventoryService: CartInventoryService) {
     this.product = this.navParams.data.product;
 
+    this.searching = true;
     this.cartInventoryService.clearCart();
     let subs = this.productsService.getCartInventory(this.appService.currentStore.id, this.product.id)
       .subscribe((cartP) => {
+        this.searching = false;
         this.cartInventoryService.setCart(cartP);
         this.cartInventoryService.cartQuantity();
         subs.unsubscribe();
@@ -62,7 +65,7 @@ export class ProductInventoryPage implements OnInit {
         component: ProductPropertiesSelectionComponent,
         mode: 'ios',
         event: e,
-        componentProps: { product: product, productProperties: productProperties, limitQuantity: 100 }
+        componentProps: { isInventory: true, product: product, productProperties: productProperties, cart: [], limitQuantity: 100, quantityByPoints: -1 }
       });
 
       modal.onDidDismiss()
@@ -152,7 +155,7 @@ export class ProductInventoryPage implements OnInit {
           });
         });
       });
-    }, 1000);
+    }, 500);
   }
 
   addCartInventory(idProduct: string, index: number) {

@@ -140,6 +140,6 @@ export class AddressListPage implements OnInit {
           });
         });
       }
-    }, 1000);
+    }, 500);
   }
 }

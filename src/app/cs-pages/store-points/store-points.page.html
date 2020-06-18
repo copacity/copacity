@@ -27,10 +27,12 @@
       </div>
     </div>
 
-    <div *ngIf="isAdmin" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;background-color: yellow;">
+    <div *ngIf="isAdmin" class="content contact-message top-20"
+      style="margin: 0px 0px 0px 0px;background-color: yellow;">
       <div class="content content-box round-small shadow-large" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <span class="center-text bolder" style="color: black;margin-bottom: 0px;line-height: 15px;">
-          Recuerda que por cada <b style="font-weight: bolder;">$500</b> pesos que el cliente invierte en una compra, se le da <b style="font-weight: bolder;">1 punto</b> (1 Punto ~ $500)
+          Recuerda que por cada <b style="font-weight: bolder;">$500</b> pesos que el cliente invierte en una compra, se
+          le da <b style="font-weight: bolder;">1 punto</b> (1 Punto ~ $500)
         </span>
       </div>
     </div>
@@ -79,23 +81,34 @@
           </tr>
 
           <tr *ngFor="let product of products | async; let i = index">
-            <td style="vertical-align: top;width: 120px;text-align: left;">
-              <img (click)="openImageViewer(product)" class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}" src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
+            <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
+              <img (click)="openImageViewer(product)"
+                class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}"
+                src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
                 style="height: 100px;width: 100px;">
+              <em *ngIf="product?.soldOut"
+                style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 78px;position: absolute;left: 5px;top: 20px;"
+                class="{{(product?.discount && product?.discount > 0)?'line-through':''}}">
+                <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium"
+                  alt="img">
+              </em>
             </td>
             <td>
               <table>
                 <tr>
                   <td colspan="2" style="text-align: left;padding: 0px 0px 10px 0px;"> <span
-                      style="font-weight: 700;color: black;" class="{{(product?.soldOut)?'sold-out':'' }}">{{product.name}}</span>
+                      style="font-weight: 700;color: black;"
+                      class="{{(product?.soldOut)?'sold-out':'' }}">{{product.name}}</span>
                   </td>
                 </tr>
                 <tr>
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight {{(product?.soldOut)?'sold-out':'' }}">PUNTOS:</span>
+                    <span style="font-size: 1em;font-weight: 700;"
+                      class="color-highlight {{(product?.soldOut)?'sold-out':'' }}">PUNTOS:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight {{(product?.soldOut)?'sold-out':'' }}">{{product.price}}</span>
+                    <span style="font-size: 1.2em;font-weight: 700;"
+                      class="color-highlight {{(product?.soldOut)?'sold-out':'' }}">{{product.price}}</span>
                   </td>
                 </tr>
                 <tr>
@@ -108,20 +121,18 @@
                       <i class="fa fa-edit" style="color: black"></i>
                     </a>
 
-                    <a (click)="addToCart($event, product)" *ngIf="(!isAdmin && !product?.soldOut) && product?.price <= points" style="color:white;"
+                    <a (click)="addToCart($event, product)"
+                      *ngIf="(!isAdmin && !product?.soldOut) && product?.price <= points" style="color:white;"
                       class="button button-round-small shadow-large bg-highlight button-full button-s">
                       RECLAMAR</a>
                   </td>
                 </tr>
                 <tr *ngIf="isAdmin">
-                  <td colspan="3" style="padding: 0px 0px 0px 0px;">
-                    <ion-list style="padding-top: 0px;">
-                      <ion-item style="text-align: -webkit-right;">
-                        <ion-label style="color: gray;font-size: medium;">Activo</ion-label>
-                        <ion-toggle (ionChange)="productSoldOut($event, product)" mode="ios" slot="start"
-                          name="blueberry" checked="{{(product?.soldOut)?'false':'true' }}"></ion-toggle>
-                      </ion-item>
-                    </ion-list>
+                  <td colspan="3" style="padding: 0px 0px 0px 0px;text-align: right;">
+                    <a (click)="openProductInventoryPage(product)" *ngIf="isAdmin" style="color:red;"
+                      class="button button-round-small shadow-large button-full button-s">
+                      <i class="fa fa-dolly-flatbed add-button"
+                        style="color: black;padding-right: 5px;"></i>Inventario</a>
                   </td>
                 </tr>
               </table>
@@ -130,13 +141,5 @@
         </table>
       </div>
     </div>
-
-    <!-- <ion-toolbar style="font-size: 18px;">
-      <ion-title>
-        <a (click)="close()"
-          style="background-color: white;color:black;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">Cerrar</a>
-      </ion-title>
-    </ion-toolbar> -->
   </div>
 </div>

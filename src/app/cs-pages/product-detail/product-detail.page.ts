@@ -19,6 +19,7 @@ import { StoresService } from 'src/app/cs-services/stores.service';
 import { Subscription } from 'rxjs';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
+import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -43,6 +44,7 @@ export class ProductDetailPage implements OnInit {
     public toastController: ToastController,
     private route: ActivatedRoute,
     public cartSevice: CartService,
+    public cartInventoryService: CartInventoryService,
     public alertController: AlertController,
     private angularFireAuth: AngularFireAuth,
     private loaderComponent: LoaderComponent,
@@ -202,7 +204,7 @@ export class ProductDetailPage implements OnInit {
         //this.popoverCtrl.dismiss();
         this.presentToast("Has abandonado la sesión!");
         this.loaderComponent.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -386,65 +388,48 @@ export class ProductDetailPage implements OnInit {
 
   addToCart(e: any) {
 
-    let productProperties: ProductProperty[] = []
+    this.cartInventoryService.clearCart();
+    let subs = this.productService.getCartInventory(this.appService.currentStore.id, this.product.id)
+      .subscribe((cartP) => {
+        let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, this.product.id);
 
-    let productPropertySubs: Subscription;
-    let productPropertyOptionSubs: Subscription;
-    let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, this.product.id);
-
-    let subscribe = productPropertiesResult.subscribe(async productProperties => {
-      productProperties.forEach(productProperty => {
-        let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
-        let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
-          productProperty.productPropertyOptions = productPropertyOptions;
-          subscribe2.unsubscribe();
+        let subscribe = productPropertiesResult.subscribe(async productProperties => {
+          productProperties.forEach(productProperty => {
+            let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
+            let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+              productProperty.productPropertyOptions = productPropertyOptions;
+              subscribe2.unsubscribe();
+            });
+          });
+    
+          productProperties = productProperties;
+          subscribe.unsubscribe();
+    
+          let modal = await this.popoverCtrl.create({
+            component: ProductPropertiesSelectionComponent,
+            mode: 'ios',
+            event: e,
+            componentProps: { isInventory: false, product: this.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 },
+            backdropDismiss: false,
+          });
+    
+          modal.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+    
+              if (result) {
+                this.animateCSS('tada');
+                this.cartSevice.addProduct(result);
+                this.presentToast(this.product.name + ' ha sido agregado al carrito!');
+                this.close();
+              }
+            });
+    
+          modal.present();
         });
+
+        subs.unsubscribe();
       });
-
-      productProperties = productProperties;
-      subscribe.unsubscribe();
-
-      let modal = await this.popoverCtrl.create({
-        component: ProductPropertiesSelectionComponent,
-        mode: 'ios',
-        event: e,
-        componentProps: { product: this.product, productProperties: productProperties, limitQuantity: 100 },
-        backdropDismiss: false,
-      });
-
-      modal.onDidDismiss()
-        .then((data) => {
-          const result = data['data'];
-
-          if (result) {
-            this.animateCSS('tada');
-            this.cartSevice.addProduct(result);
-            this.presentToast(this.product.name + ' ha sido agregado al carrito!');
-            this.close();
-          }
-        });
-
-      modal.present();
-    });
-
-    // this.animateCSS('tada');
-
-    // let cartProduct: CartProduct = {
-    //   id: '',
-    //   product: this.product,
-    //   quantity: 1,
-    //   checked: true,
-    //   dateCreated: new Date(),
-    //   lastUpdated: new Date(),
-    //   deleted: false,
-    //   propertiesSelection: []
-
-    // };
-
-    // this.cartService.addProduct(cartProduct);
-    // this.presentToast(this.product.name + ' ha sido agregado al carrito!');
-
-    // this.close();
   }
 
   async openBarCodeScanner() {

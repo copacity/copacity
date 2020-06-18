@@ -1,6 +1,6 @@
 {
   "appId": "com.copacity.app",
-  "appName": "copabacana-stores",
+  "appName": "copacity",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

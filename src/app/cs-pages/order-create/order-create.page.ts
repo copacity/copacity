@@ -90,7 +90,7 @@ export class OrderCreatePage implements OnInit {
         this.popoverController.dismiss();
         this.presentToast("Has abandonado la sesión!", null);
         this.loaderComponent.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -280,7 +280,7 @@ export class OrderCreatePage implements OnInit {
                 });
               });
             });
-          }, 1000);
+          }, 500);
         } else {
           this.presentAlert("Debes seleccionar una direccion antes de enviar el pedido", "", () => { }, 'Entendido!');
         }

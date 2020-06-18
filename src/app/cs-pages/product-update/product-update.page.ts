@@ -334,7 +334,7 @@ export class ProductUpdatePage implements OnInit {
             this.presentAlert("Ocurrio un error mientras se actualizaba la foto", error, () => { }),
               console.log(error);
           });
-      }, 2000); // Animation Delay
+      }, 500); // Animation Delay
     } else {
       this.form.markAllAsTouched();
     }
@@ -396,7 +396,7 @@ export class ProductUpdatePage implements OnInit {
                 });
               });
             });
-          }, 2000);
+          }, 500);
         }
       });
 

@@ -101,7 +101,7 @@ export class ProductCreatePage implements OnInit {
         //this.popoverCtrl.dismiss();
         this.presentToast("Has abandonado la sesión!");
         this.loader.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -272,7 +272,7 @@ export class ProductCreatePage implements OnInit {
   createProduct() {
 
     if (this.form.valid) {
-      this.loader.startLoading("Estamos creando su producto/regalo por favor espere un momento...");
+      this.loader.startLoading("Estamos creando su producto por favor espere un momento...");
 
       setTimeout(() => {
 
@@ -301,14 +301,14 @@ export class ProductCreatePage implements OnInit {
                 if (this.imgURL.length != 0) {
                   this.saveImages(doc.id, 0).then(() => {
                     this.loader.stopLoading();
-                    this.presentAlert("El producto/regalo ha sido creado exitosamente", "", () => {
+                    this.presentAlert("El producto ha sido creado exitosamente", "", () => {
                       //this.router.navigate(['/store', this.appService.currentStore.id]);
                       this.popoverCtrl.dismiss(doc.id);
                     })
                   });
                 } else {
                   this.loader.stopLoading();
-                  this.presentAlert("El producto/regalo ha sido creado exitosamente", "", () => {
+                  this.presentAlert("El producto ha sido creado exitosamente", "", () => {
                     this.popoverCtrl.dismiss(doc.id);
                     //this.router.navigate(['/store', this.appService.currentStore.id]);
                   });
@@ -321,7 +321,7 @@ export class ProductCreatePage implements OnInit {
             console.log(error);
             alert(error);
           });
-      }, 2000); // Animation Delay
+      }, 500); // Animation Delay
     } else {
       this.form.markAllAsTouched();
     }
@@ -383,7 +383,7 @@ export class ProductCreatePage implements OnInit {
                 }
               }, 300);
             });
-          }, 2000);
+          }, 500);
         }
       });
 
@@ -418,7 +418,7 @@ export class ProductCreatePage implements OnInit {
         this.openCropperImageComponent(reader.result);
       }
     } else {
-      this.presentAlert("No puedes subir mas de 10 imagenes para el mismo producto/regalo", "", () => { });
+      this.presentAlert("No puedes subir mas de 10 imagenes para el mismo producto", "", () => { });
     }
   }
 

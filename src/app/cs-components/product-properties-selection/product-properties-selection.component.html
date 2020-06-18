@@ -21,7 +21,7 @@
 
     <ion-item>
       <ion-label>Cantidad</ion-label>
-      <ion-select (ionChange)="quantityChange($event)" mode="ios" interface="action-sheet" value="1" cancelText="Cancelar"
+      <ion-select disabled ="{{ quantityDisabled }}" (ionChange)="quantityChange($event)" mode="ios" interface="action-sheet" value="1" cancelText="Cancelar"
         style="padding-right: 10px;">
         <ion-select-option value="{{number}}" *ngFor="let number of getNumbers()">{{number}}
         </ion-select-option>

@@ -110,7 +110,7 @@ export class OrderListPage implements OnInit {
 
     setTimeout(() => {
       this.getOrders(event.target.value);
-    }, 1000);
+    }, 500);
   }
 
   async openOrderDetailPage(idOrder: Order) {
@@ -197,7 +197,7 @@ export class OrderListPage implements OnInit {
         this.popoverController.dismiss();
         this.presentToast("Has abandonado la sesión!", null);
         this.loaderComponent.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -271,7 +271,7 @@ export class OrderListPage implements OnInit {
     setTimeout(() => {
       //this.orders();
       event.target.complete();
-    }, 2000);
+    }, 500);
   }
 
   // loadMoreNotifications(event) {

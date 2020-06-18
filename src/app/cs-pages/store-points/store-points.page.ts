@@ -11,6 +11,8 @@ import { UsersService } from 'src/app/cs-services/users.service';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
+import { ProductInventoryPage } from '../product-inventory/product-inventory.page';
+import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 
 @Component({
   selector: 'app-store-points',
@@ -29,6 +31,7 @@ export class StorePointsPage implements OnInit {
     public cartService: CartService,
     private usersService: UsersService,
     public alertController: AlertController,
+    public cartInventoryService: CartInventoryService,
     public navParams: NavParams,
     private storesService: StoresService,
     private productsService: ProductsService) {
@@ -168,41 +171,64 @@ export class StorePointsPage implements OnInit {
   async addToCart(e: any, product: Product) {
 
     if (!product.soldOut) {
-      let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
 
-      let subscribe = productPropertiesResult.subscribe(async productProperties => {
-        productProperties.forEach(productProperty => {
-          let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
-          let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
-            productProperty.productPropertyOptions = productPropertyOptions;
-            subscribe2.unsubscribe();
+      this.cartInventoryService.clearCart();
+      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, product.id)
+        .subscribe((cartP) => {
+          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
+
+          let subscribe = productPropertiesResult.subscribe(async productProperties => {
+            productProperties.forEach(productProperty => {
+              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
+              let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+                productProperty.productPropertyOptions = productPropertyOptions;
+                subscribe2.unsubscribe();
+              });
+            });
+
+            productProperties = productProperties;
+            subscribe.unsubscribe();
+
+            let modal = await this.popoverController.create({
+              component: ProductPropertiesSelectionComponent,
+              mode: 'ios',
+              event: e,
+              componentProps: { isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: parseInt((this.points / product.price).toString()) }
+            });
+
+            modal.onDidDismiss()
+              .then((data) => {
+                const result = data['data'];
+
+                if (result) {
+                  this.cartService.addProduct(result);
+                  this.GetPoints();
+                  this.presentAlert("Tu regalo ha sido agregado al carrito, gracias por comprar en Copacity", '', () => { });
+                }
+              });
+
+            modal.present();
           });
+
+          subs.unsubscribe();
         });
-
-        productProperties = productProperties;
-        subscribe.unsubscribe();
-
-        let modal = await this.popoverController.create({
-          component: ProductPropertiesSelectionComponent,
-          mode: 'ios',
-          event: e,
-          componentProps: { product: product, productProperties: productProperties, limitQuantity: parseInt((this.points / product.price).toString()) }
-        });
-
-        modal.onDidDismiss()
-          .then((data) => {
-            const result = data['data'];
-
-            if (result) {
-              this.cartService.addProduct(result);
-              this.GetPoints();
-              this.presentAlert("Tu regalo ha sido agregado al carrito, gracias por comprar en Copacity", '', () => { });
-            }
-          });
-
-        modal.present();
-      });
     }
+  }
+
+  async openProductInventoryPage(product: Product) {
+    let modal = await this.popoverController.create({
+      component: ProductInventoryPage,
+      componentProps: { product: product },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
   }
 
   getProducts() {
@@ -221,7 +247,7 @@ export class StorePointsPage implements OnInit {
           }
         });
       });
-    }, 2000);
+    }, 500);
   }
 
   async openProductCreatePage() {

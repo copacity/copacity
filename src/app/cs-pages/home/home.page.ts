@@ -79,7 +79,7 @@ export class HomePage implements OnInit {
         this.popoverController.dismiss();
         this.presentToast("Has abandonado la sesión!");
         this.loaderComponent.stopLoading();
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -266,7 +266,7 @@ export class HomePage implements OnInit {
       //     });
       //   });
       // }
-    }, 1000);
+    }, 500);
   }
 
   //--------------------------------------------------------------
@@ -405,6 +405,6 @@ export class HomePage implements OnInit {
     setTimeout(() => {
       window.location.reload();
       event.target.complete();
-    }, 1000);
+    }, 500);
   }
 }

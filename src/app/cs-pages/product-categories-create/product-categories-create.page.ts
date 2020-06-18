@@ -102,7 +102,7 @@ export class ProductCategoriesCreatePage implements OnInit {
               alert(error);
             });
         }
-      }, 2000);
+      }, 500);
     } else {
       this.form.markAllAsTouched();
     }

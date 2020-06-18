@@ -219,7 +219,7 @@ export class OrderDetailPage implements OnInit {
           });
         });
       });
-    }, 2000);
+    }, 500);
   }
 
   revertPoints() {
@@ -322,6 +322,6 @@ export class OrderDetailPage implements OnInit {
           });
         });
       });
-    }, 2000);
+    }, 500);
   }
 }
