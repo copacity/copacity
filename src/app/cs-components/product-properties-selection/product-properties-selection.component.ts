@@ -128,7 +128,6 @@ export class ProductPropertiesSelectionComponent implements OnInit {
   getNumbers() {
     let numbers = [];
 
-    debugger;
     if (this.navParams.data.quantityByPoints != -1 && this.navParams.data.limitQuantity > this.navParams.data.quantityByPoints) {
       this.navParams.data.limitQuantity = this.navParams.data.quantityByPoints;
     }
