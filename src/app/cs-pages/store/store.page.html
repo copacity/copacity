@@ -144,10 +144,10 @@
 
         <div class="profile-2">
           <img (click)="openImageViewer(store?.logo?store?.logo:'../../../assets/icon/no-image.png')"
-            style="width: 150px;" class="profile-image preload-image"
+            style="width: 150px;margin: 5px auto 0px auto;" class="profile-image preload-image"
             [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
 
-          <div *ngIf="isAdmin" class="under-slider-button">
+          <div *ngIf="isAdmin" class="under-slider-button" style="top: 25px;">
             <div class="cta-socials" style="text-align: center;">
 
               <a class="icon icon-s icon-round shadow-small" style="background-color: white;">
@@ -158,23 +158,9 @@
               </a>
             </div>
           </div>
-
         </div>
 
-        <!-- <div class="profile-right" style="text-align: center;">
-          <a>
-            <img style="margin: 0;" class="img-profile-store profile-image preload-image round-medium shadow-large" [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'">
-          </a>
-
-          <a class="color-theme" *ngIf="isAdmin" style="padding-top: 10px;">
-            <label for="file-upload">
-              <i class="fa fa-upload" style="color: black;padding-right: 5px;"></i> <small>Subir logo</small>
-            </label>
-            <input (change)="uploadFile($event)" id="file-upload" type="file" />
-          </a>
-        </div> -->
-
-        <div class="profile-1 bottom-30 top-30">
+        <div class="profile-1 bottom-30 top-25">
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
             <a (click)="shareStore($event)"
@@ -191,7 +177,67 @@
               <i class="fa fa-edit"></i></a>
 
             <div class="top-20"></div>
-            <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
+
+            <ion-slides [options]="appService.slideOpts2" style="max-width: 450px;">
+              <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-info-circle" style="font-size: 2.5em;color: red;"></i>
+                  <span style="font-size: .7em;margin: 15px;color: black;">Info</span>
+                </a>
+              </ion-slide>
+              <!-- <ion-slide (click)="goToStore($event, store)" style="margin: 5px;width: 60px;">
+                <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-gift"
+                    style="font-size: 2.5em;color: red;"></i><span style="font-size: .7em;color: black;">Destacados</span>
+                </a>
+              </ion-slide>
+              <ion-slide (click)="goToStore($event, store)" style="margin: 5px;width: 60px;">
+                <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 70px;height: 70px;border: double;">
+                  <i class="fas fa-gift"
+                    style="font-size: 2.5em;color: red;"></i><span style="font-size: .7em;color: black;">Secciones</span>
+                </a>
+              </ion-slide> -->
+              <ion-slide (click)="openStorePointsPage()" style="margin: 3px;width: 60px;">
+                <a  class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-gift" style="font-size: 2.5em;color: red;"></i><span
+                    style="font-size: .7em;color: black;margin: 10px;">Regalos</span>
+                </a>
+              </ion-slide>
+              <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: dotted;">
+                  <i class="fas fa-cut" style="font-size: 2.5em;color: red;"></i><span
+                    style="font-size: .7em;color: black;margin: 10px;">Cupones</span>
+                </a>
+              </ion-slide>
+              <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i><span
+                    style="font-size: .7em;color: black;">Reportes</span>
+                </a>
+              </ion-slide>
+              <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-handshake" style="font-size: 2.5em;color: red;"></i><span
+                    style="font-size: .7em;color: black;">Comisiones</span>
+                </a>
+              </ion-slide>
+              <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-file-invoice-dollar" style="font-size: 2.5em;color: red;"></i><span
+                    style="font-size: .7em;color: black;margin: 10px;">Factura</span>
+                </a>
+              </ion-slide>
+            </ion-slides>
+
+            <!-- <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
               <div class="one-half">
                 <a (click)="openStoreInformationComponent($event)" class="button button-round-small button-full"
                   style="color: red;font-size: 12px;border: double;margin-bottom: 0px;padding-top: 3px;">
@@ -251,10 +297,10 @@
                     style="font-size: 1.5em;color: red;"></i><span>&nbsp;VENDEDORES&nbsp;</span></a>
               </div>
               <div class="clear"></div>
-            </div>
+            </div>-->
 
             <div class="bottom-0">
-              <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
+              <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 20px;">
                 <div class="one-half">
                   <a (click)="openProductCreatePage()" class="button button-round-small button-full"
                     style="color: white;background-color: red;font-size: 12px;margin-bottom: 0px;">+ Producto</a>
