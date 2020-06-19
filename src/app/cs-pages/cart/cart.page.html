@@ -71,9 +71,9 @@
                 <tr *ngIf="!cartProduct.product?.isGift">
                   <td colspan="2" style="text-align: center;padding: 10px 0px 10px 0px;width: 120px;">
                     <div class="store-cart-qty-cart">
-                      <a (click)="add(cartProduct)"><i class="fa fa-plus"></i></a>
+                      <a (click)="add(cartProduct)" class="{{(cartProduct?.maxLimit == 0)?'sold-out':'' }}"><i class="fa fa-plus"></i></a>
                       <input disabled type="number" value="{{cartProduct?.quantity}}">
-                      <a (click)="remove(cartProduct)"><i class="fa fa-minus"></i></a>
+                      <a (click)="remove(cartProduct)" class="{{(cartProduct?.quantity == 1)?'sold-out':'' }}"><i class="fa fa-minus"></i></a>
                     </div>
                   </td>
                 </tr>

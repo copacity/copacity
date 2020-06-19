@@ -232,7 +232,8 @@ export class SearchPage {
       dateCreated: new Date(),
       lastUpdated: new Date(),
       deleted: false,
-      propertiesSelection: []
+      propertiesSelection: [],
+      maxLimit: 0
     };
 
     this.cartSevice.addProduct(cartProduct);

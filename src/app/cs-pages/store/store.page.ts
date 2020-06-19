@@ -242,9 +242,9 @@ export class StorePage implements OnInit {
 
   close() {
 
-    this.presentConfirm("Esta seguro que desea salir de " + this.store.name + "?", () => {
+    //this.presentConfirm("Esta seguro que desea salir de " + this.store.name + "?", () => {
       this.router.navigate(['/home']);
-    });
+    //});
   }
 
   async presentMenuUser(e) {

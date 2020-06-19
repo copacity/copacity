@@ -4,6 +4,7 @@ import { CartProduct, ProductProperty, PropertiesSelection } from 'src/app/app-i
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
+import { CartService } from 'src/app/cs-services/cart.service';
 
 @Component({
   selector: 'app-product-properties-selection',
@@ -21,7 +22,9 @@ export class ProductPropertiesSelectionComponent implements OnInit {
     private popoverCtrl: PopoverController,
     public appService: AppService,
     public navParams: NavParams,
-    public cartInventoryService: CartInventoryService) {
+    public cartInventoryService: CartInventoryService,
+    public cartService: CartService
+  ) {
 
 
     if (this.navParams.data.isInventory) {
@@ -74,21 +77,37 @@ export class ProductPropertiesSelectionComponent implements OnInit {
         dateCreated: new Date(),
         lastUpdated: new Date(),
         deleted: false,
-        propertiesSelection: this.propertiesSelection
+        propertiesSelection: this.propertiesSelection,
+        maxLimit: 0
       };
+
+
+      let cartQuantity = 0;
+      for (let [index, p] of this.cartService.getCart().entries()) {
+        if (this.cartInventoryService.compareProducts(p, cartProductTemp)) {
+          cartQuantity = p.quantity;
+        }
+      }
 
       let soldOut = true;
       for (let [index, p] of this.cartInventoryService.cart.entries()) {
-        if (cartProductTemp.product.id == p.product.id && this.cartInventoryService.compareProducts(p, cartProductTemp)) {
+        if (this.cartInventoryService.compareProducts(p, cartProductTemp)) {
           if (p.quantity == 0) {
             soldOut = true;
             this.quantityDisabled = true;
             this.validationMessage = "Producto Agotado";
             this.navParams.data.limitQuantity = 0;
           } else {
-            soldOut = false;
-            this.quantityDisabled = false;
-            this.navParams.data.limitQuantity = p.quantity
+            if ((p.quantity - cartQuantity) <= 0) {
+              soldOut = true;
+              this.quantityDisabled = true;
+              this.validationMessage = "Producto Agotado";
+              this.navParams.data.limitQuantity = 0;
+            } else {
+              soldOut = false;
+              this.quantityDisabled = false;
+              this.navParams.data.limitQuantity = p.quantity - cartQuantity;
+            }
           }
         }
       }
@@ -106,6 +125,26 @@ export class ProductPropertiesSelectionComponent implements OnInit {
 
   quantityChange(e: any) {
     this.quantity = parseInt(e.detail.value);
+
+    // if (!this.navParams.data.isInventory) {
+    //   let cartProduct: CartProduct = {
+    //     id: '',
+    //     product: this.navParams.data.product,
+    //     quantity: this.quantity,
+    //     checked: true,
+    //     dateCreated: new Date(),
+    //     lastUpdated: new Date(),
+    //     deleted: false,
+    //     propertiesSelection: this.propertiesSelection,
+    //     maxLimit: 0
+    //   };
+
+    //   for (let [index, p] of this.cartService.getCart().entries()) {
+    //     if (this.cartInventoryService.compareProducts(p, cartProduct)) {
+    //       this.navParams.data.limitQuantity = this.navParams.data.limitQuantity - p.quantity;
+    //     }
+    //   }
+    // }
   }
 
   accept() {
@@ -118,7 +157,8 @@ export class ProductPropertiesSelectionComponent implements OnInit {
         dateCreated: new Date(),
         lastUpdated: new Date(),
         deleted: false,
-        propertiesSelection: this.propertiesSelection
+        propertiesSelection: this.propertiesSelection,
+        maxLimit: this.navParams.data.limitQuantity - this.quantity
       };
 
       this.popoverCtrl.dismiss(cartProduct);

@@ -116,6 +116,7 @@ export interface CartProduct {
   id: string;
   product: Product;
   quantity: number;
+  maxLimit: number;
   checked: boolean;
   lastUpdated: Date;
   dateCreated: Date;

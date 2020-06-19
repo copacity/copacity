@@ -103,6 +103,11 @@ export class CartService {
     return this.cart.reduce((i, j) => i + ((j.product.isGift) ? j.product.price * j.quantity : 0), 0);
   }
 
+  getCartProductQuantity(cartProduct: CartProduct): number {
+
+    return 0 //this.cart.reduce((i, j) => i + ((j.product.isGift) ? j.product.price * j.quantity : 0), 0);
+  }
+
   hasGifts(): boolean {
     let hasGifts = false;
     for (let p of this.cart) {
@@ -120,6 +125,7 @@ export class CartService {
       if (p.product.id === cartProduct.product.id) {
         if (this.compareProducts(cartProduct, p)) {
           p.quantity += cartProduct.quantity;
+          p.maxLimit = cartProduct.maxLimit;
           added = true;
           break;
         }
@@ -158,7 +164,7 @@ export class CartService {
   addProductRecalculate(cartProduct: CartProduct) {
     let added = false;
     for (let [index, p] of this.cart.entries()) {
-      if (cartProduct.product.id == p.product.id && this.compareProducts(p, cartProduct)) {
+      if (this.compareProducts(p, cartProduct)) {
         if (p.quantity == 0) {
           this.cart.splice(index, 1);
         } else {

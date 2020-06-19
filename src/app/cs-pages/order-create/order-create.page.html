@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="close()">
-        <i class="fa fa-arrow-left" style="color: black;font-size: 1.8em;"></i>
+        <i class="fa fa-arrow-left" style="color: black;font-size: 1.5em;"></i>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
@@ -142,7 +142,7 @@
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
               <div class="link-list link-list-3" style="border: red;">
                 <strong *ngIf="!appService.addressChecked"
-                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;">Por
+                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
                   favor seleccione una
                   direccion!</strong>
                 <a (click)="openAddressListPage()" class="round-small shadow-tiny">
@@ -159,6 +159,87 @@
       </div>
 
       <div class="profile-1" style="top: -35px;">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
+
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">CUPONES</a>
+
+          <a (click)="openBarCodeScanner()"
+            style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;font-weight: bold;margin: 2px;"
+            class="color-highlight">
+            <i class="fa fa-qrcode"></i>&nbsp;QR</a>
+
+          <div id="page" class="top-10">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+              <table class="table-borders bottom-10" style="font-size: 1.2em;">
+                <tr>
+                  <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
+                    <a style="padding: 8px 8px;border: dotted;"
+                      class="button button-round-small button-full button-s color-highlight"> <i class="fa fa-cut"
+                        style="font-size: 1.5em;"></i> Ver Cupones Virtuales</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;text-align: left;margin: 10px;padding: 0px 0px 0px 0px;">
+                    <div class="input-style has-icon input-style-1 input-required">
+                      <i class="input-icon fa fa-ticket-alt" style="margin-top: 16px;"></i>
+                      <span>Código de cupón:</span>
+                      <input style="font-size: 1.2em;" type="name" placeholder="Código de cupón">
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
+                    <a style="color:white;padding: 8px 8px;width: 75px; background-color: red;"
+                      class="button button-round-small shadow-large button-full button-s">Aplicar</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-1" style="top: -70px;">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
+
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">METODO
+            DE PAGO</a>
+
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+              <div class="content header-clear-small">
+                <div class="link-list link-list-3">
+                  <a class="round-small shadow-tiny">
+                    <i class="fa fa-check-circle" style="color: green;"></i>
+                    <span style="font-size: 18px;">Contra-entrega</span>
+                  </a>
+                </div>
+                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
+                  <a class="round-small shadow-tiny">
+                    <span style="font-size: 18px;; color: gray;">Tarjeta de credito</span>
+                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
+                  </a>
+                </div>
+                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
+                  <a class="round-small shadow-tiny">
+                    <span style="font-size: 18px;; color: gray;">Debito (PSE)</span>
+                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-1" style="top: -105px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
@@ -233,88 +314,44 @@
         </div>
       </div>
 
-      <div class="profile-1" style="top: -70px;">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
-
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">CUPONES</a>
-
-          <a (click)="openBarCodeScanner()"
-            style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;font-weight: bold;margin: 2px;"
-            class="color-highlight">
-            <i class="fa fa-qrcode"></i>&nbsp;QR</a>
-
-          <div id="page" class="top-10">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <table class="table-borders bottom-10" style="font-size: 1.2em;">
-                <tr>
-                  <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
-                    <a style="padding: 8px 8px;border: dotted;"
-                      class="button button-round-small button-full button-s color-highlight"> <i class="fa fa-cut"
-                        style="font-size: 1.5em;"></i> Ver Cupones Virtuales</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top;text-align: left;margin: 10px;padding: 0px 0px 0px 0px;">
-                    <div class="input-style has-icon input-style-1 input-required">
-                      <i class="input-icon fa fa-ticket-alt" style="margin-top: 16px;"></i>
-                      <span>Código de cupón:</span>
-                      <input style="font-size: 1.2em;" type="name" placeholder="Código de cupón">
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
-                    <a style="color:white;padding: 8px 8px;width: 75px; background-color: red;"
-                      class="button button-round-small shadow-large button-full button-s">Aplicar</a>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="profile-1" style="top: -105px;">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
-
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">METODO
-            DE PAGO</a>
-
-          <div id="page">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <div class="content header-clear-small">
-                <div class="link-list link-list-3">
-                  <a class="round-small shadow-tiny">
-                    <i class="fa fa-check-circle" style="color: green;"></i>
-                    <span style="font-size: 18px;">Contra-entrega</span>
-                  </a>
-                </div>
-                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
-                  <a class="round-small shadow-tiny">
-                    <span style="font-size: 18px;; color: gray;">Tarjeta de credito</span>
-                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
-                  </a>
-                </div>
-                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
-                  <a class="round-small shadow-tiny">
-                    <span style="font-size: 18px;; color: gray;">Debito (PSE)</span>
-                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
-                  </a>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="profile-1 bottom-20" style="top: -140px;">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">QUIEN TE ASESORO?</a>
+
+            <div id="page">
+              <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+                <div class="content header-clear-small">
+                  <!-- <div class="link-list link-list-3">
+                    <a class="round-small shadow-tiny">
+                      <i class="fa fa-check-circle" style="color: green;"></i>
+                      <span style="font-size: 18px;">Contra-entrega</span>
+                    </a>
+                  </div>
+                  <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
+                    <a class="round-small shadow-tiny">
+                      <span style="font-size: 18px;; color: gray;">Tarjeta de credito</span>
+                      <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
+                    </a>
+                  </div>
+                  <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
+                    <a class="round-small shadow-tiny">
+                      <span style="font-size: 18px;; color: gray;">Debito (PSE)</span>
+                      <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
+                    </a>
+                  </div> -->
+
+                  
+                </div>
+  
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="profile-1 bottom-20" style="top: -194px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">

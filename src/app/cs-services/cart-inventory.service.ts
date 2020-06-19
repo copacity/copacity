@@ -35,12 +35,10 @@ export class CartInventoryService {
   addProduct(cartProduct: CartProduct) {
     let added = false;
     for (let p of this.cart) {
-      if (p.product.id === cartProduct.product.id) {
-        if (this.compareProducts(cartProduct, p)) {
-          p.quantity += cartProduct.quantity;
-          added = true;
-          break;
-        }
+      if (this.compareProducts(cartProduct, p)) {
+        p.quantity += cartProduct.quantity;
+        added = true;
+        break;
       }
     }
 
@@ -52,21 +50,22 @@ export class CartInventoryService {
   }
 
   compareProducts(c1: CartProduct, c2: CartProduct): boolean {
+    if (c1.product.id == c2.product.id) {
+      if (c1.propertiesSelection.length == c2.propertiesSelection.length) {
+        let assertsTarget: number = c1.propertiesSelection.length;
+        let assertsFound: number = 0;
 
-    if (c1.propertiesSelection.length == c2.propertiesSelection.length) {
-      let assertsTarget: number = c1.propertiesSelection.length;
-      let assertsFound: number = 0;
-
-      c1.propertiesSelection.forEach(property1 => {
-        c2.propertiesSelection.forEach(property2 => {
-          if (property1.idPropertyOption == property2.idPropertyOption) {
-            assertsFound++;
-          }
+        c1.propertiesSelection.forEach(property1 => {
+          c2.propertiesSelection.forEach(property2 => {
+            if (property1.idPropertyOption == property2.idPropertyOption) {
+              assertsFound++;
+            }
+          });
         });
-      });
 
-      if (assertsTarget == assertsFound) {
-        return true;
+        if (assertsTarget == assertsFound) {
+          return true;
+        }
       }
     }
 
@@ -76,7 +75,7 @@ export class CartInventoryService {
   addProductRecalculate(cartProduct: CartProduct) {
     let added = false;
     for (let [index, p] of this.cart.entries()) {
-      if (cartProduct.product.id == p.product.id && this.compareProducts(p, cartProduct)) {
+      if (this.compareProducts(p, cartProduct)) {
         if (p.quantity == 0) {
           //this.cart.splice(index, 1);
         } else {

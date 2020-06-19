@@ -29,9 +29,9 @@ export class CartPage implements OnInit {
 
   addProductRecalculate(cartProduct: CartProduct, event) {
 
-    if(event.target.value != 0) {
+    if (event.target.value != 0) {
       cartProduct.quantity = event.target.value;
-    this.cartService.addProductRecalculate(cartProduct);
+      this.cartService.addProductRecalculate(cartProduct);
     }
   }
 
@@ -68,12 +68,12 @@ export class CartPage implements OnInit {
         componentProps: { images: images },
         cssClass: 'cs-popovers',
       });
-  
+
       modal.onDidDismiss()
         .then((data) => {
           const updated = data['data'];
         });
-  
+
       modal.present();
       subs.unsubscribe();
     });
@@ -98,14 +98,31 @@ export class CartPage implements OnInit {
   }
 
   add(cartProduct: CartProduct) {
-    cartProduct.quantity += 1;
-    this.cartService.addProductRecalculate(cartProduct);
+    if ((cartProduct.maxLimit - 1) >= 0) {
+      cartProduct.quantity += 1;
+      cartProduct.maxLimit -= 1;
+      this.cartService.addProductRecalculate(cartProduct);
+    }
   }
 
   remove(cartProduct: CartProduct) {
-    if (cartProduct.quantity > 1) {
-      cartProduct.quantity -= 1;
-      this.cartService.addProductRecalculate(cartProduct);
+    if ((cartProduct.maxLimit + 1) >= 0) {
+
+      if (cartProduct.quantity > 1) {
+        cartProduct.quantity -= 1;
+        cartProduct.maxLimit += 1;
+        this.cartService.addProductRecalculate(cartProduct);
+      }
+    }
+  }
+
+  validateMaxLimitLimit(cartProduct: CartProduct, value): boolean {
+    if (cartProduct.maxLimit ) {
+      return true;
+    } else if (cartProduct.maxLimit > value) {
+      return true;
+    } else {
+      return false
     }
   }
 }
