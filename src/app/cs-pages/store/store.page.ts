@@ -78,7 +78,7 @@ export class StorePage implements OnInit {
 
   productsBatch: number = 50;
   lastProductToken: string = '';
-  idProductCategory: string = '0';
+  idProductCategory: string = '-1';
   productCategoriesCount: number = 0;
   searchingProducts: boolean = false;
   productSearchHits: number = 0;
@@ -243,7 +243,7 @@ export class StorePage implements OnInit {
   close() {
 
     //this.presentConfirm("Esta seguro que desea salir de " + this.store.name + "?", () => {
-      this.router.navigate(['/home']);
+    this.router.navigate(['/home']);
     //});
   }
 
@@ -671,6 +671,11 @@ export class StorePage implements OnInit {
 
   productSoldOut(e: any, product: Product) {
     this.productsService.update(this.appService.currentStore.id, product.id, { soldOut: !e.detail.checked });
+  }
+
+  productFeatured(e: any, product: Product) {
+    console.log(e.detail.checked);
+    this.productsService.update(this.appService.currentStore.id, product.id, { isFeatured: e.detail.checked });
   }
 
   async presentDeleteProductPrompt(product: Product) {

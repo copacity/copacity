@@ -103,6 +103,7 @@ export interface Product {
   discount: number;
   soldOut: boolean;
   isGift: boolean;
+  isFeatured: boolean;
 }
 
 export interface ProductImage {

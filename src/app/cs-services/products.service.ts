@@ -98,24 +98,44 @@ export class ProductsService {
 
   public getBySearchAndCategory(idStore: string, searchText: string, idProductCategory: string, ) {
     if (idProductCategory != '0') {
-      return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
-        .where('idProductCategory', '==', idProductCategory)
-        .where('deleted', '==', false)
-        .where('isGift', '==', false))
-        .snapshotChanges().pipe(
-          map(actions => actions.map(a => {
-            const data = a.payload.doc.data() as Product;
-            const id = a.payload.doc.id;
+      if (idProductCategory != '-1') {
+        return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+          .where('idProductCategory', '==', idProductCategory)
+          .where('deleted', '==', false)
+          .where('isGift', '==', false)
+          .orderBy('name'))
+          .snapshotChanges().pipe(
+            map(actions => actions.map(a => {
+              const data = a.payload.doc.data() as Product;
+              const id = a.payload.doc.id;
 
-            if (data.name.trim().toUpperCase().indexOf(searchText.toString().trim().toUpperCase()) != -1) {
-              return { id, ...data };
-            }
-          }))
-        );
+              if (data.name.trim().toUpperCase().indexOf(searchText.toString().trim().toUpperCase()) != -1) {
+                return { id, ...data };
+              }
+            }))
+          );
+      } else {
+        return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+          .where('deleted', '==', false)
+          .where('isGift', '==', false)
+          .where('isFeatured', '==', true)
+          .orderBy('name'))
+          .snapshotChanges().pipe(
+            map(actions => actions.map(a => {
+              const data = a.payload.doc.data() as Product;
+              const id = a.payload.doc.id;
+
+              if (data.name.trim().toUpperCase().indexOf(searchText.toString().trim().toUpperCase()) != -1) {
+                return { id, ...data };
+              }
+            }))
+          );
+      }
     } else {
       return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
         .where('deleted', '==', false)
-        .where('isGift', '==', false))
+        .where('isGift', '==', false)
+        .orderBy('name'))
         .snapshotChanges().pipe(
           map(actions => actions.map(a => {
             const data = a.payload.doc.data() as Product;
@@ -133,7 +153,7 @@ export class ProductsService {
     this.productCollection = this.angularFirestore.collection('stores').doc(idStore).collection<Product>(this.collectionName, ref => ref
       .where('deleted', '==', false)
       .where('isGift', '==', false)
-      );
+    );
     return this.productCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Product;
@@ -225,8 +245,8 @@ export class ProductsService {
       .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties', ref => ref
-      .where('deleted', '==', false)
-      .orderBy("name"))
+        .where('deleted', '==', false)
+        .orderBy("name"))
 
     return productProperties.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -243,9 +263,9 @@ export class ProductsService {
       .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties', ref => ref
-      .where('userSelectable', '==', true)
-      .where('deleted', '==', false)
-      .orderBy("name"))
+        .where('userSelectable', '==', true)
+        .where('deleted', '==', false)
+        .orderBy("name"))
 
     return productProperties.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -265,8 +285,8 @@ export class ProductsService {
       .collection(this.collectionName).doc(idProduct)
       .collection('properties').doc(idProductProperty)
       .collection('propertyOptions', ref => ref
-      .where('deleted', '==', false)
-      .orderBy("name"))
+        .where('deleted', '==', false)
+        .orderBy("name"))
 
     return productPropertyOptions.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -291,12 +311,12 @@ export class ProductsService {
   }
 
   public getCartInventory(idStore: string, idProduct: string): Observable<CartProduct[]> {
-    
+
     let cartInventoryCollection = this.angularFirestore
       .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('inventory', ref => ref
-      .where('deleted', '==', false).orderBy("quantity"))
+        .where('deleted', '==', false).orderBy("quantity"))
 
     return cartInventoryCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
