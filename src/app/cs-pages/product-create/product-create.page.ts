@@ -290,7 +290,7 @@ export class ProductCreatePage implements OnInit {
           discount: this.form.value.discount,
           soldOut: true,
           isGift: this.isGift,
-          isfeatured: false
+          isFeatured: true
         }
 
         this.productsService.create(this.appService.currentStore.id, newProduct).then(async (doc) => {

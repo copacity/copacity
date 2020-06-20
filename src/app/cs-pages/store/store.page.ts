@@ -1,6 +1,6 @@
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AlertController, PopoverController, ToastController } from '@ionic/angular';
+import { AlertController, PopoverController, ToastController, IonSelect } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { NgNavigatorShareService } from 'ng-navigator-share';
@@ -53,6 +53,8 @@ export class StorePage implements OnInit {
 
   @ViewChild('cart', { static: false, read: ElementRef }) shoppingCart: ElementRef;
   @ViewChild(SuperTabs, { static: false }) superTabs: SuperTabs;
+  @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
+
   photo: SafeResourceUrl;
   store: Store;
   isAdmin: boolean = false;
@@ -979,5 +981,14 @@ export class StorePage implements OnInit {
 
   openStoreCouponsPage() {
     this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
+  }
+
+  searchFeaturedProducts(){
+    this.idProductCategory = '-1';
+    this.presentToast("Los productos destacados se estan mostrando ahora", null);
+  }
+
+  openSelectCategories(){
+    this.selectRef.open();
   }
 }

@@ -179,20 +179,20 @@
             <div class="top-20"></div>
 
             <ion-slides [options]="appService.slideOpts2" style="max-width: 450px;">
-              <!-- <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+              <ion-slide (click)="openSelectCategories()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <i class="fas fa-th" style="font-size: 2.5em;color: red;"></i><span
                     style="font-size: .7em;color: black;">Secciones</span>
                 </a>
               </ion-slide>
-              <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+              <ion-slide (click)="searchFeaturedProducts()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <i class="fas fa-star" style="font-size: 2.5em;color: red;"></i><span
                     style="font-size: .7em;color: black;">Destacados</span>
                 </a>
-              </ion-slide> -->
+              </ion-slide>
               <ion-slide (click)="openStorePointsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
@@ -257,8 +257,9 @@
               <ion-list>
                 <ion-item>
                   <ion-label>Sección:</ion-label>
-                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" value="-1" okText="Okay!"
-                    interface='action-sheet' (ionChange)="productCategory_OnChange($event)">
+                  <ion-select #selectCategories style="padding-right: 10px;" mode="ios" cancelText="Cancelar"
+                    value="{{ idProductCategory }}" okText="Okay!" interface='action-sheet'
+                    (ionChange)="productCategory_OnChange($event)">
                     <ion-select-option value="0">Todas</ion-select-option>
                     <ion-select-option value="-1">Destacados</ion-select-option>
                     <ion-select-option *ngFor="let productCategory of productCategories | async;"
