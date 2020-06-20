@@ -327,4 +327,16 @@ export class ProductsService {
       }))
     );
   }
+
+  public deleteCartInventory(idStore: string, idProduct: string) {
+    let subs = this.getCartInventory(idStore, idProduct).subscribe((cartProduct) => {
+      cartProduct.forEach(cart => {
+        return this.angularFirestore.collection('stores').doc(idStore)
+          .collection(this.collectionName).doc(idProduct)
+          .collection('inventory').doc(cart.id).delete();
+      });
+
+      subs.unsubscribe();
+    });
+  }
 }

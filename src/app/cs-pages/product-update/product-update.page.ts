@@ -493,6 +493,7 @@ export class ProductUpdatePage implements OnInit {
   async openProductProperty(e) {
     let modal = await this.popoverCtrl.create({
       component: ProductPropertyComponent,
+      componentProps: { idStore: this.appService.currentStore.id, idProduct: this.navParams.data.id },
       cssClass: 'cs-popovers',
       backdropDismiss: false,
     });
@@ -510,7 +511,8 @@ export class ProductUpdatePage implements OnInit {
   }
 
   productPropertyDelete(productProperty: ProductProperty) {
-    this.presentConfirm('Esta seguro que desea eliminar la caracteristica: ' + productProperty.name + '?', () => {
+    
+    this.presentConfirm('Si eliminas una caracteristica, el inventario que tengas del producto se borrará automaticamente y tendrás que agregarlo de nuevo, Estás seguro que deseas eliminar la caracteristica: ' + productProperty.name + '?', () => {
       if (!productProperty.id) {
         for (let [index, p] of this.productProperties.entries()) {
           if (p === productProperty) {
@@ -525,6 +527,9 @@ export class ProductUpdatePage implements OnInit {
           }
         }
       }
+
+      this.productService.deleteCartInventory(this.appService.currentStore.id, this.navParams.data.id);
+      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { soldOut: true });
     });
   }
 
@@ -532,7 +537,7 @@ export class ProductUpdatePage implements OnInit {
     let modal = await this.popoverCtrl.create({
       component: ProductPropertyComponent,
       cssClass: 'cs-popovers',
-      componentProps: { productProperty: productProperty },
+      componentProps: { idStore: this.appService.currentStore.id, idProduct: this.navParams.data.id, productProperty: productProperty },
       backdropDismiss: false,
     });
 

@@ -3,6 +3,7 @@ import { PopoverController, AlertController, NavParams } from '@ionic/angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ProductProperty, ProductPropertyOption } from 'src/app/app-intefaces';
 import { ProductPropertyOptionComponent } from '../product-property-option/product-property-option.component';
+import { ProductsService } from 'src/app/cs-services/products.service';
 
 @Component({
   selector: 'app-product-property',
@@ -25,6 +26,7 @@ export class ProductPropertyComponent implements OnInit {
 
   constructor(private popoverCtrl: PopoverController,
     private formBuilder: FormBuilder,
+    private productsService: ProductsService,
     public alertController: AlertController,
     private navParams: NavParams) {
 
@@ -50,10 +52,21 @@ export class ProductPropertyComponent implements OnInit {
 
   saveProductProperty() {
     if (this.form.valid && this.productProperty.productPropertyOptions.length != 0) {
-      this.productProperty.name = this.form.value.name;
-      this.productProperty.isMandatory = this.form.value.isMandatory;
-      this.productProperty.userSelectable = this.form.value.userSelectable;
-      this, this.popoverCtrl.dismiss(this.productProperty);
+      if (this.navParams.data.idProduct) {
+        this.presentConfirm("Si creas o editas una caracteristica, el inventario que tengas del producto se borrará automaticamente y tendrás que agregarlo de nuevo, Estás seguro de continuar con esta acción?", () => {
+          this.productProperty.name = this.form.value.name;
+          this.productProperty.isMandatory = this.form.value.isMandatory;
+          this.productProperty.userSelectable = this.form.value.userSelectable;
+          this.productsService.deleteCartInventory(this.navParams.data.idStore, this.navParams.data.idProduct);
+          this.productsService.update(this.navParams.data.idStore, this.navParams.data.idProduct, { soldOut: true });
+          this.popoverCtrl.dismiss(this.productProperty);
+        });
+      } else {
+        this.productProperty.name = this.form.value.name;
+        this.productProperty.isMandatory = this.form.value.isMandatory;
+        this.productProperty.userSelectable = this.form.value.userSelectable;
+        this.popoverCtrl.dismiss(this.productProperty);
+      }
     } else {
       this.form.markAllAsTouched();
     }
@@ -111,7 +124,6 @@ export class ProductPropertyComponent implements OnInit {
           if (p === productPropertyOption) {
             this.productProperty.productPropertyOptions.splice(index, 1);
           }
-
         }
       } else {
         for (let [index, p] of this.productProperty.productPropertyOptions.entries()) {
