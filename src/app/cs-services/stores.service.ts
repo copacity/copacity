@@ -36,7 +36,7 @@ export class StoresService {
   }
 
   public getByUserId(idUser: string): Promise<any> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let storesCollection = this.angularFirestore.collection(this.collectionName, ref => ref
         .where('idUser', '==', idUser)
         .where('deleted', '==', false));
@@ -56,7 +56,7 @@ export class StoresService {
   }
 
   public getByIdStoreCategory(id: string, searchText: string): Promise<any> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
 
       let storesCollection = this.angularFirestore.collection(this.collectionName, ref => ref
         .where('idStoreCategory', '==', id)
@@ -82,7 +82,7 @@ export class StoresService {
 
   public getByIdSector(id: string, searchText: string): Promise<any> {
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let storesCollection = this.angularFirestore.collection(this.collectionName, ref => ref
         .where('idSector', '==', id)
         .where('deleted', '==', false)
@@ -107,7 +107,7 @@ export class StoresService {
 
   public getByFilterSearch(idSector: string, idStoreCategory: string, searchText: string): Promise<any> {
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let storesCollection = this.angularFirestore.collection(this.collectionName, ref => ref
         .where('idStoreCategory', '==', idStoreCategory)
         .where('idSector', '==', idSector)
@@ -133,7 +133,7 @@ export class StoresService {
 
   public getAllSearch(searchText: string): Promise<any> {
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let storesCollection = this.angularFirestore.collection<Store>(this.collectionName, ref => ref
         .where('deleted', '==', false)
         .where('status', '==', StoreStatus.Published));
@@ -155,7 +155,7 @@ export class StoresService {
   }
 
   public getAll(searchText: string): Promise<any> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let storesCollection = this.angularFirestore.collection<Store>(this.collectionName, ref => ref
         .where('deleted', '==', false)
         .where('status', '==', StoreStatus.Published)

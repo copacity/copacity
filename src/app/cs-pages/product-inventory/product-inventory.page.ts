@@ -159,7 +159,7 @@ export class ProductInventoryPage implements OnInit {
   }
 
   addCartInventory(idProduct: string, index: number) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let addToCart = (index: number) => {
         if (this.cartInventoryService.cart.length == index) {
           resolve(true);
@@ -178,6 +178,6 @@ export class ProductInventoryPage implements OnInit {
       };
 
       addToCart(index);
-    });
+    }).catch(err => alert(err));
   }
 }

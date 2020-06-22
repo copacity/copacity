@@ -6,7 +6,7 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 
 export const fileToBase64 = (filename, filepath) => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     var file = new File([filename], filepath);
     var reader = new FileReader();
     reader.onload = function (event) {
@@ -15,7 +15,7 @@ export const fileToBase64 = (filename, filepath) => {
       resolve(reader.result);
     };
     reader.readAsDataURL(file);
-  });
+  }).catch(err => alert(err));
 };
 
 @Injectable({
@@ -32,7 +32,7 @@ export class StorageService {
   ) { }
 
   public async takePhoto(id: string, width: number, height: number): Promise<String> {
-    let promise = new Promise<String>(async resolve => {
+    let promise = new Promise<String>(async (resolve, reject) => {
       const image = await Plugins.Camera.getPhoto({
         quality: 100,
         allowEditing: false,
@@ -45,7 +45,7 @@ export class StorageService {
   }
 
   public async loadImage(file: File, id: string, width: number, height: number): Promise<String> {   
-    let promise = new Promise<String>(resolve => {
+    let promise = new Promise<String>((resolve, reject) => {
       fileToBase64(file, id).then(async (data: string) => {
         resolve(await this.ResizeImage(data, id, width, height));
       })
@@ -57,7 +57,7 @@ export class StorageService {
     let img = new Image();
     img.src = base64image;
 
-    let promise = new Promise<String>(resolve => {
+    let promise = new Promise<String>((resolve, reject) => {
       img.onload = async () => {
 
         // Make sure the width and height preserve the original aspect ratio and adjust if needed
@@ -138,7 +138,7 @@ export class StorageService {
     let img = new Image();
     img.src = base64image;
 
-    let promise = new Promise<String>(resolve => {
+    let promise = new Promise<String>((resolve, reject) => {
       img.onload = async () => {
 
         // Make sure the width and height preserve the original aspect ratio and adjust if needed

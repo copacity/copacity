@@ -39,7 +39,7 @@ export class OrdersService {
           }).catch(function (error) {
             console.log("Error getting document:", error);
           });
-    });
+    }).catch(err => alert(err));
   }
 
   public addCartProduct(idStore: string, idOrder: string, cartProduct: CartProduct): Promise<DocumentReference> {

@@ -34,7 +34,7 @@ export class CartService {
 
   getTotal() {
     if (this.appService.currentStore) {
-      return this.cart.reduce((i, j) => i + ((!j.product.isGift)? this.getProductSubTotal(j): 0), 0) + (this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0) - this.getDiscount();
+      return this.cart.reduce((i, j) => i + ((!j.product.isGift) ? this.getProductSubTotal(j) : 0), 0) + (this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0) - this.getDiscount();
     }
 
     return 0;
@@ -45,7 +45,6 @@ export class CartService {
   }
 
   getProductSubTotal(cartProduct: CartProduct) {
-    console.log("getProductSubTotal" + this.cart.length);
 
     if (cartProduct.propertiesSelection && cartProduct.propertiesSelection.length != 0) {
       return (cartProduct.product.price + cartProduct.propertiesSelection.reduce((i, j) => i + j.price, 0)) * cartProduct.quantity;
@@ -55,7 +54,6 @@ export class CartService {
   }
 
   getProductSubTotalUnity(cartProduct: CartProduct) {
-    console.log("getProductSubTotal" + this.cart.length);
 
     if (cartProduct.propertiesSelection && cartProduct.propertiesSelection.length != 0) {
       return (cartProduct.product.price + cartProduct.propertiesSelection.reduce((i, j) => i + j.price, 0));
@@ -65,7 +63,6 @@ export class CartService {
   }
 
   getProductDiscount(cartProduct: CartProduct) {
-    console.log("getProductDiscount" + this.cart.length);
 
     let result = 0;
     if (cartProduct.propertiesSelection && cartProduct.propertiesSelection.length != 0) {
@@ -78,12 +75,10 @@ export class CartService {
   }
 
   getProductTotal(cartProduct: CartProduct) {
-    console.log("getProductTotal" + this.cart.length);
     return this.getProductSubTotal(cartProduct) - this.getProductDiscount(cartProduct);
   }
 
   getSubTotal() {
-    console.log("getSubTotal" + this.cart.length);
     return this.cart.reduce((i, j) => i + j.product.price * j.quantity, 0);
   }
 
@@ -115,7 +110,7 @@ export class CartService {
         hasGifts = true;
       }
     }
-    
+
     return hasGifts;
   }
 
@@ -140,24 +135,24 @@ export class CartService {
   }
 
   compareProducts(c1: CartProduct, c2: CartProduct): boolean {
+    if (c1.product.id == c2.product.id) {
+      if (c1.propertiesSelection.length == c2.propertiesSelection.length) {
+        let assertsTarget: number = c1.propertiesSelection.length;
+        let assertsFound: number = 0;
 
-    if (c1.propertiesSelection.length == c2.propertiesSelection.length) {
-      let assertsTarget: number = c1.propertiesSelection.length;
-      let assertsFound: number = 0;
-
-      c1.propertiesSelection.forEach(property1 => {
-        c2.propertiesSelection.forEach(property2 => {
-          if (property1.idPropertyOption == property2.idPropertyOption) {
-            assertsFound++;
-          }
+        c1.propertiesSelection.forEach(property1 => {
+          c2.propertiesSelection.forEach(property2 => {
+            if (property1.idPropertyOption == property2.idPropertyOption) {
+              assertsFound++;
+            }
+          });
         });
-      });
 
-      if (assertsTarget == assertsFound) {
-        return true;
+        if (assertsTarget == assertsFound) {
+          return true;
+        }
       }
     }
-
     return false;
   }
 

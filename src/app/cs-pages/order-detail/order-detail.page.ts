@@ -12,6 +12,7 @@ import { StoresService } from 'src/app/cs-services/stores.service';
 import { PopoverMessageComponent } from 'src/app/cs-components/popover-message/popover-message.component';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
+import { ProductsService } from 'src/app/cs-services/products.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -32,6 +33,7 @@ export class OrderDetailPage implements OnInit {
     public cartService: CartService,
     private notificationsService: NotificationsService,
     private loaderCOmponent: LoaderComponent,
+    private productsService: ProductsService,
     public alertController: AlertController,
     private usersService: UsersService,
     private ordersService: OrdersService,
@@ -223,7 +225,7 @@ export class OrderDetailPage implements OnInit {
   }
 
   revertPoints() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let subscribe = this.usersService.getStorePoints(this.user.id).subscribe(StorePoints => {
 
         let hasPoints = false;
@@ -242,11 +244,11 @@ export class OrderDetailPage implements OnInit {
 
         subscribe.unsubscribe();
       });
-    });
+    }).catch(err => alert(err));
   }
 
   addPoints() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let total = this.cartService.getTotalDetail(this.store.deliveryPrice);
       let points = total / 500;
 
@@ -282,7 +284,7 @@ export class OrderDetailPage implements OnInit {
 
         subscribe.unsubscribe();
       });
-    });
+    }).catch(err => alert(err));
   }
 
   reject(message: string) {
@@ -307,21 +309,57 @@ export class OrderDetailPage implements OnInit {
         notification.description = "Lo sentimos, tu pedido fue cancelado.";
         notification.idOrder = this.order.id;
         this.notificationsService.create(this.order.idUser, notification).then(result => {
-          this.revertPoints().then(() => {
-            this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result => {
-              result.forEach(notification => {
-                this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
-              });
-            });
 
-            this.loaderCOmponent.stopLoading();
-            this.presentAlert("El pedido ha sido CANCELADO exitosamente", "", () => {
-              this.cartService.clearCart();
-              this.popoverCtrl.dismiss(true);
+          this.revertToInventory().then(result => {
+            this.revertPoints().then(() => {
+              this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result => {
+                result.forEach(notification => {
+                  this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
+                });
+              });
+  
+              this.loaderCOmponent.stopLoading();
+              this.presentAlert("El pedido ha sido CANCELADO exitosamente", "", () => {
+                this.cartService.clearCart();
+                this.popoverCtrl.dismiss(true);
+              });
             });
           });
         });
       });
     }, 500);
+  }
+
+  revertToInventory() {
+    return new Promise((resolve, reject) => {
+      let promises = [];
+
+      for (let [index, p] of this.cartService.getCart().entries()) {
+        promises.push(this.updateCartProductInventory(p));
+      }
+
+      Promise.all(promises).then(() => {
+        resolve();
+      });
+    }).catch(err => alert(err));
+  }
+
+  updateCartProductInventory(cartProduct: CartProduct) {
+    return new Promise((resolve, reject) => {
+
+      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, cartProduct.product.id)
+        .subscribe((cartP) => {
+          for (let [index, pInventory] of cartP.entries()) {
+            if (this.cartService.compareProducts(pInventory, cartProduct)) {
+              let finalProductQuantity = pInventory.quantity + cartProduct.quantity;
+              this.productsService.updateCartInventory(this.appService.currentStore.id, cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
+            }
+          }
+
+          subs.unsubscribe();
+        });
+
+      resolve();
+    }).catch(err => alert(err));
   }
 }

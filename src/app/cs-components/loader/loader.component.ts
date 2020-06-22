@@ -19,7 +19,7 @@ export class LoaderComponent implements OnInit {
   ngOnInit() { }
 
   start(image: string) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       $("#store-splash").show();
       $("#store-splash-logo").show();
       $("#splash").attr("src", image);
@@ -28,11 +28,11 @@ export class LoaderComponent implements OnInit {
         $($("#store-splash-logo img")[0]).off("animationend");
         resolve();
       });
-    });
+    }).catch(err => alert(err));
   }
 
   stop() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.animateCSS('bounceOutRight');
       $($("#store-splash-logo img")[0]).on('animationend', animation => {
         $($("#store-splash-logo img")[0]).off("animationend");
@@ -40,7 +40,7 @@ export class LoaderComponent implements OnInit {
         $("#store-splash").hide();
         resolve();
       });
-    });
+    }).catch(err => alert(err));
   }
 
   startLoading(loadingMessage: string) {

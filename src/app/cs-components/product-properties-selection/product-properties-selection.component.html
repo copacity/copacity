@@ -9,8 +9,8 @@
 
     <ion-item *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
       <ion-label>{{productProperty.name}}</ion-label>
-      <ion-select (ionChange)="propertyChange($event, productProperty)" mode="ios" interface="action-sheet" cancelText="Cancelar"
-        style="padding-right: 10px;">
+      <ion-select (ionChange)="propertyChange($event, productProperty)" mode="ios" interface="action-sheet"
+        cancelText="Cancelar" style="padding-right: 10px;">
         <ion-select-option
           value="{{productPropertyOption.name}}|{{productPropertyOption.id}}|{{productPropertyOption.price}}"
           *ngFor="let productPropertyOption of productProperty.productPropertyOptions">
@@ -21,8 +21,8 @@
 
     <ion-item>
       <ion-label>Cantidad</ion-label>
-      <ion-select disabled ="{{ quantityDisabled }}" (ionChange)="quantityChange($event)" mode="ios" interface="action-sheet" value="1" cancelText="Cancelar"
-        style="padding-right: 10px;">
+      <ion-select disabled="{{ quantityDisabled }}" (ionChange)="quantityChange($event)" mode="ios"
+        interface="action-sheet" value="1" cancelText="Cancelar" style="padding-right: 10px;">
         <ion-select-option value="{{number}}" *ngFor="let number of getNumbers()">{{number}}
         </ion-select-option>
       </ion-select>
@@ -35,7 +35,7 @@
     <ion-title>
       <a (click)="accept()"
         style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-        class="button button-round-small shadow-large button-full button-s round-small">Aceptar!</a>
+        class="button button-round-small shadow-large button-full button-s round-small {{ (!buttonEnabled)?'sold-out':'' }}">Aceptar!</a>
     </ion-title>
   </ion-toolbar>
 </div>

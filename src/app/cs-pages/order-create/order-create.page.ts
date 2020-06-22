@@ -19,6 +19,7 @@ import { NgNavigatorShareService } from 'ng-navigator-share';
 import { FormControl, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
+import { ProductsService } from 'src/app/cs-services/products.service';
 
 @Component({
   selector: 'app-order-create',
@@ -28,7 +29,8 @@ import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/b
 export class OrderCreatePage implements OnInit {
   messageToStore: FormControl;
   store: Store;
-  cart: CartProduct[]
+  cart: CartProduct[];
+  isValidInventory: boolean = true;
 
   @ViewChild(SuperTabs, { static: false }) superTabs: SuperTabs;
 
@@ -38,6 +40,7 @@ export class OrderCreatePage implements OnInit {
     private usersService: UsersService,
     private ngNavigatorShareService: NgNavigatorShareService,
     public popoverController: PopoverController,
+    private productsService: ProductsService,
     private loaderComponent: LoaderComponent,
     private ordersService: OrdersService,
     private popoverCtrl: PopoverController,
@@ -252,33 +255,44 @@ export class OrderCreatePage implements OnInit {
               idUserNotification: this.appService.currentStore.idUser
             }
 
-            // 1. Create Order
-            this.ordersService.create(this.appService.currentStore.id, order).then(doc => {
-              // 2. Udpate Id field into Orders collection
-              this.ordersService.update(this.appService.currentStore.id, doc.id, { id: doc.id }).then(result => {
-                // 3. Added checked address into Addresses sub-collection into order
-                this.ordersService.createOrderAddress(this.appService.currentStore.id, doc.id, this.appService.addressChecked).then(result => {
-                  notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
-                  notification.idOrder = doc.id;
+            this.validateFromInventory().then(() => {
+              if (this.isValidInventory) {
+                // 1. Create Order
+                this.ordersService.create(this.appService.currentStore.id, order).then(doc => {
 
-                  // 4. COnfigure Notification
-                  this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {
-                    // 5. Added cart Products into cartProducts sub-collection into order
-                    this.addCartProducts(doc.id, 0).then(result => {
-                      if (result) {
-                        // 6. Of the order has gifts then the process go to discount points to the user
-                        this.discountPoints().then(() => {
-                          this.loaderComponent.stopLoading();
-                          this.cartService.clearCart();
-                          this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
-                            this.location.back();
+                  // 2. Udpate Id field into Orders collection
+                  this.ordersService.update(this.appService.currentStore.id, doc.id, { id: doc.id }).then(result => {
+
+                    // 3. Added checked address into Addresses sub-collection into order
+                    this.ordersService.createOrderAddress(this.appService.currentStore.id, doc.id, this.appService.addressChecked).then(result => {
+
+                      // 4. Added cart Products into cartProducts sub-collection into order
+                      this.addCartProducts(doc.id, 0).then(result => {
+
+                        // 5. Discount each product from Inventory
+                        this.discountFromInventory().then(result => {
+
+                          // 6. Of the order has gifts then the process go to discount points to the user
+                          this.discountPoints().then(() => {
+
+                            notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
+                            notification.idOrder = doc.id;
+
+                            // 7. Configure Notification
+                            this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {
+                              this.loaderComponent.stopLoading();
+                              this.cartService.clearCart();
+                              this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
+                                this.location.back();
+                              });
+                            });
                           });
                         });
-                      }
+                      });
                     });
                   });
                 });
-              });
+              }
             });
           }, 500);
         } else {
@@ -292,8 +306,41 @@ export class OrderCreatePage implements OnInit {
     }
   }
 
+  discountFromInventory() {
+    return new Promise((resolve, reject) => {
+      let promises = [];
+
+      for (let [index, p] of this.cart.entries()) {
+        promises.push(this.updateCartProductInventory(p));
+      }
+
+      Promise.all(promises).then(() => {
+        resolve();
+      });
+    }).catch(err => alert(err));
+  }
+
+  updateCartProductInventory(cartProduct: CartProduct) {
+    return new Promise((resolve, reject) => {
+
+      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, cartProduct.product.id)
+        .subscribe((cartP) => {
+          for (let [index, pInventory] of cartP.entries()) {
+            if (this.cartService.compareProducts(pInventory, cartProduct)) {
+              let finalProductQuantity = pInventory.quantity - cartProduct.quantity;
+              this.productsService.updateCartInventory(this.appService.currentStore.id, cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
+            }
+          }
+
+          subs.unsubscribe();
+        });
+
+      resolve();
+    }).catch(err => alert(err));
+  }
+
   discountPoints() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let subscribe = this.usersService.getStorePoints(this.appService.currentUser.id).subscribe(StorePoints => {
 
         let hasPoints = false;
@@ -312,7 +359,7 @@ export class OrderCreatePage implements OnInit {
 
         subscribe.unsubscribe();
       });
-    });
+    }).catch(err => alert(err));
   }
 
   async presentAlert(title: string, message: string, done: Function, buttonOkName?: string) {
@@ -332,7 +379,7 @@ export class OrderCreatePage implements OnInit {
 
   addCartProducts(idOrder: string, index: number) {
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let addToCart = (index: number) => {
         if (this.cart.length == index) {
           resolve(true);
@@ -345,10 +392,60 @@ export class OrderCreatePage implements OnInit {
       };
 
       addToCart(index);
-    });
+    }).catch(err => alert(err));
   }
 
   close() {
     this.location.back();
+  }
+
+  validateFromInventory() {
+    return new Promise((resolve, reject) => {
+      let promises = [];
+
+      for (let [index, p] of this.cart.entries()) {
+        promises.push(this.validateCartProductInventory(p));
+      }
+
+      this.isValidInventory = true;
+      Promise.all(promises).then(values => {
+        resolve();
+      });
+    }).catch(err => {
+      this.presentAlert(err, "", () => { });
+      this.loaderComponent.stopLoading();
+    });
+  }
+
+  validateCartProductInventory(cartProduct: CartProduct) {
+    return new Promise((resolve, reject) => {
+
+      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, cartProduct.product.id)
+        .subscribe((cartP) => {
+          for (let [index, pInventory] of cartP.entries()) {
+            if (this.cartService.compareProducts(pInventory, cartProduct)) {
+              if (pInventory.quantity >= cartProduct.quantity) {
+                resolve(true);
+              } else {
+
+                let properties = "";
+                cartProduct.propertiesSelection.forEach(ps => {
+                  properties = properties + " " + ps.propertyName + " " + ps.propertyOptionName + ", ";
+                });
+
+                this.isValidInventory = false;
+
+                let message = "Lo sentimos inventario insuficiente para: " + cartProduct.product.name + " " + properties + " Posiblemente otro cliente acaba de comprar el mismo producto, cantidad disponible en inventario: " + pInventory.quantity + " y la cantidad en tu pedido es de: " + cartProduct.quantity + ". Debes ir a tu carrito y modificar la cantidad o removerlo. Ofrecemos disculpas por el inconveniente. Gracias";
+                reject(message);
+               }
+            }
+          }
+
+          subs.unsubscribe();
+        });
+    }).catch(err => {
+      this.presentAlert(err, "", () => { });
+      this.loaderComponent.stopLoading();
+    });
   }
 }

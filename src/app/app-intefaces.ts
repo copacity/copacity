@@ -169,6 +169,18 @@ export interface StorePoint {
   deleted: boolean;
 }
 
+export interface StoreCoupon {
+  id: string;
+  idStore: string;
+  discount: number;
+  dateExpiration: Date;
+  minAmount: number;
+  lastUpdated: Date;
+  dateCreated: Date;
+  deleted: boolean;
+  quantity: number;
+}
+
 export interface Address {
   id: string;
   name: string;

@@ -249,7 +249,7 @@ export class ProductDetailPage implements OnInit {
   }
 
   createFile() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let img = new Image();
       img.crossOrigin = "Anonymous";
 
@@ -260,7 +260,7 @@ export class ProductDetailPage implements OnInit {
       };
 
       img.src = this.product.image;
-    });
+    }).catch(err => alert(err));
   }
 
   shareProduct(e) {
@@ -285,22 +285,6 @@ export class ProductDetailPage implements OnInit {
           this.openCopyToClipBoardProduct(e);
         }
       });
-
-      // this.ngNavigatorShareService.share({
-      //   title: this.appService.currentStore.name,
-      //   text: "Aprovecha y adquiere aquí " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-      //     this.product.discount + "% de descuento!!") : "") + ". Para ver mas detalles de este producto ingresa a " + this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id,
-      //   url: this.product.image
-      // }).then((response) => {
-      //   console.log(response);
-      // })
-      //   .catch((error) => {
-      //     console.log(error);
-
-      //     if (error.error.toString().indexOf("not supported") != -1) {
-      //       this.openCopyToClipBoardProduct(e);
-      //     }
-      //   });
     } else {
       this.presentAlert("Solo puedes compartir tu tienda cuando este aprobada y publicada. Gracias", "", () => { });
     }

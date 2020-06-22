@@ -106,7 +106,7 @@ export class StorePointsPage implements OnInit {
   }
 
   GetPoints() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let subscribe = this.usersService.getStorePoints(this.appService.currentUser.id).subscribe(StorePoints => {
 
         let currentStorePoint: StorePoint = {
@@ -127,7 +127,7 @@ export class StorePointsPage implements OnInit {
         this.points = currentStorePoint.points - this.cartService.getPoints();
         subscribe.unsubscribe();
       });
-    });
+    }).catch(err => alert(err));
   }
 
   async presentAlert(title: string, message: string, done: Function) {

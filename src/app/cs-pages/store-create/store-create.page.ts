@@ -73,10 +73,6 @@ export class StoreCreatePage implements OnInit {
       address: ['', [Validators.maxLength(250)]],
       description: ['', [Validators.maxLength(500)]]
     });
-
-    // this.form.valueChanges
-    //   .pipe(debounceTime(500))
-    //   .subscribe(value => console.log(value));
   }
 
   save(e: Event) {

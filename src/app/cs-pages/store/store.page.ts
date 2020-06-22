@@ -39,6 +39,7 @@ import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/b
 import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generator/barcode-generator.component';
 import { ProductInventoryPage } from '../product-inventory/product-inventory.page';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
+import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 
 @Component({
   selector: 'app-store',
@@ -963,6 +964,26 @@ export class StorePage implements OnInit {
     }
   }
 
+  async openStoreCouponsPage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StoreCouponsPage,
+        componentProps: { isAdmin: this.isAdmin },
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
+  }
+
   async openProductInventoryPage(product: Product) {
     let modal = await this.popoverController.create({
       component: ProductInventoryPage,
@@ -979,9 +1000,9 @@ export class StorePage implements OnInit {
     modal.present();
   }
 
-  openStoreCouponsPage() {
-    this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
-  }
+  // openStoreCouponsPage() {
+  //   this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
+  // }
 
   searchFeaturedProducts(){
     this.idProductCategory = '-1';

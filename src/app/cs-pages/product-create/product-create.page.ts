@@ -329,7 +329,7 @@ export class ProductCreatePage implements OnInit {
   }
 
   saveImages(idProduct: string, index: number) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let addProdcutImage = (index: number, lastImageUrl: String) => {
         if (this.imgURL.length == index) {
           this.productsService.update(this.appService.currentStore.id, idProduct, { image: lastImageUrl }).then(result => {
@@ -356,7 +356,7 @@ export class ProductCreatePage implements OnInit {
       };
 
       addProdcutImage(index, '');
-    });
+    }).catch(err => alert(err));
   }
 
   async openCropperImageComponent(imageUrl: any) {
@@ -497,7 +497,7 @@ export class ProductCreatePage implements OnInit {
   }
 
   saveProperties() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let addProdcutProperty = (index: number) => {
         if (this.productProperties.length == index) {
           resolve(true);
@@ -523,11 +523,11 @@ export class ProductCreatePage implements OnInit {
       };
 
       addProdcutProperty(0);
-    });
+    }).catch(err => alert(err));
   }
 
   savePropertyOptions(productProperty: ProductProperty) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let addProdcutPropertyOption = (index: number) => {
         if (productProperty.productPropertyOptions.length == index) {
           resolve(true);
@@ -549,6 +549,6 @@ export class ProductCreatePage implements OnInit {
       };
 
       addProdcutPropertyOption(0);
-    });
+    }).catch(err => alert(err));
   }
 }

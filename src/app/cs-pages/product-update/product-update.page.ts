@@ -155,7 +155,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   createFile() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       if (this.navParams.data.image) {
         let img = new Image();
         img.crossOrigin = "Anonymous";
@@ -171,7 +171,7 @@ export class ProductUpdatePage implements OnInit {
       } else {
         resolve("");
       }
-    });
+    }).catch(err => alert(err));
   }
 
   shareProduct(e) {
@@ -558,7 +558,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   saveProperties() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let addProdcutProperty = (index: number) => {
         if (this.productProperties.length == index) {
           resolve(true);
@@ -584,11 +584,11 @@ export class ProductUpdatePage implements OnInit {
       };
 
       addProdcutProperty(0);
-    });
+    }).catch(err => alert(err));
   }
 
   savePropertyOptions(productProperty: ProductProperty) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let addProdcutPropertyOption = (index: number) => {
         if (productProperty.productPropertyOptions.length == index) {
           resolve(true);
@@ -610,6 +610,6 @@ export class ProductUpdatePage implements OnInit {
       };
 
       addProdcutPropertyOption(0);
-    });
+    }).catch(err => alert(err));
   }
 }

@@ -33,7 +33,7 @@ export class ProductsService {
           }).catch(function (error) {
             console.log("Error getting document:", error);
           });
-    });
+    }).catch(err => alert(err));
   }
 
   public getByProductCategoryId(idStore: string, idProductCategory: string/*, productsBatch: number, lastProductToken: string*/) {

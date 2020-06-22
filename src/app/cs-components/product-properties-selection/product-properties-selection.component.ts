@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, NavParams } from '@ionic/angular';
+import { PopoverController, NavParams, AlertController } from '@ionic/angular';
 import { CartProduct, ProductProperty, PropertiesSelection } from 'src/app/app-intefaces';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { AppService } from 'src/app/cs-services/app.service';
@@ -17,15 +17,18 @@ export class ProductPropertiesSelectionComponent implements OnInit {
   validationMessage: string;
   quantity: number = 1;
   quantityDisabled = true;
+  buttonEnabled = true;
 
   constructor(
     private popoverCtrl: PopoverController,
     public appService: AppService,
+    private alertController: AlertController,
     public navParams: NavParams,
+    private productsService: ProductsService,
     public cartInventoryService: CartInventoryService,
     public cartService: CartService
   ) {
-
+    this.buttonEnabled = true;
 
     if (this.navParams.data.isInventory) {
       this.productProperties = this.navParams.data.productProperties;
@@ -35,7 +38,29 @@ export class ProductPropertiesSelectionComponent implements OnInit {
       this.cartInventoryService.setCart(this.navParams.data.cart);
       this.cartInventoryService.cartQuantity();
       this.validateQuantity();
+
+      if(this.cartInventoryService.cartItemCount.value <= 0){
+        this.productsService.update(this.appService.currentStore.id, this.navParams.data.product.id, { soldOut: true });
+        this.presentAlert("Lo sentimos se acaban de agotar todas las unidades de este producto", "", () => { });
+        this.buttonEnabled = false;
+      }
     }
+  }
+
+  async presentAlert(title: string, message: string, done: Function) {
+
+    const alert = await this.alertController.create({
+      header: title,
+      message: message,
+      mode: 'ios',
+      translucent: true,
+      animated: true,
+      backdropDismiss: false,
+      buttons: ['Aceptar!']
+    });
+
+    alert.onDidDismiss().then(done());
+    await alert.present();
   }
 
   ngOnInit() { }
@@ -45,6 +70,8 @@ export class ProductPropertiesSelectionComponent implements OnInit {
   }
 
   propertyChange(e: any, productProperty: ProductProperty) {
+    this.buttonEnabled = true;
+
     let propertySelection: PropertiesSelection = {
       idProperty: productProperty.id,
       propertyName: productProperty.name,
@@ -97,12 +124,14 @@ export class ProductPropertiesSelectionComponent implements OnInit {
             this.quantityDisabled = true;
             this.validationMessage = "Producto Agotado";
             this.navParams.data.limitQuantity = 0;
+            this.buttonEnabled = false;
           } else {
             if ((p.quantity - cartQuantity) <= 0) {
               soldOut = true;
               this.quantityDisabled = true;
               this.validationMessage = "Producto Agotado";
               this.navParams.data.limitQuantity = 0;
+              this.buttonEnabled = false;
             } else {
               soldOut = false;
               this.quantityDisabled = false;
@@ -116,6 +145,7 @@ export class ProductPropertiesSelectionComponent implements OnInit {
         this.quantityDisabled = true;
         this.validationMessage = "Producto Agotado";
         this.navParams.data.limitQuantity = 0;
+        this.buttonEnabled = false;
         return false
       }
 

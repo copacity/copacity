@@ -33,7 +33,7 @@ export class ProductCategoriesService {
           }).catch(function (error) {
             console.log("Error getting document:", error);
           });
-    });
+    }).catch(err => alert(err));
   }
 
   public getAll(idStore: string): Observable<ProductCategory[]> {
