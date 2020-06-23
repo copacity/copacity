@@ -20,6 +20,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
+import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 
 @Component({
   selector: 'app-order-create',
@@ -447,5 +448,25 @@ export class OrderCreatePage implements OnInit {
       this.presentAlert(err, "", () => { });
       this.loaderComponent.stopLoading();
     });
+  }
+
+  async openStoreCouponsPage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StoreCouponsPage,
+        componentProps: { isAdmin: false, all: false },
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
   }
 }

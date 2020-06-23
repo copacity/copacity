@@ -53,7 +53,7 @@ export class ProductCategoriesCreatePage implements OnInit {
   private buildForm() {
      
     this.form = this.formBuilder.group({
-      name: [this.productCategory.name, [Validators.required, Validators.maxLength(30)]],
+      name: [this.productCategory.name, [Validators.required, Validators.maxLength(50)]],
     });
   }
 

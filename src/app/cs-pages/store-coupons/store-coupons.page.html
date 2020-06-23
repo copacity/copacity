@@ -80,59 +80,94 @@
 
           <tr *ngFor="let storeCoupon of storeCoupons | async; let i = index">
             <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
-              <img (click)="openImageViewer(product)"
-                class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}"
-                src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
-                style="height: 100px;width: 100px;">
-              <em *ngIf="product?.soldOut"
+              <img (click)="openImageViewer(product)" class="round-small preload-image"
+                src="../../../assets/icon/coupon.png" alt="img" style="height: 100px;width: 100px;">
+
+              <!-- <em *ngIf="product?.soldOut"
                 style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 78px;position: absolute;left: 5px;top: 20px;"
                 class="{{(product?.discount && product?.discount > 0)?'line-through':''}}">
                 <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium"
                   alt="img">
-              </em>
+              </em> -->
             </td>
             <td>
               <table>
                 <tr>
                   <td colspan="2" style="text-align: left;padding: 0px 0px 10px 0px;"> <span
-                      style="font-weight: 700;color: black;"
-                      class="{{(product?.soldOut)?'sold-out':'' }}">{{product.name}}</span>
+                      style="font-weight: 700;color: black;">{{storeCoupon.name}}</span>
                   </td>
                 </tr>
                 <tr>
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;"
-                      class="color-highlight {{(product?.soldOut)?'sold-out':'' }}">PUNTOS:</span>
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Compras mayores de:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight {{(product?.soldOut)?'sold-out':'' }}">{{product.price}}</span>
+                      class="color-highlight">{{ storeCoupon.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Descuento del:</span>
+                  </td>
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;"
+                      class="color-highlight">{{ storeCoupon.discount }}%</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Valido hasta:</span>
+                  </td>
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;"
+                      class="color-highlight">{{ storeCoupon.dateExpiration.toDate() | date: 'dd-MM-yyyy' }}</span>
+                  </td>
+                </tr>
+                <tr  *ngIf="isAdmin">
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">VIP:</span>
+                  </td>
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;"
+                      class="color-highlight">{{ (storeCoupon.isVIP)? 'Si':'No' }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Cantidad:</span>
+                  </td>
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;"
+                      class="color-highlight">{{ storeCoupon.quantity }}</span>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a *ngIf="isAdmin" (click)="presentDeleteProductPrompt(product)"
+                    <a *ngIf="isAdmin" (click)="openBarCodeGenerator(storeCoupon)"
+                      class="icon icon-s icon-round shadow-small">
+                      <i class="fa fa-qrcode" style="color: black"></i></a>
+                    <a *ngIf="isAdmin" (click)="presentDeleteProductPrompt(storeCoupon)"
                       class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-trash" style="color: black"></i></a>
-                    <a *ngIf="isAdmin" (click)="openProductUpdatePage(product)"
+                    <a *ngIf="isAdmin" (click)="openStoreCouponsCreatePage_Update(storeCoupon)"
                       class="icon icon-s icon-round shadow-small">
-                      <i class="fa fa-edit" style="color: black"></i>
-                    </a>
+                      <i class="fa fa-edit" style="color: black"></i></a>
 
                     <a (click)="addToCart($event, product)"
-                      *ngIf="(!isAdmin && !product?.soldOut) && product?.price <= points" style="color:white;"
+                      *ngIf="(!isAdmin)" style="color:white;"
                       class="button button-round-small shadow-large bg-highlight button-full button-s">
-                      RECLAMAR</a>
+                      TOMAR CUPON</a>
                   </td>
                 </tr>
-                <tr *ngIf="isAdmin">
+                <!-- <tr *ngIf="isAdmin">
                   <td colspan="3" style="padding: 0px 0px 0px 0px;text-align: right;">
                     <a (click)="openProductInventoryPage(product)" *ngIf="isAdmin" style="color:red;"
                       class="button button-round-small shadow-large button-full button-s">
                       <i class="fa fa-dolly-flatbed add-button"
                         style="color: black;padding-right: 5px;"></i>Inventario</a>
                   </td>
-                </tr>
+                </tr> -->
               </table>
             </td>
           </tr>

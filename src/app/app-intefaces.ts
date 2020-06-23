@@ -172,13 +172,15 @@ export interface StorePoint {
 export interface StoreCoupon {
   id: string;
   idStore: string;
+  name: string;
   discount: number;
   dateExpiration: Date;
   minAmount: number;
+  quantity: number;
+  isVIP: boolean;
   lastUpdated: Date;
   dateCreated: Date;
   deleted: boolean;
-  quantity: number;
 }
 
 export interface Address {

@@ -44,7 +44,7 @@ export class ProfileUpdatePage implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      name: [this.appService.currentUser.name, [Validators.required, Validators.maxLength(30)]],
+      name: [this.appService.currentUser.name, [Validators.required, Validators.maxLength(50)]],
       phone1: [this.appService.currentUser.phone1, [Validators.max(999999999999999)]],
       phone2: [this.appService.currentUser.phone2, [Validators.max(999999999999999)]],
       whatsapp: [this.appService.currentUser.whatsapp, [Validators.max(999999999999999)]]

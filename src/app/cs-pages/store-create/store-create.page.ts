@@ -63,7 +63,7 @@ export class StoreCreatePage implements OnInit {
   private buildForm() {
 
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(30)]],
+      name: ['', [Validators.required, Validators.maxLength(50)]],
       category: ['', [Validators.required]],
       phone1: ['', [Validators.required, Validators.max(999999999999999)]],
       phone2: ['', [Validators.max(999999999999999)]],

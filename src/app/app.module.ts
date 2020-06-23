@@ -39,6 +39,7 @@ import { StorePointsPageModule } from './cs-pages/store-points/store-points.modu
 import { StoreCouponsPageModule } from './cs-pages/store-coupons/store-coupons.module';
 import { ProductInventoryPage } from './cs-pages/product-inventory/product-inventory.page';
 import { ProductInventoryPageModule } from './cs-pages/product-inventory/product-inventory.module';
+import { StoreCouponsCreatePageModule } from './cs-pages/store-coupons-create/store-coupons-create.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -81,6 +82,7 @@ import { ProductInventoryPageModule } from './cs-pages/product-inventory/product
     PrivacyPolicyPageModule,
     StorePointsPageModule,
     StoreCouponsPageModule,
+    StoreCouponsCreatePageModule,
     PipesModule
   ],
   providers: [

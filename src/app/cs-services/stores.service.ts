@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Store } from '../app-intefaces';
+import { Store, StoreCoupon } from '../app-intefaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StoreStatus } from '../app-enums';
@@ -183,5 +183,49 @@ export class StoresService {
 
   public update(id: string, data: any) {
     return this.angularFirestore.collection(this.collectionName).doc(id).update(data);
+  }
+
+  // --------------------- STORE COUPONS
+  public createStoreCoupon(idStore: string, storeCoupon: StoreCoupon): Promise<DocumentReference> {
+    return this.angularFirestore
+      .collection(this.collectionName).doc(idStore)
+      .collection('coupons').add(storeCoupon);
+  }
+
+  public updateStoreCoupon(idStore: string, idStoreCoupon: string, data: any) {
+    return this.angularFirestore
+      .collection(this.collectionName).doc(idStore)
+      .collection('coupons').doc(idStoreCoupon).update(data);
+  }
+
+  public getAllStoreCoupons(idStore: string): Observable<StoreCoupon[]> {
+    let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
+      .where('deleted', '==', false)
+      .orderBy('name'));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as StoreCoupon;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
+  }
+
+  public getStoreCouponsNoVIP(idStore: string): Observable<StoreCoupon[]> {
+    let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
+      .where('deleted', '==', false)
+      .where('isVIP', '==', false)
+      .orderBy('name'));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as StoreCoupon;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
   }
 }

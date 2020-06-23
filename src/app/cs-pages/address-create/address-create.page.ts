@@ -115,8 +115,8 @@ export class AddressCreatePage implements OnInit {
   private buildForm() {
      
     this.form = this.formBuilder.group({
-      name: [this.address.name, [Validators.required, Validators.maxLength(30)]],
-      lastName: [this.address.lastName, [Validators.required, Validators.maxLength(30)]],
+      name: [this.address.name, [Validators.required, Validators.maxLength(50)]],
+      lastName: [this.address.lastName, [Validators.required, Validators.maxLength(50)]],
       phone1: [this.address.phone1, [Validators.required, Validators.max(999999999999999)]],
       phone2: [this.address.phone2, [Validators.max(999999999999999)]],
       //sector: [this.address.idSector, [Validators.required]],

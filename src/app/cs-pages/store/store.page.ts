@@ -968,7 +968,7 @@ export class StorePage implements OnInit {
     if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StoreCouponsPage,
-        componentProps: { isAdmin: this.isAdmin },
+        componentProps: { isAdmin: this.isAdmin, all: true },
         cssClass: 'cs-popovers',
         backdropDismiss: false,
       });

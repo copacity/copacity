@@ -44,7 +44,7 @@ export class ProductPropertyComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      name: [this.productProperty.name, [Validators.required, Validators.maxLength(30)]],
+      name: [this.productProperty.name, [Validators.required, Validators.maxLength(50)]],
       isMandatory: [this.productProperty.isMandatory],
       userSelectable: [this.productProperty.userSelectable]
     });

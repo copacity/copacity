@@ -58,7 +58,7 @@ export class StoreUpdatePage implements OnInit {
   private buildForm() {
      
     this.form = this.formBuilder.group({
-      name: [this.appService.currentStore.name, [Validators.required, Validators.maxLength(30)]],
+      name: [this.appService.currentStore.name, [Validators.required, Validators.maxLength(50)]],
       category: [this.appService.currentStore.idStoreCategory, [Validators.required]],
       phone1: [this.appService.currentStore.phone1, [Validators.required, Validators.max(999999999999999)]],
       phone2: [this.appService.currentStore.phone2, [Validators.max(999999999999999)]],
