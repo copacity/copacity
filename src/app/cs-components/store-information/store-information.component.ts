@@ -48,7 +48,9 @@ export class StoreInformationComponent implements OnInit {
       productsLimit: this.navParams.data.store.productsLimit,
       status: this.navParams.data.store.status,
       visits: this.navParams.data.store.visits,
-      whatsapp: this.navParams.data.store.whatsapp
+      whatsapp: this.navParams.data.store.whatsapp,
+      couponsLimit: this.navParams.data.store.couponsLimit,
+      vendorsLimit: this.navParams.data.store.vendorsLimit
     }
   }
 

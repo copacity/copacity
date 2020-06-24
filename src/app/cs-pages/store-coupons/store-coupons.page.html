@@ -27,18 +27,20 @@
       </div>
     </div>
 
-    <div *ngIf="isAdmin" class="content contact-message top-20"
+     -->
+
+    <div *ngIf="!isAdmin" class="content contact-message top-20"
       style="margin: 0px 0px 0px 0px;background-color: yellow;">
-      <div class="content content-box round-small shadow-large" style="padding: 5px;margin: 0px 0px 0px 0px;">
+      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <span class="center-text bolder" style="color: black;margin-bottom: 0px;line-height: 15px;">
-          Recuerda que por cada <b style="font-weight: bolder;">$500</b> pesos que el cliente invierte en una compra, se
-          le da <b style="font-weight: bolder;">1 punto</b> (1 Punto ~ $500)
+          A continuación podrás ver la lista de cupones que tenemos disponibles para ti, en la pantalla de pedido puedes tomar algún cupón virtual y usarlo para que te aplique el descuento,
+           también puedes usar el lector QR para escanear los cupones que tengas impresos.
         </span>
       </div>
-    </div> -->
+    </div>
 
     <div class="content" style="margin: 0px 0px 0px 0px;">
-      <div class="top-10">
+      <div class="top-20">
         <table>
           <tr *ngIf="isAdmin">
             <td colspan="2" style="text-align: right;">
@@ -78,17 +80,17 @@
             </td>
           </tr>
 
-          <tr *ngFor="let storeCoupon of storeCoupons | async; let i = index">
+          <tr *ngFor="let storeCoupon of storeCoupons | async; let i = index" class="{{ (!isAdmin && (storeCoupon.dateExpiration.toDate().getTime() < today.getTime()))?'hidden':'' }}">
             <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
-              <img (click)="openImageViewer(product)" class="round-small preload-image"
-                src="../../../assets/icon/coupon.png" alt="img" style="height: 100px;width: 100px;">
+              <img class="round-small preload-image" src="../../../assets/icon/coupon.png" alt="img"
+                style="height: 100px;width: 100px;">
 
-              <!-- <em *ngIf="product?.soldOut"
-                style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 78px;position: absolute;left: 5px;top: 20px;"
-                class="{{(product?.discount && product?.discount > 0)?'line-through':''}}">
+              <em *ngIf="storeCoupon.dateExpiration.toDate().getTime() < today.getTime()"
+                style="background-color: transparent;color: black;font-weight: bold;
+                font-size: 1.2em;top: 78px;position: absolute;left: 5px;top: 20px;">
                 <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium"
                   alt="img">
-              </em> -->
+              </em>
             </td>
             <td>
               <table>
@@ -121,10 +123,10 @@
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight">{{ storeCoupon.dateExpiration.toDate() | date: 'dd-MM-yyyy' }}</span>
+                      class="color-highlight">{{ storeCoupon.dateExpiration.toDate() | date: 'dd/MM/yyyy' }}</span>
                   </td>
                 </tr>
-                <tr  *ngIf="isAdmin">
+                <tr *ngIf="isAdmin">
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1em;font-weight: 700;" class="color-highlight">VIP:</span>
                   </td>
@@ -135,7 +137,7 @@
                 </tr>
                 <tr>
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Cantidad:</span>
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Disponibles:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1.2em;font-weight: 700;"
@@ -154,9 +156,8 @@
                       class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-edit" style="color: black"></i></a>
 
-                    <a (click)="addToCart($event, product)"
-                      *ngIf="(!isAdmin)" style="color:white;"
-                      class="button button-round-small shadow-large bg-highlight button-full button-s">
+                    <a *ngIf="(!isAdmin && !dashboard)" style="color:white;"
+                      class="button button-round-small shadow-large bg-highlight button-full button-s {{ (!isAdmin && !dashboard && orderTotal < storeCoupon.minAmount)?'sold-out':'' }}">
                       TOMAR CUPON</a>
                   </td>
                 </tr>

@@ -54,7 +54,7 @@ export class StoreCouponsCreatePage implements OnInit {
     if (this.navParams.data.storeCoupon) {
       let test: any;
       test = this.storeCoupon.dateExpiration;
-      date = test.toDate(); //new Date(this.storeCoupon.dateExpiration);
+      date = test.toDate();
     }
 
     let dd = String(date.getDate()).padStart(2, '0');
@@ -83,20 +83,6 @@ export class StoreCouponsCreatePage implements OnInit {
   }
 
   private buildForm() {
-
-    // let today = new Date();
-    // let dd = String(today.getDate()).padStart(2, '0');
-    // let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    // let yyyy = today.getFullYear();
-
-    // if (this.storeCoupon.dateExpiration) {
-    //   dd = String(this.storeCoupon.dateExpiration.getDate()).padStart(2, '0');
-    //   mm = String(this.storeCoupon.dateExpiration.getMonth() + 1).padStart(2, '0'); //January is 0!
-    //   yyyy = this.storeCoupon.dateExpiration.getFullYear();
-    // }
-
-    // this.editDate = yyyy + '-' + mm + '-' + dd;
-
     this.form = this.formBuilder.group({
       name: [this.storeCoupon.name, [Validators.required, Validators.maxLength(50)]],
       discount: [this.storeCoupon.discount, [Validators.required]],
@@ -140,20 +126,17 @@ export class StoreCouponsCreatePage implements OnInit {
 
   saveStoreCoupon() {
     if (this.form.valid) {
-      
+
       this.storeCoupon.name = this.form.value.name;
       this.storeCoupon.discount = this.form.value.discount;
       this.storeCoupon.isVIP = this.form.value.isVIP;
       this.storeCoupon.minAmount = this.form.value.minAmount;
-
-      //this.storeCoupon.dateExpiration = this.form.value.dateExpiration;
-
       this.storeCoupon.quantity = this.form.value.quantity;
 
       if (this.navParams.data.storeCoupon) {
         this.loader.startLoading("Actualizando cupon, por favor espere un moento");
         this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.storeCoupon.id, this.storeCoupon).then(() => {
-          this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.storeCoupon.id, { dateExpiration: new Date(this.form.value.dateExpiration) }).then(() => {
+          this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.storeCoupon.id, { dateExpiration: new Date(new Date(this.form.value.dateExpiration).setHours(23, 59, 59, 0)) }).then(() => {
             this.loader.stopLoading();
             this.presentAlert("Cupon actualizado exitosamente", "", () => {
               this.popoverController.dismiss();
@@ -162,10 +145,12 @@ export class StoreCouponsCreatePage implements OnInit {
         });
       } else {
         this.loader.startLoading("Creando cupon, por favor espere un moento");
-        this.storesService.createStoreCoupon(this.appService.currentStore.id, this.storeCoupon).then(() => {
-          this.loader.stopLoading();
-          this.presentAlert("Cupon creado exitosamente", "", () => {
-            this.popoverController.dismiss();
+        this.storesService.createStoreCoupon(this.appService.currentStore.id, this.storeCoupon).then(doc => {
+          this.storesService.updateStoreCoupon(this.appService.currentStore.id, doc.id, { dateExpiration: new Date(new Date(this.form.value.dateExpiration).setHours(23, 59, 59, 0)) }).then(() => {
+            this.loader.stopLoading();
+            this.presentAlert("Cupon creado exitosamente", "", () => {
+              this.popoverController.dismiss();
+            });
           });
         });
       }

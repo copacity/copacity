@@ -454,7 +454,7 @@ export class OrderCreatePage implements OnInit {
     if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StoreCouponsPage,
-        componentProps: { isAdmin: false, all: false },
+        componentProps: { isAdmin: false, dashboard: false, orderTotal: this.cartService.getTotalDetail(this.appService.currentStore.deliveryPrice) },
         cssClass: 'cs-popovers',
         backdropDismiss: false,
       });

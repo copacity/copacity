@@ -14,22 +14,27 @@ import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generat
 })
 export class StoreCouponsPage implements OnInit {
   isAdmin: boolean;
+  dashboard: boolean;
+  orderTotal: number;
   storeCoupons: Observable<StoreCoupon[]>;
   searchingCoupons: boolean = false;
   couponSearchHits: number = 0;
+  today: any;
 
   constructor(
     public popoverController: PopoverController,
     private storesService: StoresService,
     public alertController: AlertController,
-    public appService: AppService, 
+    public appService: AppService,
     private navParams: NavParams) {
-    this.getCoupons(this.navParams.data.all);
+    this.today = new Date(new Date().setHours(23, 59, 59, 0));
+    this.isAdmin = this.navParams.data.isAdmin;
+    this.dashboard = this.navParams.data.dashboard;
+    this.orderTotal = this.navParams.data.orderTotal;
+    this.getCoupons();
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   close() {
     this.popoverController.dismiss();
@@ -99,17 +104,18 @@ export class StoreCouponsPage implements OnInit {
     });
   }
 
-  getCoupons(all: boolean) {
+  getCoupons() {
     this.storeCoupons = null;
     this.searchingCoupons = true;
     this.couponSearchHits = 0;
 
     setTimeout(() => {
 
-      if (all) {
+      if (this.isAdmin) {
         this.storeCoupons = this.storesService.getAllStoreCoupons(this.appService.currentStore.id);
 
         this.storeCoupons.subscribe((products) => {
+          this.couponSearchHits = 0;
           this.searchingCoupons = false;
           products.forEach(product => {
             if (product) {
@@ -121,6 +127,7 @@ export class StoreCouponsPage implements OnInit {
         this.storeCoupons = this.storesService.getStoreCouponsNoVIP(this.appService.currentStore.id);
 
         this.storeCoupons.subscribe((products) => {
+          this.couponSearchHits = 0;
           this.searchingCoupons = false;
           products.forEach(product => {
             if (product) {
@@ -133,19 +140,23 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async openStoreCouponsCreatePage() {
-    let modal = await this.popoverController.create({
-      component: StoreCouponsCreatePage,
-      componentProps: {},
-      cssClass: 'cs-popovers',
-      backdropDismiss: false,
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        const result = data['data'];
+    if (this.couponSearchHits < this.appService.currentStore.couponsLimit) {
+      let modal = await this.popoverController.create({
+        component: StoreCouponsCreatePage,
+        componentProps: {},
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
       });
 
-    modal.present();
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.presentAlert("Has llegado al limite maximo de cupones permitidos, si deseas incrementar la cuota de cupones en tu tienda, debes comunicarte con los administradores del sitio. Gracias", "", () => { });
+    }
   }
 
   async openStoreCouponsCreatePage_Update(storeCoupon: StoreCoupon) {

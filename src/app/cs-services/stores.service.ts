@@ -201,7 +201,7 @@ export class StoresService {
   public getAllStoreCoupons(idStore: string): Observable<StoreCoupon[]> {
     let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
       .where('deleted', '==', false)
-      .orderBy('name'));
+      .orderBy('minAmount'));
 
     return storesCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -217,7 +217,7 @@ export class StoresService {
     let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
       .where('deleted', '==', false)
       .where('isVIP', '==', false)
-      .orderBy('name'));
+      .orderBy('minAmount'));
 
     return storesCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {

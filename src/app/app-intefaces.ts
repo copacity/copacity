@@ -48,6 +48,8 @@ export interface Store {
   whatsapp: number;
   productsCount: number;
   productsLimit: number;
+  couponsLimit: number;
+  vendorsLimit: number;
 }
 
 export interface ProductCategory {
