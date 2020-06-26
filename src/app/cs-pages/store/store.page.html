@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="close()">
-        <i class="fa fa-arrow-left" style="color: black;font-size: 1.5em;"></i>
+        <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
@@ -72,7 +72,7 @@
         </ion-item> -->
         <ion-item style="padding: 3px;" routerLink="/contact">
           <i class="fa fa-paper-plane"></i>
-          <ion-label style="padding-left:10px">Sugerencias</ion-label>
+          <ion-label style="padding-left:10px">PQRS</ion-label>
         </ion-item>
         <!-- <ion-item style="padding: 3px;">
             <i class="fa fa-info-circle"></i>
@@ -207,6 +207,13 @@
                     style="font-size: .7em;color: black;margin: 10px;">Cupones</span>
                 </a>
               </ion-slide>
+              <ion-slide (click)="openStoreOrdersPage()" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-clipboard-list" style="font-size: 2.5em;color: red;"></i><span
+                    style="font-size: .7em;color: black;margin: 10px;">Pedidos</span>
+                </a>
+              </ion-slide>
               <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
@@ -228,13 +235,20 @@
                     style="font-size: .7em;color: black;margin: 10px;">Factura</span>
                 </a>
               </ion-slide>
+              <ion-slide style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
+                  <span style="font-size: .7em;margin: 15px;color: black;">PQRS</span>
+                </a>
+              </ion-slide>
               <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <i class="fas fa-info-circle" style="font-size: 2.5em;color: red;"></i>
                   <span style="font-size: .7em;margin: 15px;color: black;">Info</span>
                 </a>
-              </ion-slide>
+              </ion-slide>`
             </ion-slides>
 
             <div class="bottom-0">
@@ -254,7 +268,7 @@
             </div>
 
             <div class="content gallery-view-controls" style="padding-top: 10px;">
-              <ion-list>
+              <ion-list style="padding-bottom: 0px">
                 <ion-item>
                   <ion-label>Sección:</ion-label>
                   <ion-select #selectCategories style="padding-right: 10px;" mode="ios" cancelText="Cancelar"
@@ -378,9 +392,15 @@
                   </a>
                 </div>
               </div>
-
               <div class="clear"></div>
             </div>
+
+            <div *ngIf="!searchingProducts">
+              <a (click)="openSelectCategories()"
+                style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+                class="button button-round-small shadow-large button-full button-s">Buscar Mas...</a>
+            </div>
+
           </div>
           <div class="clear"></div>
         </div>

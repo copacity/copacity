@@ -8,9 +8,9 @@
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
     <a style="background-color: white; color: black;font-size: 16px;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">REGALOS</a>
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">PEDIDOS</a>
 
-    <div *ngIf="!isAdmin && points > 0" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+    <!-- <div *ngIf="!isAdmin && points > 0" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <h1 class="center-text bolder top-10" style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">
           Tienes <b style="font-weight: bolder;">{{ points }}</b> puntos!</h1>
@@ -35,22 +35,15 @@
           le da <b style="font-weight: bolder;">1 punto</b> (1 Punto ~ $500)
         </span>
       </div>
-    </div>
+    </div> -->
 
     <!-- <p>Puntos acumulados: 2.000</p>
     <p>A continuacion vas a ver una lista de regalos con sus respectivos puntos</p> -->
     <div class="content" style="margin: 0px 0px 0px 0px;">
       <div class="top-10">
         <table>
-          <tr *ngIf="isAdmin">
-            <td colspan="2" style="text-align: right;">
-              <a (click)="openProductCreatePage()" *ngIf="isAdmin"
-                style="text-align: end;background-color: red;margin-bottom: 0px;"
-                class="button button-round-small button-s">+ Regalo</a>
-            </td>
-          </tr>
 
-          <tr *ngIf="searchingProducts">
+          <tr *ngIf="searchingOrders">
             <td colspan="2" style="text-align: center;">
               <div>
                 <div class="store-slide-2" *ngFor="let item of [1,2,3,4,5,6]">
@@ -71,16 +64,71 @@
             </td>
           </tr>
 
-          <tr *ngIf="productSearchHits == 0 && !searchingProducts">
+          <tr *ngIf="orderSearchHits == 0 && !searchingOrders">
             <td colspan="2" style="text-align: center;">
               <div class="boxed-text-huge">
                 <label style="color: red;padding-top: 20px;font-size: 1.2em;">No se
-                  encontraron regalos</label>
+                  encontraron pedidos</label>
               </div>
             </td>
           </tr>
 
-          <tr *ngFor="let product of products | async; let i = index">
+          <tr>
+            <td colspan="2">
+              <div *ngFor="let order of orders | async" class="{{ !order?'hidden':'' }}">
+                <a class="user-group">
+                  <div
+                    class="user-group-manager {{ order?.status == 1?'border-red1-light':order?.status == 2?'border-green1-light':order?.status == 3?'border-dark2-dark':'' }}"
+                    style="border-width: 5px;">
+                    <img style="z-index: 9;"
+                      (click)="openImageViewer(order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png')"
+                      class="shadow-large" src="{{order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png'}}"
+                      alt="img">
+                    <h4 class="color-theme">{{ order?.userName }}</h4>
+                  </div>
+                  <div>
+
+                    <h4 style="font-size: 20px;"
+                      class="bolder {{ order?.status == 1?'color-red1-light':order?.status == 2?'color-green1-light':order?.status == 3?'color-dark2-dark':'' }}">
+                      Pedido {{ order?.status | orderStatusName }}</h4>
+                    <p class="under-heading font-15 bold top-15" style="margin-bottom: 0px;"><b
+                        class="font-14 bolder">Ref:</b>{{ order?.ref }}
+                    </p>
+                    <h4 style="font-size: 10px;margin-top: 0px;" class="color-theme bolder">
+                      Creado: {{order?.dateCreated.toDate() | date:'MMM d, h:mm a' }}</h4>
+                    <h4 *ngIf="order?.status != 1" style="font-size: 10px;margin-top: 0px;padding-bottom: 10px;"
+                      class="color-theme bolder">
+                      Actualizado: {{order?.lastUpdated.toDate() | date:'MMM d, h:mm a' }}</h4>
+                    <h6 class="color-theme bolder bottom-0"></h6>
+                  </div>
+                  <div class="user-group-users">
+                    <a *ngIf="order?.status == 1 && isAdmin" (click)='openOrderDetailPage(order.id)'
+                      style="color:white;font-size: 12px;font-weight: bold;background-color: red;"
+                      class="button button-round-small shadow-large button-full button-s">ATENDER</a>
+
+                    <a *ngIf="order?.status == 1 && !isAdmin" (click)='openOrderDetailPage(order.id)'
+                      style="color:white;font-size: 12px;font-weight: bold;background-color: red;"
+                      class="button button-round-small shadow-large button-full button-s">VER DETALLE</a>
+
+                    <a *ngIf="order?.status == 2" (click)='openOrderDetailPage(order.id)'
+                      style="color:white;font-size: 12px;font-weight: bold;"
+                      class="button button-round-small shadow-large button-full button-s bg-gradient-green1">VER
+                      DETALLE</a>
+
+                    <a *ngIf="order?.status == 3" (click)='openOrderDetailPage(order.id)'
+                      style="color:white;font-size: 12px;font-weight: bold;background-color: black;"
+                      class="button button-round-small shadow-large button-full button-s">VER DETALLE</a>
+                    <div class="clear"></div>
+                  </div>
+                  <div class="clear"></div>
+                </a>
+
+                <div class="divider"></div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- <tr *ngFor="let product of products | async; let i = index">
             <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
               <img (click)="openImageViewer(product)"
                 class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}"
@@ -137,7 +185,7 @@
                 </tr>
               </table>
             </td>
-          </tr>
+          </tr> -->
         </table>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="close()">
-        <i class="fa fa-arrow-left" style="color: black;font-size: 1.5em;"></i>
+        <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
@@ -67,7 +67,7 @@
         </ion-item> -->
         <ion-item style="padding: 3px;" routerLink="/contact">
           <i class="fa fa-paper-plane"></i>
-          <ion-label style="padding-left:10px">Sugerencias</ion-label>
+          <ion-label style="padding-left:10px">PQRS</ion-label>
         </ion-item>
         <!-- <ion-item style="padding: 3px;">
           <i class="fa fa-info-circle"></i>
@@ -130,35 +130,19 @@
 <super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
   <super-tabs-container>
     <super-tab style="background-color: transparent;">
-      <div class="profile-1">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
-
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">DIRECCION</a>
-
-          <div id="page">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <div class="link-list link-list-3" style="border: red;">
-                <strong *ngIf="!appService.addressChecked"
-                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
-                  favor seleccione una
-                  direccion!</strong>
-                <a (click)="openAddressListPage()" class="round-small shadow-tiny">
-                  <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
-                  <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Enviar a:</strong>
-                  <span
-                    style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
-                  <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
-                </a>
-              </div>
-            </div>
+      <div style="text-align: -webkit-center;">
+        <div class="content contact-message" style="padding-top: 15px;margin: 0px 15px 0px 15px;max-width: 450px;">
+          <div class="content content-box round-small shadow-large"
+            style="padding: 5px;background-color: white;margin: 0px 0px 0px 0px;">
+            <h1 class="center-text bolder top-10" style="color: red;">{{store?.name}}</h1>
+            <p class="center-text bottom-10" style="font-size: 15px;color: black;">
+              Que bien! Solo faltan algunos detalles que te presentamos a continuación para terminar de hacer tu pedido,
+              Gracias por usar nuestro servicio!.
+            </p>
           </div>
         </div>
       </div>
-
-      <div class="profile-1" style="top: -35px;">
+      <div class="profile-1" style="top: -10px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
@@ -175,7 +159,7 @@
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
               <table class="table-borders bottom-10" style="font-size: 1.2em;">
                 <tr>
-                  <td style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
+                  <td colspan="2" style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
                     <a (click)="openStoreCouponsPage()" style="padding: 8px 8px;border: dotted;"
                       class="button button-round-small button-full button-s color-highlight"> <i class="fa fa-cut"
                         style="font-size: 1.5em;"></i> Ver Cupones Virtuales</a>
@@ -186,14 +170,25 @@
                     <div class="input-style has-icon input-style-1 input-required">
                       <i class="input-icon fa fa-ticket-alt" style="margin-top: 16px;"></i>
                       <span>Código de cupón:</span>
-                      <input style="font-size: 1.2em;" type="name" placeholder="Código de cupón">
+                      <input [formControl]="couponCode" style="font-size: 1.2em;" type="name"
+                        placeholder="Código de cupón">
                     </div>
+                  </td>
+                  <td>
+                    <i *ngIf="couponCode.value && !storeCoupon" class="fa fa-times-circle"
+                      style="color: red;font-size: 1.2em;"></i>
+                    <i *ngIf="couponCode.value && storeCoupon" class="fa fa-check-circle"
+                      style="color: green;font-size: 1.2em;"></i>
                   </td>
                 </tr>
                 <tr>
+                  <td style="vertical-align: top; text-align: -webkit-left;padding: 10px 0px 0px 0px;">
+                    <span *ngIf="storeCoupon" style="color: green;font-weight: bold;">Cupón Valido!!</span>
+                  </td>
                   <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
-                    <a style="color:white;padding: 8px 8px;width: 75px; background-color: red;"
-                      class="button button-round-small shadow-large button-full button-s">Aplicar</a>
+                    <a (click)="validateCoupon_click()"
+                      style="color:white;padding: 8px 8px;width: 75px; background-color: red;"
+                      class="button bu211tton-round-small shadow-large button-full button-s">Aplicar</a>
                   </td>
                 </tr>
               </table>
@@ -202,13 +197,44 @@
         </div>
       </div>
 
-      <div class="profile-1" style="top: -70px;">
+      <div class="profile-1" style="top: -45px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
 
           <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">METODO
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">METODO
+            DE ENVIO</a>
+
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+              <div class="content header-clear-small">
+                <div class="link-list link-list-3" style="border: red;">
+                  <strong *ngIf="!appService.addressChecked"
+                    style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
+                    favor seleccione una
+                    direccion!</strong>
+                  <a (click)="openAddressListPage()" class="round-small shadow-tiny">
+                    <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
+                    <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Enviar a:</strong>
+                    <span
+                      style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
+                    <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-1" style="top: -80px;">
+        <div class="profile-header" style="background-color: transparent;"></div>
+        <div class="profile-header-clear" style="height: 40px;"></div>
+        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
+
+          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">METODO
             DE PAGO</a>
 
           <div id="page">
@@ -239,7 +265,7 @@
         </div>
       </div>
 
-      <div class="profile-1" style="top: -105px;">
+      <div class="profile-1" style="top: -115px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
@@ -279,22 +305,29 @@
                     {{ ((!cartProduct.product?.isGift)? (cartService.getProductTotal(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
                   </td>
                 </tr>
+                <tr *ngIf="storeCoupon">
+                  <td colspan="3" style="text-align: left; padding-left: 5px;vertical-align: top;background-color: yellow;">
+                    <strong style="color: black">Cupón
+                      <small style="color: black; background-color: yellow;">(-{{storeCoupon.discount}}%)</small>
+                    </strong>
+                  </td>
+                  <td style="vertical-align: top; text-align: right;background-color: yellow;">
+                    <span style="color: black;">
+                      -{{ (cartService.getTotal() * (storeCoupon.discount/100))  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                  </td>
+                </tr>
               </table>
               <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
-                <!-- <div class="store-cart-total">
-                  <strong>Subtotal</strong>
-                  <span>{{ cartService.getSubTotal() | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
-                  <div class="clear"></div>
-                </div> -->
+
                 <div class="store-cart-total">
                   <strong>Envío</strong>
                   <span>{{ appService.currentStore.deliveryPrice | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
                   <div class="clear"></div>
                 </div>
                 <div class="store-cart-total">
-                  <strong class="color-highlight">Ahorraste</strong>
+                  <strong class="color-highlight">Ahorro</strong>
                   <span class="color-highlight">
-                    {{ cartService.getDiscount() | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                    {{ cartService.getDiscount() + ((storeCoupon)?(cartService.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   <div class="clear"></div>
                 </div>
                 <div class="store-cart-total">
@@ -305,7 +338,8 @@
                 <div style="background-color: red;" class="divider opacity-350"></div>
                 <div class="store-cart-total bottom-20" style="font-size: 25px;">
                   <strong class="uppercase bold">Total</strong>
-                  <span class="uppercase bold">{{ cartService.getTotal() | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
+                  <span
+                    class="uppercase bold">{{ (cartService.getTotal()) - ((storeCoupon)?(cartService.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
                   <div class="clear"></div>
                 </div>
               </div>
@@ -314,17 +348,18 @@
         </div>
       </div>
 
-      <div class="profile-1 bottom-20" style="top: -140px;">
+      <div class="profile-1 bottom-20" style="top: -150px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
           <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">QUIEN TE ASESORO?</a>
+            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">QUIEN
+            TE ASESORO?</a>
 
-            <div id="page">
-              <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-                <div class="content header-clear-small">
-                  <!-- <div class="link-list link-list-3">
+          <div id="page">
+            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+              <div class="content header-clear-small">
+                <!-- <div class="link-list link-list-3">
                     <a class="round-small shadow-tiny">
                       <i class="fa fa-check-circle" style="color: green;"></i>
                       <span style="font-size: 18px;">Contra-entrega</span>
@@ -343,15 +378,13 @@
                     </a>
                   </div> -->
 
-                  
-                </div>
-  
               </div>
             </div>
+          </div>
         </div>
       </div>
 
-      <div class="profile-1 bottom-20" style="top: -194px;">
+      <div class="profile-1 bottom-20" style="top: -204px;">
         <div class="profile-header" style="background-color: transparent;"></div>
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">

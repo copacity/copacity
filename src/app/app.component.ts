@@ -110,7 +110,6 @@ export class AppComponent {
     alert.onDidDismiss().then(() => done());
     await alert.present();
   }
-
   
   shareApp(e) {
     this.ngNavigatorShareService.share({

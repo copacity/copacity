@@ -114,6 +114,10 @@ const routes: Routes = [
   {
     path: 'store-coupons-create',
     loadChildren: () => import('./cs-pages/store-coupons-create/store-coupons-create.module').then( m => m.StoreCouponsCreatePageModule)
+  },
+  {
+    path: 'store-orders',
+    loadChildren: () => import('./cs-pages/store-orders/store-orders.module').then( m => m.StoreOrdersPageModule)
   }
 
 

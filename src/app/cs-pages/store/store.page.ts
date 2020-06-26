@@ -40,6 +40,7 @@ import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generat
 import { ProductInventoryPage } from '../product-inventory/product-inventory.page';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
+import { StoreOrdersPage } from '../store-orders/store-orders.page';
 
 @Component({
   selector: 'app-store',
@@ -969,6 +970,26 @@ export class StorePage implements OnInit {
       let modal = await this.popoverController.create({
         component: StoreCouponsPage,
         componentProps: { isAdmin: this.isAdmin, dashboard: true, orderTotal: -1 },
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
+  }
+
+  async openStoreOrdersPage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StoreOrdersPage,
+        componentProps: { isAdmin: this.isAdmin },
         cssClass: 'cs-popovers',
         backdropDismiss: false,
       });

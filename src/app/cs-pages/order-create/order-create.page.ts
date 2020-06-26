@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppService } from 'src/app/cs-services/app.service';
-import { Store, Order, CartProduct, Notification, StorePoint } from 'src/app/app-intefaces';
+import { Store, Order, CartProduct, Notification, StorePoint, StoreCoupon } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -16,11 +16,13 @@ import { NotificationsService } from 'src/app/cs-services/notifications.service'
 import { AngularFireAuth } from '@angular/fire/auth';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { StoresService } from 'src/app/cs-services/stores.service';
 
 @Component({
   selector: 'app-order-create',
@@ -29,6 +31,9 @@ import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 })
 export class OrderCreatePage implements OnInit {
   messageToStore: FormControl;
+  couponCode: FormControl;
+  storeCoupon: StoreCoupon;
+
   store: Store;
   cart: CartProduct[];
   isValidInventory: boolean = true;
@@ -39,6 +44,7 @@ export class OrderCreatePage implements OnInit {
     public alertController: AlertController,
     public cartService: CartService,
     private usersService: UsersService,
+    private storesService: StoresService,
     private ngNavigatorShareService: NgNavigatorShareService,
     public popoverController: PopoverController,
     private productsService: ProductsService,
@@ -59,6 +65,7 @@ export class OrderCreatePage implements OnInit {
     this.cart = this.cartService.getCart();
 
     this.messageToStore = new FormControl('', [Validators.maxLength(500)]);
+    this.buildStoreCoupon('');
   }
 
   ngOnInit() {
@@ -438,7 +445,7 @@ export class OrderCreatePage implements OnInit {
 
                 let message = "Lo sentimos inventario insuficiente para: " + cartProduct.product.name + " " + properties + " Posiblemente otro cliente acaba de comprar el mismo producto, cantidad disponible en inventario: " + pInventory.quantity + " y la cantidad en tu pedido es de: " + cartProduct.quantity + ". Debes ir a tu carrito y modificar la cantidad o removerlo. Ofrecemos disculpas por el inconveniente. Gracias";
                 reject(message);
-               }
+              }
             }
           }
 
@@ -461,12 +468,79 @@ export class OrderCreatePage implements OnInit {
 
       modal.onDidDismiss()
         .then((data) => {
-          const result = data['data'];
+          const storeCoupon = data['data'];
+
+          if (storeCoupon) {
+            this.buildStoreCoupon(storeCoupon.id);
+
+            this.validateCoupon().then(result => {
+              if (result) {
+                this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
+              }
+            }).catch(err => alert(err));
+          }
         });
 
       modal.present();
     } else {
       this.SignIn();
     }
+  }
+
+  buildStoreCoupon(idStoreCoupon: string) {
+    this.couponCode = new FormControl(idStoreCoupon, [], []);
+    this.couponCode.valueChanges
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged()
+      )
+      .subscribe(res => {
+        this.validateCoupon().then(result => {
+          if (result) {
+            this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
+          }
+        }).catch(err => alert(err));
+      });
+  }
+
+  async validateCoupon_click() {
+    this.validateCoupon().then(result => {
+      if (result) {
+        this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
+      }
+    }).catch(err => alert(err));
+  }
+
+  async validateCoupon() {
+    return new Promise((resolve, reject) => {
+
+      this.storeCoupon = null;
+      if (this.couponCode.value) {
+        this.storesService.getCouponById(this.appService.currentStore.id, this.couponCode.value).then((storeCoupon: StoreCoupon) => {
+          if (storeCoupon) {
+            if (storeCoupon.quantity > 0) {
+              let currentDate: any = new Date().setHours(23, 59, 59, 0);
+              let couponDate: any = storeCoupon.dateExpiration;
+              if (couponDate.toDate().getTime() > currentDate) {
+                this.storeCoupon = storeCoupon;
+                resolve(true);
+              } else {
+                this.presentAlert("Lo sentimos el cupón seleccionado esta vencido", "", () => { });
+                resolve(false);
+              }
+            } else {
+              this.presentAlert("Lo sentimos el cupón seleccionado se ha agotado", "", () => { });
+              resolve(false);
+            }
+          } else {
+            resolve(false);
+          }
+        }).catch(function (error) {
+          resolve(false);
+        });
+      } else {
+        resolve(false);
+      }
+    });
   }
 }

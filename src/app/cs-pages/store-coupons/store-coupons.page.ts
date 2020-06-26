@@ -41,7 +41,7 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async openBarCodeGenerator(storeCoupon: StoreCoupon) {
-    let value = "Cupon: " + storeCoupon.id
+    let value = "Cupón: " + storeCoupon.id
 
     let modal = await this.popoverController.create({
       component: BarcodeGeneratorComponent,
@@ -97,7 +97,7 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async presentDeleteProductPrompt(storeCoupon: StoreCoupon) {
-    this.presentConfirm('Esta seguro que desea eliminar el cupon: ' + storeCoupon.name + '?', () => {
+    this.presentConfirm('Esta seguro que desea eliminar el cupón: ' + storeCoupon.name + '?', () => {
       this.storesService.updateStoreCoupon(this.appService.currentStore.id, storeCoupon.id, { deleted: true }).then(() => {
         this.presentAlert("Cupom eliminado exitosamente!", '', () => { });
       });
@@ -173,5 +173,9 @@ export class StoreCouponsPage implements OnInit {
       });
 
     modal.present();
+  }
+
+  selectCoupon(storeCoupon: StoreCoupon) {
+    this.popoverController.dismiss(storeCoupon);
   }
 }

@@ -10,25 +10,6 @@
     <a style="background-color: white; color: black;font-size: 16px;"
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">CUPONES</a>
 
-    <!-- <div *ngIf="!isAdmin && points > 0" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
-      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
-        <h1 class="center-text bolder top-10" style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">
-          Tienes <b style="font-weight: bolder;">{{ points }}</b> puntos!</h1>
-        <p class="center-text bottom-10" style="font-size: 1.2em;color: black;padding-top: 10px;">
-          Redimelos y disfruta de los fabulosos regalos que tenemos para ti
-        </p>
-      </div>
-    </div> -->
-
-    <!-- <div *ngIf="!isAdmin && points <= 0" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
-      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
-        <h1 class="center-text bolder top-10" style="color: red;font-size: 1.2em;margin-bottom: 0px;line-height: 15px;">
-          No tienes puntos</h1>
-      </div>
-    </div>
-
-     -->
-
     <div *ngIf="!isAdmin" class="content contact-message top-20"
       style="margin: 0px 0px 0px 0px;background-color: yellow;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
@@ -71,7 +52,7 @@
             </td>
           </tr>
 
-          <tr *ngIf="couponSearchHits == 0">
+          <tr *ngIf="couponSearchHits == 0 && !searchingCoupons">
             <td colspan="2" style="text-align: center;">
               <div class="boxed-text-huge">
                 <label style="color: red;padding-top: 20px;font-size: 1.2em;">No se
@@ -80,14 +61,14 @@
             </td>
           </tr>
 
-          <tr *ngFor="let storeCoupon of storeCoupons | async; let i = index" class="{{ (!isAdmin && (storeCoupon.dateExpiration.toDate().getTime() < today.getTime()))?'hidden':'' }}">
+          <tr *ngFor="let storeCoupon of storeCoupons | async; let i = index" class="{{ (!isAdmin && ((storeCoupon.dateExpiration.toDate().getTime() < today.getTime()) || storeCoupon.quantity <= 0))?'hidden':'' }}">
             <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
               <img class="round-small preload-image" src="../../../assets/icon/coupon.png" alt="img"
                 style="height: 100px;width: 100px;">
 
               <em *ngIf="storeCoupon.dateExpiration.toDate().getTime() < today.getTime()"
                 style="background-color: transparent;color: black;font-weight: bold;
-                font-size: 1.2em;top: 78px;position: absolute;left: 5px;top: 20px;">
+                font-size: 1.2em;position: absolute;left: -10px;top: 20px;padding-right: 10px;">
                 <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium"
                   alt="img">
               </em>
@@ -156,19 +137,11 @@
                       class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-edit" style="color: black"></i></a>
 
-                    <a *ngIf="(!isAdmin && !dashboard)" style="color:white;"
-                      class="button button-round-small shadow-large bg-highlight button-full button-s {{ (!isAdmin && !dashboard && orderTotal < storeCoupon.minAmount)?'sold-out':'' }}">
+                    <a (click)="selectCoupon(storeCoupon)" *ngIf="(!isAdmin && !dashboard)" style="color:white;background-color: red;"
+                      class="button button-round-small shadow-large button-full button-s {{ (!isAdmin && !dashboard && orderTotal < storeCoupon.minAmount)?'sold-out':'' }}">
                       TOMAR CUPON</a>
                   </td>
                 </tr>
-                <!-- <tr *ngIf="isAdmin">
-                  <td colspan="3" style="padding: 0px 0px 0px 0px;text-align: right;">
-                    <a (click)="openProductInventoryPage(product)" *ngIf="isAdmin" style="color:red;"
-                      class="button button-round-small shadow-large button-full button-s">
-                      <i class="fa fa-dolly-flatbed add-button"
-                        style="color: black;padding-right: 5px;"></i>Inventario</a>
-                  </td>
-                </tr> -->
               </table>
             </td>
           </tr>

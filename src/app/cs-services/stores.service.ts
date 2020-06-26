@@ -228,4 +228,23 @@ export class StoresService {
       }))
     );
   }
+
+  public getCouponById(idStore: string, idStoreCoupon: string) {
+    return new Promise((resolve, reject) => {
+      this.angularFirestore.collection("stores").doc(idStore)
+        .collection("coupons").doc(idStoreCoupon).ref.get().then(
+          function (doc) {
+            if (doc.exists) {
+              const data = doc.data() as StoreCoupon;
+              const id = doc.id;
+              resolve({ id, ...data });
+            } else {
+              resolve();
+            }
+          }).catch(function (error) {
+            console.log("Error getting document:", error);
+            throw error;
+          });
+    }).catch(err => alert(err));
+  }
 }

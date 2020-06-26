@@ -134,21 +134,21 @@ export class StoreCouponsCreatePage implements OnInit {
       this.storeCoupon.quantity = this.form.value.quantity;
 
       if (this.navParams.data.storeCoupon) {
-        this.loader.startLoading("Actualizando cupon, por favor espere un moento");
+        this.loader.startLoading("Actualizando cupón, por favor espere un moento");
         this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.storeCoupon.id, this.storeCoupon).then(() => {
           this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.storeCoupon.id, { dateExpiration: new Date(new Date(this.form.value.dateExpiration).setHours(23, 59, 59, 0)) }).then(() => {
             this.loader.stopLoading();
-            this.presentAlert("Cupon actualizado exitosamente", "", () => {
+            this.presentAlert("Cupón actualizado exitosamente", "", () => {
               this.popoverController.dismiss();
             });
           });
         });
       } else {
-        this.loader.startLoading("Creando cupon, por favor espere un moento");
+        this.loader.startLoading("Creando cupón, por favor espere un moento");
         this.storesService.createStoreCoupon(this.appService.currentStore.id, this.storeCoupon).then(doc => {
           this.storesService.updateStoreCoupon(this.appService.currentStore.id, doc.id, { dateExpiration: new Date(new Date(this.form.value.dateExpiration).setHours(23, 59, 59, 0)) }).then(() => {
             this.loader.stopLoading();
-            this.presentAlert("Cupon creado exitosamente", "", () => {
+            this.presentAlert("Cupón creado exitosamente", "", () => {
               this.popoverController.dismiss();
             });
           });
