@@ -175,7 +175,7 @@
                     </div>
                   </td>
                   <td>
-                    <i *ngIf="couponCode.value && !storeCoupon" class="fa fa-times-circle"
+                    <i *ngIf="couponCode.value && !storeCoupon" (click)="clearCouponCode()" class="fa fa-times-circle"
                       style="color: red;font-size: 1.2em;"></i>
                     <i *ngIf="couponCode.value && storeCoupon" class="fa fa-check-circle"
                       style="color: green;font-size: 1.2em;"></i>

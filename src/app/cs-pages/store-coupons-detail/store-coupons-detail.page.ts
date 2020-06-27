@@ -21,6 +21,7 @@ import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/b
 export class StoreCouponsDetailPage implements OnInit {
   storeCoupon: StoreCoupon;
   storeId: string;
+  couponExpirationDate: any;
 
   constructor(
     private router: Router,
@@ -47,7 +48,9 @@ export class StoreCouponsDetailPage implements OnInit {
 
     this.storesService.getCouponById(this.storeId, storeCouponId).then((storeCoupon: StoreCoupon) => {
       if (storeCoupon) {
+        
         this.storeCoupon = storeCoupon
+        this.couponExpirationDate = this.storeCoupon.dateExpiration;
       }
     });
   }

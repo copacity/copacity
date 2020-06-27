@@ -72,6 +72,11 @@ export class OrderCreatePage implements OnInit {
 
   }
 
+  clearCouponCode() {
+    this.storeCoupon = null;
+    this.buildStoreCoupon('');
+  }
+
   async SignIn() {
     const popover = await this.popoverController.create({
       component: SigninComponent,
@@ -220,8 +225,8 @@ export class OrderCreatePage implements OnInit {
         if (result) {
           if (result.indexOf("store-coupons-detail") != -1) {
             let value = result.toString().split("/");
-            let storeCouponId = value.toString().split("&")[0];
-            let storeId = value.toString().split("&")[1];
+            let storeCouponId = value[value.length - 1].toString().split("&")[0];
+            let storeId = value[value.length - 1].toString().split("&")[1];
 
             if (this.appService.currentStore.id == storeId) {
               this.buildStoreCoupon(storeCouponId);
@@ -231,9 +236,11 @@ export class OrderCreatePage implements OnInit {
                   this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
                 }
               }).catch(err => alert(err));
-            } else { 
-              this.presentAlert("Lo sentimos, el cupón seleccionado pertenece a otra tienda", "", () => { });
+            } else {
+              this.presentAlert("Lo sentimos, el cupón seleccionado no pertenece a esta tienda", "", () => { });
             }
+          } else {
+            this.presentAlert("El codigo leído no es un cupon", "", () => { });
           }
         }
       });
@@ -562,9 +569,9 @@ export class OrderCreatePage implements OnInit {
         this.storesService.getCouponById(this.appService.currentStore.id, this.couponCode.value).then((storeCoupon: StoreCoupon) => {
           if (storeCoupon) {
             if (storeCoupon.quantity > 0) {
-              let currentDate: any = new Date().setHours(23, 59, 59, 0);
+              let currentDate: any = new Date();
               let couponDate: any = storeCoupon.dateExpiration;
-              if (couponDate.toDate().getTime() > currentDate) {
+              if (couponDate.toDate().getTime() > currentDate.getTime()) {
                 this.storeCoupon = storeCoupon;
                 resolve(true);
               } else {

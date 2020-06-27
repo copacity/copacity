@@ -295,14 +295,15 @@ export class HomePage implements OnInit {
         const result = data['data'];
 
         if (result) {
-          if (result.indexOf("product-detail") != -1) {
+          if (result.indexOf("store-coupons-detail") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['store-coupons-detail/', value[value.length - 1]]);
+          } else if (result.indexOf("product-detail") != -1) {
             let value = result.toString().split("/");
             this.router.navigate(['product-detail/', value[value.length - 1]]);
           } else if (result.indexOf("store") != -1) {
             let value = result.toString().split("/");
             this.router.navigate(['store/', value[value.length - 1]]);
-          } else {
-            // Pending Implement Coupon Detail
           }
         }
       });
