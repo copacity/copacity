@@ -41,7 +41,7 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async openBarCodeGenerator(storeCoupon: StoreCoupon) {
-    let value = "Cupón: " + storeCoupon.id
+    let value = this.appService._appInfo.domain + "/store-coupons-detail/" + storeCoupon.id + "&" + this.appService.currentStore.id;
 
     let modal = await this.popoverController.create({
       component: BarcodeGeneratorComponent,
@@ -176,6 +176,8 @@ export class StoreCouponsPage implements OnInit {
   }
 
   selectCoupon(storeCoupon: StoreCoupon) {
-    this.popoverController.dismiss(storeCoupon);
+    if (this.orderTotal >= storeCoupon.minAmount) {
+      this.popoverController.dismiss(storeCoupon);
+    }
   }
 }

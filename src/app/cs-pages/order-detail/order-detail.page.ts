@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, AlertController, PopoverController } from '@ionic/angular';
-import { Order, CartProduct, User, Address, Notification, Store, StorePoint } from 'src/app/app-intefaces';
+import { Order, CartProduct, User, Address, Notification, Store, StorePoint, StoreCoupon } from 'src/app/app-intefaces';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Observable } from 'rxjs';
@@ -23,6 +23,7 @@ export class OrderDetailPage implements OnInit {
   store: Store;
   order: Order;
   cartProducts: Observable<CartProduct[]>;
+  storeCoupon: StoreCoupon;
   addresses: Observable<Address[]>;
   total: number;
   discount: number;
@@ -50,6 +51,15 @@ export class OrderDetailPage implements OnInit {
         this.order = orderResult;
         this.cartProducts = this.ordersService.getCartProducts(this.store.id, this.navParams.data.id);
         this.addresses = this.ordersService.getAddresses(this.store.id, this.navParams.data.id);
+
+        this.storeCoupon = null;
+        let subs = this.ordersService.getOrderCoupons(this.store.id, this.order.id).subscribe(orderCoupons => {
+          orderCoupons.forEach(coupon => {
+            this.storeCoupon = coupon;
+          });
+
+          subs.unsubscribe;
+        });
 
         this.cartProducts.subscribe((cartP) => {
           this.cartService.setCart(cartP);
@@ -300,7 +310,7 @@ export class OrderDetailPage implements OnInit {
       photoUrl: this.store.logo,
       userName: this.store.name,
       idOrder: '',
-      idUserNotification: this.order.idUser,
+      idUserNotification: this.order.idUser
     }
 
     this.loaderCOmponent.startLoading("Cancelando pedido, por favor espere un momento...")
@@ -312,16 +322,18 @@ export class OrderDetailPage implements OnInit {
 
           this.revertToInventory().then(result => {
             this.revertPoints().then(() => {
-              this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result => {
-                result.forEach(notification => {
-                  this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
+              this.revertCouponQuantity().then(() => {
+                this.notificationsService.getGetByIdOrder(this.appService.currentUser.id, this.order.id).subscribe(result => {
+                  result.forEach(notification => {
+                    this.notificationsService.update(this.appService.currentUser.id, notification.id, { status: NotificationStatus.Readed });
+                  });
                 });
-              });
-  
-              this.loaderCOmponent.stopLoading();
-              this.presentAlert("El pedido ha sido CANCELADO exitosamente", "", () => {
-                this.cartService.clearCart();
-                this.popoverCtrl.dismiss(true);
+
+                this.loaderCOmponent.stopLoading();
+                this.presentAlert("El pedido ha sido CANCELADO exitosamente", "", () => {
+                  this.cartService.clearCart();
+                  this.popoverCtrl.dismiss(true);
+                });
               });
             });
           });
@@ -361,5 +373,24 @@ export class OrderDetailPage implements OnInit {
 
       resolve();
     }).catch(err => alert(err));
+  }
+
+  revertCouponQuantity() {
+    return new Promise((resolve, reject) => {
+      if (this.storeCoupon) {
+        // validate Coupon 
+        this.storesService.getCouponById(this.store.id, this.storeCoupon.id).then((storeCoupon: StoreCoupon) => {
+          if (storeCoupon) {
+            this.storesService.updateStoreCoupon(this.store.id, this.storeCoupon.id, { quantity: (storeCoupon.quantity + 1) }).then(() => {
+              resolve(true);
+            });
+          } else {
+            resolve(true);
+          }
+        });
+      } else {
+        resolve(true);
+      }
+    });
   }
 }

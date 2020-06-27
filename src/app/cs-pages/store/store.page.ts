@@ -912,14 +912,15 @@ export class StorePage implements OnInit {
         const result = data['data'];
 
         if (result) {
-          if (result.indexOf("product-detail") != -1) {
+          if (result.indexOf("store-coupons-detail") != -1) {
+            let value = result.toString().split("/");
+            this.router.navigate(['store-coupons-detail/', value[value.length - 1]]);
+          } else if (result.indexOf("product-detail") != -1) {
             let value = result.toString().split("/");
             this.router.navigate(['product-detail/', value[value.length - 1]]);
           } else if (result.indexOf("store") != -1) {
             let value = result.toString().split("/");
             this.router.navigate(['store/', value[value.length - 1]]);
-          } else {
-            // Pending Implement Coupon Detail
           }
         }
       });
@@ -1025,12 +1026,12 @@ export class StorePage implements OnInit {
   //   this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
   // }
 
-  searchFeaturedProducts(){
+  searchFeaturedProducts() {
     this.idProductCategory = '-1';
     this.presentToast("Los productos destacados se estan mostrando ahora", null);
   }
 
-  openSelectCategories(){
+  openSelectCategories() {
     this.selectRef.open();
   }
 }

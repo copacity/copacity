@@ -95,7 +95,8 @@ const routes: Routes = [
   {
     path: 'store-points',
     loadChildren: () => import('./cs-pages/store-points/store-points.module').then( m => m.StorePointsPageModule)
-  },  {
+  },
+  {
     path: 'product-inventory',
     loadChildren: () => import('./cs-pages/product-inventory/product-inventory.module').then( m => m.ProductInventoryPageModule)
   },
@@ -118,6 +119,10 @@ const routes: Routes = [
   {
     path: 'store-orders',
     loadChildren: () => import('./cs-pages/store-orders/store-orders.module').then( m => m.StoreOrdersPageModule)
+  },
+  {
+    path: 'store-coupons-detail/:id',
+    loadChildren: () => import('./cs-pages/store-coupons-detail/store-coupons-detail.module').then( m => m.StoreCouponsDetailPageModule)
   }
 
 

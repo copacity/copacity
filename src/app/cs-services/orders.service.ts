@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
-import { Order, CartProduct, Address } from '../app-intefaces';
+import { Order, CartProduct, Address, StoreCoupon } from '../app-intefaces';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -201,5 +201,32 @@ export class OrdersService {
       .collection(this.collectionName).doc(idOrder)
       .collection('cartProducts').doc(idCartProduct)
       .update(data);
+  }
+
+  //------------------------------------- Coupons
+
+  public async addOrderCoupon(idStore: string, idOrder: string, storeCoupon: StoreCoupon): Promise<DocumentReference> {
+    return this.angularFirestore.collection('stores').doc(idStore)
+      .collection(this.collectionName).doc(idOrder)
+      .collection('coupons').add(storeCoupon);
+  }
+
+  public getOrderCoupons(idStore: string, idOrder: string): Observable<StoreCoupon[]> {
+    this.ordersCollection;
+
+    this.ordersCollection = this.angularFirestore
+    .collection('stores').doc(idStore)
+    .collection(this.collectionName).doc(idOrder)
+    .collection('coupons', ref => ref
+        .where('deleted', '==', false));
+
+    return this.ordersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as StoreCoupon;
+        //const id = a.payload.doc.id;
+
+        return data;
+
+      })));
   }
 }

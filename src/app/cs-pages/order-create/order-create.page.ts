@@ -218,14 +218,30 @@ export class OrderCreatePage implements OnInit {
         const result = data['data'];
 
         if (result) {
-          alert("Se encontro el prodcuto: " + result);
+          if (result.indexOf("store-coupons-detail") != -1) {
+            let value = result.toString().split("/");
+            let storeCouponId = value.toString().split("&")[0];
+            let storeId = value.toString().split("&")[1];
+
+            if (this.appService.currentStore.id == storeId) {
+              this.buildStoreCoupon(storeCouponId);
+
+              this.validateCoupon().then(result => {
+                if (result) {
+                  this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
+                }
+              }).catch(err => alert(err));
+            } else { 
+              this.presentAlert("Lo sentimos, el cupón seleccionado pertenece a otra tienda", "", () => { });
+            }
+          }
         }
       });
 
     modal.present();
   }
 
-  sendOrder() {
+  async sendOrder() {
     if (this.messageToStore.valid) {
       if (this.appService.currentUser) {
         if (this.appService.addressChecked) {
@@ -281,17 +297,25 @@ export class OrderCreatePage implements OnInit {
                         this.discountFromInventory().then(result => {
 
                           // 6. Of the order has gifts then the process go to discount points to the user
-                          this.discountPoints().then(() => {
+                          this.discountPoints().then(async () => {
 
-                            notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
-                            notification.idOrder = doc.id;
+                            if (this.storeCoupon) {
+                              await this.ordersService.addOrderCoupon(this.appService.currentStore.id, doc.id, this.storeCoupon);
+                            }
 
-                            // 7. Configure Notification
-                            this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {
-                              this.loaderComponent.stopLoading();
-                              this.cartService.clearCart();
-                              this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
-                                this.location.back();
+                            // 7. Discount Coupon Quantity
+                            this.discountCouponQuantity().then(() => {
+
+                              notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
+                              notification.idOrder = doc.id;
+
+                              // 8. Configure Notification
+                              this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {
+                                this.loaderComponent.stopLoading();
+                                this.cartService.clearCart();
+                                this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
+                                  this.location.back();
+                                });
                               });
                             });
                           });
@@ -454,6 +478,25 @@ export class OrderCreatePage implements OnInit {
     }).catch(err => {
       this.presentAlert(err, "", () => { });
       this.loaderComponent.stopLoading();
+    });
+  }
+
+  discountCouponQuantity() {
+    return new Promise((resolve, reject) => {
+      if (this.storeCoupon) {
+        // validate Coupon 
+        this.storesService.getCouponById(this.appService.currentStore.id, this.couponCode.value).then((storeCoupon: StoreCoupon) => {
+          if (storeCoupon) {
+            this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.storeCoupon.id, { quantity: (storeCoupon.quantity - 1) }).then(() => {
+              resolve(true);
+            });
+          } else {
+            resolve(true);
+          }
+        });
+      } else {
+        resolve(true);
+      }
     });
   }
 
