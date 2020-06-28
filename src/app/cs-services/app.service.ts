@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, AppMessage, Notification } from '../app-intefaces';
+import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, Notification } from '../app-intefaces';
 import { UsersService } from './users.service';
 import { SectorsService } from './sectors.service';
 import { StoreCategoriesService } from './storeCategories.service';
@@ -254,10 +254,6 @@ export class AppService {
         return { id, ...data };
       }))
     );
-  }
-
-  public createAppMessage(appMessage: AppMessage): Promise<DocumentReference> {
-    return this.angularFirestore.collection("appMessages").add(appMessage);
   }
 
   async presentToast(message: string) {

@@ -123,7 +123,16 @@ const routes: Routes = [
   {
     path: 'store-coupons-detail/:id',
     loadChildren: () => import('./cs-pages/store-coupons-detail/store-coupons-detail.module').then( m => m.StoreCouponsDetailPageModule)
+  },
+  {
+    path: 'store-pqrsf',
+    loadChildren: () => import('./cs-pages/store-pqrsf/store-pqrsf.module').then( m => m.StorePqrsfPageModule)
+  },
+  {
+    path: 'store-pqrsf-create',
+    loadChildren: () => import('./cs-pages/store-pqrsf-create/store-pqrsf-create.module').then( m => m.StorePqrsfCreatePageModule)
   }
+
 
 
 

@@ -6,12 +6,13 @@ import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notificat
 import { AppService } from 'src/app/cs-services/app.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
-import { AppMessage } from 'src/app/app-intefaces';
+import { PQRSF, Store } from 'src/app/app-intefaces';
 import { Location, LocationStrategy } from '@angular/common';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { StoresService } from 'src/app/cs-services/stores.service';
 
 @Component({
   selector: 'app-contact',
@@ -20,11 +21,15 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class ContactPage implements OnInit {
   @ViewChild('sliderContact', null) slider: any;
+  stores: Array<Store> = [];
 
-  appMessage: AppMessage = {
+  pqrsf: PQRSF = {
     id: '',
     idUser: '',
-    title: '',
+    userName: '',
+    userPhotoUrl: '',
+    idStore: '',
+    idType: '',
     message: '',
     deleted: false,
     dateCreated: new Date()
@@ -38,6 +43,7 @@ export class ContactPage implements OnInit {
     private formBuilder: FormBuilder,
     private loader: LoaderComponent,
     private router: Router,
+    private storesService: StoresService,
     public toastController: ToastController,
     private angularFireAuth: AngularFireAuth,
     public alertController: AlertController,
@@ -51,6 +57,7 @@ export class ContactPage implements OnInit {
     });
 
     this.buildForm();
+    this.getStores();
   }
 
   ngOnInit() {
@@ -83,6 +90,14 @@ export class ContactPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  getStores() {
+    this.storesService.getAll('').then(stores => {
+      stores.forEach((store: Store) => {
+        this.stores.push(store);
+      });
+    });
+  }
+
   async presentMenuUser(e) {
     const popover = await this.popoverController.create({
       component: MenuUserComponent,
@@ -112,7 +127,9 @@ export class ContactPage implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      title: ['', [Validators.required, Validators.maxLength(100)]],
+      idStore: ['', [Validators.required]],
+      idType: ['', [Validators.required]],
+      //title: ['', [Validators.required, Validators.maxLength(100)]],
       message: ['', [Validators.required, Validators.maxLength(500)]]
     });
   }
@@ -203,11 +220,14 @@ export class ContactPage implements OnInit {
         this.loader.startLoading("Enviando mensaje por favor espere un momento...");
         setTimeout(() => {
 
-          this.appMessage.idUser = this.appService.currentUser.id;
-          this.appMessage.title = this.form.value.title;
-          this.appMessage.message = this.form.value.title;
+          this.pqrsf.idUser = this.appService.currentUser.id;
+          this.pqrsf.userName = this.appService.currentUser.name;
+          this.pqrsf.userPhotoUrl = this.appService.currentUser.photoUrl;
+          this.pqrsf.idStore = this.form.value.idStore;
+          this.pqrsf.idType = this.form.value.idType;
+          this.pqrsf.message = this.form.value.message;
 
-          this.appService.createAppMessage(this.appMessage).then(result => {
+          this.storesService.createPQRSF(this.form.value.idStore, this.pqrsf).then(result => {
             this.loader.stopLoading();
             this.presentAlert("Mensaje enviado exitosamente", () => { });
             this.buildForm();

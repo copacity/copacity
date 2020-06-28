@@ -1,0 +1,55 @@
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;"></div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 20px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">PQRSF</a>
+
+    <form [formGroup]="form">
+      <div class="content header-clear-small">
+        <ion-list lines="full" class="ion-no-margin ion-no-padding">
+
+          <ion-item>
+            <ion-label>Motivo:</ion-label>
+            <ion-select style="padding-right: 10px;" formControlName="idType" mode="ios" cancelText="Cancelar"
+              okText="Okay!" interface='action-sheet'>
+              <ion-select-option value="1">Petición</ion-select-option>
+              <ion-select-option value="2">Queja</ion-select-option>
+              <ion-select-option value="3">Reclamo</ion-select-option>
+              <ion-select-option value="4">Sugerencia</ion-select-option>
+              <ion-select-option value="5">Felicitación</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Mensaje <small style="color: gray;">
+                ({{this.form.get('message').value.length}}/500)</small></ion-label>
+            <ion-textarea formControlName="message"></ion-textarea>
+          </ion-item>
+        </ion-list>
+
+        <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+          class="content content-box round-small shadow-large">
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('idType').errors">
+            <span *ngIf="form.get('idType').hasError('required')">Motivo es requerido</span>
+          </p>
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('message').errors">
+            <span *ngIf="form.get('message').hasError('required')">Mensaje es requerido</span>
+            <span *ngIf="form.get('message').hasError('maxlength')">Mensaje debe ser maximo de 500
+              caracteres</span>
+          </p>
+        </div>
+      </div>
+    </form>
+
+    <div>
+      <a (click)="sendMessage()"
+        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+        class="button button-round-small shadow-large button-full button-s">ENVIAR!</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;font-size: 16px;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">PQRSF</a>
+
+    <!-- <div *ngIf="!isAdmin" class="content contact-message top-20"
+      style="margin: 0px 0px 0px 0px;background-color: yellow;">
+      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
+        <span class="center-text bolder" style="color: black;margin-bottom: 0px;line-height: 15px;">
+          A continuación podrás ver la lista de cupones que tenemos disponibles para ti, en la pantalla de pedido puedes tomar algún cupón virtual y usarlo para que te aplique el descuento,
+           también puedes usar el lector QR para escanear los cupones que tengas impresos.
+        </span>
+      </div>
+    </div> -->
+
+    <div class="content" style="margin: 0px 0px 0px 0px;">
+      <div class="top-20">
+        <table>
+          <tr *ngIf="!isAdmin">
+            <td colspan="2" style="text-align: right;">
+              <a (click)="openStorePqrsfCreatePage()"
+                style="text-align: end;background-color: red;margin-bottom: 0px;"
+                class="button button-round-small button-s">+ Mensaje</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <div *ngIf="searchingPqrsf">
+                <div class="store-slide-2" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+                  <a class="store-slide-image">
+                    <ion-skeleton-text animated style="height: 50px; top:-10px" class="round-medium">
+                    </ion-skeleton-text>
+                  </a>
+                  <div class="store-slide-title">
+                    <strong>
+                      <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                    </strong>
+                    <em class="color-gray2-dark">
+                      <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                    </em>
+                  </div>
+                </div>
+              </div>
+
+              <div class="boxed-text-huge">
+                <label *ngIf="pqrsfSearchHits == 0 && !searchingPqrsf" style="color: red;padding-top: 20px;font-size: 1em;">No se
+                  encontraron mensajes</label>
+              </div>
+
+              <div *ngFor="let pqrsf of pqrsfCollection | async">
+                <a class="user-group">
+                  <div class="user-group-manager {{ (pqrsf?.idType == 2 || pqrsf?.idType == 3)?'color-red1-light':pqrsf?.idType == 5?'color-green1-light':(pqrsf?.idType == 1 || pqrsf?.idType == 4)?'color-dark2-dark':'' }}" style="border-width: 5px;">
+                    <img style="z-index: 9;"
+                      (click)="openImageViewer(pqrsf?.userPhotoUrl?pqrsf?.userPhotoUrl:'../../../assets/icon/no-image.png')"
+                      class="shadow-large"
+                      src="{{pqrsf?.userPhotoUrl?pqrsf?.userPhotoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
+                    <h4 class="color-theme">{{ pqrsf?.userName }}</h4>
+                    <span>{{pqrsf?.dateCreated.toDate() | date:'MMM d, h:mm a' }}</span>
+                  </div>
+                  <div>
+                    <h4 
+                      class="bolder font-15 {{ (pqrsf?.idType == 2 || pqrsf?.idType == 3)?'color-red1-light':pqrsf?.idType == 5?'color-green1-light':(pqrsf?.idType == 1 || pqrsf?.idType == 4)?'color-dark2-dark':'' }}">
+                      {{ pqrsf.idType | storePqrsfType }}
+                    </h4>
+                    <p class="under-heading font-12 bold top-15 {{ (pqrsf?.idType == 2 || pqrsf?.idType == 3)?'color-red1-light':pqrsf?.idType == 5?'color-green1-light':(pqrsf?.idType == 1 || pqrsf?.idType == 4)?'color-dark2-dark':'' }}" style="margin-bottom: 0px;">
+                      {{ pqrsf?.message }}
+                    </p>
+                    <h6 class="color-theme bolder bottom-0"></h6>
+                  </div>
+                  <div class="clear"></div>
+                </a>
+
+                <div class="divider"></div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

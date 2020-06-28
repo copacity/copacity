@@ -72,7 +72,7 @@
         </ion-item> -->
         <ion-item style="padding: 3px;" routerLink="/contact">
           <i class="fa fa-paper-plane"></i>
-          <ion-label style="padding-left:10px">PQRS</ion-label>
+          <ion-label style="padding-left:10px">PQRSF</ion-label>
         </ion-item>
         <!-- <ion-item style="padding: 3px;">
             <i class="fa fa-info-circle"></i>
@@ -178,7 +178,7 @@
 
             <div class="top-20"></div>
 
-            <ion-slides [options]="appService.slideOpts2" style="max-width: 450px;">
+            <ion-slides #sliderMenu [options]="appService.slideOpts2" style="max-width: 450px;">
               <ion-slide (click)="openSelectCategories()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
@@ -235,11 +235,11 @@
                     style="font-size: .7em;color: black;margin: 10px;">Factura</span>
                 </a>
               </ion-slide>
-              <ion-slide style="margin: 3px;width: 60px;">
+              <ion-slide (click)="openStorePQRSFPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
-                  <span style="font-size: .7em;margin: 15px;color: black;">PQRS</span>
+                  <span style="font-size: .7em;margin: 15px;color: black;">PQRSF</span>
                 </a>
               </ion-slide>
               <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">

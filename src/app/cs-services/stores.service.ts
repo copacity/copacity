@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Store, StoreCoupon } from '../app-intefaces';
+import { Store, StoreCoupon, PQRSF } from '../app-intefaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StoreStatus } from '../app-enums';
@@ -246,5 +246,48 @@ export class StoresService {
             throw error;
           });
     }).catch(err => alert(err));
+  }
+
+  //------------------------------- PQRSF
+
+  public createPQRSF(idStore: string, pqrsf: PQRSF): Promise<DocumentReference> {
+    return this.angularFirestore
+      .collection(this.collectionName).doc(idStore)
+      .collection("pqrsf").add(pqrsf);
+  }
+
+  public getStorePQRSF(idStore: string): Observable<PQRSF[]> {
+    let storesCollection = this.angularFirestore
+      .collection<Store>(this.collectionName).doc(idStore)
+      .collection("pqrsf", ref => ref
+        .where('deleted', '==', false)
+        .orderBy('dateCreated', 'desc'));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as PQRSF;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
+  }
+
+  public getStorePQRSFByUser(idStore: string, idUser: string): Observable<PQRSF[]> {
+    let storesCollection = this.angularFirestore
+      .collection<Store>(this.collectionName).doc(idStore)
+      .collection("pqrsf", ref => ref
+        .where('deleted', '==', false)
+        .where('idUser', '==', idUser)
+        .orderBy('dateCreated', 'desc'));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as PQRSF;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
   }
 }

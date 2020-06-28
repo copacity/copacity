@@ -41,6 +41,7 @@ import { ProductInventoryPage } from '../product-inventory/product-inventory.pag
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 import { StoreOrdersPage } from '../store-orders/store-orders.page';
+import { StorePqrsfPage } from 'src/app/cs-pages/store-pqrsf/store-pqrsf.page';
 
 @Component({
   selector: 'app-store',
@@ -52,7 +53,7 @@ export class StorePage implements OnInit {
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------      MAIN VARIABLES 
-
+  @ViewChild('sliderMenu', null) slider: any;
   @ViewChild('cart', { static: false, read: ElementRef }) shoppingCart: ElementRef;
   @ViewChild(SuperTabs, { static: false }) superTabs: SuperTabs;
   @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
@@ -880,6 +881,10 @@ export class StorePage implements OnInit {
 
       this.initialize(false);
     });
+
+    setTimeout(() => {
+      try { this.slider.startAutoplay(); } catch (error) { }
+    }, 300);
   }
 
   async openImageViewer(img: string) {
@@ -990,6 +995,26 @@ export class StorePage implements OnInit {
     if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StoreOrdersPage,
+        componentProps: { isAdmin: this.isAdmin },
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
+  }
+
+  async openStorePQRSFPage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StorePqrsfPage,
         componentProps: { isAdmin: this.isAdmin },
         cssClass: 'cs-popovers',
         backdropDismiss: false,

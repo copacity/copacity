@@ -17,10 +17,13 @@ export interface File {
   filePath: string;
 }
 
-export interface AppMessage {
+export interface PQRSF {
   id: string;
   idUser: string;
-  title: string;
+  userName: string;
+  userPhotoUrl: string;
+  idStore: string;
+  idType: string;
   message: string;
   dateCreated: Date;
   deleted: boolean;

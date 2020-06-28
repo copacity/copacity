@@ -37,10 +37,11 @@ import { TermsServicePageModule } from './cs-pages/terms-service/terms-service.m
 import { PrivacyPolicyPageModule } from './cs-pages/privacy-policy/privacy-policy.module';
 import { StorePointsPageModule } from './cs-pages/store-points/store-points.module';
 import { StoreCouponsPageModule } from './cs-pages/store-coupons/store-coupons.module';
-import { ProductInventoryPage } from './cs-pages/product-inventory/product-inventory.page';
 import { ProductInventoryPageModule } from './cs-pages/product-inventory/product-inventory.module';
 import { StoreCouponsCreatePageModule } from './cs-pages/store-coupons-create/store-coupons-create.module';
 import { StoreOrdersPageModule } from './cs-pages/store-orders/store-orders.module';
+import { StorePqrsfPageModule } from './cs-pages/store-pqrsf/store-pqrsf.module';
+import { StorePqrsfCreatePageModule } from './cs-pages/store-pqrsf-create/store-pqrsf-create.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -85,6 +86,8 @@ import { StoreOrdersPageModule } from './cs-pages/store-orders/store-orders.modu
     StoreCouponsPageModule,
     StoreCouponsCreatePageModule,
     StoreOrdersPageModule,
+    StorePqrsfPageModule,
+    StorePqrsfCreatePageModule,
     PipesModule
   ],
   providers: [
