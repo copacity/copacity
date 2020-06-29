@@ -43,11 +43,12 @@
         </td>
       </tr>
       <tr *ngIf="productProperty.productPropertyOptions.length == 0">
-        <td  colspan="3">
+        <td colspan="3">
           <span style="color: red;font-size: 1.3em;">Debes agregar al menos una opción</span>
         </td>
       </tr>
-      <tr *ngFor="let productPropertyOption of productProperty.productPropertyOptions" class="{{productPropertyOption.deleted?'hidden':''}}">
+      <tr *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
+        class="{{productPropertyOption.deleted?'hidden':''}}">
         <td style="vertical-align: top;" class="bold color-theme">{{productPropertyOption.name}}</td>
         <td style="vertical-align: top;">+ {{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
         <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
@@ -71,12 +72,10 @@
       </p>
     </div>
 
-    <ion-toolbar>
-      <ion-title>
-        <a (click)="saveProductProperty()"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">Aceptar</a>
-      </ion-title>
-    </ion-toolbar>
+    <div>
+      <a (click)="saveProductProperty()"
+        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+        class="button button-round-small shadow-large button-full button-s">Aceptar</a>
+    </div>
   </div>
 </div>

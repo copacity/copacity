@@ -16,6 +16,7 @@ export class StorePqrsfPage implements OnInit {
   pqrsfCollection: Observable<PQRSF[]>;
   searchingPqrsf: boolean = false;
   pqrsfSearchHits: number = 0;
+  isAdmin: boolean;
 
   constructor(
     public popoverController: PopoverController,
@@ -23,6 +24,7 @@ export class StorePqrsfPage implements OnInit {
     private navParams: NavParams,
     private storesService: StoresService,
   ) {
+    this.isAdmin = this.navParams.data.isAdmin;
     this.getPqrsf();
   }
 

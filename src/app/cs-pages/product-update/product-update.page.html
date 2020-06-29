@@ -145,10 +145,8 @@
           <div class="divider bottom-10" style="height: 2px;background-color: red;"></div> -->
       </div>
     </div>
-    <ion-toolbar>
-      <ion-title>
 
-        <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+    <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
           class="content content-box round-small shadow-large">
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
             <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
@@ -170,8 +168,6 @@
 
         <a (click)="updateProduct()"
           style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">ACTUALIZAR</a>
-      </ion-title>
-    </ion-toolbar>
+          class="button button-round-small shadow-large button-full button-s">ACTUALIZAR</a>    
   </div>
 </div>

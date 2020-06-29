@@ -112,33 +112,31 @@
       </tr>
     </table>
 
-    <ion-toolbar>
-      <ion-title>
-        <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
-          class="content content-box  round-small shadow-large">
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
-            <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-            <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 50
-              caracteres</span>
-          </p>
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
-            <span *ngIf="form.get('category').hasError('required')">Sección es requerido</span>
-          </p>
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('price').errors">
-            <span *ngIf="form.get('price').hasError('required')">{{ (!isGift)?'Precio':'Puntos' }} es requerido</span>
-          </p>
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
-            <span *ngIf="form.get('description').hasError('required')">Descripcion es requerido</span>
-            <span *ngIf="form.get('description').hasError('maxlength')">Descripcion debe ser maximo de 500
-              caracteres</span>
-          </p>
-        </div>
+    <div>
+      <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+        class="content content-box  round-small shadow-large">
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
+          <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
+          <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 50
+            caracteres</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
+          <span *ngIf="form.get('category').hasError('required')">Sección es requerido</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('price').errors">
+          <span *ngIf="form.get('price').hasError('required')">{{ (!isGift)?'Precio':'Puntos' }} es requerido</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
+          <span *ngIf="form.get('description').hasError('required')">Descripcion es requerido</span>
+          <span *ngIf="form.get('description').hasError('maxlength')">Descripcion debe ser maximo de 500
+            caracteres</span>
+        </p>
+      </div>
 
-        <a (click)="createProduct()"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">CREAR
-          {{ (!isGift)?'Producto':'Regalo' }}</a>
-      </ion-title>
-    </ion-toolbar>
+      <a (click)="createProduct()"
+        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+        class="button button-round-small shadow-large button-full button-s">CREAR
+        {{ (!isGift)?'Producto':'Regalo' }}</a>
+    </div>
   </div>
 </div>
