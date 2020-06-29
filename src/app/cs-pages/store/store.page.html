@@ -34,8 +34,8 @@
   <!-- Left Side Menu Only To Big Browsers -->
   <div id="main-menu-large">
     <ion-header>
-      <ion-toolbar>
-        <div class="content top-30" *ngIf="appService?.currentUser">
+      <ion-toolbar *ngIf="appService?.currentUser">
+        <div class="content top-30">
           <div class="user-slider owl-carousel  bottom-0">
             <div class="user-list-left">
               <img
@@ -46,13 +46,12 @@
             </div>
           </div>
         </div>
-
-        <ion-title *ngIf="!appService?.currentUser">
-          <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small shadow-large button-full button-s">INICIAR SESION</a>
-        </ion-title>
       </ion-toolbar>
+      <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
+        <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small button-full button-s">INICIAR SESION</a>
+      </div>
     </ion-header>
 
     <ion-content class="side-content">
@@ -214,18 +213,18 @@
                     style="font-size: .7em;color: black;margin: 10px;">Pedidos</span>
                 </a>
               </ion-slide>
-              <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;margin: 10px;">Reportes</span>
-                </a>
-              </ion-slide>
               <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
                   <i class="fas fa-handshake" style="font-size: 2.5em;color: red;"></i><span
                     style="font-size: .7em;color: black;">Comisiones</span>
+                </a>
+              </ion-slide>
+              <ion-slide (click)="openStorePQRSFPage()" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
+                  <span style="font-size: .7em;margin: 15px;color: black;">PQRSF</span>
                 </a>
               </ion-slide>
               <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
@@ -235,11 +234,11 @@
                     style="font-size: .7em;color: black;margin: 10px;">Factura</span>
                 </a>
               </ion-slide>
-              <ion-slide (click)="openStorePQRSFPage()" style="margin: 3px;width: 60px;">
+              <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
-                  <span style="font-size: .7em;margin: 15px;color: black;">PQRSF</span>
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
+                  <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i><span
+                    style="font-size: .7em;color: black;margin: 10px;">Reportes</span>
                 </a>
               </ion-slide>
               <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
