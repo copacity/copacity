@@ -131,7 +131,11 @@ const routes: Routes = [
   {
     path: 'store-pqrsf-create',
     loadChildren: () => import('./cs-pages/store-pqrsf-create/store-pqrsf-create.module').then( m => m.StorePqrsfCreatePageModule)
+  },  {
+    path: 'store-payment-methods-create',
+    loadChildren: () => import('./cs-pages/store-payment-methods-create/store-payment-methods-create.module').then( m => m.StorePaymentMethodsCreatePageModule)
   }
+
 
 
 

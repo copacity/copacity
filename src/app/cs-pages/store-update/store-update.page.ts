@@ -8,6 +8,8 @@ import { StoreCategoriesService } from 'src/app/cs-services/storeCategories.serv
 import { Sector, StoreCategory, Store } from 'src/app/app-intefaces';
 import { Observable } from 'rxjs';
 import { AppService } from 'src/app/cs-services/app.service';
+import { StorePaymentMethodsCreatePageModule } from '../store-payment-methods-create/store-payment-methods-create.module';
+import { StorePaymentMethodsCreatePage } from '../store-payment-methods-create/store-payment-methods-create.page';
 
 @Component({
   selector: 'app-store-update',
@@ -28,7 +30,7 @@ export class StoreUpdatePage implements OnInit {
     private sectorsService: SectorsService,
     private loader: LoaderComponent,
     private storeCategoriesService: StoreCategoriesService) {
-     
+
     this.buildForm();
     this.storeCategories = this.storeCategoriesService.getAll();
     //this.sectors = this.sectorsService.getAll();
@@ -40,7 +42,7 @@ export class StoreUpdatePage implements OnInit {
   }
 
   async presentAlert(title: string, message: string, done: Function) {
-     
+
     const alert = await this.alertController.create({
       header: title,
       message: message,
@@ -56,7 +58,7 @@ export class StoreUpdatePage implements OnInit {
   }
 
   private buildForm() {
-     
+
     this.form = this.formBuilder.group({
       name: [this.appService.currentStore.name, [Validators.required, Validators.maxLength(50)]],
       category: [this.appService.currentStore.idStoreCategory, [Validators.required]],
@@ -64,7 +66,7 @@ export class StoreUpdatePage implements OnInit {
       phone2: [this.appService.currentStore.phone2, [Validators.max(999999999999999)]],
       whatsapp: [this.appService.currentStore.whatsapp, [Validators.max(999999999999999)]],
       facebook: [this.appService.currentStore.facebook, [Validators.maxLength(250)]],
-      deliveryPrice: [this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0, [Validators.max(9999999999)]],
+      //deliveryPrice: [this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0, [Validators.max(9999999999)]],
       orderMinAmount: [this.appService.currentStore.orderMinAmount ? this.appService.currentStore.orderMinAmount : 0, [Validators.max(9999999999)]],
       address: [this.appService.currentStore.address, [Validators.maxLength(250)]],
       //sector: [this.appService.currentStore.idSector, [Validators.required]],
@@ -77,7 +79,7 @@ export class StoreUpdatePage implements OnInit {
   }
 
   updateStore() {
-     
+
     if (this.form.valid) {
       this.loader.startLoading("Estamos actualizando su tienda por favor espere un momento...");
 
@@ -90,7 +92,7 @@ export class StoreUpdatePage implements OnInit {
       //this.appService.currentStore.idSector = this.form.value.sector;
       this.appService.currentStore.idStoreCategory = this.form.value.category;
       this.appService.currentStore.description = this.form.value.description;
-      this.appService.currentStore.deliveryPrice = this.form.value.deliveryPrice ? this.form.value.deliveryPrice : 0;
+      this.appService.currentStore.deliveryPrice = 0;
       this.appService.currentStore.orderMinAmount = this.form.value.orderMinAmount ? this.form.value.orderMinAmount : 0;
 
       setTimeout(() => {
@@ -108,8 +110,24 @@ export class StoreUpdatePage implements OnInit {
     }
   }
 
+  async openStorePaymentMethodsCreatePage() {
+    let modal = await this.popoverCtrl.create({
+      component: StorePaymentMethodsCreatePage,
+      //componentProps: { isAdmin: this.isAdmin },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
+  }
+
   close() {
-     
+
     this.popoverCtrl.dismiss();
   }
 }

@@ -44,8 +44,8 @@
       </ion-toolbar>
       <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
         <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small button-full button-s">INICIAR SESION</a>
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small button-full button-s">INICIAR SESION</a>
       </div>
     </ion-header>
 
@@ -187,7 +187,7 @@
                   <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
                     <a (click)="validateCoupon_click()"
                       style="color:white;padding: 8px 8px;width: 75px; background-color: red;"
-                      class="button bu211tton-round-small shadow-large button-full button-s">Aplicar</a>
+                      class="button button-round-small button-full button-s">Aplicar</a>
                   </td>
                 </tr>
               </table>
@@ -207,20 +207,34 @@
 
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <div class="content header-clear-small">
-                <div class="link-list link-list-3" style="border: red;">
-                  <strong *ngIf="!appService.addressChecked"
-                    style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
-                    favor seleccione una
-                    direccion!</strong>
-                  <a (click)="openAddressListPage()" class="round-small shadow-tiny">
-                    <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
-                    <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Enviar a:</strong>
-                    <span
-                      style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
-                    <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
-                  </a>
-                </div>
+              <ion-list lines="full" class="ion-no-margin ion-no-padding">
+
+                <ion-item>
+                  <ion-label>Selecciona:</ion-label>
+                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
+                    interface='action-sheet'>
+                    <ion-select-option value="1">Recoger en tienda</ion-select-option>
+                    <ion-select-option value="2">Domicilio a Bello, Copacabana, Girardota</ion-select-option>
+                    <ion-select-option value="3">Domicilio a Medellin</ion-select-option>
+                    <ion-select-option value="4">Domicilio a otros municipios de Antioquia</ion-select-option>
+                    <ion-select-option value="5">Domicilio a otras ciudades de Colombia</ion-select-option>
+                    <ion-select-option value="5">Domicilio a otros paises (diferentes de Colombia)</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+
+              <div class="link-list link-list-3 top-20" style="border: red;">
+                <strong *ngIf="!appService.addressChecked"
+                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
+                  favor seleccione una
+                  direccion!</strong>
+                <a (click)="openAddressListPage()" class="round-small shadow-tiny">
+                  <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
+                  <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Dirección:</strong>
+                  <span
+                    style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
+                  <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
+                </a>
               </div>
             </div>
           </div>
@@ -237,8 +251,21 @@
             DE PAGO</a>
 
           <div id="page">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <div class="content header-clear-small">
+            <div class="content header-clear-small bottom-20" style="margin: 0px 0px 0px 0px;">
+              <ion-list lines="full" class="ion-no-margin ion-no-padding">
+
+                <ion-item>
+                  <ion-label>Selecciona:</ion-label>
+                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
+                    interface='action-sheet'>
+                    <ion-select-option value="1">Contra-entrega - Efectivo</ion-select-option>
+                    <ion-select-option value="2">Contra-Entrega - Datafono</ion-select-option>
+                    <ion-select-option value="4">Tarjeta de Credito</ion-select-option>
+                    <ion-select-option value="3">PSE</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+              <!-- <div class="content header-clear-small">
                 <div class="link-list link-list-3">
                   <a class="round-small shadow-tiny">
                     <i class="fa fa-check-circle" style="color: green;"></i>
@@ -257,7 +284,7 @@
                     <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
                   </a>
                 </div>
-              </div>
+              </div> -->
 
             </div>
           </div>
@@ -305,7 +332,8 @@
                   </td>
                 </tr>
                 <tr *ngIf="storeCoupon">
-                  <td colspan="3" style="text-align: left; padding-left: 5px;vertical-align: top;background-color: yellow;">
+                  <td colspan="3"
+                    style="text-align: left; padding-left: 5px;vertical-align: top;background-color: yellow;">
                     <strong style="color: black">Cupón
                       <small style="color: black; background-color: yellow;">(-{{storeCoupon.discount}}%)</small>
                     </strong>
@@ -356,28 +384,20 @@
             TE ASESORO?</a>
 
           <div id="page">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <div class="content header-clear-small">
-                <!-- <div class="link-list link-list-3">
-                    <a class="round-small shadow-tiny">
-                      <i class="fa fa-check-circle" style="color: green;"></i>
-                      <span style="font-size: 18px;">Contra-entrega</span>
-                    </a>
-                  </div>
-                  <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
-                    <a class="round-small shadow-tiny">
-                      <span style="font-size: 18px;; color: gray;">Tarjeta de credito</span>
-                      <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
-                    </a>
-                  </div>
-                  <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
-                    <a class="round-small shadow-tiny">
-                      <span style="font-size: 18px;; color: gray;">Debito (PSE)</span>
-                      <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
-                    </a>
-                  </div> -->
+            <div class="content header-clear-small bottom-40" style="margin: 0px 0px 0px 0px;">
 
-              </div>
+              <ion-list lines="full" class="ion-no-margin ion-no-padding">
+                <ion-item>
+                  <ion-label>Selecciona:</ion-label>
+                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
+                    interface='action-sheet'>
+                    <ion-select-option value="1">Compra Directa a la tienda</ion-select-option>
+                    <ion-select-option value="2">Gloria Valencia</ion-select-option>
+                    <ion-select-option value="4">Mauricio Zapata</ion-select-option>
+                    <ion-select-option value="3">Ana Sofia Zapata Valencia</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
             </div>
           </div>
         </div>

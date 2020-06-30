@@ -42,6 +42,7 @@ import { StoreCouponsCreatePageModule } from './cs-pages/store-coupons-create/st
 import { StoreOrdersPageModule } from './cs-pages/store-orders/store-orders.module';
 import { StorePqrsfPageModule } from './cs-pages/store-pqrsf/store-pqrsf.module';
 import { StorePqrsfCreatePageModule } from './cs-pages/store-pqrsf-create/store-pqrsf-create.module';
+import { StorePaymentMethodsCreatePageModule } from './cs-pages/store-payment-methods-create/store-payment-methods-create.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -88,6 +89,7 @@ import { StorePqrsfCreatePageModule } from './cs-pages/store-pqrsf-create/store-
     StoreOrdersPageModule,
     StorePqrsfPageModule,
     StorePqrsfCreatePageModule,
+    StorePaymentMethodsCreatePageModule,
     PipesModule
   ],
   providers: [

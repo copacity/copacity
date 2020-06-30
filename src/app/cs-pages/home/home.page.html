@@ -288,7 +288,7 @@
                     </div>
                   </div>
 
-                  <div *ngIf="(stores && stores.length == 0)" class="boxed-text-huge"
+                  <div *ngIf="(stores && stores.length == 0) && !searchingStores" class="boxed-text-huge"
                     style="padding-top: 20px;color: red;padding-bottom: 20px;">
                     <h4>No se encontraron resultados</h4>
                   </div>
