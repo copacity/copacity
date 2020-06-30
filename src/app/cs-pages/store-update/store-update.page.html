@@ -13,7 +13,7 @@
 
     <form [formGroup]="form">
       <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-        <ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-list lines="full" class="ion-no-margin ion-no-padding" style="padding-bottom: 0px">
           <ion-item>
             <ion-label position="floating" style="color: gray;">Nombre de tu Tienda <b style="color: red;">(*)</b>
             </ion-label>
@@ -69,44 +69,50 @@
         </ion-list>
       </div>
 
-      <table class="table-borders-dark store-product-table top-20 bottom-20" style="border: solid 1px rgba(0,0,0,0.08);">
-        <tr>
-          <td colspan="2" style="text-align: left;">
-            <h4 class="bold" style="color: black;margin-top: 0px;">Métodos de Envío</h4>
-          </td>
-          <td style="text-align: -webkit-right;padding-right: 5px;">
-            <a (click)="openStorePaymentMethodsCreatePage()" class="button button-round-small button-xs button-full"
-              style="color: white;background-color: red;font-size: 10px;width: 90px;">Agregar</a>
-          </td>
-        </tr>
+      <div class="top-30 bottom-30">
 
-        <!-- *ngIf="productProperties.length == 0" -->
-        <tr>
-          <td colspan="3" style="text-align: center;">
-            <span style="color: red;font-size: 1.3em;">No hay métodos de envío agregados</span>
-          </td>
-        </tr>
-
-        <!-- <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
-            <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}<span
-                *ngIf="productProperty.isMandatory" style="color: red;">(*)</span></td>
-            <td style="vertical-align: top;">
-              <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
-                class="{{productPropertyOption.deleted?'hidden':''}}">
-                {{productPropertyOption.name}}<b
-                  *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
-                <br />
-              </div>
-
-            </td>
-            <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
-              <a (click)="productPropertyDelete(productProperty)" class="icon icon-s icon-round shadow-small">
-                <i class="fa fa-trash" style="color: black"></i></a>
-              <a (click)="productPropertyUpdate(productProperty)" class="icon icon-s icon-round shadow-small">
-                <i class="fa fa-edit" style="color: black"></i></a>
-            </td>
-          </tr> -->
-      </table>
+        <h4 class="bold color-highlight">Configuracion Avanzada</h4>
+        <div class="container">
+          <table class="table-borders-dark store-product-table top-20 bottom-20" style="border: solid 1px rgba(0,0,0,0.08);">
+            <tr>
+              <td colspan="2" style="text-align: left;">
+                <h4 class="bold" style="color: black;margin-top: 0px;">Métodos de Envío</h4>
+              </td>
+              <td style="text-align: -webkit-right;padding-right: 5px;">
+                <a (click)="openStoreShippingMethodsCreatePage()" class="button button-round-small button-xs button-full"
+                  style="color: white;background-color: red;font-size: 10px;width: 90px;">Agregar</a>
+              </td>
+            </tr>
+    
+            <!-- *ngIf="productProperties.length == 0" -->
+            <tr>
+              <td colspan="3" style="text-align: center;">
+                <span style="color: red;font-size: 1.3em;">No hay métodos de envío agregados</span>
+              </td>
+            </tr>
+    
+            <!-- <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
+                <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}<span
+                    *ngIf="productProperty.isMandatory" style="color: red;">(*)</span></td>
+                <td style="vertical-align: top;">
+                  <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
+                    class="{{productPropertyOption.deleted?'hidden':''}}">
+                    {{productPropertyOption.name}}<b
+                      *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+                    <br />
+                  </div>
+    
+                </td>
+                <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
+                  <a (click)="productPropertyDelete(productProperty)" class="icon icon-s icon-round shadow-small">
+                    <i class="fa fa-trash" style="color: black"></i></a>
+                  <a (click)="productPropertyUpdate(productProperty)" class="icon icon-s icon-round shadow-small">
+                    <i class="fa fa-edit" style="color: black"></i></a>
+                </td>
+              </tr> -->
+          </table>
+        </div>
+      </div>
 
       <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
         class="content content-box round-small shadow-large">

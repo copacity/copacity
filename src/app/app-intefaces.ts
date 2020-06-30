@@ -29,6 +29,16 @@ export interface PQRSF {
   deleted: boolean;
 }
 
+export interface ShippingMethod {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  limitDays: number;
+  dateCreated: Date;
+  deleted: boolean;
+}
+
 export interface Store {
   id: string;
   idStoreCategory: string;

@@ -216,6 +216,7 @@ export class StorePage implements OnInit {
       duration: 3000,
       message: message,
       position: 'bottom',
+      buttons: ['Cerrar']
     });
     toast.present();
   }

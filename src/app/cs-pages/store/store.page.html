@@ -49,8 +49,8 @@
       </ion-toolbar>
       <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
         <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small button-full button-s">INICIAR SESION</a>
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small button-full button-s">INICIAR SESION</a>
       </div>
     </ion-header>
 
@@ -174,6 +174,10 @@
             <a *ngIf="isAdmin" (click)="openStoreUpdatePage()"
               style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
               <i class="fa fa-edit"></i></a>
+
+            <a *ngIf="!isAdmin" (click)="openStoreInformationComponent($event)"
+              style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
+              <i class="fa fa-info-circle"></i></a>
 
             <div class="top-20"></div>
 
@@ -364,8 +368,8 @@
                               style="color: black;padding-right: 5px;"></i>Inventario</a>
 
                           <ion-list *ngIf="isAdmin">
-                            <ion-item style="text-align: -webkit-right;">
-                              <ion-label style="color: gray;font-size: medium;">Destacado</ion-label>
+                            <ion-item style="text-align: -webkit-left;">
+                              <ion-label style="color: gray;font-size: small;padding-left: 5px;">Destacado</ion-label>
                               <ion-toggle (ionChange)="productFeatured($event, product)" mode="ios" slot="start"
                                 checked="{{ product.isFeatured?true:false }}" name="blueberry"></ion-toggle>
                             </ion-item>

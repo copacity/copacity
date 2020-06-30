@@ -8,8 +8,7 @@ import { StoreCategoriesService } from 'src/app/cs-services/storeCategories.serv
 import { Sector, StoreCategory, Store } from 'src/app/app-intefaces';
 import { Observable } from 'rxjs';
 import { AppService } from 'src/app/cs-services/app.service';
-import { StorePaymentMethodsCreatePageModule } from '../store-payment-methods-create/store-payment-methods-create.module';
-import { StorePaymentMethodsCreatePage } from '../store-payment-methods-create/store-payment-methods-create.page';
+import { StoreShippingMethodsCreatePage } from '../store-shipping-methods-create/store-shipping-methods-create.page';
 
 @Component({
   selector: 'app-store-update',
@@ -110,9 +109,9 @@ export class StoreUpdatePage implements OnInit {
     }
   }
 
-  async openStorePaymentMethodsCreatePage() {
+  async openStoreShippingMethodsCreatePage() {
     let modal = await this.popoverCtrl.create({
-      component: StorePaymentMethodsCreatePage,
+      component: StoreShippingMethodsCreatePage,
       //componentProps: { isAdmin: this.isAdmin },
       cssClass: 'cs-popovers',
       backdropDismiss: false,

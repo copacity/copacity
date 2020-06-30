@@ -41,6 +41,12 @@ body{
     font-weight:400;
 }
 
+:root {
+	ion-backdrop {
+	 opacity: 0.6 !important;
+   }
+ }
+
 // Overwrite div style to ion-popover
 ion-popover div {
     display: block; 
