@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Store, StoreCoupon, PQRSF } from '../app-intefaces';
+import { Store, StoreCoupon, PQRSF, ShippingMethod } from '../app-intefaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StoreStatus } from '../app-enums';
@@ -284,6 +284,36 @@ export class StoresService {
     return storesCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as PQRSF;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
+  }
+
+  //------------------------------- Shipping Methods
+  public createShippingMethod(idStore: string, shippingMethod: ShippingMethod): Promise<DocumentReference> {
+    return this.angularFirestore
+      .collection(this.collectionName).doc(idStore)
+      .collection("shippingMethods").add(shippingMethod);
+  }
+
+  public updateShippingMethod(idStore: string, idShippingMethod: string, data: any) {
+    return this.angularFirestore
+      .collection(this.collectionName).doc(idStore)
+      .collection("shippingMethods").doc(idShippingMethod).update(data);
+  }
+
+  public getShippingMethods(idStore: string): Observable<ShippingMethod[]> {
+    let storesCollection = this.angularFirestore
+      .collection<Store>(this.collectionName).doc(idStore)
+      .collection("shippingMethods", ref => ref
+        .where('deleted', '==', false)
+        .orderBy('name', 'desc'));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as ShippingMethod;
         data.id = a.payload.doc.id;
 
         return data;

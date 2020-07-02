@@ -35,6 +35,16 @@ export interface ShippingMethod {
   description: string;
   price: number;
   limitDays: number;
+  addressRequired: boolean;
+  dateCreated: Date;
+  deleted: boolean;
+  paymentMethods: [];
+}
+
+export interface PaymentMethod {
+  id: string;
+  name: string;
+  description: string;
   dateCreated: Date;
   deleted: boolean;
 }

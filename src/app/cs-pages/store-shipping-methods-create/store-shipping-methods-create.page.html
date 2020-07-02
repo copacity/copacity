@@ -7,9 +7,10 @@
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
     <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Método de Envío</a>
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Método de
+      Envío</a>
 
-    <!-- <form [formGroup]="form">
+    <form [formGroup]="form">
       <div class="content header-clear-small">
         <ion-list lines="full" class="ion-no-margin ion-no-padding">
           <ion-item>
@@ -18,42 +19,32 @@
             <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label position="floating" style="color: gray;">Compras superiores a: <b style="color: red;">(*)</b>
+            <ion-label position="floating" style="color: gray;">Valor: <b style="color: red;">(*)</b>
             </ion-label>
-            <ion-input formControlName="minAmount" type="number"></ion-input>
+            <ion-input formControlName="price" type="number"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label style="color: gray;">Descuento:</ion-label>
-            <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" formControlName="discount"
-              interface='action-sheet'>
-              <ion-select-option value="{{number}}" *ngFor="let number of getNumbers(1, 100)">{{number}}%
-              </ion-select-option>
-            </ion-select>
+            <ion-label position="floating" style="color: gray;">#Dias para entregar: <b style="color: red;">(*)</b>
+            </ion-label>
+            <ion-input formControlName="limitDays" type="number"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-checkbox formControlName="isVIP" [checked]="storeCoupon.isVIP"></ion-checkbox>
-            <ion-label style="color: gray;font-size: 15px;padding-left: 10px;">Cupón VIP (No Virtual)
+            <ion-checkbox formControlName="addressRequired" [checked]="shippingMethod.addressRequired"></ion-checkbox>
+            <ion-label style="color: gray;font-size: 15px;padding-left: 10px;">Requiere direccion
             </ion-label>
           </ion-item>
           <ion-item>
-            <ion-label>Valido Hasta</ion-label>
-            <ion-datetime formControlName="dateExpiration"
-            mode="ios" 
-            value="{{ editDate }}" 
-            cancelText="Cancelar" 
-            doneText="Aceptar" 
-            monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic" 
-            [yearValues]="getYears()"
-            min="{{ minDate }}"
-            placeholder="Seleccionar Fecha"></ion-datetime>
+            <ion-label style="color: gray;">Metodos de pago: <b style="color: red;">(*)</b></ion-label>
+            <ion-select multiple="true" style="padding-right: 10px;" mode="ios" formControlName="paymentMethods"
+              cancelText="Cancelar" okText="Aceptar">
+              <ion-select-option *ngFor="let paymentMethod of paymentMethods | async;" value="{{paymentMethod.id}}">
+                {{paymentMethod.name}}</ion-select-option>
+            </ion-select>
           </ion-item>
           <ion-item>
-            <ion-label style="color: gray;">Nro Copias:</ion-label>
-            <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" formControlName="quantity" value="{{ storeCoupon.quantity }}"
-              interface='action-sheet'>
-              <ion-select-option value="{{number}}" *ngFor="let number of getNumbers(1, 50)">{{number}}
-              </ion-select-option>
-            </ion-select>
+            <ion-label position="floating" style="color: gray;">Descripcion <small style="color: gray;">
+                ({{this.form.get('description').value.length}}/500)</small></ion-label>
+            <ion-textarea formControlName="description"></ion-textarea>
           </ion-item>
         </ion-list>
       </div>
@@ -66,18 +57,25 @@
         <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 50
           caracteres</span>
       </p>
-      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('minAmount').errors">
-        <span *ngIf="form.get('minAmount').hasError('required')">Valor minimo de compra es requerido</span>
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('price').errors">
+        <span *ngIf="form.get('price').hasError('required')">Valor es requerido</span>
       </p>
-      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('discount').errors">
-        <span *ngIf="form.get('discount').hasError('required')">Descuento es requerido</span>
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('limitDays').errors">
+        <span *ngIf="form.get('limitDays').hasError('required')">#Dias para entregar es requerido</span>
       </p>
-    </div> -->
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('paymentMethods').errors">
+        <span *ngIf="form.get('paymentMethods').hasError('required')">Metodos de pago es requerido</span>
+      </p>
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
+        <span *ngIf="form.get('description').hasError('maxlength')">Descripcion debe ser maximo de 500
+          caracteres</span>
+      </p>
+    </div>
 
     <div>
-      <a (click)="saveStoreCoupon()"
+      <a (click)="saveChanges()"
         style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-        class="button button-round-small shadow-large button-full button-s">Crear Método de Envío</a>
+        class="button button-round-small shadow-large button-full button-s">{{ shippingMethod.id?'Actualizar':'Crear' }} Método de Envío</a>
     </div>
   </div>
 </div>

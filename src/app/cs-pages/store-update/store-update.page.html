@@ -84,32 +84,28 @@
               </td>
             </tr>
     
-            <!-- *ngIf="productProperties.length == 0" -->
             <tr>
-              <td colspan="3" style="text-align: center;">
+              <td *ngIf="(shippingMethods | async)?.length == 0"  colspan="3" style="text-align: center;">
                 <span style="color: red;font-size: 1.3em;">No hay métodos de envío agregados</span>
               </td>
             </tr>
     
-            <!-- <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
-                <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}<span
-                    *ngIf="productProperty.isMandatory" style="color: red;">(*)</span></td>
+            <tr *ngFor="let shippingMethod of shippingMethods | async">
+                <td style="vertical-align: top;" class="bold color-theme">{{shippingMethod.name}}
+                </td>
                 <td style="vertical-align: top;">
-                  <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
-                    class="{{productPropertyOption.deleted?'hidden':''}}">
-                    {{productPropertyOption.name}}<b
-                      *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+                  <div>
+                    {{ shippingMethod.price | currency: 'USD': 'symbol' : '1.0-0' }}
                     <br />
                   </div>
-    
                 </td>
                 <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
-                  <a (click)="productPropertyDelete(productProperty)" class="icon icon-s icon-round shadow-small">
+                  <a (click)="shippingMethodDelete(shippingMethod)" class="icon icon-s icon-round shadow-small">
                     <i class="fa fa-trash" style="color: black"></i></a>
-                  <a (click)="productPropertyUpdate(productProperty)" class="icon icon-s icon-round shadow-small">
+                  <a (click)="shippingMethodUpdate(shippingMethod)" class="icon icon-s icon-round shadow-small">
                     <i class="fa fa-edit" style="color: black"></i></a>
                 </td>
-              </tr> -->
+              </tr>
           </table>
         </div>
       </div>

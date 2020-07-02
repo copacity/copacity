@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppService } from 'src/app/cs-services/app.service';
-import { Store, Order, CartProduct, Notification, StorePoint, StoreCoupon } from 'src/app/app-intefaces';
+import { Store, Order, CartProduct, Notification, StorePoint, StoreCoupon, PaymentMethod, ShippingMethod } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -23,6 +23,8 @@ import { ProductsService } from 'src/app/cs-services/products.service';
 import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { StoresService } from 'src/app/cs-services/stores.service';
+import { Observable } from 'rxjs';
+import { PaymentMethodsService } from 'src/app/cs-services/payment-methods.service';
 
 @Component({
   selector: 'app-order-create',
@@ -37,6 +39,13 @@ export class OrderCreatePage implements OnInit {
   store: Store;
   cart: CartProduct[];
   isValidInventory: boolean = true;
+
+  shippingMethods: Observable<ShippingMethod[]> = null;
+  shippingMethod: ShippingMethod = null;
+
+  paymentMethods: Observable<PaymentMethod[]>;
+  paymentsMethodbyShipping: PaymentMethod[] = [];
+  paymentMethod: PaymentMethod = null;
 
   @ViewChild(SuperTabs, { static: false }) superTabs: SuperTabs;
 
@@ -53,6 +62,7 @@ export class OrderCreatePage implements OnInit {
     private popoverCtrl: PopoverController,
     public toastController: ToastController,
     private angularFireAuth: AngularFireAuth,
+    private paymentMethodsService: PaymentMethodsService,
     private notificationsService: NotificationsService,
     public location: Location) {
 
@@ -63,6 +73,8 @@ export class OrderCreatePage implements OnInit {
 
     this.store = this.appService.currentStore;
     this.cart = this.cartService.getCart();
+    this.paymentMethods = this.paymentMethodsService.getAll();
+    this.shippingMethods = this.storesService.getShippingMethods(this.appService.currentStore.id);
 
     this.messageToStore = new FormControl('', [Validators.maxLength(500)]);
     this.buildStoreCoupon('');
@@ -157,6 +169,42 @@ export class OrderCreatePage implements OnInit {
 
   selectTab(index: number) {
     this.superTabs.selectTab(index)
+  }
+
+  shippingMethodChanged(e: any) {
+    this.shippingMethod = null;
+    this.paymentMethod = null;
+    let subs = this.shippingMethods.subscribe(smArray => {
+
+      smArray.forEach(sm => {
+        if (e.target.value == sm.id) {
+          this.shippingMethod = sm;
+
+          this.paymentsMethodbyShipping = [];
+
+          let subs = this.paymentMethods.subscribe(payments => {
+            payments.forEach(payment => {
+              if (sm.paymentMethods.some(x => x === payment.id)) {
+                this.paymentsMethodbyShipping.push(payment);
+              }
+            });
+
+            subs.unsubscribe;
+          });
+        }
+      });
+
+      subs.unsubscribe;
+    });
+  }
+
+  paymentMethodChanged(e: any) {
+    this.paymentMethod = null;
+    this.paymentsMethodbyShipping.forEach(payment => {
+      if (payment.id == e.target.value) {
+        this.paymentMethod = payment;
+      }
+    });
   }
 
   async presentConfirm(message: string, done: Function, cancel?: Function) {

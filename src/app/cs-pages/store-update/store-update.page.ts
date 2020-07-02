@@ -3,9 +3,8 @@ import { AlertController, PopoverController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
-import { SectorsService } from 'src/app/cs-services/sectors.service';
 import { StoreCategoriesService } from 'src/app/cs-services/storeCategories.service';
-import { Sector, StoreCategory, Store } from 'src/app/app-intefaces';
+import { Sector, StoreCategory, Store, ShippingMethod } from 'src/app/app-intefaces';
 import { Observable } from 'rxjs';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoreShippingMethodsCreatePage } from '../store-shipping-methods-create/store-shipping-methods-create.page';
@@ -17,7 +16,7 @@ import { StoreShippingMethodsCreatePage } from '../store-shipping-methods-create
 })
 export class StoreUpdatePage implements OnInit {
   storeCategories: Observable<StoreCategory[]> = null;
-  sectors: Observable<Sector[]> = null;
+  shippingMethods: Observable<ShippingMethod[]> = null;
   store: Store;
 
   form: FormGroup;
@@ -26,13 +25,12 @@ export class StoreUpdatePage implements OnInit {
     private storesService: StoresService,
     private appService: AppService,
     public alertController: AlertController,
-    private sectorsService: SectorsService,
     private loader: LoaderComponent,
     private storeCategoriesService: StoreCategoriesService) {
 
     this.buildForm();
+    this.shippingMethods = this.storesService.getShippingMethods(this.appService.currentStore.id);
     this.storeCategories = this.storeCategoriesService.getAll();
-    //this.sectors = this.sectorsService.getAll();
     this.store = this.appService.currentStore;
   }
 
@@ -68,13 +66,8 @@ export class StoreUpdatePage implements OnInit {
       //deliveryPrice: [this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0, [Validators.max(9999999999)]],
       orderMinAmount: [this.appService.currentStore.orderMinAmount ? this.appService.currentStore.orderMinAmount : 0, [Validators.max(9999999999)]],
       address: [this.appService.currentStore.address, [Validators.maxLength(250)]],
-      //sector: [this.appService.currentStore.idSector, [Validators.required]],
       description: [this.appService.currentStore.description, [Validators.maxLength(500)]]
     });
-
-    // this.form.valueChanges
-    //   .pipe(debounceTime(500))
-    //   .subscribe(value => console.log(value));
   }
 
   updateStore() {
@@ -112,7 +105,6 @@ export class StoreUpdatePage implements OnInit {
   async openStoreShippingMethodsCreatePage() {
     let modal = await this.popoverCtrl.create({
       component: StoreShippingMethodsCreatePage,
-      //componentProps: { isAdmin: this.isAdmin },
       cssClass: 'cs-popovers',
       backdropDismiss: false,
     });
@@ -128,5 +120,52 @@ export class StoreUpdatePage implements OnInit {
   close() {
 
     this.popoverCtrl.dismiss();
+  }
+
+  async presentConfirm(message: string, done: Function, cancel?: Function) {
+
+    const alert = await this.alertController.create({
+      header: message,
+      mode: 'ios',
+      translucent: true,
+      animated: true,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => cancel ? cancel() : null
+        },
+        { text: 'Estoy Seguro!', handler: () => done() }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  shippingMethodDelete(shippingMethod: ShippingMethod) {
+    this.presentConfirm('Esta seguro que desea eliminar el metodo de envio: ' + shippingMethod.name + '?', () => {
+      this.storesService.updateShippingMethod(this.appService.currentStore.id, shippingMethod.id, { deleted: true }).then(doc => {
+        this.loader.stopLoading();
+        this.presentAlert("Metodo de envio eliminado exitosamente", "", () => { });
+      });
+    });
+  }
+
+  async shippingMethodUpdate(shippingMethod: ShippingMethod) {
+    let modal = await this.popoverCtrl.create({
+      component: StoreShippingMethodsCreatePage,
+      cssClass: 'cs-popovers',
+      componentProps: { shippingMethod: shippingMethod },
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
   }
 }

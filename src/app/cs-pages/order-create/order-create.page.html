@@ -206,28 +206,39 @@
             DE ENVIO</a>
 
           <div id="page">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+            <div class="content header-clear-small bottom-20" style="margin: 0px 0px 0px 0px;">
               <ion-list lines="full" class="ion-no-margin ion-no-padding">
 
                 <ion-item>
-                  <ion-label>Selecciona:</ion-label>
-                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
-                    interface='action-sheet'>
-                    <ion-select-option value="1">Recoger en tienda</ion-select-option>
-                    <ion-select-option value="2">Domicilio a Bello, Copacabana, Girardota</ion-select-option>
-                    <ion-select-option value="3">Domicilio a Medellin</ion-select-option>
-                    <ion-select-option value="4">Domicilio a otros municipios de Antioquia</ion-select-option>
-                    <ion-select-option value="5">Domicilio a otras ciudades de Colombia</ion-select-option>
-                    <ion-select-option value="5">Domicilio a otros paises (diferentes de Colombia)</ion-select-option>
+                  <ion-label style="color: gray;">Selecciona: <b style="color: red;">(*)</b></ion-label>
+                  <ion-select (ionChange)="shippingMethodChanged($event)" style="padding-right: 10px;" mode="ios"
+                    cancelText="Cancelar" okText="Aceptar" interface='action-sheet'>
+                    <ion-select-option *ngFor="let shippingMethod of shippingMethods | async;"
+                      value="{{shippingMethod.id}}">
+                      {{shippingMethod.name}}</ion-select-option>
                   </ion-select>
                 </ion-item>
+
+                <div *ngIf="shippingMethod" style="text-align: -webkit-center;">
+                  <div class="content contact-message"
+                    style="padding-top: 15px;margin: 0px 15px 0px 15px;max-width: 450px;">
+                    <div class="content content-box round-small bottom-20"
+                      style="padding: 5px;background-color: lightgoldenrodyellow;margin: 0px 0px 0px 0px;">
+                      <p class="center-text bottom-10" style="font-size: 15px;color: black;">
+                        El servicio de <b>{{shippingMethod?.name}}</b> tiene un costo de
+                        <b>{{ shippingMethod?.price | currency: 'USD': 'symbol' : '1.0-0' }} pesos</b> y un plazo de
+                        entrega de <b>{{ shippingMethod?.limitDays }} dias</b> a partir de la fecha en que se realizo el
+                        pedido.
+                        {{ shippingMethod?.description }}.
+                        <span *ngIf="shippingMethod?.addressRequired"> Por favor ingrese la direccion de entrega:</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </ion-list>
 
-              <div class="link-list link-list-3 top-20" style="border: red;">
-                <strong *ngIf="!appService.addressChecked"
-                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
-                  favor seleccione una
-                  direccion!</strong>
+              <div *ngIf="shippingMethod && shippingMethod.addressRequired" class="link-list link-list-3"
+                style="border: red;">
                 <a (click)="openAddressListPage()" class="round-small shadow-tiny">
                   <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
                   <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Dirección:</strong>
@@ -235,6 +246,10 @@
                     style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
                   <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
                 </a>
+                <strong *ngIf="!appService.addressChecked"
+                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
+                  favor seleccione una
+                  direccion!</strong>
               </div>
             </div>
           </div>
@@ -255,37 +270,27 @@
               <ion-list lines="full" class="ion-no-margin ion-no-padding">
 
                 <ion-item>
-                  <ion-label>Selecciona:</ion-label>
-                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
-                    interface='action-sheet'>
-                    <ion-select-option value="1">Contra-entrega - Efectivo</ion-select-option>
-                    <ion-select-option value="2">Contra-Entrega - Datafono</ion-select-option>
-                    <ion-select-option value="4">Tarjeta de Credito</ion-select-option>
-                    <ion-select-option value="3">PSE</ion-select-option>
+                  <ion-label style="color: gray;">Selecciona: <b style="color: red;">(*)</b></ion-label>
+                  <ion-select (ionChange)="paymentMethodChanged($event)" style="padding-right: 10px;" mode="ios"
+                    cancelText="Cancelar" okText="Aceptar" interface='action-sheet' value="{{ paymentMethod?.id }}">
+                    <ion-select-option *ngFor="let paymentMethodbyShipping of paymentsMethodbyShipping "
+                      value="{{paymentMethodbyShipping.id}}">
+                      {{paymentMethodbyShipping.name}}</ion-select-option>
                   </ion-select>
                 </ion-item>
               </ion-list>
-              <!-- <div class="content header-clear-small">
-                <div class="link-list link-list-3">
-                  <a class="round-small shadow-tiny">
-                    <i class="fa fa-check-circle" style="color: green;"></i>
-                    <span style="font-size: 18px;">Contra-entrega</span>
-                  </a>
-                </div>
-                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
-                  <a class="round-small shadow-tiny">
-                    <span style="font-size: 18px;; color: gray;">Tarjeta de credito</span>
-                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
-                  </a>
-                </div>
-                <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;">
-                  <a class="round-small shadow-tiny">
-                    <span style="font-size: 18px;; color: gray;">Debito (PSE)</span>
-                    <strong style="size: 1em;font-size: 1.2em; padding-top: 5px;">(Deshabilitado)</strong>
-                  </a>
-                </div>
-              </div> -->
 
+              <div *ngIf="paymentMethod && paymentMethod?.description" style="text-align: -webkit-center;">
+                <div class="content contact-message"
+                  style="padding-top: 15px;margin: 0px 15px 0px 15px;max-width: 450px;">
+                  <div class="content content-box round-small bottom-20"
+                    style="padding: 5px;background-color: lightgoldenrodyellow;margin: 0px 0px 0px 0px;">
+                    <p class="center-text bottom-10" style="font-size: 15px;color: black;">
+                      <b>{{paymentMethod?.name}}:</b> {{paymentMethod?.description}}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -348,7 +353,7 @@
 
                 <div class="store-cart-total">
                   <strong>Envío</strong>
-                  <span>{{ appService.currentStore.deliveryPrice | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
+                  <span>{{ (shippingMethod?shippingMethod.price:0) | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
                   <div class="clear"></div>
                 </div>
                 <div class="store-cart-total">
@@ -366,7 +371,7 @@
                 <div class="store-cart-total bottom-20" style="font-size: 25px;">
                   <strong class="uppercase bold">Total</strong>
                   <span
-                    class="uppercase bold">{{ (cartService.getTotal()) - ((storeCoupon)?(cartService.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
+                    class="uppercase bold">{{ (cartService.getTotal()) + (shippingMethod?shippingMethod.price:0) - ((storeCoupon)?(cartService.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
                   <div class="clear"></div>
                 </div>
               </div>
