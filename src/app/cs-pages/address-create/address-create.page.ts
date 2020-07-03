@@ -19,7 +19,10 @@ export class AddressCreatePage implements OnInit {
     phone1: null,
     phone2: null,
     idSector: '',
+    country: '',
+    city: '',
     address: '',
+    postalCode: '',
     description: '',
     dateCreated: new Date(),
     lastUpdated: new Date(),
@@ -81,8 +84,10 @@ export class AddressCreatePage implements OnInit {
         this.address.lastName = this.form.value.lastName;
         this.address.phone1 = this.form.value.phone1;
         this.address.phone2 = this.form.value.phone2;
-        //this.address.idSector = this.form.value.sector;
+        this.address.country = this.form.value.country;
+        this.address.city = this.form.value.city;
         this.address.address = this.form.value.address;
+        this.address.postalCode = this.form.value.postalCode;
         this.address.description = this.form.value.description;
 
         if (this.address.id != '') {
@@ -119,8 +124,10 @@ export class AddressCreatePage implements OnInit {
       lastName: [this.address.lastName, [Validators.required, Validators.maxLength(50)]],
       phone1: [this.address.phone1, [Validators.required, Validators.max(999999999999999)]],
       phone2: [this.address.phone2, [Validators.max(999999999999999)]],
-      //sector: [this.address.idSector, [Validators.required]],
+      country: [this.address.country, [Validators.required, Validators.maxLength(50)]],
+      city: [this.address.city, [Validators.required, Validators.maxLength(50)]],
       address: [this.address.address, [Validators.required, Validators.maxLength(250)]],
+      postalCode: [this.address.postalCode, [Validators.maxLength(50)]],
       description: [this.address.description, [Validators.maxLength(500)]]
     });
   }

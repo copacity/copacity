@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, AlertController, PopoverController } from '@ionic/angular';
-import { Order, CartProduct, User, Address, Notification, Store, StorePoint, StoreCoupon } from 'src/app/app-intefaces';
+import { Order, CartProduct, User, Address, Notification, Store, StorePoint, StoreCoupon, ShippingMethod, PaymentMethod } from 'src/app/app-intefaces';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Observable } from 'rxjs';
@@ -13,6 +13,7 @@ import { PopoverMessageComponent } from 'src/app/cs-components/popover-message/p
 import { CartService } from 'src/app/cs-services/cart.service';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
+import { PaymentMethodsService } from 'src/app/cs-services/payment-methods.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -24,6 +25,8 @@ export class OrderDetailPage implements OnInit {
   order: Order;
   cartProducts: Observable<CartProduct[]>;
   storeCoupon: StoreCoupon;
+  shippingMethod: ShippingMethod;
+  paymentMethod: PaymentMethod;
   addresses: Observable<Address[]>;
   total: number;
   discount: number;
@@ -33,6 +36,7 @@ export class OrderDetailPage implements OnInit {
     private navParams: NavParams,
     public cartService: CartService,
     private notificationsService: NotificationsService,
+    private paymentMethodsService: PaymentMethodsService,
     private loaderCOmponent: LoaderComponent,
     private productsService: ProductsService,
     public alertController: AlertController,
@@ -52,6 +56,7 @@ export class OrderDetailPage implements OnInit {
         this.cartProducts = this.ordersService.getCartProducts(this.store.id, this.navParams.data.id);
         this.addresses = this.ordersService.getAddresses(this.store.id, this.navParams.data.id);
 
+        // Get Coupon
         this.storeCoupon = null;
         let subs = this.ordersService.getOrderCoupons(this.store.id, this.order.id).subscribe(orderCoupons => {
           orderCoupons.forEach(coupon => {
@@ -59,6 +64,21 @@ export class OrderDetailPage implements OnInit {
           });
 
           subs.unsubscribe;
+        });
+
+        // Get shipping method
+        this.shippingMethod = null;
+        let subs1 = this.ordersService.getOrderShippingMethods(this.store.id, this.order.id).subscribe(sm => {
+          sm.forEach(shippingMethod => {
+            this.shippingMethod = shippingMethod;
+          });
+
+          subs1.unsubscribe;
+        });
+
+        // Get PaymentMethod
+        this.paymentMethodsService.getById(this.order.idPaymentMethod).then((result: PaymentMethod) => {
+          this.paymentMethod = result;
         });
 
         this.cartProducts.subscribe((cartP) => {
@@ -316,7 +336,7 @@ export class OrderDetailPage implements OnInit {
     this.loaderCOmponent.startLoading("Cancelando pedido, por favor espere un momento...")
     setTimeout(() => {
       this.ordersService.update(this.store.id, this.order.id, { status: OrderStatus.Cancelled, lastUpdated: new Date(), messageRejected: message }).then(result => {
-        notification.description = "Lo sentimos, tu pedido fue cancelado.";
+        notification.description = "Lo sentimos, tu pedido fue rechazado.";
         notification.idOrder = this.order.id;
         this.notificationsService.create(this.order.idUser, notification).then(result => {
 
@@ -330,7 +350,7 @@ export class OrderDetailPage implements OnInit {
                 });
 
                 this.loaderCOmponent.stopLoading();
-                this.presentAlert("El pedido ha sido CANCELADO exitosamente", "", () => {
+                this.presentAlert("El pedido ha sido rechazado exitosamente", "", () => {
                   this.cartService.clearCart();
                   this.popoverCtrl.dismiss(true);
                 });

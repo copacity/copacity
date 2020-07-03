@@ -28,16 +28,21 @@
             <ion-label position="floating" style="color: gray;">Tel 2</ion-label>
             <ion-input type="number" formControlName="phone2"></ion-input>
           </ion-item>
-          <!-- <ion-item>
-            <ion-label style="color: gray;">Sector: <b style="color: red;">(*)</b></ion-label>
-            <ion-select formControlName="sector" interface='action-sheet'>
-              <ion-select-option *ngFor="let sector of appService.sectors | async;" value="{{sector.id}}">
-                {{sector.name}}</ion-select-option>
-            </ion-select>
-          </ion-item> -->
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Pais <b style="color: red;">(*)</b></ion-label>
+            <ion-input formControlName="country"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Ciudad <b style="color: red;">(*)</b></ion-label>
+            <ion-input formControlName="city"></ion-input>
+          </ion-item>
           <ion-item>
             <ion-label position="floating" style="color: gray;">Direccion <b style="color: red;">(*)</b></ion-label>
             <ion-input formControlName="address"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Codigo Postal</ion-label>
+            <ion-input formControlName="postalCode"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="color: gray;">Agrega mas detalles <small style="color: gray;">
@@ -63,12 +68,20 @@
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone2').errors">
             <span *ngIf="form.get('phone2').hasError('max')">Tel 2 debe ser maximo de 15 caracteres</span>
           </p>
-          <!-- <p style="color: red;font-size: 1.3em;" *ngIf="form.get('sector').errors">
-            <span *ngIf="form.get('sector').hasError('required')">Sector es requerido</span>
-          </p> -->
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('country').errors">
+            <span *ngIf="form.get('country').hasError('required')">Pais es requerido</span>
+            <span *ngIf="form.get('country').hasError('maxlength')">Pais debe ser maximo de 50 caracteres</span>
+          </p>
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('city').errors">
+            <span *ngIf="form.get('city').hasError('required')">Ciudad es requerido</span>
+            <span *ngIf="form.get('city').hasError('maxlength')">Ciudad debe ser maximo de 50 caracteres</span>
+          </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('address').errors">
             <span *ngIf="form.get('address').hasError('required')">Direccion es requerido</span>
             <span *ngIf="form.get('address').hasError('maxlength')">Direccion debe ser maximo de 250 caracteres</span>
+          </p>
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('postalCode').errors">
+            <span *ngIf="form.get('postalCode').hasError('maxlength')">Codigo Postal debe ser maximo de 50 caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
             <span *ngIf="form.get('description').hasError('maxlength')">Descripcion debe ser maximo de 500

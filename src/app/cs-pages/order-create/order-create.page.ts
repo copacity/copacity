@@ -299,91 +299,107 @@ export class OrderCreatePage implements OnInit {
   async sendOrder() {
     if (this.messageToStore.valid) {
       if (this.appService.currentUser) {
-        if (this.appService.addressChecked) {
+        if (this.shippingMethod) {
+          if (this.paymentMethod) {
+            if ((this.shippingMethod.addressRequired && this.appService.addressChecked) || !this.shippingMethod.addressRequired) {
 
-          this.loaderComponent.startLoading("Enviando Pedido, por favor espere un momento...");
+              this.loaderComponent.startLoading("Enviando Pedido, por favor espere un momento...");
 
-          setTimeout(() => {
-            let order: Order = {
-              id: '',
-              ref: new Date().getTime(),
-              deleted: false,
-              idStore: this.appService.currentStore.id,
-              idUser: this.appService.currentUser.id,
-              lastUpdated: new Date(),
-              dateCreated: new Date(),
-              status: OrderStatus.Pending,
-              photoUrl: this.appService.currentUser.photoUrl,
-              userName: this.appService.currentUser.name,
-              message: this.messageToStore.value,
-              messageRejected: ''
-            }
+              setTimeout(() => {
+                let order: Order = {
+                  id: '',
+                  ref: new Date().getTime(),
+                  deleted: false,
+                  idStore: this.appService.currentStore.id,
+                  idUser: this.appService.currentUser.id,
+                  idPaymentMethod: this.paymentMethod.id,
+                  idVendor: '',
+                  lastUpdated: new Date(),
+                  dateCreated: new Date(),
+                  status: OrderStatus.Pending,
+                  photoUrl: this.appService.currentUser.photoUrl,
+                  userName: this.appService.currentUser.name,
+                  message: this.messageToStore.value,
+                  messageRejected: '',
+                }
 
-            let notification: Notification = {
-              type: NotificationTypes.OrderCreated,
-              id: '',
-              description: '',
-              deleted: false,
-              idStore: this.appService.currentStore.id,
-              dateCreated: new Date(),
-              status: NotificationStatus.Created,
-              idUser: this.appService.currentUser.id,
-              photoUrl: this.appService.currentUser.photoUrl,
-              userName: this.appService.currentUser.name,
-              idOrder: '',
-              idUserNotification: this.appService.currentStore.idUser
-            }
+                let notification: Notification = {
+                  type: NotificationTypes.OrderCreated,
+                  id: '',
+                  description: '',
+                  deleted: false,
+                  idStore: this.appService.currentStore.id,
+                  dateCreated: new Date(),
+                  status: NotificationStatus.Created,
+                  idUser: this.appService.currentUser.id,
+                  photoUrl: this.appService.currentUser.photoUrl,
+                  userName: this.appService.currentUser.name,
+                  idOrder: '',
+                  idUserNotification: this.appService.currentStore.idUser
+                }
 
-            this.validateFromInventory().then(() => {
-              if (this.isValidInventory) {
-                // 1. Create Order
-                this.ordersService.create(this.appService.currentStore.id, order).then(doc => {
+                this.validateFromInventory().then(() => {
+                  if (this.isValidInventory) {
+                    // 1. Create Order
+                    this.ordersService.create(this.appService.currentStore.id, order).then(doc => {
 
-                  // 2. Udpate Id field into Orders collection
-                  this.ordersService.update(this.appService.currentStore.id, doc.id, { id: doc.id }).then(result => {
+                      // 2. Udpate Id field into Orders collection
+                      this.ordersService.update(this.appService.currentStore.id, doc.id, { id: doc.id }).then(async result => {
 
-                    // 3. Added checked address into Addresses sub-collection into order
-                    this.ordersService.createOrderAddress(this.appService.currentStore.id, doc.id, this.appService.addressChecked).then(result => {
+                        // 3. Added checked address into Addresses sub-collection into order
+                        if (this.appService.addressChecked) {
+                          await this.ordersService.createOrderAddress(this.appService.currentStore.id, doc.id, this.appService.addressChecked);
+                        }
 
-                      // 4. Added cart Products into cartProducts sub-collection into order
-                      this.addCartProducts(doc.id, 0).then(result => {
+                        // 4. Added cart Products into cartProducts sub-collection into order
+                        this.addCartProducts(doc.id, 0).then(result => {
 
-                        // 5. Discount each product from Inventory
-                        this.discountFromInventory().then(result => {
+                          // 5. Adding Shipping method
+                          this.addShippingMethod(doc.id).then(() => {
 
-                          // 6. Of the order has gifts then the process go to discount points to the user
-                          this.discountPoints().then(async () => {
+                            // 6. Discount each product from Inventory
+                            this.discountFromInventory().then(result => {
 
-                            if (this.storeCoupon) {
-                              await this.ordersService.addOrderCoupon(this.appService.currentStore.id, doc.id, this.storeCoupon);
-                            }
+                              // 7. Of the order has gifts then the process go to discount points to the user
+                              this.discountPoints().then(async () => {
 
-                            // 7. Discount Coupon Quantity
-                            this.discountCouponQuantity().then(() => {
+                                if (this.storeCoupon) {
+                                  await this.ordersService.addOrderCoupon(this.appService.currentStore.id, doc.id, this.storeCoupon);
+                                }
 
-                              notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
-                              notification.idOrder = doc.id;
+                                // 8. Discount Coupon Quantity
+                                this.discountCouponQuantity().then(() => {
 
-                              // 8. Configure Notification
-                              this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {
-                                this.loaderComponent.stopLoading();
-                                this.cartService.clearCart();
-                                this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
-                                  this.location.back();
+                                  notification.description = "Ha realizado un nuevo pedido en " + this.appService.currentStore.name;
+                                  notification.idOrder = doc.id;
+
+                                  // 9. Configure Notification
+                                  this.notificationsService.create(this.appService.currentStore.idUser, notification).then(result => {
+                                    this.loaderComponent.stopLoading();
+                                    this.cartService.clearCart();
+                                    this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
+                                      this.location.back();
+                                    });
+                                  });
                                 });
                               });
                             });
                           });
                         });
+
                       });
                     });
-                  });
+                  }
                 });
-              }
-            });
-          }, 500);
+              }, 500);
+            } else {
+              this.presentAlert("Debes seleccionar una direccion antes de enviar el pedido", "", () => { }, 'Entendido!');
+            }
+          } else {
+            this.presentAlert("Debes seleccionar un metodo de pago antes de enviar el pedido", "", () => { }, 'Entendido!');
+          }
         } else {
-          this.presentAlert("Debes seleccionar una direccion antes de enviar el pedido", "", () => { }, 'Entendido!');
+          this.presentAlert("Debes seleccionar un metodo de envio antes de enviar el pedido", "", () => { }, 'Entendido!');
         }
       } else {
         this.SignIn();
@@ -402,6 +418,14 @@ export class OrderCreatePage implements OnInit {
       }
 
       Promise.all(promises).then(() => {
+        resolve();
+      });
+    }).catch(err => alert(err));
+  }
+
+  addShippingMethod(idOrder: string) {
+    return new Promise((resolve, reject) => {
+      this.ordersService.addOrderShippingMethod(this.appService.currentStore.id, idOrder, this.shippingMethod).then(() => {
         resolve();
       });
     }).catch(err => alert(err));

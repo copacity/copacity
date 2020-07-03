@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
-import { Order, CartProduct, Address, StoreCoupon } from '../app-intefaces';
+import { Order, CartProduct, Address, StoreCoupon, ShippingMethod } from '../app-intefaces';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -215,9 +215,9 @@ export class OrdersService {
     this.ordersCollection;
 
     this.ordersCollection = this.angularFirestore
-    .collection('stores').doc(idStore)
-    .collection(this.collectionName).doc(idOrder)
-    .collection('coupons', ref => ref
+      .collection('stores').doc(idStore)
+      .collection(this.collectionName).doc(idOrder)
+      .collection('coupons', ref => ref
         .where('deleted', '==', false));
 
     return this.ordersCollection.snapshotChanges().pipe(
@@ -227,6 +227,32 @@ export class OrdersService {
 
         return data;
 
+      })));
+  }
+
+  // -------------------------------- Order Shipping Methods
+
+  public async addOrderShippingMethod(idStore: string, idOrder: string, shippingMethod: ShippingMethod): Promise<DocumentReference> {
+    return this.angularFirestore.collection('stores').doc(idStore)
+      .collection(this.collectionName).doc(idOrder)
+      .collection('shippingMethods').add(shippingMethod);
+  }
+
+  public getOrderShippingMethods(idStore: string, idOrder: string): Observable<ShippingMethod[]> {
+    this.ordersCollection;
+
+    this.ordersCollection = this.angularFirestore
+      .collection('stores').doc(idStore)
+      .collection(this.collectionName).doc(idOrder)
+      .collection('shippingMethods', ref => ref
+        .where('deleted', '==', false));
+
+    return this.ordersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as ShippingMethod;
+        const id = a.payload.doc.id;
+
+        return { id, ...data };
       })));
   }
 }

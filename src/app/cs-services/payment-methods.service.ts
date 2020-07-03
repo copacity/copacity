@@ -31,4 +31,20 @@ export class PaymentMethodsService {
       })));
   }
 
+  public getById(idPaymentMethod: string) {
+    return new Promise((resolve, reject) => {
+      this.angularFirestore.collection(this.collectionName).doc(idPaymentMethod).ref.get().then(
+          function (doc) {
+            if (doc.exists) {
+              const data = doc.data() as PaymentMethod;
+              const id = doc.id;
+              resolve({ id, ...data });
+            } else {
+              console.log("No such document!");
+            }
+          }).catch(function (error) {
+            console.log("Error getting document:", error);
+          });
+    }).catch(err => alert(err));
+  }
 }

@@ -212,7 +212,10 @@ export interface Address {
   id: string;
   name: string;
   lastName: string;
+  country: string;
+  city: string;
   address: string;
+  postalCode: string;
   description: string;
   phone1: number;
   phone2: number;
@@ -228,6 +231,8 @@ export interface Order {
   ref: number;
   idStore: String;
   idUser: string;
+  idPaymentMethod: string;
+  idVendor: string;
   status: number;
   lastUpdated: Date;
   dateCreated: Date;
