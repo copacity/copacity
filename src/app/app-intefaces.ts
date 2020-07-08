@@ -11,6 +11,16 @@ export interface AppInfo {
   tax: number;
 }
 
+export interface PlatformFee {
+  id: string;
+  additionalCoupon: number;
+  additionalProduct: number;
+  additionalVendor: number;
+  commissionForSale: number;
+  platformUse: number;
+  platformUseDiscount: number;
+}
+
 export interface File {
   downloadURL: Observable<string>;
   file: any;

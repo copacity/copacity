@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { StoreCategory, Sector, Store } from 'src/app/app-intefaces';
+import { StoreCategory, Sector, Store, PlatformFee } from 'src/app/app-intefaces';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms'
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -111,18 +111,31 @@ export class StoreCreatePage implements OnInit {
           orderMinAmount: 0,
           productsCount: 0,
           productsLimit: 100,
-          couponsLimit: 10,
+          couponsLimit: 5,
           vendorsLimit: 2
         }
 
         this.storesService.create(newStore).then(async (doc) => {
-          this.storesService.update(doc.id, { id: doc.id }).then(() => {
-            this.usersService.update(this.appService.currentUser.id, { isAdmin: true }).then(() => {
-              this.loader.stopLoading();
-              this.presentAlert("Tienda creada exitosamente", () => {
-                this.appService._userStoreId = doc.id;
-                this.appService.currentUser.isAdmin = true;
-                this.popoverCtrl.dismiss(doc.id);
+
+          let platformFee: PlatformFee = {  
+            id: '',
+            additionalCoupon:0,
+            additionalProduct:0,
+            additionalVendor:0,
+            platformUse:0,
+            platformUseDiscount:0,
+            commissionForSale:0
+            };
+
+          this.storesService.createPlatformFess(doc.id, platformFee).then(async () => {
+            this.storesService.update(doc.id, { id: doc.id }).then(() => {
+              this.usersService.update(this.appService.currentUser.id, { isAdmin: true }).then(() => {
+                this.loader.stopLoading();
+                this.presentAlert("Tienda creada exitosamente", () => {
+                  this.appService._userStoreId = doc.id;
+                  this.appService.currentUser.isAdmin = true;
+                  this.popoverCtrl.dismiss(doc.id);
+                });
               });
             });
           });

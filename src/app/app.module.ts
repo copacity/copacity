@@ -43,6 +43,7 @@ import { StoreOrdersPageModule } from './cs-pages/store-orders/store-orders.modu
 import { StorePqrsfPageModule } from './cs-pages/store-pqrsf/store-pqrsf.module';
 import { StorePqrsfCreatePageModule } from './cs-pages/store-pqrsf-create/store-pqrsf-create.module';
 import { StoreShippingMethodsCreatePageModule } from './cs-pages/store-shipping-methods-create/store-shipping-methods-create.module';
+import { StoreBillingPageModule } from './cs-pages/store-billing/store-billing.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -87,6 +88,7 @@ import { StoreShippingMethodsCreatePageModule } from './cs-pages/store-shipping-
     StoreCouponsPageModule,
     StoreCouponsCreatePageModule,
     StoreOrdersPageModule,
+    StoreBillingPageModule,
     StorePqrsfPageModule,
     StorePqrsfCreatePageModule,
     StoreShippingMethodsCreatePageModule,

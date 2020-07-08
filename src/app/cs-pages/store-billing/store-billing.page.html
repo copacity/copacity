@@ -1,9 +1,149 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>store-billing</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-<ion-content>
+    <a style="background-color: white; color: black;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">FACTURA
+      PLAN</a>
 
-</ion-content>
+    <div *ngIf="!isAdmin" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
+        <span class="center-text" style="color: black;margin-bottom: 0px;line-height: 15px;font-size: 1.2em;">
+          A continuación podrás revisar el reporte de las facturas generadas por el uso de la plataforma Copacity
+        </span>
+      </div>
+    </div>
+
+    <div class="content" style="margin: 0px 0px 0px 0px;">
+      <div class="top-20">
+        <form [formGroup]="form">
+          <div class="content header-clear-small">
+            <ion-list lines="full" class="ion-no-margin ion-no-padding">
+              <ion-item>
+                <ion-label>Factura Mes</ion-label>
+                <ion-datetime formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
+                  monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic" [min]="minDate"
+                  [max]="maxDate" displayFormat="MMM YYYY" cancelText="Cancelar" doneText="Aceptar">
+                </ion-datetime>
+
+              </ion-item>
+            </ion-list>
+          </div>
+        </form>
+
+        <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+          class="content content-box round-small shadow-large">
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('billingDate').errors">
+            <span *ngIf="form.get('billingDate').hasError('required')">Factura Mes es requerido</span>
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <a (click)="generate()"
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small shadow-large button-full button-s">Generar Factura</a>
+      </div>
+    </div>
+
+    <div id="page">
+      <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+        <table class="table-borders" style="font-size: 18px;">
+          <tr>
+            <th style="text-align: left; padding-left: 5px;"></th>
+            <th style="text-align: right;">V/U</th>
+            <th style="text-align: right;" style="width: 20px;">#</th>
+            <th style="text-align: right;">Total</th>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: left; padding-left: 5px;vertical-align: top">
+              Uso de la Plataforma
+            </td>
+            <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
+              {{ platformFee?.platformUse | currency: 'USD': 'symbol' : '1.0-0' }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: left; padding-left: 5px;vertical-align: top">
+              Comision por ventas ({{ platformFee?.commissionForSale  }}%)
+            </td>
+            <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
+              $3.000
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: left; padding-left: 5px;vertical-align: top">
+              Vendedor Adicional
+            </td>
+            <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
+              {{ platformFee?.additionalVendor | currency: 'USD': 'symbol' : '1.0-0' }}
+            </td>
+            <td style="vertical-align: top">{{ (appService.currentStore.vendorsLimit - 2) }}</td>
+            <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
+               {{ (platformFee?platformFee.additionalVendor:0) * (appService.currentStore.vendorsLimit - 2) | currency: 'USD': 'symbol' : '1.0-0' }}
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: left; padding-left: 5px;vertical-align: top">
+              Cupon Adicional
+            </td>
+            <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
+              {{ platformFee?.additionalCoupon | currency: 'USD': 'symbol' : '1.0-0' }}
+            </td>
+            <td style="vertical-align: top">{{ (appService.currentStore.couponsLimit - 5) }}</td>
+            <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
+               {{ (platformFee?platformFee.additionalCoupon:0) * (appService.currentStore.couponsLimit - 2) | currency: 'USD': 'symbol' : '1.0-0' }}
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: left; padding-left: 5px;vertical-align: top">
+              Producto Adicional en Vitrina
+            </td>
+            <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
+              {{ platformFee?.additionalProduct | currency: 'USD': 'symbol' : '1.0-0' }}
+            </td>
+            <td style="vertical-align: top">{{ (appService.currentStore.productsLimit - 100) }}</td>
+            <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
+               {{ (platformFee?platformFee.additionalProduct:0) * (appService.currentStore.productsLimit - 100) | currency: 'USD': 'symbol' : '1.0-0' }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: left; padding-left: 5px;vertical-align: top;background-color: yellow;">
+              <strong style="color: black">Descuento
+                <small style="color: black; background-color: yellow;">(-{{ platformFee?.platformUseDiscount }}%)</small>
+              </strong>
+            </td>
+            <td style="vertical-align: top; text-align: right;background-color: yellow;">
+              <span style="color: black;">$3.000</span>
+            </td>
+          </tr>
+        </table>
+        <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
+          <div class="store-cart-total">
+            <strong class="color-highlight">Ahorro</strong>
+            <span class="color-highlight">
+              $3.000
+            </span>
+            <div class="clear"></div>
+          </div>
+          <div class="store-cart-total">
+            <strong style="color: red;">IVA <small>(Incluido)</small></strong>
+            <span>$3.000</span>
+            <div class="clear"></div>
+          </div>
+          <div style="background-color: red;" class="divider opacity-350"></div>
+          <div class="store-cart-total bottom-20" style="font-size: 25px;">
+            <strong class="uppercase bold">Total</strong>
+            <span class="uppercase bold">$3.000</span>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

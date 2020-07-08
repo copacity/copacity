@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Store, StoreCoupon, PQRSF, ShippingMethod } from '../app-intefaces';
+import { Store, StoreCoupon, PQRSF, ShippingMethod, PlatformFee } from '../app-intefaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StoreStatus } from '../app-enums';
@@ -16,6 +16,24 @@ export class StoresService {
 
   public create(store: Store): Promise<DocumentReference> {
     return this.angularFirestore.collection(this.collectionName).add(store);
+  }
+
+  public createPlatformFess(idStore: string, platformFee: PlatformFee): Promise<DocumentReference> {
+    return this.angularFirestore.collection(this.collectionName).doc(idStore).collection('platformFees').add(platformFee);
+  }
+
+  public getPlatformFess(idStore: string) {
+    this.storesCollection;
+
+    this.storesCollection = this.angularFirestore.collection(this.collectionName).doc(idStore).collection<PlatformFee>('platformFees');
+
+    return this.storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as PlatformFee;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
   }
 
   public getById(id: string): Promise<Store> {

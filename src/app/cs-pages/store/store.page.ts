@@ -42,6 +42,7 @@ import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service
 import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 import { StoreOrdersPage } from '../store-orders/store-orders.page';
 import { StorePqrsfPage } from 'src/app/cs-pages/store-pqrsf/store-pqrsf.page';
+import { StoreBillingPage } from '../store-billing/store-billing.page';
 
 @Component({
   selector: 'app-store',
@@ -384,6 +385,28 @@ export class StorePage implements OnInit {
       //event: event,
       componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName },
       // backdropDismiss: false
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if (result) {
+          this.store = result;
+        }
+      });
+
+    modal.present();
+  }
+
+  async openStoreBillingPage(event) {
+
+    let modal = await this.popoverController.create({
+      component: StoreBillingPage,
+      cssClass: 'cs-popovers',
+      //event: event,
+      //componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName },
+      backdropDismiss: false
     });
 
     modal.onDidDismiss()
