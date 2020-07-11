@@ -54,7 +54,7 @@ export class ProfileUpdatePage implements OnInit {
   updateUser() {
      
     if (this.form.valid) {
-      this.loaderComponent.startLoading("Estamos actualizando su tienda por favor espere un momento...");
+      this.loaderComponent.startLoading("Estamos actualizando sus datos por favor espere un momento...");
 
       this.appService.currentUser.name = this.form.value.name;
       this.appService.currentUser.phone1 = this.form.value.phone1 ? this.form.value.phone1 : 0;

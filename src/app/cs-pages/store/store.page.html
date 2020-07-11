@@ -175,9 +175,9 @@
               style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
               <i class="fa fa-edit"></i></a>
 
-            <a *ngIf="!isAdmin" (click)="openStoreInformationComponent($event)"
+            <!-- <a *ngIf="!isAdmin" (click)="openStoreInformationComponent($event)"
               style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
-              <i class="fa fa-info-circle"></i></a>
+              <i class="fa fa-info-circle"></i></a> -->
 
             <div class="top-20"></div>
 
@@ -284,7 +284,7 @@
                   </table>
                 </a>
               </ion-slide>
-              <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+              <ion-slide (click)="openStoreVendorsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <table>
@@ -335,7 +335,7 @@
                   </table>
                 </a>
               </ion-slide>
-              <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+              <ion-slide *ngIf="isAdmin" (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
                   <table>

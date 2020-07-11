@@ -25,6 +25,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { Observable } from 'rxjs';
 import { PaymentMethodsService } from 'src/app/cs-services/payment-methods.service';
+import { ProfileUpdatePage } from '../profile-update/profile-update.page';
 
 @Component({
   selector: 'app-order-create',
@@ -78,10 +79,32 @@ export class OrderCreatePage implements OnInit {
 
     this.messageToStore = new FormControl('', [Validators.maxLength(500)]);
     this.buildStoreCoupon('');
+
+    setTimeout(() => {
+      if(this.appService.currentUser.phone1 == 0 || this.appService.currentUser.phone2 == 0 || this.appService.currentUser.whatsapp == 0){
+        this.openProfileUpdatePage();
+      }
+    }, 5000);
   }
 
   ngOnInit() {
 
+  }
+
+  async openProfileUpdatePage() {
+
+    let modal = await this.popoverController.create({
+      component: ProfileUpdatePage,
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
   }
 
   clearCouponCode() {

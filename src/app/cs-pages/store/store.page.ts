@@ -43,6 +43,8 @@ import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 import { StoreOrdersPage } from '../store-orders/store-orders.page';
 import { StorePqrsfPage } from 'src/app/cs-pages/store-pqrsf/store-pqrsf.page';
 import { StoreBillingPage } from '../store-billing/store-billing.page';
+import { StoreVendorsPage } from '../store-vendors/store-vendors.page';
+import { StoreReportsPage } from '../store-reports/store-reports.page';
 
 @Component({
   selector: 'app-store',
@@ -980,6 +982,45 @@ export class StorePage implements OnInit {
       let modal = await this.popoverController.create({
         component: StorePointsPage,
         componentProps: { isAdmin: this.isAdmin },
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
+  }
+
+  async openStoreVendorsPage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StoreVendorsPage,
+        componentProps: { isAdmin: this.isAdmin },
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
+  }
+
+  async openStoreReportsPage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StoreReportsPage,
         cssClass: 'cs-popovers',
         backdropDismiss: false,
       });

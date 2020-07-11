@@ -44,6 +44,8 @@ import { StorePqrsfPageModule } from './cs-pages/store-pqrsf/store-pqrsf.module'
 import { StorePqrsfCreatePageModule } from './cs-pages/store-pqrsf-create/store-pqrsf-create.module';
 import { StoreShippingMethodsCreatePageModule } from './cs-pages/store-shipping-methods-create/store-shipping-methods-create.module';
 import { StoreBillingPageModule } from './cs-pages/store-billing/store-billing.module';
+import { StoreVendorsPageModule } from './cs-pages/store-vendors/store-vendors.module';
+import { StoreReportsPageModule } from './cs-pages/store-reports/store-reports.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -92,6 +94,8 @@ import { StoreBillingPageModule } from './cs-pages/store-billing/store-billing.m
     StorePqrsfPageModule,
     StorePqrsfCreatePageModule,
     StoreShippingMethodsCreatePageModule,
+    StoreVendorsPageModule,
+    StoreReportsPageModule,
     PipesModule
   ],
   providers: [
