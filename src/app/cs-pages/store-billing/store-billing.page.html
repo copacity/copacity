@@ -27,8 +27,8 @@
               <ion-item>
                 <ion-label>Factura Mes</ion-label>
                 <ion-datetime formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
-                  monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre" [min]="minDate"
-                  [max]="maxDate" displayFormat="MMMM YYYY" cancelText="Cancelar" doneText="Aceptar">
+                  monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+                  [min]="minDate" [max]="maxDate" displayFormat="MMMM YYYY" cancelText="Cancelar" doneText="Aceptar">
                 </ion-datetime>
               </ion-item>
             </ion-list>
@@ -53,7 +53,8 @@
     <div id="page" *ngIf="billingDate">
       <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
         <div class="top-30 bottom-30">
-          <h4 class="bold color-highlight">Factura {{ billingDate | date: 'MM/yyyy' }} <span style="color:red">(Pendiente de pago)</span></h4>
+          <h4 class="bold color-highlight">Factura {{ billingDate | date: 'MM/yyyy' }} <span
+              style="color:red">(Pendiente de pago)</span></h4>
           <div class="container top-20">
             <table class="table-borders" style="font-size: 18px;">
               <tr>
@@ -77,7 +78,8 @@
               </tr>
               <tr *ngIf="commissionForSale && commissionForSale != 0">
                 <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                  Comision por ventas <small style="background-color: yellow;">({{ platformFee?.commissionForSale  }}%)</small>
+                  Comision por ventas <small
+                    style="background-color: yellow;">({{ platformFee?.commissionForSale  }}%)</small>
                 </td>
                 <td style="text-align: left; vertical-align: top">
                   {{ sales | currency: 'USD': 'symbol' : '1.0-0' }}
@@ -149,9 +151,8 @@
               </div>
             </div>
           </div>
-        
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

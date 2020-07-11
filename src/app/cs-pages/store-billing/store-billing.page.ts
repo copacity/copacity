@@ -6,7 +6,6 @@ import { StoresService } from 'src/app/cs-services/stores.service';
 import { PlatformFee, Order, StoreCoupon } from 'src/app/app-intefaces';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { OrdersService } from 'src/app/cs-services/orders.service';
-import { debug } from 'util';
 import { CartService } from 'src/app/cs-services/cart.service';
 
 @Component({
@@ -22,7 +21,7 @@ export class StoreBillingPage implements OnInit {
   years: string = "";
   platformFee: PlatformFee;
   sales = 0;
-  commissionForSale: number = null;
+  commissionForSale: number = 0;
   platformUse: number;
   saving: number;
   iva: number;
@@ -105,6 +104,7 @@ export class StoreBillingPage implements OnInit {
         });
 
         Promise.all(orderCaculatePromises).then(totals => {
+          this.commissionForSale = 0;
           totals.forEach(orderTotal => {
             this.commissionForSale += orderTotal;
           });
