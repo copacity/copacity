@@ -113,7 +113,7 @@ export class SignupComponent implements OnInit {
   }
 
   close() {
-    this.popoverController.dismiss();
+    this.popoverController.dismiss(true);
   }
 
   async popoverTermsService() {

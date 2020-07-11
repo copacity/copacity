@@ -3,6 +3,7 @@ import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from 
 import { Order, CartProduct, Address, StoreCoupon, ShippingMethod } from '../app-intefaces';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { OrderStatus } from '../app-enums';
 
 @Injectable({
   providedIn: 'root'
@@ -100,6 +101,27 @@ export class OrdersService {
         if (data.ref.toString().indexOf(searchText.toString().trim().toUpperCase()) != -1) {
           return { id, ...data };
         }
+      })));
+  }
+
+  public getByDateRange(idStore: string, startDate: any, endDate: any): Observable<Order[]> {
+    this.ordersCollection;
+    
+    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+      .collection<Order>(this.collectionName, ref => ref
+        .where('deleted', '==', false)
+        .where('status', '==', OrderStatus.Sent)
+        .where('lastUpdated', '>=', startDate)
+        .where('lastUpdated', '<', endDate)
+        .orderBy('lastUpdated', "desc")
+        );
+
+    return this.ordersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Order;
+        const id = a.payload.doc.id;
+
+        return { id, ...data };
       })));
   }
 

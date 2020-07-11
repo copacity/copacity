@@ -182,76 +182,176 @@
             <div class="top-20"></div>
 
             <ion-slides #sliderMenu [options]="appService.slideOpts2" style="max-width: 450px;">
+              <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
+                <a class="button button-round-small button-full"
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-phone" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Contacto</span>
+                      </td>
+                    </tr>
+                  </table>
+                </a>
+              </ion-slide>
               <ion-slide (click)="openSelectCategories()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-th" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;">Secciones</span>
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-th" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Secciones</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide (click)="searchFeaturedProducts()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-star" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;">Destacados</span>
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-star" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Destacados</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide (click)="openStorePointsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-gift" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;margin: 10px;">Regalos</span>
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-gift" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Regalos</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: dotted;">
-                  <i class="fas fa-cut" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;margin: 10px;">Cupones</span>
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-cut" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Cupones</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide (click)="openStoreOrdersPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-clipboard-list" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;margin: 10px;">Pedidos</span>
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-clipboard-list" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Pedidos</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-handshake" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;">Comisiones</span>
+                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-handshake" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Comisiones</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide (click)="openStorePQRSFPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
-                  <span style="font-size: .7em;margin: 15px;color: black;">PQRSF</span>
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">PQRSF</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide *ngIf="isAdmin" (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-file-invoice-dollar" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;margin: 10px;">Factura</span>
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-file-invoice-dollar" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Factura</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
               <ion-slide *ngIf="isAdmin" (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i><span
-                    style="font-size: .7em;color: black;margin: 10px;">Reportes</span>
+                  <table>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 0px 0px;">
+                        <span style="font-size: .7em;color: black;">Reportes</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </ion-slide>
-              <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <i class="fas fa-info-circle" style="font-size: 2.5em;color: red;"></i>
-                  <span style="font-size: .7em;margin: 15px;color: black;">Info</span>
-                </a>
-              </ion-slide>`
             </ion-slides>
 
             <div class="bottom-0">
@@ -400,10 +500,9 @@
 
             <div *ngIf="!searchingProducts">
               <a (click)="openSelectCategories()"
-                style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-                class="button button-round-small shadow-large button-full button-s">Buscar Mas...</a>
+                style="background-color: white;color:red;border: double;border-color: red;"
+                class="button button-round-small button-full button-s">Buscar Mas...</a>
             </div>
-
           </div>
           <div class="clear"></div>
         </div>

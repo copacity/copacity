@@ -25,6 +25,7 @@ export class SigninComponent implements OnInit {
     private appService: AppService,
     private loaderComponent: LoaderComponent,
     public popoverController: PopoverController,
+    public popoverControllerAdd: PopoverController,
     public toastController: ToastController
 
   ) { }
@@ -36,7 +37,8 @@ export class SigninComponent implements OnInit {
   }
 
   async popoverPasswordResetEmail() {
-    const popover = await this.popoverController.create({
+    this.close();
+    const popover = await this.popoverControllerAdd.create({
       component: PasswordResetEmailComponent,
       cssClass: "recoverPassword-popover"
     });
@@ -53,7 +55,8 @@ export class SigninComponent implements OnInit {
   }
 
   async popoverSignup() {
-    const popover = await this.popoverController.create({
+    this.close();
+    const popover = await this.popoverControllerAdd.create({
       component: SignupComponent,
       cssClass: "signup-popover"
     });
@@ -62,14 +65,14 @@ export class SigninComponent implements OnInit {
       .then((data) => {
         let result = data['data'];
         if (result) {
-          this.popoverController.dismiss();
+          this.close();
         }
       });
     return await popover.present();
   }
 
   async popoverTermsService() {
-    const popover = await this.popoverController.create({
+    const popover = await this.popoverControllerAdd.create({
       component: TermsServicePage,
       cssClass: "cs-popovers"
     });
@@ -83,7 +86,7 @@ export class SigninComponent implements OnInit {
   }
 
   async popoverPrivacyPolicy() {
-    const popover = await this.popoverController.create({
+    const popover = await this.popoverControllerAdd.create({
       component: PrivacyPolicyPage,
       cssClass: "cs-popovers"
     });

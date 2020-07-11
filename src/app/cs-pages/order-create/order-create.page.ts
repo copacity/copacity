@@ -297,6 +297,8 @@ export class OrderCreatePage implements OnInit {
   }
 
   async sendOrder() {
+    debugger;
+
     if (this.messageToStore.valid) {
       if (this.appService.currentUser) {
         if (this.shippingMethod) {
@@ -566,7 +568,7 @@ export class OrderCreatePage implements OnInit {
         // validate Coupon 
         this.storesService.getCouponById(this.appService.currentStore.id, this.couponCode.value).then((storeCoupon: StoreCoupon) => {
           if (storeCoupon) {
-            this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.storeCoupon.id, { quantity: (storeCoupon.quantity - 1) }).then(() => {
+            this.storesService.updateStoreCoupon(this.appService.currentStore.id, this.couponCode.value, { quantity: (storeCoupon.quantity - 1) }).then(() => {
               resolve(true);
             });
           } else {

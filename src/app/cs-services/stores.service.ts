@@ -254,6 +254,7 @@ export class StoresService {
           function (doc) {
             if (doc.exists) {
               const data = doc.data() as StoreCoupon;
+              debugger;
               const id = doc.id;
               resolve({ id, ...data });
             } else {

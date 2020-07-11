@@ -149,7 +149,7 @@
           <h4 class="bold color-highlight">Metodo de Pago</h4>
           <div class="container">
             <table class="table-borders-dark store-product-table top-20 bottom-20"
-              style="border: solid 1px rgba(0,0,0,0.08);" *ngFor="let address of addresses | async">
+              style="border: solid 1px rgba(0,0,0,0.08);">
               <tr>
                 <td colspan="2" style="vertical-align: top;padding-left: 0px;">
                   <h4 class="bold" style="color: black;margin-top: 0px;font-size: 1.3em;">{{paymentMethod?.name}}</h4>
@@ -175,7 +175,7 @@
           <h4 class="bold color-highlight">Método de Envío</h4>
           <div class="container">
             <table class="table-borders-dark store-product-table top-20 bottom-20"
-              style="border: solid 1px rgba(0,0,0,0.08);" *ngFor="let address of addresses | async">
+              style="border: solid 1px rgba(0,0,0,0.08);">
               <tr>
                 <td colspan="2" style="vertical-align: top;padding-left: 0px;">
                   <h4 class="bold" style="color: black;margin-top: 0px;font-size: 1.3em;">{{shippingMethod?.name}}</h4>
@@ -218,13 +218,12 @@
           </div>
         </div>
 
-        <div class="top-20 bottom-30" style="margin: 10px;">
+        <div *ngFor="let address of addresses | async" class="top-20 bottom-30" style="margin: 10px;">
 
           <h4 class="bold color-highlight">Direccion de Envío</h4>
           <div class="container">
             <table class="table-borders-dark store-product-table top-20 bottom-20"
-              style="border: solid 1px rgba(0,0,0,0.08);" *ngFor="let address of addresses | async">
-             
+              style="border: solid 1px rgba(0,0,0,0.08);" >
               <tr>
                 <td style="vertical-align: top;" class="bold color-theme">
                   Nombre
