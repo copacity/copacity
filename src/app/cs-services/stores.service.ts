@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Store, StoreCoupon, PQRSF, ShippingMethod, PlatformFee } from '../app-intefaces';
+import { Store, StoreCoupon, PQRSF, ShippingMethod, PlatformFee, Vendor } from '../app-intefaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StoreStatus } from '../app-enums';
@@ -333,6 +333,36 @@ export class StoresService {
     return storesCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as ShippingMethod;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
+  }
+
+  //------------------------------- Vendors
+  public createVendor(idStore: string, vendor: Vendor): Promise<DocumentReference> {
+    return this.angularFirestore
+      .collection(this.collectionName).doc(idStore)
+      .collection("vendors").add(vendor);
+  }
+
+  public updateVendor(idStore: string, idVendor: string, data: any) {
+    return this.angularFirestore
+      .collection(this.collectionName).doc(idStore)
+      .collection("vendors").doc(idVendor).update(data);
+  }
+
+  public getVendorsByIdUser(idStore: string, idUser: string): Observable<Vendor[]> {
+    let storesCollection = this.angularFirestore
+      .collection<Store>(this.collectionName).doc(idStore)
+      .collection("vendors", ref => ref
+        .where('deleted', '==', false)
+        .where('idUser', '==', idUser));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Vendor;
         data.id = a.payload.doc.id;
 
         return data;

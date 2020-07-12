@@ -29,7 +29,6 @@ export class StoreReportsPage implements OnInit {
     public popoverController: PopoverController,
     private orderService: OrdersService,
     private formBuilder: FormBuilder,
-    private storesService: StoresService,
     private loaderComponent: LoaderComponent,
     public appService: AppService,
   ) {

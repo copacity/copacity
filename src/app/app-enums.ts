@@ -11,6 +11,12 @@ export enum OrderStatus {
   Cancelled = 3,
 }
 
+export enum VendorStatus {
+  Pending = 1,
+  Confirmed = 2,
+  Cancelled = 3,
+}
+
 export enum NotificationTypes {
   OrderCreated = 1,
   OrderUpdated = 2,

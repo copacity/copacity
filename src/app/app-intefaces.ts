@@ -51,6 +51,16 @@ export interface ShippingMethod {
   paymentMethods: [];
 }
 
+export interface Vendor {
+  id: string;
+  idUser: string;
+  status: number;
+  active: boolean;
+  commisionForSale: number;
+  dateCreated: Date;
+  deleted: boolean;
+}
+
 export interface PaymentMethod {
   id: string;
   name: string;

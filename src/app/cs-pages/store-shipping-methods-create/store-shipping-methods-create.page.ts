@@ -109,8 +109,6 @@ export class StoreShippingMethodsCreatePage implements OnInit {
             });
           });
         }
-
-
       }, 500);
     } else {
       this.form.markAllAsTouched();

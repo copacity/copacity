@@ -10,12 +10,15 @@
     <a style="background-color: white; color: black;"
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Comisiones</a>
 
-    <div class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+    <div *ngIf="!isAdmin" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <span style="color: black;margin-bottom: 0px;line-height: 15px;font-size: 1.2em;">
-          Si deseas trabajar con nosotros y ganar comision por ventas, debes dar click al boton <b>"QUIERO SER VENDEDOR"</b> 
-          y comunicarte con nosotros para negociar los porcentajes. En la opcion <b>"CONTACTO"</b> de la pagina principal 
-          podrás ver nuestros numeros de telefono, whatsapp o facebook. Gracias. Recuerda actualizar tus datos. <a (click)="openProfileUpdatePage()">Actualizar Datos Aqui!</a>
+          Si deseas trabajar con nosotros y ganar comision por ventas, debes dar click al boton <b>"QUIERO SER
+            VENDEDOR"</b>
+          y comunicarte con nosotros para negociar los porcentajes. En la opcion <b>"CONTACTO"</b> de la pagina
+          principal
+          podrás ver nuestros numeros de telefono, whatsapp o facebook. Gracias. Recuerda actualizar tus datos. <a
+            (click)="openProfileUpdatePage()">Actualizar Datos Aqui!</a>
         </span>
       </div>
     </div>
@@ -44,10 +47,13 @@
         </div>
       </div> -->
 
-        <div>
-          <a
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+        <div (click)="sendToRevission()" *ngIf="(!isAdmin && !vendor.id) || (!isAdmin && (vendor.id && vendor.status == 3))">
+          <a style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
             class="button button-round-small shadow-large button-full button-s">Quiero ser vendedor</a>
+        </div>
+
+        <div (click)="sendToRevission()" *ngIf="!isAdmin && vendor.id && vendor.status == 1" style="text-align: center;color: red;font-size: 1.2em;padding-bottom: 20px;">
+          Solicitud enviada y pendiente de revision.
         </div>
       </div>
 
