@@ -56,7 +56,7 @@ export interface Vendor {
   idUser: string;
   status: number;
   active: boolean;
-  commisionForSale: number;
+  commissionForSale: number;
   dateCreated: Date;
   deleted: boolean;
 }

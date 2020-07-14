@@ -135,7 +135,19 @@ const routes: Routes = [
   {
     path: 'store-shipping-methods-create',
     loadChildren: () => import('./cs-pages/store-shipping-methods-create/store-shipping-methods-create.module').then( m => m.StoreShippingMethodsCreatePageModule)
+  },  {
+    path: 'store-vendors-admin',
+    loadChildren: () => import('./cs-pages/store-vendors-admin/store-vendors-admin.module').then( m => m.StoreVendorsAdminPageModule)
+  },
+  {
+    path: 'store-vendors-update',
+    loadChildren: () => import('./cs-pages/store-vendors-update/store-vendors-update.module').then( m => m.StoreVendorsUpdatePageModule)
+  },
+  {
+    path: 'store-vendors-report',
+    loadChildren: () => import('./cs-pages/store-vendors-report/store-vendors-report.module').then( m => m.StoreVendorsReportPageModule)
   }
+
 ];
 
 @NgModule({

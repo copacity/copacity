@@ -10,7 +10,8 @@
     <a style="background-color: white; color: black;"
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Comisiones</a>
 
-    <div *ngIf="!isAdmin" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+    <div *ngIf="vendor.id && vendor.status == 1" class="content contact-message top-20"
+      style="margin: 0px 0px 0px 0px;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <span style="color: black;margin-bottom: 0px;line-height: 15px;font-size: 1.2em;">
           Si deseas trabajar con nosotros y ganar comision por ventas, debes dar click al boton <b>"QUIERO SER
@@ -25,142 +26,67 @@
 
     <div class="content" style="margin: 0px 0px 0px 0px;">
       <div class="top-20">
-        <!-- <form [formGroup]="form">
-          <div class="content header-clear-small">
-            <ion-list lines="full" class="ion-no-margin ion-no-padding">
-              <ion-item>
-                <ion-label>Factura Mes</ion-label>
-                <ion-datetime formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
-                  monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre" [min]="minDate"
-                  [max]="maxDate" displayFormat="MMMM YYYY" cancelText="Cancelar" doneText="Aceptar">
-                </ion-datetime>
-              </ion-item>
-            </ion-list>
-          </div>
-        </form>
-
-        <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
-          class="content content-box round-small shadow-large">
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('billingDate').errors">
-            <span *ngIf="form.get('billingDate').hasError('required')">Mes Factura es requerido</span>
-          </p>
-        </div>
-      </div> -->
-
-        <div (click)="sendToRevission()" *ngIf="(!isAdmin && !vendor.id) || (!isAdmin && (vendor.id && vendor.status == 3))">
+        <div (click)="sendToRevission()" *ngIf="!vendor.id || (vendor.id && vendor.status == 3)">
           <a style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
             class="button button-round-small shadow-large button-full button-s">Quiero ser vendedor</a>
         </div>
 
-        <div (click)="sendToRevission()" *ngIf="!isAdmin && vendor.id && vendor.status == 1" style="text-align: center;color: red;font-size: 1.2em;padding-bottom: 20px;">
+        <div (click)="sendToRevission()" *ngIf="vendor.id && vendor.status == 1"
+          style="text-align: center;color: red;font-size: 1.2em;padding-bottom: 20px;">
           Solicitud enviada y pendiente de revision.
         </div>
       </div>
+    </div>
 
-      <!-- <div id="page" *ngIf="billingDate">
-        <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-          <div class="top-30 bottom-30">
-            <h4 class="bold color-highlight">Factura {{ billingDate | date: 'MM/yyyy' }} <span
-                style="color:red">(Pendiente de pago)</span></h4>
-            <div class="container top-20">
-              <table class="table-borders" style="font-size: 18px;">
+    <div *ngIf="vendor && vendor.status == 2" class="content" style="margin: 0px 0px 0px 0px;">
+      <div class="top-40">
+        <table>
+          <tr>
+            <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
+              <img (click)="openImageViewer(user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png')"
+                class="round-small preload-image"
+                src="{{user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img"
+                style="height: 100px;width: 100px;">
+            </td>
+            <td>
+              <table>
                 <tr>
-                  <th style="text-align: left; padding-left: 5px;"></th>
-                  <th style="text-align: right;">V/U</th>
-                  <th style="text-align: right;" style="width: 20px;">#</th>
-                  <th style="text-align: right;">Total</th>
+                  <td colspan="2" style="text-align: left;padding: 0px 0px 10px 0px;"> <span
+                      style="font-weight: 700;color: black;">{{ user?.name }}</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Uso de la Plataforma <small *ngIf="platformFee?.platformUseDiscount > 0"
-                      style="color: black; background-color: yellow;">(-{{ platformFee?.platformUseDiscount }}%)</small>
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;">Estado:</span>
                   </td>
-                  <td style="text-align: left; vertical-align: top">
-                    {{ this.platformFee.platformUse | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="text-align: left; vertical-align: top">1</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ platformUse | currency: 'USD': 'symbol' : '1.0-0' }}
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-weight: 700;">
+                      {{ vendor.status ==1?'Pendiente':vendor.status ==2?'Confirmado':'Rechazado' }}
+                    </span>
                   </td>
                 </tr>
-                <tr *ngIf="commissionForSale && commissionForSale != 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Comision por ventas <small
-                      style="background-color: yellow;">({{ platformFee?.commissionForSale  }}%)</small>
+                <tr>
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Activo:</span>
                   </td>
-                  <td style="text-align: left; vertical-align: top">
-                    {{ sales | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="text-align: left; vertical-align: top">1</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ commissionForSale | currency: 'USD': 'symbol' : '1.0-0' }}
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;"
+                      class="color-highlight">{{ vendor.active?'Si':'No' }}</span>
                   </td>
                 </tr>
-                <tr *ngIf="vendorsQuantity!= 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Vendedor Adicional
+                <tr>
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">comisión por venta:</span>
                   </td>
-                  <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ platformFee?.additionalVendor | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="vertical-align: top">{{ vendorsQuantity }}</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ vendorsPrice | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-                <tr *ngIf="couponsQuantity!= 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Cupon Adicional
-                  </td>
-                  <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ platformFee?.additionalCoupon | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="vertical-align: top">{{ couponsQuantity }}</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ couponsPrice | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-                <tr *ngIf="productsQuantity!= 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Producto Adicional en Vitrina
-                  </td>
-                  <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ platformFee?.additionalProduct | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="vertical-align: top">{{ productsQuantity }}</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ productsPrice | currency: 'USD': 'symbol' : '1.0-0' }}
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1.2em;font-weight: 700;"
+                      class="color-highlight">{{ vendor.commissionForSale }}%</span>
                   </td>
                 </tr>
               </table>
-              <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
-                <div class="store-cart-total">
-                  <strong class="color-highlight">Ahorro</strong>
-                  <span class="color-highlight">
-                    {{ saving | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
-                <div class="store-cart-total">
-                  <strong style="color: red;">IVA <small>(Incluido)</small></strong>
-                  <span>
-                    {{ iva | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
-                <div style="background-color: red;" class="divider opacity-350"></div>
-                <div class="store-cart-total bottom-20" style="font-size: 25px;">
-                  <strong class="uppercase bold">Total</strong>
-                  <span class="uppercase bold">
-                    {{ total | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div> -->
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>

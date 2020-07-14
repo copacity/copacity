@@ -1,40 +1,85 @@
 <div class="round-medium" style="background-color: white;">
+  <div class="footer" style="padding: 8px 8px 8px 8px;">
+
+    <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+      <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+    </div>
+
+    <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+        style="color: red;">COPA</span>CITY</a>
+    <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
+
+    <div class="boxed-text-huge">
+      <div style="padding-top: 10px;text-align: -webkit-center;">
+        <a style="text-align: end;color: red;border: double;margin-bottom: 0px;" href="tel:{{ appService._appInfo?.phone }}"
+          class="button button-round-small button-s"><i class="fa fa-phone"
+            style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.phone }}</a>
+        <a style="text-align: end;border: double;margin-bottom: 0px;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"
+          class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
+            style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.whatsapp }}</a>
+        <a style="text-align: end;border: double;margin-bottom: 0px;"
+          href="https://www.facebook.com/{{ appService._appInfo?.facebook }}"
+          class="button button-round-small button-s color-facebook"><i class="fab fa-facebook-f color-facebook"
+            style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.facebook }}</a>
+      </div>
+
+      <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;padding-top: 20px;">
+        <img [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img" class="shadow-small" style="width: 60px;">
+      </div>
+  
+      <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;">{{store?.name}}</a>
+      <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">{{store?.description}}</p>
+  
+      <div class="boxed-text-huge">
+        <div style="padding-top: 10px;text-align: -webkit-center;">
+          <a style="text-align: end;color: red;border: double;margin-bottom: 0px;" href="tel:{{ store?.phone1 }}"
+            class="button button-round-small button-s"><i class="fa fa-phone"
+              style="font-size: 1.5em;"></i>&nbsp;{{ store?.phone1 }}</a>
+          <a style="text-align: end;border: double;margin-bottom: 0px;" href="https://wa.me/57{{ store?.whatsapp }}"
+            class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
+              style="font-size: 1.5em;"></i>&nbsp;{{ store?.whatsapp }}</a>
+          <a style="text-align: end;border: double;margin-bottom: 0px;"
+            href="https://www.facebook.com/{{ store?.facebook }}"
+            class="button button-round-small button-s color-facebook"><i class="fab fa-facebook-f color-facebook"
+              style="font-size: 1.5em;"></i>&nbsp;{{ store?.facebook }}</a>
+        </div>
+    </div>
+
+    <!-- <div class="footer-socials" style="padding-left: 20px;">
+      <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+          class="fab fa-facebook-f"></i></a>
+      <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+          class="fa fa-phone"></i></a>
+      <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
+          class="fab fa-whatsapp"></i></a>
+      <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
+          class="fa fa-share-alt"></i></a>
+    </div> -->
+  </div>
+
+
   <div style="margin: 5px;padding-top: 10px;">
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <h1 class="center-text profile-heading bolder">{{store?.name}}</h1>
+    <!-- <h1 class="center-text profile-heading bolder">{{store?.name}}</h1>
 
     <p class="center-text" style="margin: 15px;font-weight: 500">{{store?.description}}</p>
 
-    <div class="boxed-text-huge" >
-      <a style="margin-right: 0px;margin: 5px;" href="https://www.facebook.com/{{ store?.facebook }}" class="icon icon-round icon-s bg-facebook"><i
-          class="fab fa-facebook-f"></i></a>
-      <a style="margin-right: 0px;margin: 5px;" href="tel:{{ store?.phone1 }}" class="icon icon-round icon-s bg-phone"><i
-          class="fa fa-phone"></i></a>
+    <div class="boxed-text-huge">
+      <a style="margin-right: 0px;margin: 5px;" href="https://www.facebook.com/{{ store?.facebook }}"
+        class="icon icon-round icon-s bg-facebook"><i class="fab fa-facebook-f"></i></a>
+      <a style="margin-right: 0px;margin: 5px;" href="tel:{{ store?.phone1 }}"
+        class="icon icon-round icon-s bg-phone"><i class="fa fa-phone"></i></a>
       <a style="margin-right: 0px;margin: 5px;" href="https://wa.me/57{{ store?.whatsapp }}"
         class="icon icon-round icon-s bg-whatsapp"><i class="fab fa-whatsapp"></i></a>
-    </div>
+    </div> -->
 
     <div class="boxed-text-huge">
       <div style="padding-top: 10px;text-align: -webkit-center;">
-        <a
-          style="text-align: end;color: red;border: double;margin-bottom: 0px;" href="tel:{{ store?.phone1 }}"
-          class="button button-round-small button-s"><i class="fa fa-phone" style="font-size: 1.5em;"></i>&nbsp;{{ store?.phone1 }}</a>
-          <a
-          style="text-align: end;border: double;margin-bottom: 0px;" href="https://wa.me/57{{ store?.whatsapp }}"
-          class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp" style="font-size: 1.5em;"></i>&nbsp;{{ store?.whatsapp }}</a>
-          <a
-          style="text-align: end;border: double;margin-bottom: 0px;" href="https://www.facebook.com/{{ store?.facebook }}"
-          class="button button-round-small button-s color-facebook"><i class="fab fa-facebook-f color-facebook" style="font-size: 1.5em;"></i>&nbsp;{{ store?.facebook }}</a>
-      </div>
-    </div>
-
-    <div class="boxed-text-huge">
-      <div style="padding-top: 10px;text-align: -webkit-center;">
-        <a *ngIf="isAdmin"
-          style="text-align: end;color: red;border: double;margin-bottom: 0px;" (click)="openBarCodeGenerator()"
-          class="button button-round-small button-s"><i class="fa fa-qrcode" style="font-size: 1.5em;"></i>&nbsp;Ver Codigo QR</a>
+        <a *ngIf="isAdmin" style="text-align: end;color: red;border: double;margin-bottom: 0px;"
+          (click)="openBarCodeGenerator()" class="button button-round-small button-s"><i class="fa fa-qrcode"
+            style="font-size: 1.5em;"></i>&nbsp;Ver Codigo QR de la tienda</a>
       </div>
     </div>
 

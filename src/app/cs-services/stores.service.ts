@@ -353,6 +353,22 @@ export class StoresService {
       .collection("vendors").doc(idVendor).update(data);
   }
 
+  public getVendors(idStore: string): Observable<Vendor[]> {
+    let storesCollection = this.angularFirestore
+      .collection<Store>(this.collectionName).doc(idStore)
+      .collection("vendors", ref => ref
+        .where('deleted', '==', false));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Vendor;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
+  }
+
   public getVendorsByIdUser(idStore: string, idUser: string): Observable<Vendor[]> {
     let storesCollection = this.angularFirestore
       .collection<Store>(this.collectionName).doc(idStore)
