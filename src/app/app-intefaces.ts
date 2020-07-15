@@ -202,7 +202,8 @@ export interface User {
   lastUpdated: Date;
   dateCreated: Date;
   deleted: boolean;
-  isAdmin:boolean;
+  isAdmin: boolean;
+  isSuperUser: boolean;
 }
 
 export interface StorePoint {
@@ -257,10 +258,10 @@ export interface Order {
   lastUpdated: Date;
   dateCreated: Date;
   deleted: boolean;
-  photoUrl:string;
-  userName:string;
-  message:string;
-  messageRejected:string;
+  photoUrl: string;
+  userName: string;
+  message: string;
+  messageRejected: string;
 }
 
 export interface Notification {

@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController, NavParams, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ProfileUpdatePage } from '../profile-update/profile-update.page';
-import { Vendor, User } from 'src/app/app-intefaces';
+import { Vendor, User, StoreCoupon, Order } from 'src/app/app-intefaces';
 import { AppService } from 'src/app/cs-services/app.service';
 import { VendorStatus } from 'src/app/app-enums';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
-import { Observable } from 'rxjs';
+import { CartService } from 'src/app/cs-services/cart.service';
 import { UsersService } from 'src/app/cs-services/users.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { OrdersService } from 'src/app/cs-services/orders.service';
 
 @Component({
   selector: 'app-store-vendors',
@@ -16,6 +18,13 @@ import { UsersService } from 'src/app/cs-services/users.service';
   styleUrls: ['./store-vendors.page.scss'],
 })
 export class StoreVendorsPage implements OnInit {
+  commissionForSale: number = 0;
+  form: FormGroup;
+  billingDate: any;
+  minDate: any;
+  maxDate: any;
+  years: string = "";
+
   user: User;
 
   vendor: Vendor = {
@@ -32,8 +41,10 @@ export class StoreVendorsPage implements OnInit {
     public popoverController: PopoverController,
     public appService: AppService,
     private storesService: StoresService,
+    private orderService: OrdersService,
     private usersService: UsersService,
     public navParams: NavParams,
+    private formBuilder: FormBuilder,
     public alertController: AlertController,
     private loaderComponent: LoaderComponent,
     public router: Router) {
@@ -43,15 +54,40 @@ export class StoreVendorsPage implements OnInit {
       let subs = this.storesService.getVendorsByIdUser(this.appService.currentStore.id, user.id).subscribe(result => {
         result.forEach(vendor => {
           this.vendor = vendor;
+
+          let storeCreated: any = this.vendor.dateCreated;
+          storeCreated = storeCreated.toDate();
+
+          // min date
+          let dd = String(storeCreated.getDay()).padStart(2, '0');
+          let mm = String(storeCreated.getMonth() + 1).padStart(2, '0'); //January is 0!
+          let yyyy = storeCreated.getFullYear();
+          this.minDate = yyyy + '-' + mm + '-' + dd;
+
+          // max date
+          let date = new Date();
+          dd = String(date.getDate()).padStart(2, '0');
+          mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+          yyyy = date.getFullYear();
+          this.maxDate = yyyy + '-' + mm + '-' + dd;
+
         });
-  
+
         subs.unsubscribe();
       });
     });
+
+    this.buildForm();
   }
 
   ngOnInit() {
-    
+
+  }
+
+  private buildForm() {
+    this.form = this.formBuilder.group({
+      billingDate: [this.billingDate, [Validators.required]],
+    });
   }
 
   close() {
@@ -105,6 +141,77 @@ export class StoreVendorsPage implements OnInit {
         this.loaderComponent.stopLoading();
         this.presentAlert("Solicitud enviada exitosamente.", "", () => { });
       });
+    }
+  }
+
+  calculateOrdersTotalByMonth(_month: string) {
+    let month: any = new Date(_month);
+    let endMonth = (new Date(month.setMonth(month.getMonth() + 1)).getMonth().toString() == '0') ? "12" : new Date(month.setMonth(month.getMonth() + 1)).getMonth().toString();
+
+    let startDate = new Date(month.getFullYear().toString() + '/' + new Date(_month).getMonth().toString() + '/01');
+    let endDate = new Date(month.getFullYear().toString() + '/' + endMonth + '/01');
+
+    return new Promise((resolve, reject) => {
+      let subs = this.orderService.getByDateRangeAndIdVendor(this.appService.currentStore.id, this.vendor.idUser, startDate, endDate
+      ).subscribe(result => {
+        let orderCaculatePromises = [];
+
+        result.forEach(order => {
+          orderCaculatePromises.push(this.getOrderTotal(order));
+        });
+
+        Promise.all(orderCaculatePromises).then(totals => {
+          this.commissionForSale = 0;
+          totals.forEach(orderTotal => {
+            this.commissionForSale += orderTotal;
+          });
+
+          resolve(this.commissionForSale);
+        });
+
+        subs.unsubscribe();
+      });
+    }).catch(err => alert(err));
+  }
+
+  getOrderTotal(order: Order) {
+    return new Promise((resolve, reject) => {
+      let subs = this.orderService.getCartProducts(this.appService.currentStore.id, order.id).subscribe(cartProducts => {
+        let subs2 = this.orderService.getOrderCoupons(this.appService.currentStore.id, order.id).subscribe(orderCoupons => {
+
+          let coupon: StoreCoupon;
+          orderCoupons.forEach(_coupon => {
+            coupon = _coupon;
+          });
+
+          let cartService = new CartService(this.appService);
+          cartService.setCart(cartProducts);
+
+          let totalValue = cartService.getTotalDetail(0);
+          let orderResult = totalValue - (coupon ? (totalValue * (coupon.discount / 100)) : 0);
+          resolve(orderResult);
+
+          subs2.unsubscribe;
+        });
+
+        subs.unsubscribe();
+      });
+    }).catch(err => alert(err));
+  }
+
+  generate() {
+    if (this.form.valid) {
+      this.loaderComponent.startLoading("Calculando comision, este proceso podria tardar algunos minutos. por favor espere.");
+      setTimeout(() => {
+        this.billingDate = this.form.value.billingDate;
+        this.calculateOrdersTotalByMonth(this.billingDate).then((result: number) => {
+          
+          this.commissionForSale = result * (this.vendor.commissionForSale / 100);
+          this.loaderComponent.stopLoading();
+        });
+      }, 1000);
+    } else {
+      this.form.markAllAsTouched();
     }
   }
 }

@@ -666,7 +666,7 @@ export class StorePage implements OnInit {
         this.presentAlert("Antes de crear un producto debes tener al menos una Sección o Categroría creada, puedes ir al boton 'Crear Sección o Categroría' para continuar", "", () => { })
       }
     } else {
-      this.presentAlert("Ha llegado al limite máximo de productos en su tienda, Si necesita crear mas productos comuníquese con CopaCity para incrementar la capacidad. Gracias.", "", () => { })
+      this.presentAlert("Has llegado al limite máximo de productos en tu tienda, Si necesitas crear mas productos, comunicate con el administrador de CopaCity para incrementar la capacidad. Gracias.", "", () => { })
     }
   }
 

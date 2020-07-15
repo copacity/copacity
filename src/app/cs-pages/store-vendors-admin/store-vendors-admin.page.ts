@@ -6,6 +6,7 @@ import { UsersService } from 'src/app/cs-services/users.service';
 import { User, Vendor } from 'src/app/app-intefaces';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { VendorStatus } from 'src/app/app-enums';
+import { StoreVendorsPage } from '../store-vendors/store-vendors.page';
 
 @Component({
   selector: 'app-store-vendors-admin',
@@ -36,7 +37,7 @@ export class StoreVendorsAdminPage implements OnInit {
 
       let vendorPromises = [];
       result.forEach(vendor => {
-        vendorPromises.push(this.fillUsers(vendor.idUser, vendor));
+        vendorPromises.push(this.fillUsers(vendor));
       });
 
       Promise.all(vendorPromises).then(vendors => {
@@ -61,6 +62,37 @@ export class StoreVendorsAdminPage implements OnInit {
         this.getVendors();
       });
     });
+  }
+
+  confirmVendor(vendor: any) {
+    let count = 0;
+    this.vendors.forEach((vendor: any) => {
+      if(vendor.vendor.status == VendorStatus.Confirmed){
+        count ++;
+      }
+    });
+
+    if (count < this.appService.currentStore.vendorsLimit) {
+
+    } else {
+      this.presentAlert("Has llegado al limite máximo de vendedores en tu tienda, Si necesitas confirmar mas vendedores, comunicate con el administrador de CopaCity para incrementar la capacidad. Gracias.", "", () => { })
+    }
+  }
+
+  async openVendorDetail(vendor: any) {
+    let modal = await this.popoverController.create({
+      component: StoreVendorsPage,
+      componentProps: { idUser: vendor.vendor.idUser },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
   }
 
   async presentAlert(title: string, message: string, done: Function) {
@@ -119,9 +151,9 @@ export class StoreVendorsAdminPage implements OnInit {
     modal.present();
   }
 
-  fillUsers(idUser: string, vendor: Vendor) {
+  fillUsers(vendor: Vendor) {
     return new Promise((resolve, reject) => {
-      this.usersService.getById(idUser).then(user => {
+      this.usersService.getById(vendor.idUser).then(user => {
         resolve({ user: user, vendor: vendor });
       });
     }).catch(err => alert(err));

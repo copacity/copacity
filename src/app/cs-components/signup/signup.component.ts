@@ -90,7 +90,8 @@ export class SignupComponent implements OnInit {
               deleted: false,
               id: userCredential.user.uid,
               lastUpdated: new Date(),
-              isAdmin: false
+              isAdmin: false,
+              isSuperUser: false
             }
             await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
               this.appService.setuserCredential(userCredential.user.uid);
@@ -168,7 +169,8 @@ export class SignupComponent implements OnInit {
                 deleted: false,
                 id: userCredential.user.uid,
                 lastUpdated: new Date(),
-                isAdmin: false
+                isAdmin: false,
+                isSuperUser: false
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid);
@@ -211,7 +213,8 @@ export class SignupComponent implements OnInit {
                 deleted: false,
                 id: userCredential.user.uid,
                 lastUpdated: new Date(),
-                isAdmin: false
+                isAdmin: false,
+                isSuperUser: false
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid);

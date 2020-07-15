@@ -3,7 +3,7 @@ import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from 
 import { Store, StoreCoupon, PQRSF, ShippingMethod, PlatformFee, Vendor } from '../app-intefaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { StoreStatus } from '../app-enums';
+import { StoreStatus, VendorStatus } from '../app-enums';
 
 @Injectable({
   providedIn: 'root'
@@ -357,6 +357,24 @@ export class StoresService {
     let storesCollection = this.angularFirestore
       .collection<Store>(this.collectionName).doc(idStore)
       .collection("vendors", ref => ref
+        .where('deleted', '==', false));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Vendor;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
+  }
+
+  public getActiveVendors(idStore: string): Observable<Vendor[]> {
+    let storesCollection = this.angularFirestore
+      .collection<Store>(this.collectionName).doc(idStore)
+      .collection("vendors", ref => ref
+        .where('status', '==', VendorStatus.Confirmed)
+        .where('active', '==', true)
         .where('deleted', '==', false));
 
     return storesCollection.snapshotChanges().pipe(

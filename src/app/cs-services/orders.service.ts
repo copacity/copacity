@@ -125,6 +125,28 @@ export class OrdersService {
       })));
   }
 
+  public getByDateRangeAndIdVendor(idStore: string, idVendor: string, startDate: any, endDate: any): Observable<Order[]> {
+    this.ordersCollection;
+    
+    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+      .collection<Order>(this.collectionName, ref => ref
+        .where('deleted', '==', false)
+        .where('status', '==', OrderStatus.Sent)
+        .where('idVendor', '==', idVendor)
+        .where('lastUpdated', '>=', startDate)
+        .where('lastUpdated', '<', endDate)
+        .orderBy('lastUpdated', "desc")
+        );
+
+    return this.ordersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Order;
+        const id = a.payload.doc.id;
+
+        return { id, ...data };
+      })));
+  }
+
   public getByStoreAndUser(idStore: string, idUser: string, searchText: string): Observable<Order[]> {
     this.ordersCollection;
 

@@ -61,9 +61,14 @@
             </td>
             <td>
               <table>
-                <tr *ngIf="vendor.vendor.status != 1">
-                  <td colspan="2" style="text-align: left;padding: 0px 0px 10px 0px;"> <span
-                      style="font-weight: 700;color: black;">{{ vendor.user?.name }}</span>
+                <tr>
+                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
+                    <span style="font-size: 1em;font-weight: 700;"> Vendedor:</span>
+                  </td>
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                    <span style="font-weight: 700;">
+                      {{ vendor.user?.name }}
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -96,12 +101,11 @@
                 </tr>
                 <tr *ngIf="vendor.vendor.status != 1">
                   <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a (click)="presentDeleteVendorPrompt(vendor)" class="icon icon-s icon-round shadow-small">
+                    <a (click)="openVendorDetail(vendor)" class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-chart-pie" style="color: black"></i></a>
                     <a (click)="presentDeleteVendorPrompt(vendor)" class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-trash" style="color: black"></i></a>
-                    <a 
-                      class="icon icon-s icon-round shadow-small">
+                    <a class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-edit" style="color: black"></i></a>
                   </td>
                 </tr>
@@ -109,7 +113,7 @@
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Telefono:</span>
                   </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;vertical-align: top;">
                     <span style="font-size: 1.2em;font-weight: 700;"
                       class="color-highlight">{{ vendor.user.phone1 }}</span>
                   </td>
@@ -118,7 +122,7 @@
                   <td style="text-align: left;padding: 0px 0px 40px 0px;">
                     <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Whatsapp:</span>
                   </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <td colspan="2" style="text-align: right;padding: 0px 0px 40px 0px;vertical-align: top;">
                     <span style="font-size: 1.2em;font-weight: 700;"
                       class="color-highlight">{{ vendor.user.whatsapp }}</span>
                   </td>
@@ -128,14 +132,14 @@
                     <table>
                       <tr>
                         <td style="text-align: left;padding: 2px;">
-                          <a style="color:red;background-color: white;"
+                          <a (click)="presentDeleteVendorPrompt(vendor)" style="color:red;background-color: white;"
                             class="button button-round-small shadow-large button-full button-s">
                             Rechazar</a>
                         </td>
                         <td style="text-align: right;padding: 2px;">
-                          <a style="color:white;background-color: red;"
+                          <a (click)="confirmVendor(vendor)" style="color:white;background-color: red;"
                             class="button button-round-small shadow-large button-full button-s">
-                            Aceptar</a>
+                            Confirmar</a>
                         </td>
                       </tr>
                     </table>

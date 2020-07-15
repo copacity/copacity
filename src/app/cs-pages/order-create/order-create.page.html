@@ -394,12 +394,10 @@
               <ion-list lines="full" class="ion-no-margin ion-no-padding">
                 <ion-item>
                   <ion-label>Selecciona:</ion-label>
-                  <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
+                  <ion-select [formControl]="idVendor" style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
                     interface='action-sheet'>
                     <ion-select-option value="1">Compra Directa a la tienda</ion-select-option>
-                    <ion-select-option value="2">Gloria Valencia</ion-select-option>
-                    <ion-select-option value="4">Mauricio Zapata</ion-select-option>
-                    <ion-select-option value="3">Ana Sofia Zapata Valencia</ion-select-option>
+                    <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
                   </ion-select>
                 </ion-item>
               </ion-list>

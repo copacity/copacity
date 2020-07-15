@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { OrdersService } from 'src/app/cs-services/orders.service';
-import { StoresService } from 'src/app/cs-services/stores.service';
+
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { AppService } from 'src/app/cs-services/app.service';
-import { PlatformFee, Order, StoreCoupon } from 'src/app/app-intefaces';
+import { Order, StoreCoupon } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
 
 @Component({
@@ -50,14 +50,6 @@ export class StoreReportsPage implements OnInit {
     this.maxDate = yyyy + '-' + mm + '-' + dd;
 
     this.buildForm();
-
-    // let subs = this.storesService.getPlatformFess(this.appService.currentStore.id).subscribe(pfArray => {
-    //   pfArray.forEach(pf => {
-    //     this.platformFee = pf;
-    //   });
-
-    //   subs.unsubscribe();
-    // });
   }
 
   ngOnInit() {
