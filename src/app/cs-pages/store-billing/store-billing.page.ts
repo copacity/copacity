@@ -154,14 +154,14 @@ export class StoreBillingPage implements OnInit {
           this.commissionForSale = result * (this.platformFee.commissionForSale / 100);
           this.saving = (this.platformFee.platformUse * (this.platformFee.platformUseDiscount / 100));
 
-          this.vendorsQuantity = this.appService.currentStore.vendorsLimit - 2;
-          this.vendorsPrice = (this.platformFee ? this.platformFee.additionalVendor : 0) * (this.appService.currentStore.vendorsLimit - 2);
+          this.vendorsQuantity = this.appService.currentStore.vendorsLimit - 3;
+          this.vendorsPrice = (this.platformFee ? this.platformFee.additionalVendor : 0) * this.vendorsQuantity;
 
           this.couponsQuantity = this.appService.currentStore.couponsLimit - 5;
-          this.couponsPrice = (this.platformFee ? this.platformFee.additionalCoupon : 0) * (this.appService.currentStore.couponsLimit - 5);
+          this.couponsPrice = (this.platformFee ? this.platformFee.additionalCoupon : 0) * this.couponsQuantity;
 
           this.productsQuantity = this.appService.currentStore.productsLimit - 100;
-          this.productsPrice = (this.platformFee ? this.platformFee.additionalProduct : 0) * (this.appService.currentStore.productsLimit - 100);
+          this.productsPrice = (this.platformFee ? this.platformFee.additionalProduct : 0) * this.productsQuantity;
 
           this.total = this.platformUse + this.vendorsPrice + this.couponsPrice + this.productsPrice + this.commissionForSale;
           this.iva = this.total * (this.appService._appInfo.tax / 100);
