@@ -1,9 +1,48 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>store-vendors-update</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="profile-popover bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;"></div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-<ion-content>
+    <a style="background-color: white; color: black;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Vendedor</a>
 
-</ion-content>
+    <form [formGroup]="form">
+      <div class="content header-clear-small">
+        <ion-list lines="full" class="ion-no-margin ion-no-padding">
+          <ion-item>
+            <ion-label style="color: black;font-size: 15px;font-weight: bold;">{{ vendorName }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label style="color: gray;font-size: 15px;">% Comision:</ion-label>
+            <ion-select formControlName="commissionForSale" mode="ios" interface='action-sheet' style="font-size: 15px;padding-right: 10px;">
+              <ion-select-option value="{{number}}" *ngFor="let number of getNumbers()">{{number}}%
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-checkbox formControlName="active" [checked]="active"></ion-checkbox>
+            <ion-label style="color: gray;font-size: 15px;padding-left: 10px;">Activo
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </form>
+
+    <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+      class="content content-box round-small shadow-large">
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('commissionForSale').errors">
+        <span *ngIf="form.get('commissionForSale').hasError('required')">% Comision es requerido</span>
+      </p>
+    </div>
+
+    <div>
+      <a (click)="confirmVendor()"
+        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+        class="button button-round-small shadow-large button-full button-s">Confirmar</a>
+    </div>
+  </div>
+</div>

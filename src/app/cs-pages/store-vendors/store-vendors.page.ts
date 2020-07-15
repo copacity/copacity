@@ -11,6 +11,7 @@ import { CartService } from 'src/app/cs-services/cart.service';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OrdersService } from 'src/app/cs-services/orders.service';
+import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-store-vendors',
@@ -100,6 +101,24 @@ export class StoreVendorsPage implements OnInit {
       component: ProfileUpdatePage,
       cssClass: 'cs-popovers',
       backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
+  }
+
+  async openImageViewer(img: string) {
+    let images: string[] = [];
+    images.push(img);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
     });
 
     modal.onDidDismiss()

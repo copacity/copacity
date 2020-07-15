@@ -7,6 +7,7 @@ import { User, Vendor } from 'src/app/app-intefaces';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { VendorStatus } from 'src/app/app-enums';
 import { StoreVendorsPage } from '../store-vendors/store-vendors.page';
+import { StoreVendorsUpdatePage } from '../store-vendors-update/store-vendors-update.page';
 
 @Component({
   selector: 'app-store-vendors-admin',
@@ -73,7 +74,7 @@ export class StoreVendorsAdminPage implements OnInit {
     });
 
     if (count < this.appService.currentStore.vendorsLimit) {
-
+      this.openVendorUpdateDetails(vendor);
     } else {
       this.presentAlert("Has llegado al limite máximo de vendedores en tu tienda, Si necesitas confirmar mas vendedores, comunicate con el administrador de CopaCity para incrementar la capacidad. Gracias.", "", () => { })
     }
@@ -90,6 +91,26 @@ export class StoreVendorsAdminPage implements OnInit {
     modal.onDidDismiss()
       .then((data) => {
         const result = data['data'];
+      });
+
+    modal.present();
+  }
+
+  async openVendorUpdateDetails(vendor: any) {
+    let modal = await this.popoverController.create({
+      component: StoreVendorsUpdatePage,
+      componentProps: { vendor: vendor },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if(result){
+          this.getVendors();
+        }
       });
 
     modal.present();

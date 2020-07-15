@@ -47,6 +47,7 @@ import { StoreBillingPageModule } from './cs-pages/store-billing/store-billing.m
 import { StoreVendorsPageModule } from './cs-pages/store-vendors/store-vendors.module';
 import { StoreReportsPageModule } from './cs-pages/store-reports/store-reports.module';
 import { StoreVendorsAdminPageModule } from './cs-pages/store-vendors-admin/store-vendors-admin.module';
+import { StoreVendorsUpdatePageModule } from './cs-pages/store-vendors-update/store-vendors-update.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -97,6 +98,7 @@ import { StoreVendorsAdminPageModule } from './cs-pages/store-vendors-admin/stor
     StoreShippingMethodsCreatePageModule,
     StoreVendorsPageModule,
     StoreVendorsAdminPageModule,
+    StoreVendorsUpdatePageModule,
     StoreReportsPageModule,
     PipesModule
   ],

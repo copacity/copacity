@@ -318,7 +318,7 @@
                   </table>
                 </a>
               </ion-slide>
-              <ion-slide *ngIf="isAdmin" (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
+              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)" (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <table>
@@ -335,7 +335,7 @@
                   </table>
                 </a>
               </ion-slide>
-              <ion-slide *ngIf="isAdmin" (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
+              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)" (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
                   <table>
@@ -484,7 +484,7 @@
                         </td>
                       </tr>
                       <tr *ngIf="!isAdmin">
-                        <td>
+                        <td style="text-align: center;">
                           <a (click)="addToCart($event, product)" style="background-color: red;color:white;"
                             class="button button-round-small shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
                             <i class="fa fa-shopping-cart add-button"
