@@ -13,14 +13,6 @@
     <div class="content" style="margin: 0px 0px 0px 0px;">
       <div class="top-40">
         <table>
-          <!-- <tr *ngIf="isAdmin">
-            <td colspan="2" style="text-align: right;">
-              <a (click)="openStoreCouponsCreatePage()" *ngIf="isAdmin"
-                style="text-align: end;background-color: red;margin-bottom: 0px;"
-                class="button button-round-small button-s">+ Cupón</a>
-            </td>
-          </tr> -->
-
           <tr *ngIf="searchingVendors">
             <td colspan="2" style="text-align: center;">
               <div>
@@ -111,7 +103,7 @@
                 </tr>
                 <tr *ngIf="vendor.vendor.status == 1">
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Telefono:</span>
+                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Teléfono:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;vertical-align: top;">
                     <span style="font-size: 1.2em;font-weight: 700;"
@@ -151,111 +143,5 @@
         </table>
       </div>
     </div>
-
-    <!-- <div id="page" *ngIf="billingDate">
-        <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-          <div class="top-30 bottom-30">
-            <h4 class="bold color-highlight">Factura {{ billingDate | date: 'MM/yyyy' }} <span
-                style="color:red">(Pendiente de pago)</span></h4>
-            <div class="container top-20">
-              <table class="table-borders" style="font-size: 18px;">
-                <tr>
-                  <th style="text-align: left; padding-left: 5px;"></th>
-                  <th style="text-align: right;">V/U</th>
-                  <th style="text-align: right;" style="width: 20px;">#</th>
-                  <th style="text-align: right;">Total</th>
-                </tr>
-                <tr>
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Uso de la Plataforma <small *ngIf="platformFee?.platformUseDiscount > 0"
-                      style="color: black; background-color: yellow;">(-{{ platformFee?.platformUseDiscount }}%)</small>
-                  </td>
-                  <td style="text-align: left; vertical-align: top">
-                    {{ this.platformFee.platformUse | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="text-align: left; vertical-align: top">1</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ platformUse | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-                <tr *ngIf="commissionForSale && commissionForSale != 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Comision por ventas <small
-                      style="background-color: yellow;">({{ platformFee?.commissionForSale  }}%)</small>
-                  </td>
-                  <td style="text-align: left; vertical-align: top">
-                    {{ sales | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="text-align: left; vertical-align: top">1</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ commissionForSale | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-                <tr *ngIf="vendorsQuantity!= 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Vendedor Adicional
-                  </td>
-                  <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ platformFee?.additionalVendor | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="vertical-align: top">{{ vendorsQuantity }}</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ vendorsPrice | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-                <tr *ngIf="couponsQuantity!= 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Cupon Adicional
-                  </td>
-                  <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ platformFee?.additionalCoupon | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="vertical-align: top">{{ couponsQuantity }}</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ couponsPrice | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-                <tr *ngIf="productsQuantity!= 0">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    Producto Adicional en Vitrina
-                  </td>
-                  <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ platformFee?.additionalProduct | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                  <td style="vertical-align: top">{{ productsQuantity }}</td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ productsPrice | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-              </table>
-              <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
-                <div class="store-cart-total">
-                  <strong class="color-highlight">Ahorro</strong>
-                  <span class="color-highlight">
-                    {{ saving | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
-                <div class="store-cart-total">
-                  <strong style="color: red;">IVA <small>(Incluido)</small></strong>
-                  <span>
-                    {{ iva | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
-                <div style="background-color: red;" class="divider opacity-350"></div>
-                <div class="store-cart-total bottom-20" style="font-size: 25px;">
-                  <strong class="uppercase bold">Total</strong>
-                  <span class="uppercase bold">
-                    {{ total | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div> -->
   </div>
 </div>

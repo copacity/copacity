@@ -67,7 +67,7 @@ export class AppService {
 
     try {
       if (Notification.permission === 'denied') {
-        this.presentAlert("Su configuracion de notificaciones aparece como Bloqueada, Si desea recibir notificaciones debe habilitarla desde la configuracion de su navegador/dispositivo", "", () => { });
+        this.presentAlert("Su configuración de notificaciones aparece como Bloqueada, Si desea recibir notificaciones debe habilitarla desde la configuración de su navegador/dispositivo", "", () => { });
       }
     } catch (error) {
       console.log(error);

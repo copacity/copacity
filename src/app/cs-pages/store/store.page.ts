@@ -204,8 +204,8 @@ export class StorePage implements OnInit {
 
 
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesion?", () => {
-      this.loaderComponent.startLoading("Cerrando Sesion, por favor espere un momento...")
+    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();
         this.popoverController.dismiss();
@@ -447,7 +447,7 @@ export class StorePage implements OnInit {
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
-      text: 'Hola ingresa a copacity.net donde podrás ver nuestras tiendas con variedad de productos para ti, promociones, cupones con descuentos, tambien puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
+      text: 'Hola ingresa a copacity.net donde podrás ver nuestras tiendas con variedad de productos para ti, promociones, cupones con descuentos, también puedes acumular puntos y obtener regalos, todo te lo llevamos hasta la puerta de tu casa!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);
@@ -661,7 +661,7 @@ export class StorePage implements OnInit {
 
         modal.present();
       } else {
-        this.presentAlert("Antes de crear un producto debes tener al menos una Sección o Categroría creada, puedes ir al boton 'Crear Sección o Categroría' para continuar", "", () => { })
+        this.presentAlert("Antes de crear un producto debes tener al menos una Sección o Categroría creada, puedes ir al botón 'Crear Sección o Categroría' para continuar", "", () => { })
       }
     } else {
       this.presentAlert("Has llegado al limite máximo de productos en tu tienda, Si necesitas crear mas productos, comunicate con el administrador de CopaCity para incrementar la capacidad. Gracias.", "", () => { })
@@ -758,7 +758,7 @@ export class StorePage implements OnInit {
 
   sendToPublish() {
 
-    this.loaderComponent.startLoading("Enviando tienda para revision. por favor espere un momento...");
+    this.loaderComponent.startLoading("Enviando tienda para revisión. por favor espere un momento...");
     setTimeout(() => {
       this.storesService.update(this.store.id, { status: StoreStatus.Pending }).then(result => {
         this.storesService.getById(this.store.id).then(result => {

@@ -144,7 +144,7 @@ export class StoreBillingPage implements OnInit {
 
   generate() {
     if (this.form.valid) {
-      this.loaderComponent.startLoading("Generando Factura, este proceso podria tardar algunos minutos. por favor espere.");
+      this.loaderComponent.startLoading("Generando Factura, este proceso podría tardar algunos minutos. por favor espere.");
       setTimeout(() => {
         this.billingDate = this.form.value.billingDate;
         this.calculateOrdersTotalByMonth(this.billingDate).then((result: number) => {

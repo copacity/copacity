@@ -121,7 +121,7 @@
         *ngIf="((cartService.getTotal() < appService.currentStore.orderMinAmount?appService.currentStore.orderMinAmount:0 || cartService.getTotal() == 0) && !cartService.hasGifts())">
         <h2 class="bold top-10" style="color: red;">Recuerda!</h2>
         <p class="bottom-10" style="font-size: 16px;color: red;">
-          El valor minimo para hacer un pedido en <b>{{appService.currentStore.name}}</b> es de
+          El valor mínimo para hacer un pedido en <b>{{appService.currentStore.name}}</b> es de
           <b>{{ appService.currentStore.orderMinAmount | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
         </p>
         <p *ngIf="cart.length==0" class="bottom-10" style="font-size: 16px;color:red">

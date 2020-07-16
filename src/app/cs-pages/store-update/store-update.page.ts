@@ -145,10 +145,10 @@ export class StoreUpdatePage implements OnInit {
   }
 
   shippingMethodDelete(shippingMethod: ShippingMethod) {
-    this.presentConfirm('Esta seguro que desea eliminar el metodo de envio: ' + shippingMethod.name + '?', () => {
+    this.presentConfirm('Esta seguro que desea eliminar el metodo de envío: ' + shippingMethod.name + '?', () => {
       this.storesService.updateShippingMethod(this.appService.currentStore.id, shippingMethod.id, { deleted: true }).then(doc => {
         this.loader.stopLoading();
-        this.presentAlert("Metodo de envio eliminado exitosamente", "", () => { });
+        this.presentAlert("Metodo de envío eliminado exitosamente", "", () => { });
       });
     });
   }

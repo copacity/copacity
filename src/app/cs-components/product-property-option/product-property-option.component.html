@@ -30,11 +30,11 @@
       class="content content-box round-small shadow-large">
       <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
         <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-        <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 50
+        <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
           caracteres</span>
       </p>
       <p style="color: red;font-size: 1.3em;" *ngIf="form.get('price').errors">
-        <span *ngIf="form.get('price').hasError('max')">Valor Adicional debe ser maximo de 10
+        <span *ngIf="form.get('price').hasError('max')">Valor Adicional debe ser máximo de 10
           caracteres</span>
       </p>
     </div>

@@ -14,12 +14,12 @@
       style="margin: 0px 0px 0px 0px;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <span style="color: black;margin-bottom: 0px;line-height: 15px;font-size: 1.2em;">
-          Si deseas trabajar con nosotros y ganar comision por ventas, debes dar click al boton <b>"QUIERO SER
+          Si deseas trabajar con nosotros y ganar comisión por ventas, debes dar click al botón <b>"QUIERO SER
             VENDEDOR"</b>
-          y comunicarte con nosotros para negociar los porcentajes. En la opcion <b>"CONTACTO"</b> de la pagina
+          y comunicarte con nosotros para negociar los porcentajes. En la opción <b>"CONTACTO"</b> de la página
           principal
-          podrás ver nuestros numeros de telefono, whatsapp o facebook. Gracias. Recuerda actualizar tus datos. <a
-            (click)="openProfileUpdatePage()">Actualizar Datos Aqui!</a>
+          podrás ver nuestros números de teléfono, whatsapp o facebook. Gracias. Recuerda actualizar tus datos. <a
+            (click)="openProfileUpdatePage()">Actualizar Datos Aquí!</a>
         </span>
       </div>
     </div>
@@ -33,7 +33,7 @@
 
         <div (click)="sendToRevission()" *ngIf="vendor.id && vendor.status == 1"
           style="text-align: center;color: red;font-size: 1.2em;padding-bottom: 20px;">
-          Solicitud enviada y pendiente de revision.
+          Solicitud enviada y pendiente de revisión.
         </div>
       </div>
     </div>
@@ -122,14 +122,14 @@
         <div>
           <a (click)="generate()"
             style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small shadow-large button-full button-s">Calcular comision</a>
+            class="button button-round-small shadow-large button-full button-s">Calcular Comisión</a>
         </div>
       </div>
 
       <div id="page" *ngIf="billingDate">
         <div class="content" style="margin: 0px 0px 0px 0px;">
           <div class="bottom-30">
-            <h4 class="bold color-highlight">Comision {{ billingDate | date: 'MM/yyyy' }}</h4>
+            <h4 class="bold color-highlight">Comisión {{ billingDate | date: 'MM/yyyy' }}</h4>
             <div class="container top-20">
               <table class="table-borders" style="font-size: 18px;">
                 <tr>

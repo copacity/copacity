@@ -104,7 +104,7 @@ export class NotificationsHistoryPage implements OnInit {
   //--------------------------------    Share APP
 
   async openCopyToClipBoard(e) {
-    let text = 'Hola! Somos copacity.net, tu Centro Comercial Virtual, aquí podrás ver nuestras tiendas con una gran variedad de productos para tí, promociones, cupones con descuentos, tambien podrás acumular puntos y obtener regalos, y lo mejor!, todo te lo llevamos hasta la puerta de tu casa! ' + this.appService._appInfo.domain;
+    let text = 'Hola! Somos copacity.net, tu Centro Comercial Virtual, aquí podrás ver nuestras tiendas con una gran variedad de productos para tí, promociones, cupones con descuentos, también podrás acumular puntos y obtener regalos! ' + this.appService._appInfo.domain;
 
     let modal = await this.popoverController.create({
       component: CopyToClipboardComponent,
@@ -132,8 +132,8 @@ export class NotificationsHistoryPage implements OnInit {
 
 
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesion?", () => {
-      this.loaderComponent.startLoading("Cerrando Sesion, por favor espere un momento...")
+    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();
         this.popoverController.dismiss();
@@ -195,7 +195,7 @@ export class NotificationsHistoryPage implements OnInit {
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
-      text: 'Hola! Somos copacity.net, tu Centro Comercial Virtual, aquí podrás ver nuestras tiendas con una gran variedad de productos para tí, promociones, cupones con descuentos, tambien podrás acumular puntos y obtener regalos, y lo mejor!, todo te lo llevamos hasta la puerta de tu casa!',
+      text: 'Hola! Somos copacity.net, tu Centro Comercial Virtual, aquí podrás ver nuestras tiendas con una gran variedad de productos para tí, promociones, cupones con descuentos, también podrás acumular puntos y obtener regalos!',
       url: this.appService._appInfo.domain
     }).then((response) => {
       console.log(response);

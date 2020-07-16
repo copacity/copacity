@@ -38,7 +38,7 @@ export class AddressListPage implements OnInit {
 
   deleteAddress(address: Address) {
      
-    this.presentConfirm('Esta seguro que desea eliminar esta direccion?', () => {
+    this.presentConfirm('Esta seguro que desea eliminar esta dirección?', () => {
       this.addressesService.update(this.appService.currentUser.id, address.id, { deleted: true, checked: false }).then(() => {
         this.appService.addressCount --;
 
@@ -46,7 +46,7 @@ export class AddressListPage implements OnInit {
           this.appService.addressChecked = null;
         }
 
-        this.presentAlert("Direccion eliminada exitosamente!", '', () => { });
+        this.presentAlert("Dirección eliminada exitosamente!", '', () => { });
       });
     });
   }

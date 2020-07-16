@@ -62,7 +62,7 @@ export class StoreInformationComponent implements OnInit {
 
   sendToPublish() {
 
-    this.loaderComponent.startLoading("Enviando Tienda para revision. por favor espere un momento...");
+    this.loaderComponent.startLoading("Enviando Tienda para revisión. por favor espere un momento...");
     setTimeout(() => {
       this.storesService.update(this.store.id, { status: StoreStatus.Pending }).then(result => {
         this.storesService.getById(this.store.id).then(result => {

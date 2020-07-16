@@ -45,7 +45,7 @@
       <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
         <a (click)="SignIn()"
           style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small button-full button-s">INICIAR SESION</a>
+          class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
       </div>
     </ion-header>
 
@@ -74,7 +74,7 @@
         </ion-item> -->
         <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
           <i class="fa fa-sign-out-alt"></i>
-          <ion-label style="padding-left:10px">Cerrar Sesion</ion-label>
+          <ion-label style="padding-left:10px">Cerrar Sesión</ion-label>
         </ion-item>
       </ion-list>
       <ion-toolbar style="padding-top: 30px;">
@@ -98,7 +98,7 @@
             <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
                 class="fa fa-share-alt"></i></a>
           </div>
-          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Version</b>
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
             {{ appService.appVersion }}
           </p>
           <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
@@ -230,7 +230,7 @@
                         entrega de <b>{{ shippingMethod?.limitDays }} dias</b> a partir de la fecha en que se realizo el
                         pedido.
                         {{ shippingMethod?.description }}.
-                        <span *ngIf="shippingMethod?.addressRequired"> Por favor ingrese la direccion de entrega:</span>
+                        <span *ngIf="shippingMethod?.addressRequired"> Por favor ingrese la dirección de entrega:</span>
                       </p>
                     </div>
                   </div>
@@ -249,7 +249,7 @@
                 <strong *ngIf="!appService.addressChecked"
                   style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
                   favor seleccione una
-                  direccion!</strong>
+                  dirección!</strong>
               </div>
             </div>
           </div>
@@ -428,7 +428,7 @@
                   <div>
                     <p style="color: red;font-size: 1.3em;" *ngIf="messageToStore.errors">
                       <span style="padding-left: 20px;color: red;" *ngIf="messageToStore.hasError('maxlength')">El
-                        mensaje debe ser maximo de 500
+                        mensaje debe ser máximo de 500
                         caracteres</span>
                     </p>
                   </div>

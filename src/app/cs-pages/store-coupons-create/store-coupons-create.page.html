@@ -36,7 +36,7 @@
             </ion-label>
           </ion-item>
           <ion-item>
-            <ion-label>Valido Hasta</ion-label>
+            <ion-label>Válido Hasta</ion-label>
             <ion-datetime formControlName="dateExpiration"
             mode="ios" 
             value="{{ editDate }}" 
@@ -63,11 +63,11 @@
       class="content content-box round-small shadow-large">
       <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
         <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-        <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 50
+        <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
           caracteres</span>
       </p>
       <p style="color: red;font-size: 1.3em;" *ngIf="form.get('minAmount').errors">
-        <span *ngIf="form.get('minAmount').hasError('required')">Valor minimo de compra es requerido</span>
+        <span *ngIf="form.get('minAmount').hasError('required')">Valor mínimo de compra es requerido</span>
       </p>
       <p style="color: red;font-size: 1.3em;" *ngIf="form.get('discount').errors">
         <span *ngIf="form.get('discount').hasError('required')">Descuento es requerido</span>

@@ -20,7 +20,7 @@
             <ion-input formControlName="name"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label style="color: gray;">Categoria: <b style="color: red;">(*)</b></ion-label>
+            <ion-label style="color: gray;">Categoría: <b style="color: red;">(*)</b></ion-label>
             <ion-select formControlName="category" cancelText="Cancelar" mode='ios'
               style="padding-right: 10px;padding-right: 10px;" okText="Okay!" interface='action-sheet'>
               <ion-select-option *ngFor="let storeCategory of storeCategories | async;" value="{{storeCategory.id}}">
@@ -52,7 +52,7 @@
             </ion-select>
           </ion-item> -->
           <ion-item>
-            <ion-label position="floating" style="color: gray;">Direccion</ion-label>
+            <ion-label position="floating" style="color: gray;">Dirección</ion-label>
             <ion-input formControlName="address"></ion-input>
           </ion-item>
           <ion-item>
@@ -66,32 +66,32 @@
           class="content content-box round-small shadow-large">
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
             <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-            <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 50 caracteres</span>
+            <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50 caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
-            <span *ngIf="form.get('category').hasError('required')">Categoria es requerido</span>
+            <span *ngIf="form.get('category').hasError('required')">Categoría es requerido</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone1').errors">
             <span *ngIf="form.get('phone1').hasError('required')">Tel 1 es requerido</span>
-            <span *ngIf="form.get('phone1').hasError('max')">Tel 1 debe ser maximo de 15 caracteres</span>
+            <span *ngIf="form.get('phone1').hasError('max')">Tel 1 debe ser máximo de 15 caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone2').errors">
-            <span *ngIf="form.get('phone2').hasError('max')">Tel 2 debe ser maximo de 15 caracteres</span>
+            <span *ngIf="form.get('phone2').hasError('max')">Tel 2 debe ser máximo de 15 caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('whatsapp').errors">
-            <span *ngIf="form.get('whatssapp').hasError('max')">Whatsapp debe ser maximo de 15 caracteres</span>
+            <span *ngIf="form.get('whatssapp').hasError('max')">Whatsapp debe ser máximo de 15 caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('facebook').errors">
-            <span *ngIf="form.get('facebook').hasError('maxlength')">Facebook debe ser maximo de 250 caracteres</span>
+            <span *ngIf="form.get('facebook').hasError('maxlength')">Facebook debe ser máximo de 250 caracteres</span>
           </p>
           <!-- <p style="color: red;font-size: 1.3em;" *ngIf="form.get('sector').errors">
             <span *ngIf="form.get('sector').hasError('required')">Sector es requerido</span>
           </p> -->
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('address').errors">
-            <span *ngIf="form.get('address').hasError('maxlength')">Direccion debe ser maximo de 250 caracteres</span>
+            <span *ngIf="form.get('address').hasError('maxlength')">Dirección debe ser máximo de 250 caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
-            <span *ngIf="form.get('description').hasError('maxlength')">Descripcion debe ser maximo de 500
+            <span *ngIf="form.get('description').hasError('maxlength')">Descripción debe ser máximo de 500
               caracteres</span>
           </p>
         </div>

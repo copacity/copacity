@@ -46,7 +46,7 @@
       <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
         <a (click)="SignIn()"
             style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small button-full button-s">INICIAR SESION</a>
+            class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
       </div>
     </ion-header>
 
@@ -75,7 +75,7 @@
         </ion-item> -->
         <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
           <i class="fa fa-sign-out-alt"></i>
-          <ion-label style="padding-left:10px">Cerrar Sesion</ion-label>
+          <ion-label style="padding-left:10px">Cerrar Sesión</ion-label>
         </ion-item>
       </ion-list>
       <ion-toolbar style="padding-top: 30px;">
@@ -99,7 +99,7 @@
             <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
                 class="fa fa-share-alt"></i></a>
           </div>
-          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Version</b>
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
             {{ appService.appVersion }}
           </p>
           <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
@@ -210,7 +210,7 @@
                         </p>
                         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('message').errors">
                           <span *ngIf="form.get('message').hasError('required')">Mensaje es requerido</span>
-                          <span *ngIf="form.get('message').hasError('maxlength')">Mensaje debe ser maximo de 500
+                          <span *ngIf="form.get('message').hasError('maxlength')">Mensaje debe ser máximo de 500
                             caracteres</span>
                         </p>
                       </div>

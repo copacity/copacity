@@ -135,7 +135,7 @@ export class SigninComponent implements OnInit {
       this.angularFirestore.collection('users').doc(userCredential.user.uid).get().toPromise().then((result) => {
         if (result.exists) {
           this.appService.setuserCredential(userCredential.user.uid);
-          this.presentToast("Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+          this.presentToast("Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
           this.popoverController.dismiss();
           this.loaderComponent.stopLoading();
         }
@@ -170,7 +170,7 @@ export class SigninComponent implements OnInit {
             if (result.exists) {
               this.appService.setuserCredential(userCredential.user.uid);
               this.popoverController.dismiss();
-              this.presentToast("Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+              this.presentToast("Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
               this.loaderComponent.stopLoading();
             }
             else {
@@ -191,7 +191,7 @@ export class SigninComponent implements OnInit {
 
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid);
-                this.presentToast("Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+                this.presentToast("Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
                 this.popoverController.dismiss();
                 this.loaderComponent.stopLoading();
               })
@@ -225,7 +225,7 @@ export class SigninComponent implements OnInit {
             if (result.exists) {
               this.appService.setuserCredential(userCredential.user.uid);
               this.popoverController.dismiss();
-              this.presentToast("Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+              this.presentToast("Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
               this.loaderComponent.stopLoading();
             }
             else {
@@ -246,7 +246,7 @@ export class SigninComponent implements OnInit {
 
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid);
-                this.presentToast("Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+                this.presentToast("Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
                 this.popoverController.dismiss();
                 this.loaderComponent.stopLoading();
               })

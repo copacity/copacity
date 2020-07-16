@@ -99,7 +99,7 @@ export class StoreCouponsPage implements OnInit {
   async presentDeleteProductPrompt(storeCoupon: StoreCoupon) {
     this.presentConfirm('Esta seguro que desea eliminar el cupón: ' + storeCoupon.name + '?', () => {
       this.storesService.updateStoreCoupon(this.appService.currentStore.id, storeCoupon.id, { deleted: true }).then(() => {
-        this.presentAlert("Cupom eliminado exitosamente!", '', () => { });
+        this.presentAlert("Cupon eliminado exitosamente!", '', () => { });
       });
     });
   }
@@ -155,7 +155,7 @@ export class StoreCouponsPage implements OnInit {
 
       modal.present();
     } else {
-      this.presentAlert("Has llegado al limite maximo de cupones permitidos, si deseas incrementar la cuota de cupones en tu tienda, debes comunicarte con los administradores del sitio. Gracias", "", () => { });
+      this.presentAlert("Has llegado al limite máximo de cupones permitidos, si deseas incrementar la cuota de cupones en tu tienda, debes comunicarte con los administradores del sitio. Gracias", "", () => { });
     }
   }
 

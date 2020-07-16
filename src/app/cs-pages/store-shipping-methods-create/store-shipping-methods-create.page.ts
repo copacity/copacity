@@ -84,7 +84,7 @@ export class StoreShippingMethodsCreatePage implements OnInit {
 
   saveChanges() {
     if (this.form.valid) {
-      this.loader.startLoading("Procesando metodo de envio, por favor espere un momento...");
+      this.loader.startLoading("Procesando metodo de envío, por favor espere un momento...");
 
       setTimeout(() => {
         this.shippingMethod.name = this.form.value.name;
@@ -97,14 +97,14 @@ export class StoreShippingMethodsCreatePage implements OnInit {
         if (this.shippingMethod.id) {
           this.storesService.updateShippingMethod(this.appService.currentStore.id, this.shippingMethod.id, this.shippingMethod).then(doc => {
             this.loader.stopLoading();
-            this.presentAlert("Metodo de envio actualizado exitosamente", "", () => { });
+            this.presentAlert("Metodo de envío actualizado exitosamente", "", () => { });
             this.popoverController.dismiss();
           });
         } else {
           this.storesService.createShippingMethod(this.appService.currentStore.id, this.shippingMethod).then(doc => {
             this.storesService.updateShippingMethod(this.appService.currentStore.id, doc.id, { id: doc.id }).then(doc => {
               this.loader.stopLoading();
-              this.presentAlert("Metodo de envio creado exitosamente", "", () => { });
+              this.presentAlert("Metodo de envío creado exitosamente", "", () => { });
               this.popoverController.dismiss();
             });
           });

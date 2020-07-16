@@ -166,7 +166,7 @@ export class StoreVendorsPage implements OnInit {
   }
 
   sendToRevission() {
-    this.loaderComponent.startLoading("Enviando Solicitud para revision. Gracias");
+    this.loaderComponent.startLoading("Enviando Solicitud para revisión. Gracias");
 
     if (this.vendor.id) {
       this.storesService.updateVendor(this.appService.currentStore.id, this.vendor.id, { status: VendorStatus.Pending }).then(doc => {
@@ -242,7 +242,7 @@ export class StoreVendorsPage implements OnInit {
 
   generate() {
     if (this.form.valid) {
-      this.loaderComponent.startLoading("Calculando comision, este proceso podria tardar algunos minutos. por favor espere.");
+      this.loaderComponent.startLoading("Calculando comisión, este proceso podría tardar algunos minutos. por favor espere.");
       setTimeout(() => {
         this.billingDate = this.form.value.billingDate;
         this.calculateOrdersTotalByMonth(this.billingDate).then((result: number) => {

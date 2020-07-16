@@ -95,7 +95,7 @@
                 </ion-select>
               </ion-item>
               <ion-item style="padding-bottom: 20px;">
-                <ion-label position="floating" style="color: gray;">Descripcion <small style="color: gray;">
+                <ion-label position="floating" style="color: gray;">Descripción <small style="color: gray;">
                     ({{this.form.get('description').value.length}}/500)</small></ion-label>
                 <ion-textarea formControlName="description" style="font-size: 15px;"></ion-textarea>
               </ion-item>
@@ -107,7 +107,7 @@
           style="border: solid 1px rgba(0,0,0,0.08);">
           <tr>
             <td colspan="2" style="text-align: left;">
-              <h4 class="bold" style="color: black;margin-top: 0px;">Caracteristicas</h4>
+              <h4 class="bold" style="color: black;margin-top: 0px;">Características</h4>
             </td>
             <td style="text-align: -webkit-right;padding-right: 5px;">
               <a (click)="openProductProperty($event)" class="button button-round-small button-xs button-full"
@@ -116,7 +116,7 @@
           </tr>
           <tr *ngIf="productProperties.length == 0">
             <td colspan="3">
-              <span style="color: red;font-size: 1.3em;">No hay caracteristicas agregadas</span>
+              <span style="color: red;font-size: 1.3em;">No hay características agregadas</span>
             </td>
           </tr>
 
@@ -150,7 +150,7 @@
           class="content content-box round-small shadow-large">
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
             <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-            <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser maximo de 50
+            <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
               caracteres</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
@@ -160,8 +160,8 @@
             <span *ngIf="form.get('price').hasError('required')">{{ (!isGift)?'Producto':'Regalo' }} es requerido</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
-            <span *ngIf="form.get('description').hasError('required')">Descripcion es requerido</span>
-            <span *ngIf="form.get('description').hasError('maxlength')">Descripcion debe ser maximo de 500
+            <span *ngIf="form.get('description').hasError('required')">Descripción es requerido</span>
+            <span *ngIf="form.get('description').hasError('maxlength')">Descripción debe ser máximo de 500
               caracteres</span>
           </p>
         </div>

@@ -93,7 +93,7 @@ export class AddressCreatePage implements OnInit {
         if (this.address.id != '') {
           this.addressesService.update(this.appService.currentUser.id, this.address.id, this.address).then(() => {
             this.loader.stopLoading();
-            this.presentAlert("Direccion actualizada exitosamente", "", () => {
+            this.presentAlert("Dirección actualizada exitosamente", "", () => {
               this.popoverCtrl.dismiss();
             });
           });
@@ -101,7 +101,7 @@ export class AddressCreatePage implements OnInit {
           this.addressesService.create(this.appService.currentUser.id, this.address).then(async (doc) => {
             this.addressesService.update(this.appService.currentUser.id, doc.id, { id: doc.id }).then(() => {
               this.loader.stopLoading();
-              this.presentAlert("Direccion creada exitosamente", "", () => {
+              this.presentAlert("Dirección creada exitosamente", "", () => {
                 this.popoverCtrl.dismiss(doc.id);
               });
             });

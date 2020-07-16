@@ -35,8 +35,8 @@ export class MenuUserComponent implements OnInit {
   }
 
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesion?", () => {
-      this.loaderComponent.startLoading("Cerrando Sesion, por favor espere un momento...")
+    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();
         this.popoverController.dismiss();

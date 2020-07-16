@@ -95,7 +95,7 @@ export class SignupComponent implements OnInit {
             }
             await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
               this.appService.setuserCredential(userCredential.user.uid);
-              this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+              this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
               this.popoverController.dismiss(true);
               this.loaderComponent.stopLoading();
             })
@@ -174,7 +174,7 @@ export class SignupComponent implements OnInit {
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid);
-                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
                 this.popoverController.dismiss(true);
                 this.loaderComponent.stopLoading();
               })
@@ -218,7 +218,7 @@ export class SignupComponent implements OnInit {
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid);
-                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, telefonos y whatsapp en tu perfil de usuario", "light");
+                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
                 this.popoverController.dismiss(true);
                 this.loaderComponent.stopLoading();
               })
