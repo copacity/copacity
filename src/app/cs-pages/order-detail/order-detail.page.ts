@@ -30,6 +30,7 @@ export class OrderDetailPage implements OnInit {
   addresses: Observable<Address[]>;
   total: number;
   discount: number;
+  vendorName: string;
   user: User;
 
   constructor(private popoverCtrl: PopoverController,
@@ -84,6 +85,14 @@ export class OrderDetailPage implements OnInit {
         this.cartProducts.subscribe((cartP) => {
           this.cartService.setCart(cartP);
         });
+
+        if (this.order.idVendor == "1") {
+          this.vendorName = "Compra directa sin asesor";
+        } else {
+          this.usersService.getById(this.order.idVendor).then((_user: User) => {
+            this.vendorName = _user.name;
+          });
+        }
       });
     });
   }
@@ -280,7 +289,8 @@ export class OrderDetailPage implements OnInit {
   addPoints() {
     return new Promise((resolve, reject) => {
       let total = this.cartService.getTotalDetail(this.store.deliveryPrice);
-      let points = total / 500;
+
+      let points = (this.storeCoupon ? (total * this.storeCoupon.discount / 100) : total) / 500;
 
       let subscribe = this.usersService.getStorePoints(this.user.id).subscribe(StorePoints => {
         let hasStorepoints: boolean = false;

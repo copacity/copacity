@@ -50,6 +50,7 @@ export class StoreVendorsPage implements OnInit {
     private loaderComponent: LoaderComponent,
     public router: Router) {
 
+      this.loaderComponent.startLoading("Cargando...");
     this.usersService.getById(this.navParams.data.idUser).then((user: User) => {
       this.user = user;
       let subs = this.storesService.getVendorsByIdUser(this.appService.currentStore.id, user.id).subscribe(result => {
@@ -74,6 +75,7 @@ export class StoreVendorsPage implements OnInit {
 
         });
 
+        this.loaderComponent.stopLoading();
         subs.unsubscribe();
       });
     });

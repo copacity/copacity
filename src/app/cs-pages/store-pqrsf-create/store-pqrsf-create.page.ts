@@ -17,6 +17,8 @@ export class StorePqrsfCreatePage implements OnInit {
     idUser: '',
     userName: '',
     userPhotoUrl: '',
+    userEmail: '',
+    userPhone: '',
     idStore: '',
     idType: '',
     message: '',
@@ -73,6 +75,8 @@ export class StorePqrsfCreatePage implements OnInit {
         this.pqrsf.idUser = this.appService.currentUser.id;
         this.pqrsf.userName = this.appService.currentUser.name;
         this.pqrsf.userPhotoUrl = this.appService.currentUser.photoUrl;
+        this.pqrsf.userEmail = this.appService.currentUser.email;
+        this.pqrsf.userPhone = this.appService.currentUser.phone1.toString();
         this.pqrsf.idStore = this.appService.currentStore.id;
         this.pqrsf.idType = this.form.value.idType;
         this.pqrsf.message = this.form.value.message;

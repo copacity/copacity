@@ -11,7 +11,7 @@ export class OrderStatusNamePipe implements PipeTransform {
         return 'Pendiente'
       }
       case OrderStatus.Sent: {
-        return 'Enviado'
+        return 'Confirmado'
       }
       case OrderStatus.Cancelled: {
         return 'Rechazado'

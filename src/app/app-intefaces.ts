@@ -32,6 +32,8 @@ export interface PQRSF {
   idUser: string;
   userName: string;
   userPhotoUrl: string;
+  userEmail: string;
+  userPhone: string;
   idStore: string;
   idType: string;
   message: string;

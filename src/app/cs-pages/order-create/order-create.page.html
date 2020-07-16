@@ -396,7 +396,7 @@
                   <ion-label>Selecciona:</ion-label>
                   <ion-select [formControl]="idVendor" style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
                     interface='action-sheet'>
-                    <ion-select-option value="1">Compra Directa a la tienda</ion-select-option>
+                    <ion-select-option value="1">Compra directa sin asesor</ion-select-option>
                     <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
                   </ion-select>
                 </ion-item>

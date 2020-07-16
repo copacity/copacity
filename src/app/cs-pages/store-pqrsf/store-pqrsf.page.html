@@ -63,15 +63,15 @@
                       class="shadow-large"
                       src="{{pqrsf?.userPhotoUrl?pqrsf?.userPhotoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
                     <h4 class="color-theme">{{ pqrsf?.userName }}</h4>
-                    <span>{{pqrsf?.dateCreated.toDate() | date:'MMM d, h:mm a' }}</span>
+                    <h4 style="padding-top: 0px;margin-top: 0px;">{{pqrsf?.dateCreated.toDate() | date:'MMM d/yyyy' }}</h4>
                   </div>
                   <div>
                     <h4 
                       class="bolder font-15 {{ (pqrsf?.idType == 2 || pqrsf?.idType == 3)?'color-red1-light':pqrsf?.idType == 5?'color-green1-light':(pqrsf?.idType == 1 || pqrsf?.idType == 4)?'color-dark2-dark':'' }}">
                       {{ pqrsf.idType | storePqrsfType }}
                     </h4>
-                    <p class="under-heading font-12 bold top-15 {{ (pqrsf?.idType == 2 || pqrsf?.idType == 3)?'color-red1-light':pqrsf?.idType == 5?'color-green1-light':(pqrsf?.idType == 1 || pqrsf?.idType == 4)?'color-dark2-dark':'' }}" style="margin-bottom: 0px;">
-                      {{ pqrsf?.message }}
+                    <p class="under-heading font-12 bold top-15" style="margin-bottom: 0px;color: black;">
+                      {{ pqrsf?.message }} Si es necesario comuniquese con el cliente al correo <b>{{ pqrsf?.userEmail }}</b> o al telefono <b>{{ pqrsf?.userPhone}}</b>
                     </p>
                     <h6 class="color-theme bolder bottom-0"></h6>
                   </div>

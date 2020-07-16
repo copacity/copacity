@@ -22,9 +22,12 @@
   <div class="profile-body-no-apply">
     <div id="page">
       <div class="content header-clear-small">
+        <label style="padding-bottom: 20px;padding-left: 10px;font-size: 18px;"><b>Vendedor:</b>
+          {{vendorName}}</label>
         <label style="padding-bottom: 20px;padding-left: 10px;font-size: 18px;"><b>Estado:</b>
           {{ order?.status | orderStatusName }}</label>
-        <label *ngIf="(order && order.messageRejected)" style="padding-bottom: 20px;padding-left: 10px;font-size: 18px;"><b>Motivo:</b>
+        <label *ngIf="(order && order.messageRejected)"
+          style="padding-bottom: 20px;padding-left: 10px;font-size: 18px;"><b>Motivo:</b>
           {{ order?.messageRejected  }}</label>
         <div (click)="openImageViewer(user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png')"
           class="user-list-left" *ngIf="appService.currentUser?.id!=user?.id">
@@ -223,7 +226,7 @@
           <h4 class="bold color-highlight">Direccion de Envío</h4>
           <div class="container">
             <table class="table-borders-dark store-product-table top-20 bottom-20"
-              style="border: solid 1px rgba(0,0,0,0.08);" >
+              style="border: solid 1px rgba(0,0,0,0.08);">
               <tr>
                 <td style="vertical-align: top;" class="bold color-theme">
                   Nombre

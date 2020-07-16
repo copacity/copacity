@@ -124,6 +124,7 @@ export class StorePointsPage implements OnInit {
           }
         });
 
+        debugger;
         this.points = currentStorePoint.points - this.cartService.getPoints();
         subscribe.unsubscribe();
       });

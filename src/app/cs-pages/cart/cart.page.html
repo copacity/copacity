@@ -117,14 +117,14 @@
         </table>
       </div>
 
-      <div class="content content-box bg-gradient-orange shadow-large"
+      <div class="content content-box shadow-large round-medium" style="color: red;"
         *ngIf="((cartService.getTotal() < appService.currentStore.orderMinAmount?appService.currentStore.orderMinAmount:0 || cartService.getTotal() == 0) && !cartService.hasGifts())">
-        <h2 class="color-white bold top-10">Recuerda!</h2>
-        <p class="color-white bottom-10" style="font-size: 16px;">
+        <h2 class="bold top-10" style="color: red;">Recuerda!</h2>
+        <p class="bottom-10" style="font-size: 16px;color: red;">
           El valor minimo para hacer un pedido en <b>{{appService.currentStore.name}}</b> es de
           <b>{{ appService.currentStore.orderMinAmount | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
         </p>
-        <p *ngIf="cart.length==0" class="color-white bottom-10" style="font-size: 16px;">
+        <p *ngIf="cart.length==0" class="bottom-10" style="font-size: 16px;color:red">
           Debes agregar al menos un producto al carrito.
         </p>
       </div>

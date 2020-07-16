@@ -38,7 +38,7 @@ export class StorePqrsfPage implements OnInit {
       if (this.navParams.data.isAdmin) {
         this.pqrsfCollection = this.storesService.getStorePQRSF(this.appService.currentStore.id);
 
-        this.pqrsfCollection.subscribe((products) => {
+        let subs = this.pqrsfCollection.subscribe((products) => {
           this.pqrsfSearchHits = 0;
           this.searchingPqrsf = false;
           products.forEach(product => {
@@ -46,6 +46,8 @@ export class StorePqrsfPage implements OnInit {
               this.pqrsfSearchHits++;
             }
           });
+
+          subs.unsubscribe();
         });
       } else {
         this.pqrsfCollection = this.storesService.getStorePQRSFByUser(this.appService.currentStore.id, this.appService.currentUser.id);
