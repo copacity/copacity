@@ -12,6 +12,7 @@ import { UsersService } from 'src/app/cs-services/users.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
+import { OrderDetailPage } from '../order-detail/order-detail.page';
 
 @Component({
   selector: 'app-store-vendors',
@@ -25,6 +26,7 @@ export class StoreVendorsPage implements OnInit {
   minDate: any;
   maxDate: any;
   years: string = "";
+  ordersDetail: any[] = [];
 
   user: User;
 
@@ -95,6 +97,22 @@ export class StoreVendorsPage implements OnInit {
 
   close() {
     this.popoverController.dismiss();
+  }
+
+  async openOrderDetailPage(orderDetail: any) {
+
+    let modal = await this.popoverController.create({
+      component: OrderDetailPage,
+      componentProps: { id: orderDetail.idOrder, idStore: this.appService.currentStore.id },
+      cssClass: 'cs-popovers'
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
   }
 
   async openProfileUpdatePage() {
@@ -210,6 +228,8 @@ export class StoreVendorsPage implements OnInit {
 
           let totalValue = cartService.getTotalDetail(0);
           let orderResult = totalValue - (coupon ? (totalValue * (coupon.discount / 100)) : 0);
+
+          this.ordersDetail.push({ idOrder: order.id, ref: order.ref, value: orderResult });
           resolve(orderResult);
 
           subs2.unsubscribe;

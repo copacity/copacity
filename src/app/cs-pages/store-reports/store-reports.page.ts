@@ -7,6 +7,7 @@ import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Order, StoreCoupon } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
+import { OrderDetailPage } from '../order-detail/order-detail.page';
 
 @Component({
   selector: 'app-store-reports',
@@ -19,11 +20,12 @@ export class StoreReportsPage implements OnInit {
   minDate: any;
   maxDate: any;
   years: string = "";
-  
+
   sales = 0;
   iva: number;
   total: number;
   commissionForSale: number = 0;
+  ordersDetail: any[] = [];
 
   constructor(
     public popoverController: PopoverController,
@@ -97,6 +99,22 @@ export class StoreReportsPage implements OnInit {
     }).catch(err => alert(err));
   }
 
+  async openOrderDetailPage(orderDetail: any) {
+
+    let modal = await this.popoverController.create({
+      component: OrderDetailPage,
+      componentProps: { id: orderDetail.idOrder, idStore: this.appService.currentStore.id },
+      cssClass: 'cs-popovers'
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
+  }
+
   getOrderTotal(order: Order) {
     return new Promise((resolve, reject) => {
       let subs = this.orderService.getCartProducts(this.appService.currentStore.id, order.id).subscribe(cartProducts => {
@@ -112,6 +130,8 @@ export class StoreReportsPage implements OnInit {
 
           let totalValue = cartService.getTotalDetail(0);
           let orderResult = totalValue - (coupon ? (totalValue * (coupon.discount / 100)) : 0);
+
+          this.ordersDetail.push({ idOrder: order.id, ref: order.ref, value: orderResult });
           resolve(orderResult);
 
           subs2.unsubscribe;

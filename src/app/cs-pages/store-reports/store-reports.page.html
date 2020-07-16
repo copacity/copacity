@@ -48,15 +48,15 @@
           <div class="container top-20">
             <table class="table-borders" style="font-size: 18px;">
               <tr>
-                <th style="text-align: left; padding-left: 5px;"></th>
-                <th style="text-align: right;">Total</th>
+                <th style="text-align: left; padding-left: 5px;"># Pedido</th>
+                <th style="text-align: right;">Valor</th>
               </tr>
-              <tr>
+              <tr *ngFor="let orderDetail of ordersDetail">
                 <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                  Ventas en el mes
+                  <a (click)="openOrderDetailPage(orderDetail)">#{{orderDetail.ref}}</a>
                 </td>
                 <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                  {{ sales | currency: 'USD': 'symbol' : '1.0-0' }}
+                  {{ orderDetail.value | currency: 'USD': 'symbol' : '1.0-0' }}
                 </td>
               </tr>
             </table>
