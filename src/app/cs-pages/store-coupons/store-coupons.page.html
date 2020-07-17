@@ -73,6 +73,8 @@
                 <img src="../../../assets/icon/vencido.png" class="responsive-image preload-image round-medium"
                   alt="img">
               </em>
+              <label style="font-size: 3em;font-weight: 700;"
+                class="color-highlight">{{ storeCoupon.discount }}%</label>
             </td>
             <td style="padding-right: 10px;">
               <table>
@@ -83,14 +85,14 @@
                 </tr>
                 <tr>
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Compras mayores de:</span>
+                    <span style="font-size: 1em;font-weight: 700;color: black;">Compras mayores de:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1.2em;font-weight: 700;"
                       class="color-highlight">{{ storeCoupon.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Descuento del:</span>
                   </td>
@@ -98,10 +100,10 @@
                     <span style="font-size: 1.2em;font-weight: 700;"
                       class="color-highlight">{{ storeCoupon.discount }}%</span>
                   </td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Válido hasta:</span>
+                    <span style="font-size: 1em;font-weight: 700;color: black;">Válido hasta:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1.2em;font-weight: 700;"
@@ -110,7 +112,7 @@
                 </tr>
                 <tr *ngIf="isAdmin">
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">VIP:</span>
+                    <span style="font-size: 1em;font-weight: 700;color: black;">VIP:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1.2em;font-weight: 700;"
@@ -119,7 +121,7 @@
                 </tr>
                 <tr>
                   <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Disponibles:</span>
+                    <span style="font-size: 1em;font-weight: 700;color: black;">Disponibles:</span>
                   </td>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
                     <span style="font-size: 1.2em;font-weight: 700;"
@@ -128,11 +130,9 @@
                 </tr>
                 <tr *ngIf="isAdmin">
                   <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a (click)="openBarCodeGenerator(storeCoupon)"
-                      class="icon icon-s icon-round shadow-small">
+                    <a (click)="openBarCodeGenerator(storeCoupon)" class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-qrcode" style="color: black"></i></a>
-                    <a (click)="presentDeleteProductPrompt(storeCoupon)"
-                      class="icon icon-s icon-round shadow-small">
+                    <a (click)="presentDeleteProductPrompt(storeCoupon)" class="icon icon-s icon-round shadow-small">
                       <i class="fa fa-trash" style="color: black"></i></a>
                     <a (click)="openStoreCouponsCreatePage_Update(storeCoupon)"
                       class="icon icon-s icon-round shadow-small">
@@ -141,8 +141,7 @@
                 </tr>
                 <tr *ngIf="(!isAdmin && !dashboard)">
                   <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a (click)="selectCoupon(storeCoupon)"
-                      style="color:white;background-color: red;"
+                    <a (click)="selectCoupon(storeCoupon)" style="color:white;background-color: red;"
                       class="button button-round-small shadow-large button-full button-s {{ (!isAdmin && !dashboard && orderTotal < storeCoupon.minAmount)?'sold-out':'' }}">
                       Tomar Cupón</a>
                   </td>

@@ -383,7 +383,7 @@ export class OrderDetailPage implements OnInit {
       Promise.all(promises).then(() => {
         resolve();
       });
-    }).catch(err => alert(err));
+    }).catch(err => alert('revertToInventory: ' + err));
   }
 
   updateCartProductInventory(cartProduct: CartProduct) {
@@ -402,7 +402,7 @@ export class OrderDetailPage implements OnInit {
         });
 
       resolve();
-    }).catch(err => alert(err));
+    }).catch(err => alert("updateCartProductInventory " + err));
   }
 
   revertCouponQuantity() {
@@ -421,6 +421,6 @@ export class OrderDetailPage implements OnInit {
       } else {
         resolve(true);
       }
-    });
+    }).catch(err => alert("revertCouponQuantity " + err));
   }
 }
