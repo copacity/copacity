@@ -133,7 +133,7 @@
             <div class="container top-20">
               <table class="table-borders" style="font-size: 18px;">
                 <tr>
-                  <th style="text-align: left; padding-left: 5px;"># Pedido
+                  <th style="text-align: left; padding-left: 5px;">Pedido
                   </th>
                   <th style="text-align: right;">Total</th>
                 </tr>
@@ -149,8 +149,15 @@
               <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
                 <div style="background-color: red;" class="divider opacity-350"></div>
                 <div class="store-cart-total bottom-20" style="font-size: 25px;">
-                  <strong class="uppercase bold">Total</strong>
-                  <span class="uppercase bold">
+                  <strong class="uppercase font-20">Venta Total</strong>
+                  <span class="uppercase font-20">
+                    {{ total | currency: 'USD': 'symbol' : '1.0-0' }}
+                  </span>
+                  <div class="clear"></div>
+                </div>
+                <div class="store-cart-total bottom-20" style="font-size: 25px;">
+                  <strong class="uppercase bold font-20">Comisión ({{ vendor.commissionForSale }}%)</strong>
+                  <span class="uppercase bold font-20">
                     {{ commissionForSale | currency: 'USD': 'symbol' : '1.0-0' }}
                   </span>
                   <div class="clear"></div>

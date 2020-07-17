@@ -21,6 +21,7 @@ import { OrderDetailPage } from '../order-detail/order-detail.page';
 })
 export class StoreVendorsPage implements OnInit {
   commissionForSale: number = 0;
+  total: number = 0;
   form: FormGroup;
   billingDate: any;
   minDate: any;
@@ -247,6 +248,7 @@ export class StoreVendorsPage implements OnInit {
         this.billingDate = this.form.value.billingDate;
         this.calculateOrdersTotalByMonth(this.billingDate).then((result: number) => {
           
+          this.total = result;
           this.commissionForSale = result * (this.vendor.commissionForSale / 100);
           this.loaderComponent.stopLoading();
         });
