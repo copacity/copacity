@@ -177,7 +177,10 @@ export class StoreVendorsAdminPage implements OnInit {
       this.usersService.getById(vendor.idUser).then(user => {
         resolve({ user: user, vendor: vendor });
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'store-vendors - fillUsers', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   ngOnInit() {

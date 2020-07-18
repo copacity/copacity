@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ProductCategory } from '../app-intefaces';
+import { AppService } from './app.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ProductCategoriesService {
   private collectionName: string = 'productCategories';
   private productCategoryCollection: AngularFirestoreCollection<ProductCategory>;
 
-  constructor(public angularFirestore: AngularFirestore, ) { }
+  constructor(public angularFirestore: AngularFirestore, private appService: AppService) { }
 
   public create(idStore: string, productCategory: ProductCategory): Promise<DocumentReference> {
     return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).add(productCategory);
@@ -33,7 +34,10 @@ export class ProductCategoriesService {
           }).catch(function (error) {
             console.log("Error getting document:", error);
           });
-    }).catch(err => alert(err));
+        }).catch(err => {
+          alert(err);
+          this.appService.logError({id:'', message: err, function:'product-categories-getById', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+        });
   }
 
   public getAll(idStore: string): Observable<ProductCategory[]> {

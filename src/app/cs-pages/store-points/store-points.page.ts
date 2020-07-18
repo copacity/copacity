@@ -127,7 +127,10 @@ export class StorePointsPage implements OnInit {
         this.points = currentStorePoint.points - this.cartService.getPoints();
         subscribe.unsubscribe();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'GetPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   async presentAlert(title: string, message: string, done: Function) {

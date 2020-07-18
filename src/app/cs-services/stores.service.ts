@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Store, StoreCoupon, PQRSF, ShippingMethod, PlatformFee, Vendor } from '../app-intefaces';
+import { Store, StoreCoupon, PQRSF, ShippingMethod, PlatformFee, Vendor, ErrorMessage } from '../app-intefaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StoreStatus, VendorStatus } from '../app-enums';
@@ -263,7 +263,10 @@ export class StoresService {
             console.log("Error getting document:", error);
             throw error;
           });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.logError({ id: '', message: err, function: 'stores-getById', idUser: '0', dateCreated: new Date() });
+    });
   }
 
   //------------------------------- PQRSF
@@ -401,5 +404,11 @@ export class StoresService {
         return data;
       }))
     );
+  }
+
+  // --- Error Log
+  public logError(error: ErrorMessage): Promise<DocumentReference> {
+    return this.angularFirestore
+      .collection("appErrors").add(error);
   }
 }

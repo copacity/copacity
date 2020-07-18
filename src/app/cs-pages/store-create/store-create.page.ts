@@ -139,11 +139,10 @@ export class StoreCreatePage implements OnInit {
               });
             });
           });
-        })
-          .catch(function (error) {
-            console.log(error);
-            alert(error);
-          });
+        }).catch(err => {
+          alert(err);
+          this.appService.logError({id:'', message: err, function:'createStore', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+        });
       }, 500); // Animation Delay
     } else {
       this.form.markAllAsTouched();

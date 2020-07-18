@@ -4,6 +4,7 @@ import { Product, ProductImage, ProductProperty, ProductPropertyOption, CartProd
 import { Observable } from 'rxjs';
 import { map, flatMap, filter } from 'rxjs/operators';
 import { ProductPropertyOptionComponent } from '../cs-components/product-property-option/product-property-option.component';
+import { AppService } from './app.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ProductsService {
   private collectionName: string = 'products';
   private productCollection: AngularFirestoreCollection<Product>;
 
-  constructor(public angularFirestore: AngularFirestore, ) { }
+  constructor(public angularFirestore: AngularFirestore, private appService: AppService) { }
 
   public create(idStore: string, product: Product): Promise<DocumentReference> {
     return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).add(product);
@@ -33,7 +34,10 @@ export class ProductsService {
           }).catch(function (error) {
             console.log("Error getting document:", error);
           });
-    }).catch(err => alert(err));
+        }).catch(err => {
+          alert(err);
+          this.appService.logError({id:'', message: err, function:'products-getById', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+        });
   }
 
   public getByProductCategoryId(idStore: string, idProductCategory: string/*, productsBatch: number, lastProductToken: string*/) {

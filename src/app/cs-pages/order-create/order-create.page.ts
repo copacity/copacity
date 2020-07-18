@@ -105,7 +105,10 @@ export class OrderCreatePage implements OnInit {
       this.usersService.getById(vendor.idUser).then(user => {
         resolve(user);
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'fillUsers', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   ngOnInit() {
@@ -327,7 +330,10 @@ export class OrderCreatePage implements OnInit {
                 if (result) {
                   this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
                 }
-              }).catch(err => alert(err));
+              }).catch(err => {
+                alert(err);
+                this.appService.logError({id:'', message: err, function:'openBarCodeScanner', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+              });
             } else {
               this.presentAlert("Lo sentimos, el cupón seleccionado no pertenece a esta tienda", "", () => { });
             }
@@ -466,7 +472,10 @@ export class OrderCreatePage implements OnInit {
       Promise.all(promises).then(() => {
         resolve();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'discountFromInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   addShippingMethod(idOrder: string) {
@@ -474,7 +483,10 @@ export class OrderCreatePage implements OnInit {
       this.ordersService.addOrderShippingMethod(this.appService.currentStore.id, idOrder, this.shippingMethod).then(() => {
         resolve();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'discountFromInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   updateCartProductInventory(cartProduct: CartProduct) {
@@ -493,7 +505,10 @@ export class OrderCreatePage implements OnInit {
         });
 
       resolve();
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'updateCartProductInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   discountPoints() {
@@ -516,7 +531,10 @@ export class OrderCreatePage implements OnInit {
 
         subscribe.unsubscribe();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'discountPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   async presentAlert(title: string, message: string, done: Function, buttonOkName?: string) {
@@ -549,7 +567,10 @@ export class OrderCreatePage implements OnInit {
       };
 
       addToCart(index);
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'addCartProducts', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   close() {
@@ -571,6 +592,7 @@ export class OrderCreatePage implements OnInit {
     }).catch(err => {
       this.presentAlert(err, "", () => { });
       this.loaderComponent.stopLoading();
+      this.appService.logError({id:'', message: err, function:'validateFromInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -603,6 +625,7 @@ export class OrderCreatePage implements OnInit {
     }).catch(err => {
       this.presentAlert(err, "", () => { });
       this.loaderComponent.stopLoading();
+      this.appService.logError({id:'', message: err, function:'validateCartProductInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -645,7 +668,10 @@ export class OrderCreatePage implements OnInit {
               if (result) {
                 this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
               }
-            }).catch(err => alert(err));
+            }).catch(err => {
+              alert(err);
+              this.appService.logError({id:'', message: err, function:'openStoreCouponsPage', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+            });
           }
         });
 
@@ -667,7 +693,10 @@ export class OrderCreatePage implements OnInit {
           if (result) {
             this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
           }
-        }).catch(err => alert(err));
+        }).catch(err => {
+          alert(err);
+          this.appService.logError({id:'', message: err, function:'buildStoreCoupon', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+        });
       });
   }
 
@@ -676,7 +705,10 @@ export class OrderCreatePage implements OnInit {
       if (result) {
         this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
       }
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'validateCoupon_click', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   async validateCoupon() {

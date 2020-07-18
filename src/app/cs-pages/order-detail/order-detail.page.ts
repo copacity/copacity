@@ -283,7 +283,10 @@ export class OrderDetailPage implements OnInit {
 
         subscribe.unsubscribe();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'revertPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   addPoints() {
@@ -324,7 +327,10 @@ export class OrderDetailPage implements OnInit {
 
         subscribe.unsubscribe();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'addPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   reject(message: string) {
@@ -383,7 +389,10 @@ export class OrderDetailPage implements OnInit {
       Promise.all(promises).then(() => {
         resolve();
       });
-    }).catch(err => alert('revertToInventory: ' + err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'revertToInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   updateCartProductInventory(cartProduct: CartProduct) {
@@ -402,7 +411,10 @@ export class OrderDetailPage implements OnInit {
         });
 
       resolve();
-    }).catch(err => alert("updateCartProductInventory " + err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'updateCartProductInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   revertCouponQuantity() {
@@ -421,6 +433,9 @@ export class OrderDetailPage implements OnInit {
       } else {
         resolve(true);
       }
-    }).catch(err => alert("revertCouponQuantity " + err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'revertCouponQuantity', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 }

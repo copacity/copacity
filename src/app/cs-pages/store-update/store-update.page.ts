@@ -95,6 +95,7 @@ export class StoreUpdatePage implements OnInit {
           .catch(function (error) {
             console.log(error);
             this.presentAlert("Ha ocurrido un error mientras acutalizabamos tu tienda!", error, () => this.modalCtrl.dismiss(true));
+            this.appService.logError({id:'', message: error, function:'updateStore', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
           });
       }, 500); // Animation Delay
     } else {

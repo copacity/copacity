@@ -53,6 +53,14 @@ export interface ShippingMethod {
   paymentMethods: [];
 }
 
+export interface ErrorMessage {
+  id: string;
+  function: string;
+  message: string;
+  idUser: string;
+  dateCreated: Date;
+}
+
 export interface Vendor {
   id: string;
   idUser: string;

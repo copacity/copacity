@@ -178,6 +178,9 @@ export class ProductInventoryPage implements OnInit {
       };
 
       addToCart(index);
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'addCartInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 }

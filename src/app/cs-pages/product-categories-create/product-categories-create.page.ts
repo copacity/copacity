@@ -96,11 +96,10 @@ export class ProductCategoriesCreatePage implements OnInit {
                 this.popoverCtrl.dismiss(doc.id);
               });
             });
-          })
-            .catch(function (error) {
-              console.log(error);
-              alert(error);
-            });
+          }).catch(err => {
+            alert(err);
+            this.appService.logError({id:'', message: err, function:'createProductCategory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+          });
         }
       }, 500);
     } else {

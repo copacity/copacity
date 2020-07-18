@@ -15,7 +15,10 @@ export const fileToBase64 = (filename, filepath) => {
       resolve(reader.result);
     };
     reader.readAsDataURL(file);
-  }).catch(err => alert(err));
+  }).catch(err => {
+    alert(err);
+    this.appService.logError({id:'', message: err, idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+  });
 };
 
 @Injectable({

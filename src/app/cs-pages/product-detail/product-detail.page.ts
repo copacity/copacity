@@ -260,7 +260,10 @@ export class ProductDetailPage implements OnInit {
       };
 
       img.src = this.product.image;
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'createFile', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   shareProduct(e) {

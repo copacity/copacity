@@ -114,7 +114,10 @@ export class StoreBillingPage implements OnInit {
 
         subs.unsubscribe();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'calculateOrdersTotalByMonth', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   getOrderTotal(order: Order) {
@@ -139,7 +142,10 @@ export class StoreBillingPage implements OnInit {
 
         subs.unsubscribe();
       });
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'getOrderTotal', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   generate() {

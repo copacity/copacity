@@ -317,11 +317,10 @@ export class ProductCreatePage implements OnInit {
               });
             });
           });
-        })
-          .catch(function (error) {
-            console.log(error);
-            alert(error);
-          });
+        }).catch(err => {
+          alert(err);
+          this.appService.logError({id:'', message: err, function:'createProduct', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+        });
       }, 500); // Animation Delay
     } else {
       this.form.markAllAsTouched();
@@ -356,7 +355,10 @@ export class ProductCreatePage implements OnInit {
       };
 
       addProdcutImage(index, '');
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'saveImages', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   async openCropperImageComponent(imageUrl: any) {
@@ -523,7 +525,10 @@ export class ProductCreatePage implements OnInit {
       };
 
       addProdcutProperty(0);
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'saveProperties', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   savePropertyOptions(productProperty: ProductProperty) {
@@ -549,6 +554,9 @@ export class ProductCreatePage implements OnInit {
       };
 
       addProdcutPropertyOption(0);
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'savePropertyOptions', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 }

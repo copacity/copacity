@@ -108,6 +108,7 @@ export class AddressCreatePage implements OnInit {
           })
             .catch(function (error) {
               console.log(error);
+              this.appService.logError({id:'', message: error, idUser: this.appService.currentUser.id?this.appService.currentUser.id:0, dateCreated: new Date()});
               alert(error);
             });
         }

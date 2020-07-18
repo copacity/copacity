@@ -171,7 +171,10 @@ export class ProductUpdatePage implements OnInit {
       } else {
         resolve("");
       }
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'createFile', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   shareProduct(e) {
@@ -584,7 +587,10 @@ export class ProductUpdatePage implements OnInit {
       };
 
       addProdcutProperty(0);
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'saveProperties', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   savePropertyOptions(productProperty: ProductProperty) {
@@ -610,6 +616,9 @@ export class ProductUpdatePage implements OnInit {
       };
 
       addProdcutPropertyOption(0);
-    }).catch(err => alert(err));
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({id:'', message: err, function:'savePropertyOptions', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 }

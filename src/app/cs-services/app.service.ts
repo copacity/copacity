@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, Notification } from '../app-intefaces';
+import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, Notification, ErrorMessage } from '../app-intefaces';
 import { UsersService } from './users.service';
 import { SectorsService } from './sectors.service';
 import { StoreCategoriesService } from './storeCategories.service';
@@ -73,12 +73,6 @@ export class AppService {
       console.log(error);
     }
 
-    //this.sectors = this.sectorsService.getAll();
-
-    // this.sectors.subscribe(sectorArray => {
-    //   this._sectors = sectorArray;
-    // });
-
     this.storeCategories = this.storeCategoriesService.getAll();
 
     this.storeCategories.subscribe(storeCategoriesArray => {
@@ -143,33 +137,6 @@ export class AppService {
 
       if (notifications.length > this.notificationsCount.value) {
         this.presentToast(notifications[0].userName + ": " + notifications[0].description);
-
-        // let options = {
-        //   icon: notifications[0].photoUrl,
-        //   body: notifications[0].userName + ": " + notifications[0].description,
-        //   vibrate: [200, 100, 200]
-        // }
-
-        // if (!("Notification" in window)) {
-        //   console.log("This browser does not support desktop notification");
-        // } else if (Notification.permission === "granted") {
-        //   // If it's okay let's create a notification
-        //   new Notification("CopaCity", options);
-        // }
-        // // Otherwise, we need to ask the user for permission
-        // else if (Notification.permission !== "denied") {
-        //   Notification.requestPermission().then(function (permission) {
-        //     // If the user accepts, let's create a notification
-        //     if (permission === "granted") {
-        //       new Notification("CopaCity", options);
-        //     }
-        //   });
-        // } else {
-
-        //   if (Notification.permission === 'denied') {
-        //     this.presentAlert("Su configuracion de notificaciones aparece como Bloqueada, Si desea recibir notificaciones debe habilitarla desde la configuracion de su dispositivo", "", () => { });
-        //   }
-        // }
       }
 
       this.notificationsCount.next(notifications.length);
@@ -290,5 +257,11 @@ export class AppService {
   slideOpts2 = {
     speed: 2000,
     slidesPerView: 5,
+  }
+
+  // --- Error Log
+  public logError(error: ErrorMessage): Promise<DocumentReference> {
+    return this.angularFirestore
+      .collection("appErrors").add(error);
   }
 }

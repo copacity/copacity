@@ -2,9 +2,10 @@
 
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
-import { Address } from '../app-intefaces';
+import { Address, ErrorMessage } from '../app-intefaces';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +13,7 @@ export class AddressesService {
   private collectionName: string = 'addresses';
   private addressCollection: AngularFirestoreCollection<Address>;
 
-  constructor(public angularFirestore: AngularFirestore, ) { }
+  constructor(public angularFirestore: AngularFirestore) { }
 
   public create(idUser: string, address: Address): Promise<DocumentReference> {
     return this.angularFirestore.collection('users').doc(idUser).collection(this.collectionName).add(address);
@@ -33,7 +34,10 @@ export class AddressesService {
           }).catch(function (error) {
             console.log("Error getting document:", error);
           });
-    }).catch(err => alert(err));
+        }).catch(err => {
+          alert(err);
+          this.logError({id:'', message: err, function:'addresses-getById', idUser: idUser, dateCreated: new Date() });
+        });
   }
 
   public getAll(idUser: string): Observable<Address[]> {
@@ -70,5 +74,11 @@ export class AddressesService {
 
   public update(idUser: string, id: string, data: any) {
     return this.angularFirestore.collection('users').doc(idUser).collection(this.collectionName).doc(id).update(data);
+  }
+
+  // --- Error Log
+  public logError(error: ErrorMessage): Promise<DocumentReference> {
+    return this.angularFirestore
+      .collection("appErrors").add(error);
   }
 }
