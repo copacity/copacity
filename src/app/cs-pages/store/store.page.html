@@ -318,7 +318,8 @@
                   </table>
                 </a>
               </ion-slide>
-              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)" (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
+              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)"
+                (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <table>
@@ -335,7 +336,8 @@
                   </table>
                 </a>
               </ion-slide>
-              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)" (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
+              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)"
+                (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
                   <table>
@@ -420,23 +422,30 @@
                   <a>
                     <img (click)="openProduct(product)"
                       src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}"
-                      class="responsive-image preload-image shadow-large round-medium img-store {{(product?.soldOut)?'sold-out':'' }}"
+                      class="responsive-image preload-image round-medium shadow-small img-store {{(product?.soldOut)?'sold-out':'' }}"
                       alt="img">
 
-                    <em style="background-color: white;color: black;font-weight: bold;font-size: 1.2em;"
-                      class="{{(product?.discount && product?.discount > 0)?'line-through':''}} {{(product?.soldOut)?'sold-out':'' }}">
-                      {{ product?.price | currency: 'USD': 'symbol' : '1.0-0' }}</em>
+                    <em style="background-color: white;" class="top-5">
+                      <span style="padding: 0px 0px 0px 0px;"
+                        class="{{(product?.discount && product?.discount > 0)?'line-through color-gray':'color-black font-18 top-10'}} {{(product?.soldOut)?'sold-out':'' }}">
+                        {{ product?.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
+                      <span *ngIf="product?.discount && product?.discount > 0" 
+                        style="color:black;padding: 0px 0px 0px 0px;background-color: yellow;color: black;font-weight: bold;"
+                        class="{{(product?.soldOut)?'sold-out':'' }} font-18">
+                        {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}
+                      </span>
+                    </em>
 
-                    <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
-                      style="background-color: yellow;color: black;font-weight: bold;font-size: 1.2em;margin-top: 0px;">
-                      {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</em>
+                    <!-- <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
+                      style="background-color: yellow;color: black;font-weight: bold;font-size: 1em;margin-top: 20px;">
+                      {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</em> -->
 
-                    <em *ngIf="product?.discount && product?.discount > 0" style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;
-                        top: 25px;right: 0px" class="{{(product?.soldOut)?'sold-out':'' }}">
+                    <em *ngIf="product?.discount && product?.discount > 0" style="background-color: transparent;color: black;font-weight: bold;font-size: 1em;
+                        top: 0px;right: -25px" class="{{(product?.soldOut)?'sold-out':'' }}">
                       <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
 
                     <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
-                      style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 38px;right: 5px;">
+                      style="background-color: transparent;color: black;font-weight: bold;font-size: .9em;top: 8px;right: -22px;">
                       -{{ product?.discount }}%</em>
 
                     <em *ngIf="product?.soldOut"
@@ -448,7 +457,7 @@
 
                     <table style="font-size: 1em;margin-bottom:0px">
                       <tr>
-                        <td style="text-align: center;padding: 25px 0px 0px 0px;margin-top: 0px">
+                        <td style="text-align: center;padding: 45px 0px 0px 0px;margin-top: 0px">
                           <a *ngIf="isAdmin" (click)="openBarCodeGenerator(product)"
                             class="icon icon-s icon-round shadow-small">
                             <i class="fa fa-qrcode" style="color: black"></i></a>
@@ -463,9 +472,9 @@
                       <tr *ngIf="isAdmin">
                         <td style="padding: 0px 0px 0px 0px;">
                           <a (click)="openProductInventoryPage(product)" *ngIf="isAdmin" style="color:red;"
-                            class="button button-round-small shadow-large button-full button-s">
+                            class="button button-round-small shadow-small button-full button-s">
                             <i class="fa fa-dolly-flatbed add-button"
-                              style="color: black;padding-right: 5px;"></i>Inventario</a>
+                              style="color: black;padding-right: 5px;"></i>Bodega</a>
 
                           <ion-list *ngIf="isAdmin">
                             <ion-item style="text-align: -webkit-left;">
