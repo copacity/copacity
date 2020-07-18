@@ -52,7 +52,6 @@ export class HomePage implements OnInit {
     private locationStrategy: LocationStrategy,
     public toastController: ToastController,
     public popoverController: PopoverController,
-    private storageService: StorageService,
     private storesService: StoresService) {
 
     history.pushState(null, null, window.location.href);
