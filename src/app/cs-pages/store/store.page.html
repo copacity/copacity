@@ -427,7 +427,7 @@
 
                     <em style="background-color: white;" class="top-5">
                       <span style="padding: 0px 0px 0px 0px;"
-                        class="{{(product?.discount && product?.discount > 0)?'line-through color-gray':'color-black font-18 top-10'}} {{(product?.soldOut)?'sold-out':'' }}">
+                        class="{{(product?.discount && product?.discount > 0)?'line-through color-gray font-15':'color-black font-18 top-10'}} {{(product?.soldOut)?'sold-out':'' }}">
                         {{ product?.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
                       <span *ngIf="product?.discount && product?.discount > 0" 
                         style="color:black;padding: 0px 0px 0px 0px;background-color: yellow;color: black;font-weight: bold;"
@@ -440,12 +440,12 @@
                       style="background-color: yellow;color: black;font-weight: bold;font-size: 1em;margin-top: 20px;">
                       {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</em> -->
 
-                    <em *ngIf="product?.discount && product?.discount > 0" style="background-color: transparent;color: black;font-weight: bold;font-size: 1em;
-                        top: 0px;right: -25px" class="{{(product?.soldOut)?'sold-out':'' }}">
+                    <em *ngIf="product?.discount && product?.discount > 0" style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;
+                        top: -5px;right: -25px" class="{{(product?.soldOut)?'sold-out':'' }}">
                       <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
 
                     <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
-                      style="background-color: transparent;color: black;font-weight: bold;font-size: .9em;top: 8px;right: -22px;">
+                      style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 8px;right: -22px;">
                       -{{ product?.discount }}%</em>
 
                     <em *ngIf="product?.soldOut"
