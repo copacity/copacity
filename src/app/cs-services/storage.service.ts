@@ -219,23 +219,22 @@ export class StorageService {
     ref.delete();
   }
 
-  getThumbUrl(idImage: string, _resolve: any) {
-    return new Promise((resolve, reject) => {
+  getThumbUrl(idImage: string, callBack) {
+    this.getThumgUrlAttemps(idImage, null, callBack);
+  }
+
+  getThumgUrlAttemps(idImage: string, result: string, callBack: any) {
+    if (result) {
+      callBack(result);
+    } else {
       const ref = this.angularFireStorage.ref('thumb_' + idImage);
       let meta = ref.getDownloadURL().subscribe(result => {
-
-        if (_resolve) {
-          _resolve(result);
-        } else {
-          resolve(result);
-        }
+        this.getThumgUrlAttemps(idImage, result, callBack);
       }, err => {
-        this.getThumbUrl(idImage, resolve);
+        setTimeout(() => {
+          this.getThumgUrlAttemps(idImage, null, callBack);
+        }, 5000);
       });
-
-    }).catch(err => {
-      alert(err);
-      this.appService.logError({ id: '', message: err, function: 'getThumbUrl', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
-    });
+    }
   }
 }

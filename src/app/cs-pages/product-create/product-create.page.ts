@@ -331,11 +331,11 @@ export class ProductCreatePage implements OnInit {
     return new Promise((resolve, reject) => {
       let addProdcutImage = (index: number, lastImageUrl: String) => {
         if (this.imgURL.length == index) {
-          this.storageService.getThumbUrl(this.appService.getImageIdByUrl(lastImageUrl.toString()), null).then(thumbUrl => {
+          this.storageService.getThumbUrl(this.appService.getImageIdByUrl(lastImageUrl.toString()), (thumbUrl: string) => {
             this.productsService.update(this.appService.currentStore.id, idProduct, { image: thumbUrl }).then(result => {
               resolve(true);
             });
-          });
+          })
         }
         else {
 

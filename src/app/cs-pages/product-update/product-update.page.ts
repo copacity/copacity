@@ -131,7 +131,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   changeCoverImage(img: string) {
-    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(img), null).then(thumbUrl => {
+    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(img), (thumbUrl: string) => {
       this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl }).then(() => {
         this.presentToast("La foto de portada fue cambiada", "");
         this.navParams.data.image = thumbUrl;
@@ -374,9 +374,7 @@ export class ProductUpdatePage implements OnInit {
                 this.productService.updateProductImage(this.appService.currentStore.id, this.navParams.data.id, doc.id, { id: doc.id, image: url }).then((doc) => {
 
                   setTimeout(() => {
-                    console.log("Test 1");
-                    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), null).then(thumbUrl => {
-                      console.log("Test 2");
+                    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
                       this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
                       this.navParams.data.image = thumbUrl;
                       this.loader.stopLoading();
@@ -386,7 +384,7 @@ export class ProductUpdatePage implements OnInit {
                           if (productImageResult.length != 0) {
                             this.productImageCollection = productImageResult;
                             
-                            this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), null).then(thumbUrl => {
+                            this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), (thumbUrl: string) => {
                               this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl }).then(() => {
                                 this.navParams.data.image = thumbUrl;
                                 if (this.productImageCollection.length > 1) {
@@ -430,7 +428,7 @@ export class ProductUpdatePage implements OnInit {
                 if (productImageResult.length != 0) {
                   this.productImageCollection = productImageResult
                   if (this.appService.getImageIdByUrl(productImage.image) === this.appService.getImageIdByUrl(this.navParams.data.image).replace('thumb_', '')) {
-                    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), null).then(thumbUrl => {
+                    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), (thumbUrl: string) => {
                       this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
                       this.navParams.data.image = thumbUrl;
                     });
@@ -455,7 +453,7 @@ export class ProductUpdatePage implements OnInit {
                 this.productImageCollection = productImageResult
 
                 if (this.appService.getImageIdByUrl(productImage.image).replace('thumb_', '') === this.appService.getImageIdByUrl(this.navParams.data.image).replace('thumb_', '')) {
-                  this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), null).then(thumbUrl => {
+                  this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), (thumbUrl: string) => {
                     this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
                     this.navParams.data.image = thumbUrl;
                   });
