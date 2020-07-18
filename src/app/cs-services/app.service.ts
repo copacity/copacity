@@ -264,4 +264,10 @@ export class AppService {
     return this.angularFirestore
       .collection("appErrors").add(error);
   }
+
+  public getImageIdByUrl(url: string){
+    let array = url.split('/');
+    let idImage =  array[array.length - 1].split('?')[0];
+    return idImage;
+  }
 }

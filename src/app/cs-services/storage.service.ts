@@ -3,6 +3,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 
 import { Plugins, CameraResultType, CameraSource, CameraPhoto } from '@capacitor/core';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { AppService } from './app.service';
 
 
 export const fileToBase64 = (filename, filepath) => {
@@ -10,14 +11,14 @@ export const fileToBase64 = (filename, filepath) => {
     var file = new File([filename], filepath);
     var reader = new FileReader();
     reader.onload = function (event) {
-      
+
       // resolve(event.target.result);
       resolve(reader.result);
     };
     reader.readAsDataURL(file);
   }).catch(err => {
     alert(err);
-    this.appService.logError({id:'', message: err, idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    this.appService.logError({ id: '', message: err, idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
   });
 };
 
@@ -31,6 +32,7 @@ export class StorageService {
 
   constructor(
     private angularFireStorage: AngularFireStorage,
+    private appService: AppService,
     private sanitizer: DomSanitizer
   ) { }
 
@@ -47,7 +49,7 @@ export class StorageService {
     return await promise;
   }
 
-  public async loadImage(file: File, id: string, width: number, height: number): Promise<String> {   
+  public async loadImage(file: File, id: string, width: number, height: number): Promise<String> {
     let promise = new Promise<String>((resolve, reject) => {
       fileToBase64(file, id).then(async (data: string) => {
         resolve(await this.ResizeImage(data, id, width, height));
@@ -121,12 +123,12 @@ export class StorageService {
         // output the canvas pixels as an image. params: format, quality
         this.base64ResizedImage = outputCanvas.toDataURL('image/jpeg', 1.0);
 
-        this.Imagen =  this.sanitizer.bypassSecurityTrustResourceUrl(this.base64ResizedImage);
+        this.Imagen = this.sanitizer.bypassSecurityTrustResourceUrl(this.base64ResizedImage);
         //this.Imagen = this.base64ResizedImage;
         const filePath = id;
 
-        const ref =  this.angularFireStorage.ref(filePath);
-        const task = await ref.putString(this.base64ResizedImage, 'data_url');        
+        const ref = this.angularFireStorage.ref(filePath);
+        const task = await ref.putString(this.base64ResizedImage, 'data_url');
 
         ref.getDownloadURL().subscribe((url) => {
           resolve(url);
@@ -202,7 +204,7 @@ export class StorageService {
         // output the canvas pixels as an image. params: format, quality
         this.base64ResizedImage = outputCanvas.toDataURL('image/jpeg', 1.0);
 
-        this.Imagen =  this.sanitizer.bypassSecurityTrustResourceUrl(this.base64ResizedImage);
+        this.Imagen = this.sanitizer.bypassSecurityTrustResourceUrl(this.base64ResizedImage);
         //this.Imagen = this.base64ResizedImage;
         const filePath = id;
 
@@ -212,8 +214,28 @@ export class StorageService {
     return await promise;
   }
 
-  deleteImageFromStorage(url: string){
-    const ref =  this.angularFireStorage.ref(url);
+  deleteImageFromStorage(url: string) {
+    const ref = this.angularFireStorage.ref(url);
     ref.delete();
+  }
+
+  getThumbUrl(idImage: string, _resolve: any) {
+    return new Promise((resolve, reject) => {
+      const ref = this.angularFireStorage.ref('thumb_' + idImage);
+      let meta = ref.getDownloadURL().subscribe(result => {
+
+        if (_resolve) {
+          _resolve(result);
+        } else {
+          resolve(result);
+        }
+      }, err => {
+        this.getThumbUrl(idImage, resolve);
+      });
+
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({ id: '', message: err, function: 'getThumbUrl', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 }

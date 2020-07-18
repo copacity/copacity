@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store, Banner } from 'src/app/app-intefaces';
+import { Store } from 'src/app/app-intefaces';
 import { StoreCreatePage } from '../store-create/store-create.page';
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
@@ -12,10 +12,10 @@ import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notificat
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { SearchPage } from '../search/search.page';
 import { SwUpdate } from '@angular/service-worker';
-import { Observable, Subscription } from 'rxjs';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { LocationStrategy } from '@angular/common';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
+import { StorageService } from 'src/app/cs-services/storage.service';
 
 @Component({
   selector: 'app-home',
@@ -53,6 +53,7 @@ export class HomePage implements OnInit {
     private locationStrategy: LocationStrategy,
     public toastController: ToastController,
     public popoverController: PopoverController,
+    private storageService: StorageService,
     private storesService: StoresService) {
 
     history.pushState(null, null, window.location.href);
@@ -318,7 +319,7 @@ export class HomePage implements OnInit {
 
   ionViewDidEnter() {
     setTimeout(() => {
-      try { this.slider.startAutoplay(); } catch (error) { }  
+      try { this.slider.startAutoplay(); } catch (error) { }
     }, 300);
   }
 
@@ -407,5 +408,13 @@ export class HomePage implements OnInit {
       window.location.reload();
       event.target.complete();
     }, 500);
+  }
+
+
+  getImageFromStorage(imageUrl: string) {
+    this.storageService.getThumbUrl(imageUrl).then(thumbUrl => {
+      alert(thumbUrl);
+    });
+    // thumb_zNDWqkv8fhWhYfZnG0dM
   }
 }

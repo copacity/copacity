@@ -131,9 +131,11 @@ export class ProductUpdatePage implements OnInit {
   }
 
   changeCoverImage(img: string) {
-    this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: img }).then(() => {
-      this.presentToast("La foto de portada fue cambiada", "");
-      this.navParams.data.image = img;
+    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(img), null).then(thumbUrl => {
+      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl }).then(() => {
+        this.presentToast("La foto de portada fue cambiada", "");
+        this.navParams.data.image = thumbUrl;
+      });
     });
   }
 
@@ -173,7 +175,7 @@ export class ProductUpdatePage implements OnInit {
       }
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'createFile', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'createFile', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -370,32 +372,40 @@ export class ProductUpdatePage implements OnInit {
               this.storageService.ResizeImage(image, doc.id, 500, 500).then((url) => {
 
                 this.productService.updateProductImage(this.appService.currentStore.id, this.navParams.data.id, doc.id, { id: doc.id, image: url }).then((doc) => {
-                  this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: url });
-                  this.navParams.data.image = url.toString();
-                  this.loader.stopLoading();
 
-                  let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
-                  let subs = result.subscribe((productImageResult: ProductImage[]) => {
-                    setTimeout(() => {
-                      if (productImageResult.length != 0) {
-                        this.productImageCollection = productImageResult
-                        this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image }).then(() => {
-                          this.navParams.data.image = productImageResult[productImageResult.length - 1].image;
-                          if (this.productImageCollection.length > 1) {
-                            this.sliderProducts.slideTo(this.productImageCollection.length);
+                  setTimeout(() => {
+                    console.log("Test 1");
+                    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), null).then(thumbUrl => {
+                      console.log("Test 2");
+                      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
+                      this.navParams.data.image = thumbUrl;
+                      this.loader.stopLoading();
+
+                      let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+                      let subs = result.subscribe((productImageResult: ProductImage[]) => {
+                          if (productImageResult.length != 0) {
+                            this.productImageCollection = productImageResult;
+                            
+                            this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), null).then(thumbUrl => {
+                              this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl }).then(() => {
+                                this.navParams.data.image = thumbUrl;
+                                if (this.productImageCollection.length > 1) {
+                                  this.sliderProducts.slideTo(this.productImageCollection.length);
+                                }
+                              });
+                            });
+
+                          } else {
+                            this.productImageCollection = productImageResult
+                            if (this.productImageCollection.length > 1) {
+                              this.sliderProducts.slideTo(this.productImageCollection.length);
+                            }
                           }
-                        });
-                      } else {
-                        this.productImageCollection = productImageResult
-                        if (this.productImageCollection.length > 1) {
-                          this.sliderProducts.slideTo(this.productImageCollection.length);
-                        }
-                      }
 
-                    }, 300);
-
-                    subs.unsubscribe();
-                  });
+                        subs.unsubscribe();
+                      });
+                    });
+                  }, 300);
                 });
               });
             });
@@ -419,9 +429,11 @@ export class ProductUpdatePage implements OnInit {
               setTimeout(() => {
                 if (productImageResult.length != 0) {
                   this.productImageCollection = productImageResult
-                  if (productImage.image === this.navParams.data.image) {
-                    this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image });
-                    this.navParams.data.image = productImageResult[productImageResult.length - 1].image;
+                  if (this.appService.getImageIdByUrl(productImage.image) === this.appService.getImageIdByUrl(this.navParams.data.image).replace('thumb_', '')) {
+                    this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), null).then(thumbUrl => {
+                      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
+                      this.navParams.data.image = thumbUrl;
+                    });
                   }
                 } else {
                   this.productImageCollection = productImageResult
@@ -442,9 +454,11 @@ export class ProductUpdatePage implements OnInit {
               if (productImageResult.length != 0) {
                 this.productImageCollection = productImageResult
 
-                if (productImage.image === this.navParams.data.image) {
-                  this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: productImageResult[productImageResult.length - 1].image });
-                  this.navParams.data.image = productImageResult[productImageResult.length - 1].image;
+                if (this.appService.getImageIdByUrl(productImage.image).replace('thumb_', '') === this.appService.getImageIdByUrl(this.navParams.data.image).replace('thumb_', '')) {
+                  this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), null).then(thumbUrl => {
+                    this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
+                    this.navParams.data.image = thumbUrl;
+                  });
                 }
               } else {
                 this.productImageCollection = productImageResult
@@ -514,7 +528,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   productPropertyDelete(productProperty: ProductProperty) {
-    
+
     this.presentConfirm('Si eliminas una caracteristica, el inventario que tengas del producto se borrará automaticamente y tendrás que agregarlo de nuevo, Estás seguro que deseas eliminar la caracteristica: ' + productProperty.name + '?', () => {
       if (!productProperty.id) {
         for (let [index, p] of this.productProperties.entries()) {
@@ -589,7 +603,7 @@ export class ProductUpdatePage implements OnInit {
       addProdcutProperty(0);
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'saveProperties', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'saveProperties', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -618,7 +632,7 @@ export class ProductUpdatePage implements OnInit {
       addProdcutPropertyOption(0);
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'savePropertyOptions', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'savePropertyOptions', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 }

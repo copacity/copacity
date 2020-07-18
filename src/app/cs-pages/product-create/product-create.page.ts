@@ -319,7 +319,7 @@ export class ProductCreatePage implements OnInit {
           });
         }).catch(err => {
           alert(err);
-          this.appService.logError({id:'', message: err, function:'createProduct', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+          this.appService.logError({ id: '', message: err, function: 'createProduct', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
         });
       }, 500); // Animation Delay
     } else {
@@ -331,8 +331,10 @@ export class ProductCreatePage implements OnInit {
     return new Promise((resolve, reject) => {
       let addProdcutImage = (index: number, lastImageUrl: String) => {
         if (this.imgURL.length == index) {
-          this.productsService.update(this.appService.currentStore.id, idProduct, { image: lastImageUrl }).then(result => {
-            resolve(true);
+          this.storageService.getThumbUrl(this.appService.getImageIdByUrl(lastImageUrl.toString()), null).then(thumbUrl => {
+            this.productsService.update(this.appService.currentStore.id, idProduct, { image: thumbUrl }).then(result => {
+              resolve(true);
+            });
           });
         }
         else {
@@ -357,7 +359,7 @@ export class ProductCreatePage implements OnInit {
       addProdcutImage(index, '');
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'saveImages', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'saveImages', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -527,7 +529,7 @@ export class ProductCreatePage implements OnInit {
       addProdcutProperty(0);
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'saveProperties', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'saveProperties', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -556,7 +558,7 @@ export class ProductCreatePage implements OnInit {
       addProdcutPropertyOption(0);
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'savePropertyOptions', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'savePropertyOptions', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 }

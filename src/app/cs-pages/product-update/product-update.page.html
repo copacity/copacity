@@ -30,7 +30,7 @@
                 <ion-list style="padding-top: 0px; padding-bottom: 0px;">
                   <ion-item>
                     <ion-label>Portada</ion-label>
-                    <ion-checkbox (click)="changeCoverImage(productImage?.image)" disabled="{{ (navParams.data.image === productImage?.image)?'true':'false'}}" checked="{{ (navParams.data.image === productImage?.image)?'true':'false'}}" color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
+                    <ion-checkbox (click)="changeCoverImage(productImage.image)" disabled="{{ (appService.getImageIdByUrl(navParams.data.image).replace('thumb_', '') === appService.getImageIdByUrl(productImage.image))?'true':'false'}}" checked="{{ (appService.getImageIdByUrl(navParams.data.image).replace('thumb_', '') === appService.getImageIdByUrl(productImage.image))?'true':'false'}}" color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
                   </ion-item>
                 </ion-list>
 
