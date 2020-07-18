@@ -15,7 +15,6 @@ import { SwUpdate } from '@angular/service-worker';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { LocationStrategy } from '@angular/common';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
-import { StorageService } from 'src/app/cs-services/storage.service';
 
 @Component({
   selector: 'app-home',
@@ -408,13 +407,5 @@ export class HomePage implements OnInit {
       window.location.reload();
       event.target.complete();
     }, 500);
-  }
-
-
-  getImageFromStorage(imageUrl: string) {
-    this.storageService.getThumbUrl(imageUrl).then(thumbUrl => {
-      alert(thumbUrl);
-    });
-    // thumb_zNDWqkv8fhWhYfZnG0dM
   }
 }
