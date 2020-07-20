@@ -34,10 +34,10 @@ export class ProductsService {
           }).catch(function (error) {
             console.log("Error getting document:", error);
           });
-        }).catch(err => {
-          alert(err);
-          this.appService.logError({id:'', message: err, function:'products-getById', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
-        });
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({ id: '', message: err, function: 'products-getById', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   public getByProductCategoryId(idStore: string, idProductCategory: string/*, productsBatch: number, lastProductToken: string*/) {
@@ -100,7 +100,7 @@ export class ProductsService {
   //     );
   // }
 
-  public getBySearchAndCategory(idStore: string, searchText: string, idProductCategory: string, ) {
+  public getBySearchAndCategory(idStore: string, searchText: string, idProductCategory: string,) {
     if (idProductCategory != '0') {
       if (idProductCategory != '-1') {
         return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
@@ -151,6 +151,22 @@ export class ProductsService {
           }))
         );
     }
+  }
+
+  getFeaturedProducts(idStore: string, top: number) {
+    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+      .where('deleted', '==', false)
+      .where('isGift', '==', false)
+      .where('isFeatured', '==', true)
+      .orderBy('name')
+      .limit(top))
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Product;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
   }
 
   public getAll(idStore: string): Observable<Product[]> {

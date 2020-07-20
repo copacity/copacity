@@ -151,19 +151,9 @@
           </ion-refresher-content>
         </ion-refresher>
 
-        <!-- <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
+        <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
           <ion-slide *ngFor="let banner of appService.banners | async">
             <img src="{{banner.image}}">
-          </ion-slide>
-        </ion-slides> -->
-
-        <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
-          <ion-slide (click)="goToStore($event, store)" *ngFor="let store of stores?.slice().reverse();">
-            <div class="profile-2">
-              <img style="width: 150px;margin: 5px 0px 5px 0px;" class="profile-image preload-image"
-                [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
-            </div>
-            <!-- <img src="{{store.logo}}"> -->
           </ion-slide>
         </ion-slides>
 
@@ -182,20 +172,25 @@
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
             <a (click)="shareApp($event)"
               style="background-color: white; color: black; font-weight: bold;border-radius:15px"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-small">tiendas</a>
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">Bienvenidos!</a>
 
             <a (click)="openBarCodeScanner()"
               style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
               <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
-            <div style="padding-top: 10px;text-align: -webkit-left;">
+            <ion-slides #sliderHomeProducts [options]="appService.slideOptsproducts" style="max-width: 450px;padding-top: 20px;">
+              <ion-slide [routerLink]="featuredProduct.url" *ngFor="let featuredProduct of featuredProducts;">
+                <div class="profile-2">
+                  <img style="width: 150px;margin: 5px 0px 5px 0px;" class="profile-image preload-image"
+                    [src]="featuredProduct.image?featuredProduct.image:'../../../assets/icon/no-image.png'" alt="img">
+                </div>
+              </ion-slide>
+            </ion-slides>
+
+            <div style="padding-top: 10px;text-align: -webkit-center;">
               <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
                 style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openStoreCreatePage()"
                 class="button button-round-small button-s">+ TIENDA</a>
-
-              <!-- <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
-                routerLink="/store/{{ appService._userStoreId }}" style="text-align: end;"><b>IR A MI TIENDA</b>
-              </a> -->
             </div>
 
             <!-- <a routerLink="/store/{{ appService._userStoreId }}"

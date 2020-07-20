@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store } from 'src/app/app-intefaces';
+import { Store, Product } from 'src/app/app-intefaces';
 import { StoreCreatePage } from '../store-create/store-create.page';
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
@@ -15,6 +15,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { LocationStrategy } from '@angular/common';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
+import { ProductsService } from 'src/app/cs-services/products.service';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ export class HomePage implements OnInit {
 
   selectedStoreLogo: string = "";
   stores: Array<Store>;
+  featuredProducts: Array<any> = [];
 
   idStoreCategory: string = '0';
   idSector: string = '0';
@@ -36,6 +38,8 @@ export class HomePage implements OnInit {
   storeSearchText: string = '';
 
   @ViewChild('sliderHome', null) slider: any;
+  @ViewChild('sliderHomeProducts', null) sliderProducts: any;
+  
   @Input('header') header: any;
   angularFireAuth: any;
 
@@ -52,7 +56,8 @@ export class HomePage implements OnInit {
     private locationStrategy: LocationStrategy,
     public toastController: ToastController,
     public popoverController: PopoverController,
-    private storesService: StoresService) {
+    private storesService: StoresService,
+    private productsService: ProductsService) {
 
     history.pushState(null, null, window.location.href);
     this.locationStrategy.onPopState(() => {
@@ -224,8 +229,19 @@ export class HomePage implements OnInit {
             if (store) {
               this.stores.push(store);
               //this.storeSearchHits++;
+
+              let subs = this.productsService.getFeaturedProducts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
+                products.forEach((product: Product) => {
+                  this.featuredProducts.push({ image: product.image, url: "/product-detail/"+ product.id +"&" + store.id });
+                });
+
+                this.featuredProducts = this.shuffle(this.featuredProducts);
+                subs.unsubscribe();
+              });
             }
           });
+
+          this.stores = this.shuffle(this.stores);
         });
       }
       // else if (this.idSector == '0') {
@@ -267,6 +283,19 @@ export class HomePage implements OnInit {
       // }
     }, 500);
   }
+
+  shuffle(arr) {
+    let i,
+        j,
+        temp;
+    for (i = arr.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr;    
+};
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
@@ -318,6 +347,9 @@ export class HomePage implements OnInit {
   ionViewDidEnter() {
     setTimeout(() => {
       try { this.slider.startAutoplay(); } catch (error) { }
+      try { this.sliderProducts.startAutoplay(); } catch (error) { }
+      this.featuredProducts = this.shuffle(this.featuredProducts);
+      this.stores = this.shuffle(this.stores);
     }, 300);
   }
 

@@ -9,6 +9,7 @@ export interface AppInfo {
   termsServiceTemplate: string;
   privacyPolicyTemplate: string;
   tax: number;
+  featuredProductsXStore: number;
 }
 
 export interface PlatformFee {

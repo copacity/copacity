@@ -1,9 +1,9 @@
-<div class="profile-popover bottom-30">
+<div class="profile-popover">
   <div class="profile-header">
   </div>
   <div class="profile-header-clear" style="margin: 0px 0px 0px 0px;height: 30px;">
   </div>
-  <div class="profile-body" style="margin: 0px 5px;">
+  <div class="profile-body" style="margin: 0px 5px;padding: 0px 10px;">
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
@@ -13,161 +13,156 @@
       <strong>Compartir</strong>
     </a>
 
-    <div class="profile-2">
-      <div class="profile-body-no-apply">
-        <form [formGroup]="form">
-          <ion-slides #sliderImageProductUpdate *ngIf="productImageCollection.length != 0" #sliderImageProductUpdate
-            [options]="slideOpts" pager="true" style="padding-top: 20px;">
-            <ion-slide *ngFor="let productImage of productImageCollection">
-              <img class="round-medium" [src]="productImage.image" alt="img">
-              <em (click)="removeProductImage(productImage)" class="round-small" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
+    <form [formGroup]="form">
+      <ion-slides #sliderImageProductUpdate *ngIf="productImageCollection.length != 0" #sliderImageProductUpdate
+        [options]="slideOpts" pager="true" style="padding-top: 20px;">
+        <ion-slide *ngFor="let productImage of productImageCollection">
+          <img class="round-medium" [src]="productImage.image" alt="img">
+          <em (click)="removeProductImage(productImage)" class="round-small" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
                   top: 0px;left: 0px">
-                <i class="fa fa-times-circle" style="margin: 5px;color: red;font-size: 1.5em;"></i></em>
+            <i class="fa fa-times-circle" style="margin: 5px;color: red;font-size: 1.5em;"></i></em>
 
-              <em class="round-small" style="margin: 5px;background-color: white;position: absolute;font-weight: bold;font-size: 1.2em;
+          <em class="round-small" style="margin: 5px;background-color: white;position: absolute;font-weight: bold;font-size: 1.2em;
                   top: 0px;right: 0px">
 
-                <ion-list style="padding-top: 0px; padding-bottom: 0px;">
-                  <ion-item>
-                    <ion-label>Portada</ion-label>
-                    <ion-checkbox (click)="changeCoverImage(productImage.image)" disabled="{{ (appService.getImageIdByUrl(navParams.data.image).replace('thumb_', '') === appService.getImageIdByUrl(productImage.image))?'true':'false'}}" checked="{{ (appService.getImageIdByUrl(navParams.data.image).replace('thumb_', '') === appService.getImageIdByUrl(productImage.image))?'true':'false'}}" color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
-                  </ion-item>
-                </ion-list>
+            <ion-list style="padding-top: 0px; padding-bottom: 0px;">
+              <ion-item>
+                <ion-label>Portada</ion-label>
+                <ion-checkbox (click)="changeCoverImage(productImage.image)"
+                  disabled="{{ (appService.getImageIdByUrl(navParams.data.image).replace('thumb_', '') === appService.getImageIdByUrl(productImage.image))?'true':'false'}}"
+                  checked="{{ (appService.getImageIdByUrl(navParams.data.image).replace('thumb_', '') === appService.getImageIdByUrl(productImage.image))?'true':'false'}}"
+                  color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
+              </ion-item>
+            </ion-list>
 
-                <!-- <ion-checkbox color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
+            <!-- <ion-checkbox color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
                 <span>Portada</span> -->
-              </em>
-            </ion-slide>
-          </ion-slides>
+          </em>
+        </ion-slide>
+      </ion-slides>
 
-          <img *ngIf="productImageCollection.length == 0" class="profile-image-product preload-image"
-            src="../../../assets/icon/no-image.png" alt="img">
+      <img *ngIf="productImageCollection.length == 0" class="profile-image-product preload-image"
+        src="../../../assets/icon/no-image.png" alt="img">
 
-          <!-- <ion-slides [options]="slideOpts" pager="true" style="padding-top: 20px;">
+      <!-- <ion-slides [options]="slideOpts" pager="true" style="padding-top: 20px;">
                 <ion-slide>
                   <img class="round-medium"
                     src="{{productImage?productImage:'../../../assets/icon/no-image.png'}}" alt="img">
                 </ion-slide>
               </ion-slides> -->
 
-          <!-- <div class="under-slider-button" style="z-index: 100;padding-left: 8px;text-align: center;"> -->
-          <div class="cta-socials" style="padding-left: 20px;padding-top: 10px;">
-            <a class="icon icon-s icon-round shadow-small" style="background-color: white;">
-              <label for="file-upload-product">
-                <i class="fa fa-upload" style="color: black;"></i> <a>Subir Imagen</a>
-              </label>
-              <input (change)="uploadImageProduct($event)" id="file-upload-product" type="file" />
-            </a>
-            <!-- <a (click)="takePictureProduct()" class="icon icon-s icon-round shadow-small"
+      <!-- <div class="under-slider-button" style="z-index: 100;padding-left: 8px;text-align: center;"> -->
+      <div class="cta-socials" style="padding-left: 20px;padding-top: 10px;">
+        <a class="icon icon-s icon-round shadow-small" style="background-color: white;">
+          <label for="file-upload-product">
+            <i class="fa fa-upload" style="color: black;"></i> <a>Subir Imagen</a>
+          </label>
+          <input (change)="uploadImageProduct($event)" id="file-upload-product" type="file" />
+        </a>
+        <!-- <a (click)="takePictureProduct()" class="icon icon-s icon-round shadow-small"
                     style="background-color: white;">
                     <i class="fa fa-camera" style="color: black"></i></a> -->
-          </div>
-          <!-- </div> -->
-
-          <div class="content header-clear-small">
-            <ion-list lines="full" class="ion-no-margin ion-no-padding">
-              <ion-item>
-                <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b
-                    style="color: red;">(*)</b>
-                </ion-label>
-                <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
-              </ion-item>
-              <ion-item *ngIf="!isGift">
-                <ion-label style="color: gray;font-size: 15px;">Sección: <b style="color: red;font-size: 15px;">(*)</b>
-                </ion-label>
-                <ion-select formControlName="category" mode="ios" interface="action-sheet" style="font-size: 15px;">
-                  <ion-select-option *ngFor="let productCategory of productCategories | async;"
-                    value="{{productCategory.id}}" style="font-size: 15px;">
-                    {{productCategory.name}}</ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-item>
-                <ion-label position="floating" style="color: gray;">{{ (!isGift)?'Precio':'Puntos' }} <b
-                    style="color: red;">(*)</b>
-                </ion-label>
-                <ion-input formControlName="price" type="number" style="font-size: 15px;"></ion-input>
-              </ion-item>
-              <ion-item *ngIf="!isGift">
-                <ion-label style="color: gray;font-size: 15px;">Descuento:</ion-label>
-                <ion-select formControlName="discount" mode="ios" interface='action-sheet' style="font-size: 15px;">
-                  <ion-select-option value="{{number}}" *ngFor="let number of getNumbers()">{{number}}%
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-item style="padding-bottom: 20px;">
-                <ion-label position="floating" style="color: gray;">Descripción <small style="color: gray;">
-                    ({{this.form.get('description').value.length}}/500)</small></ion-label>
-                <ion-textarea formControlName="description" style="font-size: 15px;"></ion-textarea>
-              </ion-item>
-            </ion-list>
-          </div>
-        </form>
-
-        <table *ngIf="!isGift" class="table-borders-dark store-product-table"
-          style="border: solid 1px rgba(0,0,0,0.08);">
-          <tr>
-            <td colspan="2" style="text-align: left;">
-              <h4 class="bold" style="color: black;margin-top: 0px;">Características</h4>
-            </td>
-            <td style="text-align: -webkit-right;padding-right: 5px;">
-              <a (click)="openProductProperty($event)" class="button button-round-small button-xs button-full"
-                style="color: white;background-color: red;font-size: 10px;width: 90px;">Agregar</a>
-            </td>
-          </tr>
-          <tr *ngIf="productProperties.length == 0">
-            <td colspan="3">
-              <span style="color: red;font-size: 1.3em;">No hay características agregadas</span>
-            </td>
-          </tr>
-
-          <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
-            <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}<span
-                *ngIf="productProperty.isMandatory" style="color: red;">(*)</span></td>
-            <td style="vertical-align: top;">
-              <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
-                class="{{productPropertyOption.deleted?'hidden':''}}">
-                {{productPropertyOption.name}}<b
-                  *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
-                <br />
-              </div>
-
-            </td>
-            <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
-              <a (click)="productPropertyDelete(productProperty)" class="icon icon-s icon-round shadow-small">
-                <i class="fa fa-trash" style="color: black"></i></a>
-              <a (click)="productPropertyUpdate(productProperty)" class="icon icon-s icon-round shadow-small">
-                <i class="fa fa-edit" style="color: black"></i></a>
-            </td>
-          </tr>
-        </table>
-        <div class="divider"></div>
-        <!-- Propiedades:
-          <div class="divider bottom-10" style="height: 2px;background-color: red;"></div> -->
       </div>
-    </div>
+      <!-- </div> -->
+
+      <div class="content header-clear-small">
+        <ion-list lines="full" class="ion-no-margin ion-no-padding">
+          <ion-item>
+            <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b style="color: red;">(*)</b>
+            </ion-label>
+            <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!isGift">
+            <ion-label style="color: gray;font-size: 15px;">Sección: <b style="color: red;font-size: 15px;">(*)</b>
+            </ion-label>
+            <ion-select formControlName="category" mode="ios" interface="action-sheet" style="font-size: 15px;">
+              <ion-select-option *ngFor="let productCategory of productCategories | async;"
+                value="{{productCategory.id}}" style="font-size: 15px;">
+                {{productCategory.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">{{ (!isGift)?'Precio':'Puntos' }} <b
+                style="color: red;">(*)</b>
+            </ion-label>
+            <ion-input formControlName="price" type="number" style="font-size: 15px;"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!isGift">
+            <ion-label style="color: gray;font-size: 15px;">Descuento:</ion-label>
+            <ion-select formControlName="discount" mode="ios" interface='action-sheet' style="font-size: 15px;">
+              <ion-select-option value="{{number}}" *ngFor="let number of getNumbers()">{{number}}%
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item style="padding-bottom: 20px;">
+            <ion-label position="floating" style="color: gray;">Descripción <small style="color: gray;">
+                ({{this.form.get('description').value.length}}/500)</small></ion-label>
+            <ion-textarea formControlName="description" style="font-size: 15px;"></ion-textarea>
+          </ion-item>
+        </ion-list>
+      </div>
+    </form>
+
+    <table *ngIf="!isGift" class="table-borders-dark store-product-table" style="border: solid 1px rgba(0,0,0,0.08);">
+      <tr>
+        <td colspan="2" style="text-align: left;">
+          <h4 class="bold" style="color: black;margin-top: 0px;">Características</h4>
+        </td>
+        <td style="text-align: -webkit-right;padding-right: 5px;">
+          <a (click)="openProductProperty($event)" class="button button-round-small button-xs button-full"
+            style="color: white;background-color: red;font-size: 10px;width: 90px;">Agregar</a>
+        </td>
+      </tr>
+      <tr *ngIf="productProperties.length == 0">
+        <td colspan="3">
+          <span style="color: red;font-size: 1.3em;">No hay características agregadas</span>
+        </td>
+      </tr>
+
+      <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
+        <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}<span
+            *ngIf="productProperty.isMandatory" style="color: red;">(*)</span></td>
+        <td style="vertical-align: top;">
+          <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
+            class="{{productPropertyOption.deleted?'hidden':''}}">
+            {{productPropertyOption.name}}<b
+              *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+            <br />
+          </div>
+
+        </td>
+        <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
+          <a (click)="productPropertyDelete(productProperty)" class="icon icon-s icon-round shadow-small">
+            <i class="fa fa-trash" style="color: black"></i></a>
+          <a (click)="productPropertyUpdate(productProperty)" class="icon icon-s icon-round shadow-small">
+            <i class="fa fa-edit" style="color: black"></i></a>
+        </td>
+      </tr>
+    </table>
+    <div class="divider"></div>
 
     <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
-          class="content content-box round-small shadow-large">
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
-            <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-            <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
-              caracteres</span>
-          </p>
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
-            <span *ngIf="form.get('category').hasError('required')">Sección es requerido</span>
-          </p>
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('price').errors">
-            <span *ngIf="form.get('price').hasError('required')">{{ (!isGift)?'Producto':'Regalo' }} es requerido</span>
-          </p>
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
-            <span *ngIf="form.get('description').hasError('required')">Descripción es requerido</span>
-            <span *ngIf="form.get('description').hasError('maxlength')">Descripción debe ser máximo de 500
-              caracteres</span>
-          </p>
-        </div>
+      class="content content-box round-small shadow-large">
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
+        <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
+        <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
+          caracteres</span>
+      </p>
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
+        <span *ngIf="form.get('category').hasError('required')">Sección es requerido</span>
+      </p>
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('price').errors">
+        <span *ngIf="form.get('price').hasError('required')">{{ (!isGift)?'Producto':'Regalo' }} es requerido</span>
+      </p>
+      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
+        <span *ngIf="form.get('description').hasError('required')">Descripción es requerido</span>
+        <span *ngIf="form.get('description').hasError('maxlength')">Descripción debe ser máximo de 500
+          caracteres</span>
+      </p>
+    </div>
 
-        <a (click)="updateProduct()"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">ACTUALIZAR</a>    
+    <a (click)="updateProduct()"
+      style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+      class="button button-round-small shadow-large button-full button-s">ACTUALIZAR</a>
   </div>
 </div>
