@@ -104,7 +104,7 @@ export class ProductDetailPage implements OnInit {
 
         if (user && (this.appService.currentStore.idUser == user.uid)) {
           this.isAdmin = true;
-          this.router.navigate(['/store', this.appService.currentStore.id]);
+          //this.router.navigate(['/store', this.appService.currentStore.id]);
         } else {
           this.isAdmin = false;
         }
@@ -262,7 +262,7 @@ export class ProductDetailPage implements OnInit {
       img.src = this.product.image;
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'createFile', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'createFile', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -374,49 +374,52 @@ export class ProductDetailPage implements OnInit {
   }
 
   addToCart(e: any) {
+    if (!this.isAdmin) {
+      this.cartInventoryService.clearCart();
+      let subs = this.productService.getCartInventory(this.appService.currentStore.id, this.product.id)
+        .subscribe((cartP) => {
+          let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, this.product.id);
 
-    this.cartInventoryService.clearCart();
-    let subs = this.productService.getCartInventory(this.appService.currentStore.id, this.product.id)
-      .subscribe((cartP) => {
-        let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, this.product.id);
+          let subscribe = productPropertiesResult.subscribe(async productProperties => {
+            productProperties.forEach(productProperty => {
+              let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
+              let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+                productProperty.productPropertyOptions = productPropertyOptions;
+                subscribe2.unsubscribe();
+              });
+            });
 
-        let subscribe = productPropertiesResult.subscribe(async productProperties => {
-          productProperties.forEach(productProperty => {
-            let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
-            let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
-              productProperty.productPropertyOptions = productPropertyOptions;
-              subscribe2.unsubscribe();
+            productProperties = productProperties;
+            subscribe.unsubscribe();
+
+            let modal = await this.popoverCtrl.create({
+              component: ProductPropertiesSelectionComponent,
+              mode: 'ios',
+              event: e,
+              componentProps: { isInventory: false, product: this.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 },
+              backdropDismiss: false,
             });
+
+            modal.onDidDismiss()
+              .then((data) => {
+                const result = data['data'];
+
+                if (result) {
+                  this.animateCSS('tada');
+                  this.cartSevice.addProduct(result);
+                  this.presentToast(this.product.name + ' ha sido agregado al carrito!');
+                  this.close();
+                }
+              });
+
+            modal.present();
           });
-    
-          productProperties = productProperties;
-          subscribe.unsubscribe();
-    
-          let modal = await this.popoverCtrl.create({
-            component: ProductPropertiesSelectionComponent,
-            mode: 'ios',
-            event: e,
-            componentProps: { isInventory: false, product: this.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 },
-            backdropDismiss: false,
-          });
-    
-          modal.onDidDismiss()
-            .then((data) => {
-              const result = data['data'];
-    
-              if (result) {
-                this.animateCSS('tada');
-                this.cartSevice.addProduct(result);
-                this.presentToast(this.product.name + ' ha sido agregado al carrito!');
-                this.close();
-              }
-            });
-    
-          modal.present();
+
+          subs.unsubscribe();
         });
-
-        subs.unsubscribe();
-      });
+    } else {
+      this.presentAlert("No puedes agregar productos al carrito por que eres el administrador de esta tienda. Gracias", "", () => { });
+    }
   }
 
   async openBarCodeScanner() {
@@ -472,6 +475,7 @@ export class ProductDetailPage implements OnInit {
       message: message,
       duration: 3000,
       position: 'bottom',
+      buttons: ['Cerrar']
     });
     toast.present();
   }
