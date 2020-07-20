@@ -179,20 +179,29 @@
               <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
             <ion-slides #sliderHomeProducts [options]="appService.slideOptsproducts" style="max-width: 450px;">
-              <ion-slide [routerLink]="featuredProduct.url" *ngFor="let featuredProduct of featuredProducts;" style="padding: 5px;">
+              <ion-slide [routerLink]="featuredProduct.url" *ngFor="let featuredProduct of featuredProducts;"
+                style="padding: 2px;">
                 <div class="profile-2">
-                  <img style="padding: 5px;width: 150px;margin: 5px 0px 5px 0px;border: solid 0px #fff;box-shadow: 0px 2px 5px rgba(0,0,0,0.20);" 
-                  class="round-medium preload-image"
+                  <img style="padding: 2px;width: 150px;margin: 5px 0px 5px 0px;border: solid 0px #fff;"
+                    class="round-small preload-image shadow-small"
                     [src]="featuredProduct.image?featuredProduct.image:'../../../assets/icon/no-image.png'" alt="img">
                 </div>
               </ion-slide>
             </ion-slides>
 
-            <div style="padding-top: 10px;text-align: -webkit-right;">
+            <div style="text-align: -webkit-center;" class="top-20">
               <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
                 style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openStoreCreatePage()"
                 class="button button-round-small button-s">+ TIENDA</a>
             </div>
+
+            <div style="text-align: -webkit-left;" class="top-10 bottom-20">
+              <h4 class="bolder color-highlight" style="font-size: 1.2em;">TIENDAS</h4>
+            </div>
+
+            <!-- <div style="padding-top: 10px;text-align: -webkit-left;top: -65px;">
+              <h4 style="font-size: 1.2em;" class="color-highlight bolder">TIENDAS</h4>
+            </div> -->
 
             <!-- <a routerLink="/store/{{ appService._userStoreId }}"
               style="background-color: transparent; color: black;font-size: 20px;"
@@ -225,6 +234,9 @@
             </a> -->
 
             <div id="page-no-apply">
+              <!-- <div style="padding-top: 10px;text-align: -webkit-left;top: -65px;">
+                <h4 style="font-size: 1.2em;" class="color-highlight bolder">TIENDAS</h4>
+              </div> -->
               <!-- FILTERS DISABLED TEMPORALLY -->
               <!-- <ion-grid style="padding-left: 5px; padding-right: 5px;padding-bottom: 5px;padding-top: 10px;">
                 <ion-row>
