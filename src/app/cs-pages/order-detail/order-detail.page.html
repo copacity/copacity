@@ -189,7 +189,7 @@
                 </tr>
               </table>
 
-              <table style="padding-top: 20px;">
+              <table *ngIf="buttons" style="padding-top: 20px;">
                 <tr>
                   <td style="text-align: left;padding: 2px;">
                     <a (click)="openMessage($event)"
@@ -278,7 +278,8 @@
                 </tr>
                 <tr *ngFor="let cartProduct of cartProducts | async">
                   <td style="text-align: left; padding-left: 5px;" class="{{(!cartProduct.checked)?'unchecked':''}}">
-                    {{cartProduct.product.name}} <span *ngFor="let property of cartProduct.propertiesSelection;"
+                    <b *ngIf="cartProduct.product.ref" style="font-size: .8; color: red;">[{{cartProduct.product.ref}}]: </b>{{cartProduct.product.name}} <span
+                      *ngFor="let property of cartProduct.propertiesSelection;"
                       style="font-size: .7em;font-weight: 700;color: blue;">, {{property.propertyName }}:
                       {{property.propertyOptionName }} </span><small style="font-size: 12px;font-weight: 900;"
                       *ngIf="!cartProduct.product?.isGift">,

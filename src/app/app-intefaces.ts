@@ -150,6 +150,7 @@ export interface Product {
   id: string;
   idProductCategory: string;
   name: string;
+  ref: string;
   description: string;
   price: number;
   image: string;

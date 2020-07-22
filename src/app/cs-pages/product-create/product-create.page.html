@@ -43,6 +43,11 @@
             </ion-label>
             <ion-input formControlName="name"></ion-input>
           </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Referencia
+            </ion-label>
+            <ion-input formControlName="ref"></ion-input>
+          </ion-item>
           <ion-item *ngIf="!isGift">
             <ion-label style="color: gray;">Sección: <b style="color: red;">(*)</b></ion-label>
             <ion-select style="padding-right: 10px;" mode="ios" formControlName="category" cancelText="Cancelar"
@@ -118,6 +123,10 @@
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
           <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
           <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
+            caracteres</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('ref').errors">
+          <span *ngIf="form.get('ref').hasError('maxlength')">Referencia debe ser máximo de 10
             caracteres</span>
         </p>
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">

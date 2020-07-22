@@ -297,6 +297,7 @@ export class ProductUpdatePage implements OnInit {
     if (!this.isGift) {
       this.form = this.formBuilder.group({
         name: [this.navParams.data.name, [Validators.required, Validators.maxLength(50)]],
+        ref: [this.navParams.data.ref, [Validators.maxLength(10)]],
         category: [this.navParams.data.idProductCategory.toString(), [Validators.required]],
         price: [this.navParams.data.price, [Validators.required]],
         description: [this.navParams.data.description, [Validators.maxLength(500)]],
@@ -305,6 +306,7 @@ export class ProductUpdatePage implements OnInit {
     } else {
       this.form = this.formBuilder.group({
         name: [this.navParams.data.name, [Validators.required, Validators.maxLength(50)]],
+        ref: [this.navParams.data.ref, [Validators.maxLength(10)]],
         category: [this.navParams.data.idProductCategory.toString()],
         price: [this.navParams.data.price, [Validators.required]],
         description: [this.navParams.data.description, [Validators.maxLength(500)]],
@@ -320,6 +322,7 @@ export class ProductUpdatePage implements OnInit {
 
       let data = {
         name: this.form.value.name,
+        ref: this.form.value.ref,
         idProductCategory: this.form.value.category,
         price: this.form.value.price,
         description: this.form.value.description,

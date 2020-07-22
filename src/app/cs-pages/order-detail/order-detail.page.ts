@@ -41,6 +41,7 @@ export class OrderDetailPage implements OnInit {
   discount: number;
   vendorName: string;
   user: User;
+  buttons: boolean = false;
 
   constructor(private popoverCtrl: PopoverController,
     private router: Router,
@@ -121,6 +122,7 @@ export class OrderDetailPage implements OnInit {
 
         if (this.appService.currentUser && this.store.idUser == this.appService.currentUser.id) {
           this.isAdmin = true;
+          this.buttons = true;
         } else {
           if (this.appService.currentUser && this.order.idUser == this.appService.currentUser.id) {
             this.isAdmin = false;
