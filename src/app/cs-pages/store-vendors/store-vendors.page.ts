@@ -101,19 +101,20 @@ export class StoreVendorsPage implements OnInit {
   }
 
   async openOrderDetailPage(orderDetail: any) {
+    this.router.navigate(['order-detail/' + orderDetail.idOrder + "&" + this.appService.currentStore.id]);
 
-    let modal = await this.popoverController.create({
-      component: OrderDetailPage,
-      componentProps: { id: orderDetail.idOrder, idStore: this.appService.currentStore.id },
-      cssClass: 'cs-popovers'
-    });
+    // let modal = await this.popoverController.create({
+    //   component: OrderDetailPage,
+    //   componentProps: { id: orderDetail.idOrder, idStore: this.appService.currentStore.id },
+    //   cssClass: 'cs-popovers'
+    // });
 
-    modal.onDidDismiss()
-      .then((data) => {
-        const updated = data['data'];
-      });
+    // modal.onDidDismiss()
+    //   .then((data) => {
+    //     const updated = data['data'];
+    //   });
 
-    modal.present();
+    // modal.present();
   }
 
   async openProfileUpdatePage() {

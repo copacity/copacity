@@ -96,7 +96,7 @@ export class ProductUpdatePage implements OnInit {
       el: '.swiper-pagination',
       type: 'fraction',
       renderFraction: function (currentClass, totalClass) {
-        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;">' +
+        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;;opacity:.8">' +
           '<span  class="' + currentClass + '"></span>' +
           ' / ' +
           '<span class="' + totalClass + '"></span></div></div>';
@@ -415,7 +415,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   removeProductImage(productImage: ProductImage) {
-    this.presentConfirm("Estas seguro que deseas eliminar la imagen?", () => {
+    this.presentConfirm("Estás seguro que deseas eliminar la imagen?", () => {
       if (this.productImageCollection.length == 1) {
         this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: "" }).then(() => {
           this.navParams.data.image = '';

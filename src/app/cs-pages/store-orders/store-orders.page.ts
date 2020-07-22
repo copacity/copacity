@@ -6,6 +6,7 @@ import { AppService } from 'src/app/cs-services/app.service';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { OrderDetailPage } from '../order-detail/order-detail.page';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store-orders',
@@ -19,6 +20,7 @@ export class StoreOrdersPage implements OnInit {
   isAdmin: boolean = false;
 
   constructor(
+    private router: Router,
     public popoverController: PopoverController,
     public navParams: NavParams,
     private ordersService: OrdersService,
@@ -65,20 +67,22 @@ export class StoreOrdersPage implements OnInit {
   }
 
   async openOrderDetailPage(idOrder: Order) {
+    this.router.navigate(['order-detail/' + idOrder + "&" + this.appService.currentStore.id]);
+    this.popoverController.dismiss();
 
-    let modal = await this.popoverController.create({
-      component: OrderDetailPage,
-      componentProps: { id: idOrder, idStore: this.appService.currentStore.id },
-      cssClass: 'cs-popovers',
-      backdropDismiss: false,
-    });
+    // let modal = await this.popoverController.create({
+    //   component: OrderDetailPage,
+    //   componentProps: { id: idOrder, idStore: this.appService.currentStore.id },
+    //   cssClass: 'cs-popovers',
+    //   backdropDismiss: false,
+    // });
 
-    modal.onDidDismiss()
-      .then((data) => {
-        const updated = data['data'];
-      });
+    // modal.onDidDismiss()
+    //   .then((data) => {
+    //     const updated = data['data'];
+    //   });
 
-    modal.present();
+    // modal.present();
   }
 
   async openImageViewer(img: string) {

@@ -180,20 +180,30 @@
 
             <ion-slides #sliderHomeProducts [options]="appService.slideOptsproducts" style="max-width: 450px;">
               <ion-slide [routerLink]="featuredProduct.url" *ngFor="let featuredProduct of featuredProducts;"
-                style="padding: 2px;">
+                style="padding: 2px; padding-top: 17px;">
                 <div class="profile-2">
-                  <img style="padding: 2px;width: 150px;margin: 5px 0px 5px 0px;border: solid 0px #fff;"
-                    class="round-small preload-image shadow-small"
-                    [src]="featuredProduct.image?featuredProduct.image:'../../../assets/icon/no-image.png'" alt="img">
+                  <div class="blog-col-item" style="margin-bottom: 0px;">
+                    <a>
+                      <img style="padding: 2px;width: 150px;margin: 5px 0px 5px 0px;border: solid 0px #fff;"
+                        class="round-small preload-image shadow-small"
+                        [src]="featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png'"
+                        alt="img">
+
+                      <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
+                        style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
+                        class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}">
+                        <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
+
+                      <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
+                        class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}"
+                        style="background-color: transparent;color: black;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
+                        -{{ featuredProduct.product?.discount }}%</em>
+
+                    </a>
+                  </div>
                 </div>
               </ion-slide>
             </ion-slides>
-
-            <div style="text-align: -webkit-center;" class="top-20">
-              <a *ngIf="(appService.currentUser && appService.currentUser.isAdmin)"
-                style="text-align: end;background-color: red;margin-bottom: 0px;" (click)="openStoreCreatePage()"
-                class="button button-round-small button-s">+ TIENDA</a>
-            </div>
 
             <div style="text-align: -webkit-left;" class="top-10 bottom-20">
               <h4 class="bolder color-highlight" style="font-size: 1.2em;">TIENDAS</h4>
@@ -309,17 +319,17 @@
                         <img src="{{store?.logo?store.logo:'../../../assets/icon/no-image.png'}}"
                           class="responsive-image preload-image shadow-large round-medium img-store" alt="img">
 
+                        <div class="review-stars" style="padding-top: 5px;">
+                          <i class="fa fa-star color-yellow1-dark"></i>
+                          <i class="fa fa-star color-yellow1-dark"></i>
+                          <i class="fa fa-star color-yellow1-dark"></i>
+                          <i class="fa fa-star color-yellow1-dark"></i>
+                          <i class="fa fa-star color-yellow1-dark"></i>
+                        </div>
+                        
                         <strong
                           class="strong-store">{{((store?.name.length<=30)?store?.name:store?.name.substring(0, 30) + '...')}}</strong>
-                        <!-- <div class="review-stars" style="padding-top: 10px;">
-                              5.0 &nbsp;
-                              <i class="fa fa-star color-yellow1-dark"></i>
-                              <i class="fa fa-star color-yellow1-dark"></i>
-                              <i class="fa fa-star color-yellow1-dark"></i>
-                              <i class="fa fa-star color-yellow1-dark"></i>
-                              <i class="fa fa-star color-yellow1-dark"></i>
-                              &nbsp;(34)
-                            </div> -->
+
                       </a>
                     </div>
                   </div>

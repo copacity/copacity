@@ -4,7 +4,6 @@ import { PopoverController, AlertController, ToastController } from '@ionic/angu
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { Store, Product } from 'src/app/app-intefaces';
-import { StoreCreatePage } from '../store-create/store-create.page';
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
@@ -76,7 +75,7 @@ export class HomePage implements OnInit {
   ngOnInit(): void { }
 
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
       this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();
@@ -232,7 +231,7 @@ export class HomePage implements OnInit {
 
               let subs = this.productsService.getFeaturedProducts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
                 products.forEach((product: Product) => {
-                  this.featuredProducts.push({ image: product.image, url: "/product-detail/"+ product.id +"&" + store.id });
+                  this.featuredProducts.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id });
                 });
 
                 this.featuredProducts = this.shuffle(this.featuredProducts);
@@ -352,33 +351,6 @@ export class HomePage implements OnInit {
       this.stores = this.shuffle(this.stores);
     }, 300);
   }
-
-  //--------------------------------------------------------------
-  //--------------------------------------------------------------
-  //--------------------------------       STORE CREATION
-
-  async openStoreCreatePage() {
-    if (this.appService.currentUser) {
-      let modal = await this.popoverController.create({
-        component: StoreCreatePage,
-        cssClass: 'cs-popovers',
-        backdropDismiss: false,
-      });
-
-      modal.onDidDismiss()
-        .then((data) => {
-          const idNewStore = data['data'];
-          if (idNewStore) {
-            this.router.navigate(['/store', idNewStore]);
-          }
-        });
-
-      modal.present();
-    } else {
-      this.SignIn();
-    }
-  }
-
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------

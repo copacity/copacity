@@ -114,20 +114,21 @@ export class OrderListPage implements OnInit {
   }
 
   async openOrderDetailPage(idOrder: Order) {
+    this.router.navigate(['order-detail/' + idOrder + "&" + this.store.id]);
 
-    let modal = await this.popoverController.create({
-      component: OrderDetailPage,
-      componentProps: { id: idOrder, idStore: this.store.id },
-      cssClass: 'cs-popovers',
-      backdropDismiss: false,
-    });
+    // let modal = await this.popoverController.create({
+    //   component: OrderDetailPage,
+    //   componentProps: { id: idOrder, idStore: this.store.id },
+    //   cssClass: 'cs-popovers',
+    //   backdropDismiss: false,
+    // });
 
-    modal.onDidDismiss()
-      .then((data) => {
-        const updated = data['data'];
-      });
+    // modal.onDidDismiss()
+    //   .then((data) => {
+    //     const updated = data['data'];
+    //   });
 
-    modal.present();
+    // modal.present();
   }
 
   async presentMenuUser(e) {
@@ -190,7 +191,7 @@ export class OrderListPage implements OnInit {
 
 
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
       this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();

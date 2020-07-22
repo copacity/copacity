@@ -76,7 +76,7 @@ export class ProductCreatePage implements OnInit {
       el: '.swiper-pagination',
       type: 'fraction',
       renderFraction: function (currentClass, totalClass) {
-        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;">' +
+        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;;opacity:.8">' +
           '<span  class="' + currentClass + '"></span>' +
           ' / ' +
           '<span class="' + totalClass + '"></span></div></div>';
@@ -94,7 +94,7 @@ export class ProductCreatePage implements OnInit {
 
 
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
       this.loader.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();
@@ -398,7 +398,7 @@ export class ProductCreatePage implements OnInit {
   removeProductImage(img: string) {
     for (let [index, image] of this.imgURL.entries()) {
       if (image === img) {
-        this.presentConfirm("Estas seguro que deseas eliminar la imagen?", () => {
+        this.presentConfirm("Estás seguro que deseas eliminar la imagen?", () => {
           this.imgURL.splice(index, 1);
         });
         break;

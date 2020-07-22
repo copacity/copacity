@@ -213,7 +213,7 @@ export class ProfilePage implements OnInit {
 
   
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
       this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();

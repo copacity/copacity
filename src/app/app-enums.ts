@@ -9,6 +9,7 @@ export enum OrderStatus {
   Pending = 1,
   Sent = 2,
   Cancelled = 3,
+  Published
 }
 
 export enum VendorStatus {

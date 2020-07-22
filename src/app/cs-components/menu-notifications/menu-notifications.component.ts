@@ -36,18 +36,20 @@ export class MenuNotificationsComponent implements OnInit {
   }
 
   async openOrderDetailPage(notification: Notification) {
+    this.router.navigate(['order-detail/' + notification.idOrder + "&" + notification.idStore]);
+    this.popoverController.dismiss();
 
-    let modal = await this.popoverController.create({
-      component: OrderDetailPage,
-      componentProps: { id: notification.idOrder, idStore: notification.idStore },
-      cssClass: 'cs-popovers'
-    });
+    // let modal = await this.popoverController.create({
+    //   component: OrderDetailPage,
+    //   componentProps: { id: notification.idOrder, idStore: notification.idStore },
+    //   cssClass: 'cs-popovers'
+    // });
 
-    modal.onDidDismiss()
-      .then((data) => {
-        const updated = data['data'];
-      });
+    // modal.onDidDismiss()
+    //   .then((data) => {
+    //     const updated = data['data'];
+    //   });
 
-    modal.present();
+    // modal.present();
   }
 }

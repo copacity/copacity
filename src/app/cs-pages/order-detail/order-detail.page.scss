@@ -1,11 +1,72 @@
 @import "../../../assets/template/styles/styleTemplate.css";
 
-ion-content { --background: transparent;}
+:host {  
+    --super-tabs-toolbar-background: white;
+    --st-indicator-color: red;
+    --st-indicator-height: 4px;
+  }
 
-ion-toolbar{
-    --background: red;
+ion-title a {
+    font-size: 18px; color: black; padding-left: 5px;
 }
 
-.unchecked {
-    text-decoration: line-through;
+#badge-notifications {
+  position: absolute;
+  top: 1px;
+  right: -6px;
+  font-size: 13px;
+  padding: 2px;
+}
+
+@media screen and (min-width: 1180px) {  
+  // .profile-1 {
+	// 	width: 450px;
+	// 	position: absolute;
+	// 	left: 50%;
+	// 	transform: translate(-50%, 56px);
+  // }
+  
+  super-tabs-toolbar{
+    width: 750px;
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%, -0%);
+  }
+
+  #main-menu-large{
+    height: 100%;
+    width: 250px;
+    background-color: white;
+    position: fixed;
+    top: 56px;
+    padding-bottom: 200px;
+  }
+
+  #main-menu-large-right {
+    height: 100%;
+    width: 250px;
+    background-color: white;
+    position: fixed;
+    top: 56px;
+    right: 0px;
+    padding-bottom: 100px;
+  }
+
+  .side-content{
+    --background: white;
+  }
+
+  .menu-icon-bars{
+    display: none;
+  }
+
+  .notifications-icon{
+    display: none;
+  }
+} 
+
+@media screen and (max-width: 1179px) {
+  #main-menu-large, #main-menu-large-right {
+    display: none;
+  }
 }

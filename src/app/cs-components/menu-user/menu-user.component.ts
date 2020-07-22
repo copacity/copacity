@@ -5,6 +5,7 @@ import { PopoverController, ToastController, AlertController } from '@ionic/angu
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoaderComponent } from '../loader/loader.component';
+import { StoreCreatePage } from 'src/app/cs-pages/store-create/store-create.page';
 
 @Component({
   selector: 'app-menu-user',
@@ -34,8 +35,36 @@ export class MenuUserComponent implements OnInit {
     return await popover.present();
   }
 
+    //--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //--------------------------------       STORE CREATION
+
+  async openStoreCreatePage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StoreCreatePage,
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const idNewStore = data['data'];
+          if (idNewStore) {
+            this.router.navigate(['/store', idNewStore]);
+          }
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
+
+    this.popoverController.dismiss();
+  }
+
   signOut() {
-    this.presentConfirm("Estas seguro que deseas cerrar la sesión?", () => {
+    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
       this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
       setTimeout(() => {
         this.angularFireAuth.auth.signOut();

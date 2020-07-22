@@ -8,6 +8,7 @@ import { AppService } from 'src/app/cs-services/app.service';
 import { Order, StoreCoupon } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { OrderDetailPage } from '../order-detail/order-detail.page';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store-reports',
@@ -28,6 +29,7 @@ export class StoreReportsPage implements OnInit {
   ordersDetail: any[] = [];
 
   constructor(
+    private router: Router,
     public popoverController: PopoverController,
     private orderService: OrdersService,
     private formBuilder: FormBuilder,
@@ -103,19 +105,20 @@ export class StoreReportsPage implements OnInit {
   }
 
   async openOrderDetailPage(orderDetail: any) {
+    this.router.navigate(['order-detail/' + orderDetail.idOrder + "&" + this.appService.currentStore.id]);
 
-    let modal = await this.popoverController.create({
-      component: OrderDetailPage,
-      componentProps: { id: orderDetail.idOrder, idStore: this.appService.currentStore.id },
-      cssClass: 'cs-popovers'
-    });
+    // let modal = await this.popoverController.create({
+    //   component: OrderDetailPage,
+    //   componentProps: { id: orderDetail.idOrder, idStore: this.appService.currentStore.id },
+    //   cssClass: 'cs-popovers'
+    // });
 
-    modal.onDidDismiss()
-      .then((data) => {
-        const updated = data['data'];
-      });
+    // modal.onDidDismiss()
+    //   .then((data) => {
+    //     const updated = data['data'];
+    //   });
 
-    modal.present();
+    // modal.present();
   }
 
   getOrderTotal(order: Order) {

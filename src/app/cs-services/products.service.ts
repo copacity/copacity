@@ -157,6 +157,7 @@ export class ProductsService {
     return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
       .where('deleted', '==', false)
       .where('isGift', '==', false)
+      .where('soldOut', '==', false)
       .where('isFeatured', '==', true)
       .orderBy('name')
       .limit(top))

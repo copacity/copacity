@@ -49,7 +49,7 @@ const routes: Routes = [
     loadChildren: () => import('./cs-pages/product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
   },
   {
-    path: 'order-detail',
+    path: 'order-detail/:id',
     loadChildren: () => import('./cs-pages/order-detail/order-detail.module').then( m => m.OrderDetailPageModule)
   },
   {

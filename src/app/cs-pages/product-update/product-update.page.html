@@ -1,9 +1,12 @@
 <div class="profile-popover">
+
   <div class="profile-header">
   </div>
   <div class="profile-header-clear" style="margin: 0px 0px 0px 0px;height: 30px;">
   </div>
+
   <div class="profile-body" style="margin: 0px 5px;padding: 0px 10px;">
+
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
@@ -13,17 +16,17 @@
       <strong>Compartir</strong>
     </a>
 
-    <form [formGroup]="form">
-      <ion-slides #sliderImageProductUpdate *ngIf="productImageCollection.length != 0" #sliderImageProductUpdate
+    <div>
+      <ion-slides #sliderImageProductUpdate *ngIf="productImageCollection.length != 0"
         [options]="slideOpts" pager="true" style="padding-top: 20px;">
         <ion-slide *ngFor="let productImage of productImageCollection">
           <img class="round-medium" [src]="productImage.image" alt="img">
-          <em (click)="removeProductImage(productImage)" class="round-small" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
+          <em (click)="removeProductImage(productImage)" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
                   top: 0px;left: 0px">
             <i class="fa fa-times-circle" style="margin: 5px;color: red;font-size: 1.5em;"></i></em>
 
-          <em class="round-small" style="margin: 5px;background-color: white;position: absolute;font-weight: bold;font-size: 1.2em;
-                  top: 0px;right: 0px">
+          <em style="margin: 5px;background-color: white;position: absolute;font-weight: bold;font-size: 1.2em;
+                  top: 0px;right: 0px;opacity: .8;">
 
             <ion-list style="padding-top: 0px; padding-bottom: 0px;">
               <ion-item>
@@ -34,9 +37,6 @@
                   color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
               </ion-item>
             </ion-list>
-
-            <!-- <ion-checkbox color="danger" style="width: 30px; height: 30px;margin:5px"></ion-checkbox>
-                <span>Portada</span> -->
           </em>
         </ion-slide>
       </ion-slides>
@@ -44,14 +44,6 @@
       <img *ngIf="productImageCollection.length == 0" class="profile-image-product preload-image"
         src="../../../assets/icon/no-image.png" alt="img">
 
-      <!-- <ion-slides [options]="slideOpts" pager="true" style="padding-top: 20px;">
-                <ion-slide>
-                  <img class="round-medium"
-                    src="{{productImage?productImage:'../../../assets/icon/no-image.png'}}" alt="img">
-                </ion-slide>
-              </ion-slides> -->
-
-      <!-- <div class="under-slider-button" style="z-index: 100;padding-left: 8px;text-align: center;"> -->
       <div class="cta-socials" style="padding-left: 20px;padding-top: 10px;">
         <a class="icon icon-s icon-round shadow-small" style="background-color: white;">
           <label for="file-upload-product">
@@ -59,12 +51,10 @@
           </label>
           <input (change)="uploadImageProduct($event)" id="file-upload-product" type="file" />
         </a>
-        <!-- <a (click)="takePictureProduct()" class="icon icon-s icon-round shadow-small"
-                    style="background-color: white;">
-                    <i class="fa fa-camera" style="color: black"></i></a> -->
       </div>
-      <!-- </div> -->
+    </div>
 
+    <form [formGroup]="form">
       <div class="content header-clear-small">
         <ion-list lines="full" class="ion-no-margin ion-no-padding">
           <ion-item>

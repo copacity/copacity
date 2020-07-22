@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, AlertController, PopoverController } from '@ionic/angular';
+import { AlertController, PopoverController, ToastController } from '@ionic/angular';
 import { Order, CartProduct, User, Address, Notification, Store, StorePoint, StoreCoupon, ShippingMethod, PaymentMethod } from 'src/app/app-intefaces';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Observable } from 'rxjs';
-import { OrderStatus, NotificationTypes, NotificationStatus } from 'src/app/app-enums';
+import { OrderStatus, NotificationTypes, NotificationStatus, StoreStatus } from 'src/app/app-enums';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { NotificationsService } from 'src/app/cs-services/notifications.service';
@@ -14,6 +14,14 @@ import { CartService } from 'src/app/cs-services/cart.service';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { PaymentMethodsService } from 'src/app/cs-services/payment-methods.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Location } from '@angular/common';
+import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
+import { NgNavigatorShareService } from 'ng-navigator-share';
+import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
+import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
+import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -21,6 +29,7 @@ import { PaymentMethodsService } from 'src/app/cs-services/payment-methods.servi
   styleUrls: ['./order-detail.page.scss']
 })
 export class OrderDetailPage implements OnInit {
+  isAdmin: boolean;
   store: Store;
   order: Order;
   cartProducts: Observable<CartProduct[]>;
@@ -34,28 +43,44 @@ export class OrderDetailPage implements OnInit {
   user: User;
 
   constructor(private popoverCtrl: PopoverController,
-    private navParams: NavParams,
+    private router: Router,
+    private route: ActivatedRoute,
+    public location: Location,
     public cartService: CartService,
     private notificationsService: NotificationsService,
+    private ngNavigatorShareService: NgNavigatorShareService,
+    private loaderComponent: LoaderComponent,
     private paymentMethodsService: PaymentMethodsService,
+    public toastController: ToastController,
     private loaderCOmponent: LoaderComponent,
     private productsService: ProductsService,
     public alertController: AlertController,
     private usersService: UsersService,
     private ordersService: OrdersService,
+    private angularFireAuth: AngularFireAuth,
     private storesService: StoresService,
     public appService: AppService) {
 
-    this.storesService.getById(this.navParams.data.idStore).then(result => {
+    this.angularFireAuth.auth.onAuthStateChanged(user => {
+      this.initialize(user);
+    });
+
+    this.initialize();
+  }
+
+  initialize(user?: any) {
+    let orderId = this.route.snapshot.params.id.toString().split("&")[0];
+    let storeId = this.route.snapshot.params.id.toString().split("&")[1];
+    this.storesService.getById(storeId).then(result => {
       this.store = result;
-      this.ordersService.getById(this.store.id, this.navParams.data.id).then((orderResult: Order) => {
+      this.ordersService.getById(this.store.id, orderId).then((orderResult: Order) => {
         this.usersService.getById(orderResult.idUser).then(result => {
           this.user = result;
         });
 
         this.order = orderResult;
-        this.cartProducts = this.ordersService.getCartProducts(this.store.id, this.navParams.data.id);
-        this.addresses = this.ordersService.getAddresses(this.store.id, this.navParams.data.id);
+        this.cartProducts = this.ordersService.getCartProducts(this.store.id, this.order.id);
+        this.addresses = this.ordersService.getAddresses(this.store.id, this.order.id);
 
         // Get Coupon
         this.storeCoupon = null;
@@ -93,6 +118,22 @@ export class OrderDetailPage implements OnInit {
             this.vendorName = _user.name;
           });
         }
+
+        if (this.appService.currentUser && this.store.idUser == this.appService.currentUser.id) {
+          this.isAdmin = true;
+        } else {
+          if (this.appService.currentUser && this.order.idUser == this.appService.currentUser.id) {
+            this.isAdmin = false;
+          } else {
+            this.router.navigate(['/store', this.store.id]);
+          }
+        }
+
+        if (this.store.status != StoreStatus.Published) {
+          if (!this.isAdmin) {
+            this.router.navigate(['/home']);
+          }
+        }
       });
     });
   }
@@ -114,6 +155,85 @@ export class OrderDetailPage implements OnInit {
 
     alert.onDidDismiss().then(done());
     await alert.present();
+  }
+
+  async SignIn() {
+    const popover = await this.popoverCtrl.create({
+      component: SigninComponent,
+      cssClass: "signin-popover",
+    });
+    return await popover.present();
+  }
+
+  async presentMenuUser(e) {
+    const popover = await this.popoverCtrl.create({
+      component: MenuUserComponent,
+      animated: false,
+      showBackdrop: true,
+      mode: 'ios',
+      translucent: false,
+      event: e
+    });
+
+    return await popover.present();
+  }
+
+  signOut() {
+    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
+      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
+      setTimeout(() => {
+        this.angularFireAuth.auth.signOut();
+        this.popoverCtrl.dismiss();
+        this.presentToast("Has abandonado la sesión!", null);
+        this.loaderComponent.stopLoading();
+      }, 500);
+    });
+  }
+
+  async presentToast(message: string, image: string) {
+    const toast = await this.toastController.create({
+      duration: 3000,
+      message: message,
+      position: 'bottom',
+    });
+    toast.present();
+  }
+
+
+  shareApp(e) {
+    this.ngNavigatorShareService.share({
+      title: "COPACITY",
+      text: 'Hola! Somos copacity.net, tu Centro Comercial Virtual, aquí podrás ver nuestras tiendas con una gran variedad de productos para tí, promociones, cupones con descuentos, también podrás acumular puntos y obtener regalos!',
+      url: this.appService._appInfo.domain
+    }).then((response) => {
+      console.log(response);
+    })
+      .catch((error) => {
+        console.log(error);
+
+        if (error.error.toString().indexOf("not supported") != -1) {
+          this.openCopyToClipBoard(e);
+        }
+      });
+  }
+
+  async openCopyToClipBoard(e) {
+    let text = 'Hola! Somos copacity.net, tu Centro Comercial Virtual, aquí podrás ver nuestras tiendas con una gran variedad de productos para tí, promociones, cupones con descuentos, también podrás acumular puntos y obtener regalos! ' + this.appService._appInfo.domain;
+
+    let modal = await this.popoverCtrl.create({
+      component: CopyToClipboardComponent,
+      cssClass: 'notification-popover',
+      componentProps: { textLink: text },
+      event: e
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+      });
+
+    modal.present();
   }
 
   async presentConfirm(message: string, done: Function, cancel?: Function) {
@@ -138,9 +258,22 @@ export class OrderDetailPage implements OnInit {
     await alert.present();
   }
 
-  close() {
+  async presentMenuNotifications(e) {
+    const popover = await this.popoverCtrl.create({
+      component: MenuNotificationsComponent,
+      animated: false,
+      showBackdrop: true,
+      mode: 'ios',
+      translucent: false,
+      event: e,
+      cssClass: 'notification-popover'
+    });
 
-    this.popoverCtrl.dismiss();
+    return await popover.present();
+  }
+
+  close() {
+    this.location.back();
   }
 
   getTotal() {
@@ -285,7 +418,7 @@ export class OrderDetailPage implements OnInit {
       });
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'revertPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'revertPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -329,7 +462,7 @@ export class OrderDetailPage implements OnInit {
       });
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'addPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'addPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -391,7 +524,7 @@ export class OrderDetailPage implements OnInit {
       });
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'revertToInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'revertToInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -413,7 +546,7 @@ export class OrderDetailPage implements OnInit {
       resolve();
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'updateCartProductInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'updateCartProductInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -435,7 +568,7 @@ export class OrderDetailPage implements OnInit {
       }
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'revertCouponQuantity', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'revertCouponQuantity', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 }
