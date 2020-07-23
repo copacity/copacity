@@ -20,6 +20,7 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
 import { BarcodeGeneratorComponent } from './barcode-generator/barcode-generator.component';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { SubscriptionPlansComponent } from './subscription-plans/subscription-plans.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
     ProductPropertiesSelectionComponent,
     ImageViewerComponent,
     BarcodeScannerComponent,
-    BarcodeGeneratorComponent
+    BarcodeGeneratorComponent,
+    SubscriptionPlansComponent
   ],
   imports: [
     IonicModule,
@@ -62,7 +64,8 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
     ProductPropertiesSelectionComponent,
     ImageViewerComponent,
     BarcodeScannerComponent,
-    BarcodeGeneratorComponent
+    BarcodeGeneratorComponent,
+    SubscriptionPlansComponent
   ],
   entryComponents: [
     SigninComponent,
@@ -79,7 +82,8 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
     ProductPropertiesSelectionComponent,
     ImageViewerComponent,
     BarcodeScannerComponent,
-    BarcodeGeneratorComponent
+    BarcodeGeneratorComponent,
+    SubscriptionPlansComponent
   ]
 })
 export class ComponentsModule { }

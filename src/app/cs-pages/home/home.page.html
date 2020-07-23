@@ -151,13 +151,37 @@
           </ion-refresher-content>
         </ion-refresher>
 
-        <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
-          <ion-slide *ngFor="let banner of appService.banners | async">
-            <img src="{{banner.image}}">
+        <ion-slides #sliderHomeProducts [options]="appService.slideOptsproducts" style="max-width: 450px;">
+          <ion-slide [routerLink]="featuredProduct.url" *ngFor="let featuredProduct of featuredProducts;"
+            style="padding: 2px; padding-top: 17px;">
+            <div class="profile-2">
+              <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                <a>
+                  <img style="padding: 2px;width: 150px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
+                    class="preload-image round-small"
+                    [src]="featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png'"
+                    alt="img">
+
+                  <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
+                    style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
+                    class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}">
+                    <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
+
+                  <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
+                    class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}"
+                    style="background-color: transparent;color: black;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
+                    -{{ featuredProduct.product?.discount }}%</em>
+
+                  <!-- <label style="height: 35px;padding: 0px 2px 0px 2px;color: black; font-weight: bold;font-size: .5em;">
+                    {{((featuredProduct.product?.name.length<=30)?featuredProduct.product?.name:product?.name.substring(0, 30) + '...')}}</label> -->
+                </a>
+              </div>
+
+            </div>
           </ion-slide>
         </ion-slides>
 
-        <div class="profile-1 bottom-30" style="z-index: 9;">
+        <div class="profile-1 bottom-30 top-15" style="z-index: 9;">
           <!-- <a
             style="background-color: white; color: black;font-size: 15px;border-top-left-radius: 15px;
             border-top-right-radius: 15px;"
@@ -170,44 +194,25 @@
           </div> -->
           <!-- <div class="profile-header-clear" ></div> -->
           <div class="profile-body" style="margin: 0px 0px;">
-            <a (click)="shareApp($event)"
-              style="background-color: white; color: black; font-weight: bold;border-radius:15px;font-size: 15px;"
-              class="button button-m button-round uppercase bolder button-center-large">Bienvenido!</a>
+            <a (click)="shareApp($event)" style="background-color: white; color: black;border-radius:10px;"
+              class="profile-button shadow-small button button-m button-round uppercase bolder button-center-small">Tiendas</a>
 
             <a (click)="openBarCodeScanner()"
-              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;color: red;font-weight: bold;margin: 2px;">
+              style="z-index: 9;right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;cursor: pointer;">
               <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
-            <ion-slides #sliderHomeProducts [options]="appService.slideOptsproducts" style="max-width: 450px;">
-              <ion-slide [routerLink]="featuredProduct.url" *ngFor="let featuredProduct of featuredProducts;"
-                style="padding: 2px; padding-top: 17px;">
-                <div class="profile-2">
-                  <div class="blog-col-item" style="margin-bottom: 0px;">
-                    <a>
-                      <img style="padding: 2px;width: 150px;margin: 5px 0px 5px 0px;border: solid 0px #fff;"
-                        class="round-small preload-image shadow-small"
-                        [src]="featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png'"
-                        alt="img">
+            <a (click)="openSubscriptionPlans()"
+              class="color-highlight" style="z-index: 9;left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;font-weight: 500;margin: 2px;cursor: pointer;">
+              <i class="fas fa-coffee"></i>&nbsp;Equipo</a>
 
-                      <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
-                        style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
-                        class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}">
-                        <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
-
-                      <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
-                        class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}"
-                        style="background-color: transparent;color: black;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
-                        -{{ featuredProduct.product?.discount }}%</em>
-
-                    </a>
-                  </div>
-                </div>
+            <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;padding-top: 30px;">
+              <ion-slide *ngFor="let banner of appService.banners | async">
+                <img class="round-medium" src="{{banner.image}}">
               </ion-slide>
             </ion-slides>
-
-            <div style="text-align: -webkit-left;" class="top-10 bottom-20">
+            <!-- <div style="text-align: -webkit-left;" class="top-10 bottom-20">
               <h4 class="bolder color-highlight" style="font-size: 1.2em;">TIENDAS</h4>
-            </div>
+            </div> -->
 
             <!-- <div style="padding-top: 10px;text-align: -webkit-left;top: -65px;">
               <h4 style="font-size: 1.2em;" class="color-highlight bolder">TIENDAS</h4>
@@ -243,7 +248,7 @@
               </p>
             </a> -->
 
-            <div id="page-no-apply">
+            <div id="page-no-apply" style="padding-top: 20px;">
               <!-- <div style="padding-top: 10px;text-align: -webkit-left;top: -65px;">
                 <h4 style="font-size: 1.2em;" class="color-highlight bolder">TIENDAS</h4>
               </div> -->

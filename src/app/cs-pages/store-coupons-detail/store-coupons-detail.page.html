@@ -39,8 +39,8 @@
       </ion-toolbar>
       <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
         <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
       </div>
     </ion-header>
 
@@ -150,16 +150,18 @@
                         </div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="storeCoupon">
                       <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
                         <img class="round-small preload-image" src="../../../assets/icon/coupon.png" alt="img"
                           style="height: 100px;width: 100px;">
 
-                        <!-- <em *ngIf="storeCoupon.dateExpiration.toDate().getTime() < today.getTime()" style="background-color: transparent;color: black;font-weight: bold;
+                          <!-- <em *ngIf="storeCoupon.dateExpiration?.toDate().getTime() < today.getTime()" style="background-color: transparent;color: black;font-weight: bold;
                           font-size: 1.2em;position: absolute;left: -10px;top: 20px;padding-right: 10px;">
-                          <img src="../../../assets/icon/agotado.png"
-                            class="responsive-image preload-image round-medium" alt="img">
-                        </em> -->
+                          <img src="../../../assets/icon/vencido.png" class="responsive-image preload-image round-medium"
+                            alt="img"> -->
+
+                        <label style="font-size: 3em;font-weight: 700;"
+                          class="color-highlight">{{ storeCoupon?.discount }}%</label>
                       </td>
                       <td>
                         <table>
@@ -178,7 +180,7 @@
                                 class="color-highlight">{{ storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</span>
                             </td>
                           </tr>
-                          <tr>
+                          <!-- <tr>
                             <td style="text-align: left;padding: 0px 0px 10px 0px;">
                               <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Descuento
                                 del:</span>
@@ -187,7 +189,7 @@
                               <span style="font-size: 1.2em;font-weight: 700;"
                                 class="color-highlight">{{ storeCoupon?.discount }}%</span>
                             </td>
-                          </tr>
+                          </tr> -->
                           <tr>
                             <td style="text-align: left;padding: 0px 0px 10px 0px;">
                               <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Válido
@@ -226,7 +228,8 @@
               <div class="divider divider-margins top-15"></div>
             </div>
             <div class="top-20"></div>
-            <a (click)="close()" style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            <a (click)="close()"
+              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
               class="button button-round-small shadow-large button-full button-s">VOlver A LA TIENDA</a>
           </div>
         </div>

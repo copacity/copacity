@@ -159,7 +159,8 @@ export class ProductsService {
       .where('isGift', '==', false)
       .where('soldOut', '==', false)
       .where('isFeatured', '==', true)
-      .orderBy('name')
+      .where('discount', '>', "0")
+      .orderBy('discount')
       .limit(top))
       .snapshotChanges().pipe(
         map(actions => actions.map(a => {

@@ -15,6 +15,7 @@ import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboar
 import { LocationStrategy } from '@angular/common';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
+import { SubscriptionPlansComponent } from 'src/app/cs-components/subscription-plans/subscription-plans.component';
 
 @Component({
   selector: 'app-home',
@@ -333,6 +334,21 @@ export class HomePage implements OnInit {
             this.router.navigate(['store/', value[value.length - 1]]);
           }
         }
+      });
+
+    modal.present();
+  }
+
+  async openSubscriptionPlans() {
+    let modal = await this.popoverController.create({
+      component: SubscriptionPlansComponent,
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
       });
 
     modal.present();

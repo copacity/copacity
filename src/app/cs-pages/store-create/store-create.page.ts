@@ -119,12 +119,12 @@ export class StoreCreatePage implements OnInit {
 
           let platformFee: PlatformFee = {  
             id: '',
-            additionalCoupon:0,
-            additionalProduct:0,
-            additionalVendor:0,
-            platformUse:0,
+            additionalCoupon:5000,
+            additionalProduct:1000,
+            additionalVendor:5000,
+            platformUse:24900,
             platformUseDiscount:0,
-            commissionForSale:0
+            commissionForSale:10
             };
 
           this.storesService.createPlatformFess(doc.id, platformFee).then(async () => {

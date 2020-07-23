@@ -1,0 +1,73 @@
+<div class="round-medium" style="background-color: white;">
+  <div class="content top-20">
+    <div class="content" style="margin: 0px 5px 30px 5px;">
+      <div class="pricing-3 round-medium shadow-small" style="background-color: white;max-width: 450px;">
+
+        <div class="footer" style="padding: 8px 8px 8px 8px;box-shadow:none">
+          <i (click)="close()" class="fa fa-times-circle"
+            style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;z-index: 9;"></i>
+
+          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+            <img src="../assets/icon/favicon.png" alt="img" style="width: 120px;">
+          </div>
+
+          <a class="nav-title color-theme" style="font-size: 2.8em;padding: 0px 0px 10px 0px;"><span
+              style="color: red;">COPA</span>CITY</a>
+          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;font-size: 1.2em;">Tu Centro
+            Comercial Virtual</p>
+        </div>
+
+        <div>
+          <h1 class="pricing-title" style="padding: 0px 20px 0px 20px;font-size: 18px;">Bienvenido! Quieres ser parte de nuestro equipo y tener tu
+            tienda en CopaCity?
+          </h1>
+          <h1 class="pricing-title" style="font-size: 15px;font-weight: bold;padding: 10px 0px 10px 20px;">PLAN</h1>
+        </div>
+        <ul class="pricing-list">
+          <li><i class="color-red1-dark fa fa-store-alt"></i>Crear Tienda (+1)</li>
+          <li><i class="color-red1-dark fa fa-box-open"></i>Crear Productos (+100)</li>
+          <li><i class="color-red1-dark fa fa-gift"></i>Crear Regalos (+100)</li>
+          <li><i class="color-red1-dark fa fa-ticket-alt"></i>Crear Cupones (+5)</li>
+          <li><i class="color-red1-dark fa fa-user-friends"></i>Crear Vendedores (+3)</li>
+          <li><i class="color-red1-dark fa fa-handshake"></i>Administrar Comisiones</li>
+          <li><i class="color-red1-dark fas fa-calculator"></i>Puntos X Compras</li>
+          <li><i class="color-red1-dark fa fa-boxes"></i>Control de Inventario</li>
+          <li><i class="color-red1-dark fa fa-bell"></i>Enviar Notificaciones</li>
+          <li><i class="color-red1-dark fa fa-chart-bar"></i>Ver Reportes</li>
+          <li><i class="color-red1-dark fa fa-qrcode"></i>Usar Lector QR</li>
+          <li><i class="color-red1-dark fa fa-truck"></i>Configurar Métodos de envío</li>
+          <li><i class="color-red1-dark fa fa-money-bill-alt"></i>Pagos Contra entrega</li>
+          <li><i class="color-red1-dark fa fa-phone"></i>Recibir Soporte Técnico</li>
+          <li><i class="color-yellow1-dark fa fa-star"></i>Satisfacción Garantizada!!</li>
+        </ul>
+
+        <h3 class="pricing-value center-text bottom-10 color-black" style="padding: 20px 0px 0px 0px;">
+          $24.900<sup>/mes</sup></h3>
+        <h3 class="pricing-value center-text bottom-10 color-black" style="padding: 0px 0px 20px 0px;font-size: 20px;">
+          +10% de comisión por ventas a través de CopaCity</h3>
+
+        <div class="footer" style="padding: 8px 8px 8px 8px;box-shadow:none">
+          <div class="boxed-text-huge">
+            <h2 class="pricing-subtitle center-text" style="font-size: 18px;padding: 0px 0px 30px 0px;">Para mas información comunicate con nosotros...</h2>
+
+            <div style="padding-top: 10px;text-align: -webkit-center;">
+              <a style="text-align: end;color: red;border: double;margin-bottom: 0px;"
+                href="tel:{{ appService._appInfo?.phone }}" class="button button-round-small button-s"><i
+                  class="fa fa-phone" style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.phone }}</a>
+              <a style="text-align: end;border: double;margin-bottom: 0px;"
+                href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"
+                class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
+                  style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.whatsapp }}</a>
+              <a style="text-align: end;border: double;margin-bottom: 0px;"
+                href="https://www.facebook.com/{{ appService._appInfo?.facebook }}"
+                class="button button-round-small button-s color-facebook"><i class="fab fa-facebook-f color-facebook"
+                  style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.facebook }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="clear"></div>
+  </div>
