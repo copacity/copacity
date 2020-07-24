@@ -41,7 +41,7 @@ const routes: Routes = [
     loadChildren: () => import('./cs-pages/product-categories/product-categories.module').then( m => m.ProductCategoriesPageModule)
   },
   {
-    path: 'order-create',
+    path: 'order-create/:id',
     loadChildren: () => import('./cs-pages/order-create/order-create.module').then( m => m.OrderCreatePageModule)
   },
   {

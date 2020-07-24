@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, PopoverController, ToastController } from '@ionic/angular';
-import { Order, CartProduct, User, Address, Notification, Store, StorePoint, StoreCoupon, ShippingMethod, PaymentMethod } from 'src/app/app-intefaces';
+import { Order, CartProduct, User, Address, Notification, Store, StorePoint, StoreCoupon, ShippingMethod, PaymentMethod, ProductImage, Product } from 'src/app/app-intefaces';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Observable } from 'rxjs';
@@ -192,6 +192,32 @@ export class OrderDetailPage implements OnInit {
     });
   }
 
+  async openImageViewer(product: Product) {
+    let images: string[] = [];
+
+    let result = this.productsService.getProductImages(this.store.id, product.id);
+
+    let subs = result.subscribe(async (productImages: ProductImage[]) => {
+      productImages.forEach(img => {
+        images.push(img.image);
+      });
+
+      let modal = await this.popoverCtrl.create({
+        component: ImageViewerComponent,
+        componentProps: { images: images },
+        cssClass: 'cs-popovers',
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const updated = data['data'];
+        });
+
+      modal.present();
+      subs.unsubscribe();
+    });
+  }
+
   async presentToast(message: string, image: string) {
     const toast = await this.toastController.create({
       duration: 3000,
@@ -334,7 +360,7 @@ export class OrderDetailPage implements OnInit {
     this.ordersService.updateCartProduct(this.store.id, this.order.id, cartProduct.id, { checked: event.target.checked })
   }
 
-  async openImageViewer(img: string) {
+  async openImageViewerUser(img: string) {
     let images: string[] = [];
     images.push(img);
 
@@ -390,7 +416,7 @@ export class OrderDetailPage implements OnInit {
             this.loaderCOmponent.stopLoading();
             this.presentAlert("El pedido ha sido confirmado exitosamente", "", () => {
               this.cartService.clearCart();
-              this.popoverCtrl.dismiss(true);
+              this.router.navigate(['/store', this.store.id]);
             });
           });
         });
@@ -503,7 +529,7 @@ export class OrderDetailPage implements OnInit {
                 this.loaderCOmponent.stopLoading();
                 this.presentAlert("El pedido ha sido rechazado exitosamente", "", () => {
                   this.cartService.clearCart();
-                  this.popoverCtrl.dismiss(true);
+                  this.router.navigate(['/store', this.store.id]);
                 });
               });
             });

@@ -215,7 +215,7 @@ export class SearchPage {
 
 
   async goToCreateOrder() {
-    this.router.navigate(['/order-create']);
+    this.router.navigate(['/order-create', this.appService.currentStore.id]);
   }
 
   addToCart(e: any, product: any) {

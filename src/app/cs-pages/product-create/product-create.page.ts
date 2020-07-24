@@ -223,7 +223,7 @@ export class ProductCreatePage implements OnInit {
   }
 
   async goToCreateOrder() {
-    this.router.navigate(['/order-create']);
+    this.router.navigate(['/order-create', this.appService.currentStore.id]);
   }
 
   async presentAlert(title: string, message: string, done: Function) {

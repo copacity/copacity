@@ -163,7 +163,7 @@
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
             <a (click)="shareStore($event)"
-              style="background-color: white; color: black; font-size: 15px;border-radius:15px;text-align: center;margin-bottom: 0px;"
+              style="background-color: white; color: black;border-radius:15px;text-align: center;margin-bottom: 0px;"
               class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">{{store?.name}}
             </a>
 
@@ -375,8 +375,8 @@
             <div class="content gallery-view-controls" style="padding-top: 10px;">
               <ion-list style="padding-bottom: 0px">
                 <ion-item>
-                  <ion-label>Sección:</ion-label>
-                  <ion-select #selectCategories style="padding-right: 10px;" mode="ios" cancelText="Cancelar"
+                  <ion-label style="font-size: .8em;">Sección:</ion-label>
+                  <ion-select #selectCategories style="padding-right: 10px;font-size: .8em;" mode="ios" cancelText="Cancelar"
                     value="{{ idProductCategory }}" okText="Okay!" interface='action-sheet'
                     (ionChange)="productCategory_OnChange($event)">
                     <ion-select-option value="0">Todas</ion-select-option>

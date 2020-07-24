@@ -370,7 +370,7 @@ export class ProductDetailPage implements OnInit {
   }
 
   async goToCreateOrder() {
-    this.router.navigate(['/order-create']);
+    this.router.navigate(['/order-create', this.appService.currentStore.id]);
   }
 
   addToCart(e: any) {

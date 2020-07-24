@@ -19,7 +19,7 @@ export class AddressCreatePage implements OnInit {
     phone1: null,
     phone2: null,
     idSector: '',
-    country: '',
+    country: 'Colombia',
     city: '',
     address: '',
     postalCode: '',

@@ -137,7 +137,7 @@
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
 
           <a style="background-color: white; color: red;font-size: 15px;"
-            class=" button button-m button-round uppercase bolder button-center-large">Detalle Pedido</a>
+            class="profile-button button button-m button-round uppercase bolder button-center-large">Detalle Pedido</a>
 
           <div id="page">
             <div class="content" style="margin: 0px 0px 0px 0px;">
@@ -217,13 +217,13 @@
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+          <a style="background-color: white; color: black; border-radius:15px;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">CLIENTE</a>
 
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
               <div class="user-list-left">
-                <img (click)="openImageViewer(user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png')"
+                <img (click)="openImageViewerUser(user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png')"
                   [src]="user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png'" alt="img"
                   class="shadow-small">
                 <h4 style="top:-15px">{{user?.name}} </h4>
@@ -265,21 +265,27 @@
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
 
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+          <a style="background-color: white; color: black; border-radius:15px;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FACTURA</a>
 
           <div id="page">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <table class="table-borders" style="font-size: 16px;">
+              <table class="table-borders">
                 <tr>
-                  <th style="text-align: left; padding-left: 5px;">Producto</th>
-                  <th style="width: 20px;">#</th>
+                  <th style="text-align: left; padding-left: 5px;width: 60px;">Producto</th>
+                  <th></th>
+                  <th style="width: 20px;">Cant.</th>
                   <th>Total</th>
                 </tr>
                 <tr *ngFor="let cartProduct of cartProducts | async">
-                  <td style="text-align: left; padding-left: 5px;" class="{{(!cartProduct.checked)?'unchecked':''}}">
-                    <b *ngIf="cartProduct.product.ref" style="font-size: .8; color: red;">[{{cartProduct.product.ref}}]: </b>{{cartProduct.product.name}} <span
-                      *ngFor="let property of cartProduct.propertiesSelection;"
+                  <td style="vertical-align: top;text-align: left;">
+                    <img (click)="openImageViewer(cartProduct.product)" class="round-small preload-image"
+                      src="{{cartProduct.product.image?cartProduct.product.image:'../../../assets/icon/no-image.png'}}"
+                      alt="img" style="height: 60px;width: 60px;">
+                  </td>
+                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
+                    <b *ngIf="cartProduct.product.ref" style="font-size: .8; color: red;">[{{cartProduct.product.ref}}]:
+                    </b>{{cartProduct.product.name}} <span *ngFor="let property of cartProduct.propertiesSelection;"
                       style="font-size: .7em;font-weight: 700;color: blue;">, {{property.propertyName }}:
                       {{property.propertyOptionName }} </span><small style="font-size: 12px;font-weight: 900;"
                       *ngIf="!cartProduct.product?.isGift">,
@@ -292,13 +298,14 @@
                       style="font-size: .7em;font-weight: 700;color: black;background-color: yellow;">🎁 REGALO!
                       🥳🎉</span>
                   </td>
-                  <td class="{{(!cartProduct.checked)?'unchecked':''}}">{{cartProduct.quantity}}</td>
-                  <td class="color-green1-dark {{(!cartProduct.checked)?'unchecked':''}}">
+                  <td style="vertical-align: top;" class="bolder">
+                    {{cartProduct.quantity}}</td>
+                  <td style="vertical-align: top;" class="color-green1-dark {{(!cartProduct.checked)?'unchecked':''}}">
                     {{ ((!cartProduct.product?.isGift)?(cartService.getProductTotal(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
                   </td>
                 </tr>
                 <tr *ngIf="storeCoupon">
-                  <td colspan="3"
+                  <td colspan="4"
                     style="text-align: left; padding-left: 5px;vertical-align: top;background-color: yellow;">
                     <strong style="color: black">Cupón
                       <small style="color: black; background-color: yellow;">(-{{storeCoupon.discount}}%)</small>
@@ -311,7 +318,7 @@
                 </tr>
               </table>
 
-              <table class="table-borders" style="font-size: 16px;">
+              <table class="table-borders" style="font-size: 14px;">
                 <tr>
                   <td style="text-align: left; padding-left: 5px; color: black;padding: 3px 0px 3px 0px;">
                     <strong>Envío</strong>
@@ -347,11 +354,11 @@
                 </tr>
                 <tr>
                   <td style="text-align: left; padding-left: 5px;padding: 5px 0px 3px 0px;">
-                    <strong class="uppercase bold" style="font-size: 25px;color: black;">Total</strong>
+                    <strong class="uppercase bold" style="font-size: 18px;color: black;">Total</strong>
                   </td>
 
                   <td style="text-align: right; padding-right: 5px;padding: 5px 0px 3px 0px;">
-                    <span style="font-size: 25px;color: black;"
+                    <span style="font-size: 18px;color: black;"
                       class="uppercase bold">{{(cartService.getTotalDetail(store?.deliveryPrice)) + ((shippingMethod?shippingMethod.price:0)) - ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
@@ -366,7 +373,7 @@
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+          <a style="background-color: white; color: black; border-radius:15px;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Metodo
             de Pago</a>
 
@@ -401,7 +408,7 @@
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+          <a style="background-color: white; color: black; border-radius:15px;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Método
             de Envío</a>
 
@@ -459,7 +466,7 @@
         <div class="profile-header-clear" style="height: 40px;"></div>
         <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
+          <a style="background-color: white; color: black; border-radius:15px;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Dirección
             de Envío</a>
 
@@ -572,514 +579,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="profile-1" style="top: -10px;">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
-
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">Datos Cliente</a>
-
-          <a (click)="openBarCodeScanner()"
-            style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1.2em;padding: 5px;font-weight: bold;margin: 2px;"
-            class="color-highlight">
-            <i class="fa fa-qrcode"></i>&nbsp;QR</a>
-
-          <div id="page" class="top-10">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <table class="table-borders bottom-10" style="font-size: 1.2em;">
-                <tr>
-                  <td colspan="2" style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
-                    <a (click)="openStoreCouponsPage()" style="padding: 8px 8px;border: dotted;"
-                      class="button button-round-small button-full button-s color-highlight"> <i class="fa fa-cut"
-                        style="font-size: 1.5em;"></i> Ver Cupones Virtuales</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top;text-align: left;margin: 10px;padding: 0px 0px 0px 0px;">
-                    <div class="input-style has-icon input-style-1 input-required">
-                      <i class="input-icon fa fa-ticket-alt" style="margin-top: 16px;"></i>
-                      <span>Código de cupón:</span>
-                      <input [formControl]="couponCode" style="font-size: 1.2em;" type="name"
-                        placeholder="Código de cupón">
-                    </div>
-                  </td>
-                  <td>
-                    <i *ngIf="couponCode.value && !storeCoupon" (click)="clearCouponCode()" class="fa fa-times-circle"
-                      style="color: red;font-size: 1.2em;"></i>
-                    <i *ngIf="couponCode.value && storeCoupon" class="fa fa-check-circle"
-                      style="color: green;font-size: 1.2em;"></i>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top; text-align: -webkit-left;padding: 10px 0px 0px 0px;">
-                    <span *ngIf="storeCoupon" style="color: green;font-weight: bold;">Cupón Válido!!</span>
-                  </td>
-                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
-                    <a (click)="validateCoupon_click()"
-                      style="color:white;padding: 8px 8px;width: 75px; background-color: red;"
-                      class="button button-round-small button-full button-s">Aplicar</a>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="profile-1" style="top: -45px;">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
-
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">METODO
-            DE ENVIO</a>
-
-          <div id="page">
-            <div class="content header-clear-small bottom-20" style="margin: 0px 0px 0px 0px;">
-              
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="profile-1" style="top: -80px;">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;padding-bottom: 20px;">
-
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">METODO
-            DE PAGO</a>
-
-          <div id="page">
-            <div class="content header-clear-small bottom-20" style="margin: 0px 0px 0px 0px;">
-              
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="profile-1 bottom-20" style="top: -150px;">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">QUIEN
-            TE ASESORO?</a>
-
-          <div id="page">
-            <div class="content header-clear-small bottom-40" style="margin: 0px 0px 0px 0px;">
-
-              <ion-list lines="full" class="ion-no-margin ion-no-padding">
-                <ion-item>
-                  <ion-label>Selecciona:</ion-label>
-                  <ion-select [formControl]="idVendor" style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
-                    interface='action-sheet'>
-                    <ion-select-option value="1">Compra directa sin asesor</ion-select-option>
-                    <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-list>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="profile-1 bottom-20" style="top: -204px;">
-        <div class="profile-header" style="background-color: transparent;"></div>
-        <div class="profile-header-clear" style="height: 40px;"></div>
-        <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-          <a style="background-color: white; color: black;font-size: 15px; border-radius:15px;border: double;border-color: red;"
-            class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FINALIZAR</a>
-
-          <div id="page">
-            <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-              <div>
-                <div class="link-list link-list-3">
-                  <ion-list>
-                    <ion-item>
-                      <ion-label position="floating" style="color: gray;">Agrega una nota:<small style="color: gray;">
-                          ({{messageToStore.value.length}}/500)</small></ion-label>
-                      <ion-textarea [formControl]="messageToStore"></ion-textarea>
-                    </ion-item>
-                  </ion-list>
-
-                  <div>
-                    <p style="color: red;font-size: 1.3em;" *ngIf="messageToStore.errors">
-                      <span style="padding-left: 20px;color: red;" *ngIf="messageToStore.hasError('maxlength')">El
-                        mensaje debe ser máximo de 500
-                        caracteres</span>
-                    </p>
-                  </div>
-
-                  <a (click)="sendOrder()"
-                    style="color:white;background-color: red;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-                    class="button button-round-small shadow-large button-full button-s">Hacer Pedido</a>
-                  <br />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </super-tab>
   </super-tabs-container>
 </super-tabs>
-
-
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button (click)="close()">
-        <i class="fa fa-times" style="font-size: 1.8em;"></i>
-      </ion-button>
-    </ion-buttons>
-    <ion-title style="font-size: x-large;">
-      <a style="color: white;" class="header-title bold"><span style="color: white;padding-left: 10px;">#</span>
-        {{ order?.ref }}</a>
-    </ion-title>
-  </ion-toolbar>
-
-</ion-header>
-
-<div class="profile-popover">
-  <div class="profile-header">
-  </div>
-  <div class="profile-header-clear" style="height: 0px;margin: 0px 0px 0px 0px;">
-  </div>
-  <div class="profile-body-no-apply">
-    <div id="page">
-      <div class="content header-clear-small">
-        <label style="padding-bottom: 20px;padding-left: 10px;font-size: 18px;"><b>Vendedor:</b>
-          {{vendorName}}</label>
-        <label style="padding-bottom: 20px;padding-left: 10px;font-size: 18px;"><b>Estado:</b>
-          {{ order?.status | orderStatusName }}</label>
-        <label *ngIf="(order && order.messageRejected)"
-          style="padding-bottom: 20px;padding-left: 10px;font-size: 18px;"><b>Motivo:</b>
-          {{ order?.messageRejected  }}</label>
-        <div (click)="openImageViewer(user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png')"
-          class="user-list-left" *ngIf="appService.currentUser?.id!=user?.id">
-          <img [src]="user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png'" alt="img" class="shadow-small">
-          <h4 style="top:-15px">{{user?.name}} </h4>
-          <div class="divider" class="top-20"></div>
-          <label *ngIf="(order && order.message)" style="padding-bottom: 20px;padding-left: 10px;"><b>Comentario:</b>
-            {{ order?.message  }}</label>
-          <table style="width: 100%;">
-            <tr>
-              <td>
-                <div class="link-list link-list-3" style="text-align: left;">
-                  <a href="tel:{{user?.phone1}}" class="round-small shadow-tiny">
-                    <i class="fa fa-phone" style="color: green;"></i>
-                    <span style="font-size: 18px;">{{user?.phone1}}</span>
-                  </a>
-                </div>
-              </td>
-              <td>
-                <div class="link-list link-list-3" style="text-align: left;">
-                  <a href="tel:{{user?.phone2}}" class="round-small shadow-tiny">
-                    <i class="fa fa-phone" style="color: green;"></i>
-                    <span style="font-size: 18px;">{{user?.phone2}}</span>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          </table>
-          <a href="https://wa.me/57{{user?.whatsapp}}" class="next-slide-user"
-            style="font-size: 2.5em;top:-15px;height: 40px;font-weight: 100;">
-            <i class="fab fa-whatsapp" style="color: green;padding-top: 2px;"></i></a>
-        </div>
-
-        <div class="top-30 bottom-30">
-          <h4 class="bold color-highlight">Factura</h4>
-          <div class="container top-20">
-            <table class="table-borders" style="font-size: 18px;">
-              <tr>
-                <th style="text-align: left; padding-left: 5px;">Producto</th>
-                <th style="width: 20px;">#</th>
-                <th>Total</th>
-              </tr>
-              <tr *ngFor="let cartProduct of cartProducts | async">
-                <td style="text-align: left; padding-left: 5px;" class="{{(!cartProduct.checked)?'unchecked':''}}">
-                  {{cartProduct.product.name}} <span *ngFor="let property of cartProduct.propertiesSelection;"
-                    style="font-size: .7em;font-weight: 700;color: blue;">, {{property.propertyName }}:
-                    {{property.propertyOptionName }} </span><small style="font-size: 12px;font-weight: 900;"
-                    *ngIf="!cartProduct.product?.isGift">,
-                    ({{ cartService.getProductSubTotalUnity(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0'}})</small>
-                  <small *ngIf="cartProduct.product?.discount && cartProduct.product?.discount > 0"
-                    style="font-size: 12px;font-weight: 700;color: black;background-color: yellow;">
-                    (-{{cartProduct.product.discount}}%) </small>
-
-                  <span *ngIf="cartProduct.product?.isGift"
-                    style="font-size: .7em;font-weight: 700;color: black;background-color: yellow;">🎁 REGALO!
-                    🥳🎉</span>
-                </td>
-                <td class="{{(!cartProduct.checked)?'unchecked':''}}">{{cartProduct.quantity}}</td>
-                <td class="color-green1-dark {{(!cartProduct.checked)?'unchecked':''}}">
-                  {{ ((!cartProduct.product?.isGift)?(cartService.getProductTotal(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
-                </td>
-              </tr>
-              <tr *ngIf="storeCoupon">
-                <td colspan="3"
-                  style="text-align: left; padding-left: 5px;vertical-align: top;background-color: yellow;">
-                  <strong style="color: black">Cupón
-                    <small style="color: black; background-color: yellow;">(-{{storeCoupon.discount}}%)</small>
-                  </strong>
-                </td>
-                <td style="vertical-align: top; text-align: right;background-color: yellow;">
-                  <span style="color: black;">
-                    -{{ ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0)  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
-                </td>
-              </tr>
-            </table>
-
-            <table class="table-borders" style="font-size: 18px;">
-              <tr>
-                <td style="text-align: left; padding-left: 5px; color: black;padding: 3px 0px 3px 0px;">
-                  <strong>Envío</strong>
-                </td>
-
-                <td style="text-align: right; padding-right: 5px;color: black;padding: 3px 0px 3px 0px;">
-                  <span>{{ (shippingMethod?shippingMethod.price:0) | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: left; padding-left: 10px;padding: 3px 0px 3px 0px;">
-                  <strong class="color-highlight">Ahorro</strong>
-                </td>
-
-                <td style="text-align: right; padding-right: 10px;padding: 3px 0px 3px 0px;">
-                  <span
-                    class="color-highlight">{{ cartService.getDiscountDetail() + ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0)  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: left; padding-left: 5px;padding: 3px 0px 3px 0px;">
-                  <strong style="color: red;">IVA <small>(Incluido)</small></strong>
-                </td>
-
-                <td style="text-align: right; padding-right: 5px;padding: 3px 0px 3px 0px;padding: 3px 0px 3px 0px;">
-                  <span>{{ ((cartService.getTotalDetail(store?.deliveryPrice) - ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0)) * (appService._appInfo.tax/100 )) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding: 3px 0px 3px 0px;">
-                  <div style="margin-bottom: 0px;" class="divider bg-green1-light opacity-350"></div>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: left; padding-left: 5px;padding: 5px 0px 3px 0px;">
-                  <strong class="uppercase bold" style="font-size: 25px;color: black;">Total</strong>
-                </td>
-
-                <td style="text-align: right; padding-right: 5px;padding: 5px 0px 3px 0px;">
-                  <span style="font-size: 25px;color: black;"
-                    class="uppercase bold">{{(cartService.getTotalDetail(store?.deliveryPrice)) + ((shippingMethod?shippingMethod.price:0)) - ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="top-50 bottom-30" style="margin: 10px;">
-
-          <h4 class="bold color-highlight">Metodo de Pago</h4>
-          <div class="container">
-            <table class="table-borders-dark store-product-table top-20 bottom-20"
-              style="border: solid 1px rgba(0,0,0,0.08);">
-              <tr>
-                <td colspan="2" style="vertical-align: top;padding-left: 0px;">
-                  <h4 class="bold" style="color: black;margin-top: 0px;font-size: 1.3em;">{{paymentMethod?.name}}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Descripción
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{paymentMethod?.description}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div *ngIf="shippingMethod" class="top-20 bottom-20" style="margin: 10px;">
-
-          <h4 class="bold color-highlight">Método de Envío</h4>
-          <div class="container">
-            <table class="table-borders-dark store-product-table top-20 bottom-20"
-              style="border: solid 1px rgba(0,0,0,0.08);">
-              <tr>
-                <td colspan="2" style="vertical-align: top;padding-left: 0px;">
-                  <h4 class="bold" style="color: black;margin-top: 0px;font-size: 1.3em;">{{shippingMethod?.name}}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Valor
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{shippingMethod?.price | currency: 'USD' : 'symbol' : '1.0-0'}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Tiempo de entrega
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{shippingMethod?.limitDays}} dias.
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Descripción
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{shippingMethod?.description}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div *ngFor="let address of addresses | async" class="top-20 bottom-30" style="margin: 10px;">
-
-          <h4 class="bold color-highlight">Dirección de Envío</h4>
-          <div class="container">
-            <table class="table-borders-dark store-product-table top-20 bottom-20"
-              style="border: solid 1px rgba(0,0,0,0.08);">
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Nombre
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.name}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Apellido
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.lastName}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Tel 1
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.phone1}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Tel 2
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.phone2}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  País
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.country}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Ciudad
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.city}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Dirección
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.address}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Código Postal
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.postalCode}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;" class="bold color-theme">
-                  Descripción
-                </td>
-                <td style="vertical-align: top;">
-                  <div>
-                    {{address?.description}}
-                    <br />
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <table>
-          <tr>
-            <td style="text-align: left;padding: 2px;">
-              <a (click)="openMessage($event)"  *ngIf="(order?.status == 1 && appService.currentUser?.id!=user?.id)" style="color:red;background-color: white;"
-                class="button button-round-small shadow-large button-full button-s">
-                Rechazar</a>
-            </td>
-            <td style="text-align: right;padding: 2px;">
-              <a (click)="openMessageSendToClient($event)" *ngIf="(order?.status == 1  && appService.currentUser?.id!=user?.id)" style="color:white;background-color: red;"
-                class="button button-round-small shadow-large button-full button-s">
-                Confirmar</a>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </div>
-</div> -->

@@ -122,7 +122,7 @@ export class StoreCreatePage implements OnInit {
             additionalCoupon:5000,
             additionalProduct:1000,
             additionalVendor:5000,
-            platformUse:24900,
+            platformUse:19900,
             platformUseDiscount:0,
             commissionForSale:10
             };

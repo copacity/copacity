@@ -21,7 +21,6 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 import { ProductCategoriesPage } from '../product-categories/product-categories.page';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { StoreStatus } from 'src/app/app-enums';
-import { OrderDetailPage } from '../order-detail/order-detail.page';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -551,7 +550,7 @@ export class StorePage implements OnInit {
   }
 
   async goToCreateOrder() {
-    this.router.navigate(['/order-create']);
+    this.router.navigate(['/order-create', this.appService.currentStore.id]);
   }
 
   goToProducts() {
