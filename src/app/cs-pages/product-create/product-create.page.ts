@@ -10,12 +10,11 @@ import { AppService } from 'src/app/cs-services/app.service';
 import { StorageService } from 'src/app/cs-services/storage.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { CropperImageComponent } from 'src/app/cs-components/cropper-image/cropper-image.component';
-import { CartService } from 'src/app/cs-services/cart.service';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
 import { CartPage } from '../cart/cart.page';
@@ -50,7 +49,6 @@ export class ProductCreatePage implements OnInit {
     public toastController: ToastController,
     private storageService: StorageService,
     private ngNavigatorShareService: NgNavigatorShareService,
-    public cartSevice: CartService,
     private storesService: StoresService,
     private productCategoriesService: ProductCategoriesService,
     public appService: AppService,

@@ -42,12 +42,12 @@ export class OrderDetailPage implements OnInit {
   vendorName: string;
   user: User;
   buttons: boolean = false;
+  cartService: CartService;
 
   constructor(private popoverCtrl: PopoverController,
     private router: Router,
     private route: ActivatedRoute,
     public location: Location,
-    public cartService: CartService,
     private notificationsService: NotificationsService,
     private ngNavigatorShareService: NgNavigatorShareService,
     private loaderComponent: LoaderComponent,
@@ -70,6 +70,7 @@ export class OrderDetailPage implements OnInit {
   }
 
   initialize(user?: any) {
+    this.cartService = new  CartService(this.appService);
     let orderId = this.route.snapshot.params.id.toString().split("&")[0];
     let storeId = this.route.snapshot.params.id.toString().split("&")[1];
     this.storesService.getById(storeId).then(result => {

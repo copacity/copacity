@@ -7,7 +7,6 @@ import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Order, StoreCoupon } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
-import { OrderDetailPage } from '../order-detail/order-detail.page';
 import { Router } from '@angular/router';
 
 @Component({

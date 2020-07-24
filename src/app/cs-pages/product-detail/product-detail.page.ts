@@ -49,7 +49,6 @@ export class ProductDetailPage implements OnInit {
     private angularFireAuth: AngularFireAuth,
     private loaderComponent: LoaderComponent,
     private ngNavigatorShareService: NgNavigatorShareService,
-    public cartService: CartService,
     private storesService: StoresService,
     private productService: ProductsService,
     public appService: AppService) {

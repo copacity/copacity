@@ -18,6 +18,7 @@ export class ProductPropertiesSelectionComponent implements OnInit {
   quantity: number = 1;
   quantityDisabled = true;
   buttonEnabled = true;
+  cartService: CartService;
 
   constructor(
     private popoverCtrl: PopoverController,
@@ -25,9 +26,9 @@ export class ProductPropertiesSelectionComponent implements OnInit {
     private alertController: AlertController,
     public navParams: NavParams,
     private productsService: ProductsService,
-    public cartInventoryService: CartInventoryService,
-    public cartService: CartService
+    public cartInventoryService: CartInventoryService
   ) {
+    this.cartService = new CartService(this.appService);
     this.buttonEnabled = true;
 
     if (this.navParams.data.isInventory) {
@@ -155,26 +156,6 @@ export class ProductPropertiesSelectionComponent implements OnInit {
 
   quantityChange(e: any) {
     this.quantity = parseInt(e.detail.value);
-
-    // if (!this.navParams.data.isInventory) {
-    //   let cartProduct: CartProduct = {
-    //     id: '',
-    //     product: this.navParams.data.product,
-    //     quantity: this.quantity,
-    //     checked: true,
-    //     dateCreated: new Date(),
-    //     lastUpdated: new Date(),
-    //     deleted: false,
-    //     propertiesSelection: this.propertiesSelection,
-    //     maxLimit: 0
-    //   };
-
-    //   for (let [index, p] of this.cartService.getCart().entries()) {
-    //     if (this.cartInventoryService.compareProducts(p, cartProduct)) {
-    //       this.navParams.data.limitQuantity = this.navParams.data.limitQuantity - p.quantity;
-    //     }
-    //   }
-    // }
   }
 
   accept() {

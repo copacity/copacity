@@ -10,7 +10,6 @@ import { ProductsService } from 'src/app/cs-services/products.service';
 import { StorageService } from 'src/app/cs-services/storage.service';
 import { CropperImageComponent } from 'src/app/cs-components/cropper-image/cropper-image.component';
 import { StoreStatus } from 'src/app/app-enums';
-import { CartService } from 'src/app/cs-services/cart.service';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { ProductPropertyComponent } from 'src/app/cs-components/product-property/product-property.component';
@@ -43,7 +42,6 @@ export class ProductUpdatePage implements OnInit {
     public alertController: AlertController,
     private productCategoriesService: ProductCategoriesService,
     private productService: ProductsService,
-    public cartService: CartService,
     public appService: AppService,
     public navParams: NavParams,
     private loader: LoaderComponent) {

@@ -12,7 +12,6 @@ import { UsersService } from 'src/app/cs-services/users.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
-import { OrderDetailPage } from '../order-detail/order-detail.page';
 
 @Component({
   selector: 'app-store-vendors',
