@@ -309,8 +309,23 @@ export class AppService {
     }
   }
 
-  slideOptsproducts = {
+  slideOptsProductsDiscount = {
     speed: 1000,
+    slidesPerView: 4,
+  }
+
+  slideOptsStores = {
+    speed: 2000,
+    slidesPerView: 3,
+  }
+
+  slideOptsProductsNoDiscount = {
+    speed: 500,
+    slidesPerView: 4,
+  }
+
+  slideOptsGifts = {
+    speed: 500,
     slidesPerView: 4,
   }
 

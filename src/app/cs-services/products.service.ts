@@ -153,7 +153,7 @@ export class ProductsService {
     }
   }
 
-  getFeaturedProducts(idStore: string, top: number) {
+  getFeaturedProductsDiscount(idStore: string, top: number) {
     return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
       .where('deleted', '==', false)
       .where('isGift', '==', false)
@@ -161,6 +161,39 @@ export class ProductsService {
       .where('isFeatured', '==', true)
       .where('discount', '>', "0")
       .orderBy('discount')
+      .limit(top))
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Product;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+
+  getFeaturedProductsNoDiscount(idStore: string, top: number) {
+    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+      .where('deleted', '==', false)
+      .where('isGift', '==', false)
+      .where('soldOut', '==', false)
+      .where('isFeatured', '==', true)
+      .where('discount', '<=', "0")
+      .orderBy('discount')
+      .limit(top))
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Product;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+
+  getGifts(idStore: string, top: number) {
+    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+      .where('deleted', '==', false)
+      .where('isGift', '==', true)
+      .where('soldOut', '==', false)
       .limit(top))
       .snapshotChanges().pipe(
         map(actions => actions.map(a => {

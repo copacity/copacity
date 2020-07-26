@@ -28,7 +28,9 @@ export class HomePage implements OnInit {
 
   selectedStoreLogo: string = "";
   stores: Array<Store>;
-  featuredProducts: Array<any> = [];
+  featuredProductsDiscount: Array<any> = [];
+  featuredProductsNoDiscount: Array<any> = [];
+  gifts: Array<any> = [];
 
   idStoreCategory: string = '0';
   idSector: string = '0';
@@ -38,7 +40,10 @@ export class HomePage implements OnInit {
   storeSearchText: string = '';
 
   @ViewChild('sliderHome', null) slider: any;
-  @ViewChild('sliderHomeProducts', null) sliderProducts: any;
+  @ViewChild('sliderHomeProductsDiscount', null) sliderProductsDiscount: any;
+  @ViewChild('sliderHomeStores', null) sliderStores: any;
+  @ViewChild('sliderHomeProductsNoDiscount', null) sliderProductsNoDiscount: any;
+  @ViewChild('sliderHomeGifts', null) sliderGifts: any;
   
   @Input('header') header: any;
   angularFireAuth: any;
@@ -230,13 +235,34 @@ export class HomePage implements OnInit {
               this.stores.push(store);
               //this.storeSearchHits++;
 
-              let subs = this.productsService.getFeaturedProducts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
+              // -- PRODUCTS WITH DISCOUNT
+              let subs = this.productsService.getFeaturedProductsDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
                 products.forEach((product: Product) => {
-                  this.featuredProducts.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id });
+                  this.featuredProductsDiscount.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id });
                 });
 
-                this.featuredProducts = this.shuffle(this.featuredProducts);
+                this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
                 subs.unsubscribe();
+              });
+
+              // -- PRODUCTS WITHOUT DISCOUNT
+              let subs2 = this.productsService.getFeaturedProductsNoDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
+                products.forEach((product: Product) => {
+                  this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id, storeImage: store.logo?store.logo:'../../../assets/icon/no-image.png'});
+                });
+
+                this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
+                subs2.unsubscribe();
+              });
+
+              // -- GIFTS
+              let subs3 = this.productsService.getGifts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
+                products.forEach((product: Product) => {
+                  this.gifts.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id, storeImage: store.logo?store.logo:'../../../assets/icon/no-image.png'});
+                });
+
+                this.gifts = this.shuffle(this.gifts);
+                subs3.unsubscribe();
               });
             }
           });
@@ -244,43 +270,6 @@ export class HomePage implements OnInit {
           this.stores = this.shuffle(this.stores);
         });
       }
-      // else if (this.idSector == '0') {
-      //   this.storesService.getByIdStoreCategory(this.idStoreCategory, this.storeSearchText).then(stores => {
-      //     this.stores = stores;
-      //     this.searchingStores = false;
-      //     this.storeSearchHits = 0;
-
-      //     stores.forEach((store: Store) => {
-      //       if (store) {
-      //         this.storeSearchHits++;
-      //       }
-      //     });
-      //   });
-      // } else if (this.idStoreCategory == '0') {
-      //   this.storesService.getByIdSector(this.idSector, this.storeSearchText).then(stores => {
-      //     this.stores = stores;
-      //     this.searchingStores = false;
-      //     this.storeSearchHits = 0;
-
-      //     stores.forEach((store: Store) => {
-      //       if (store) {
-      //         this.storeSearchHits++;
-      //       }
-      //     });
-      //   });
-      // } else {
-      //   this.storesService.getByFilterSearch(this.idSector, this.idStoreCategory, this.storeSearchText).then(stores => {
-      //     this.stores = stores;
-      //     this.searchingStores = false;
-      //     this.storeSearchHits = 0;
-
-      //     stores.forEach((store: Store) => {
-      //       if (store) {
-      //         this.storeSearchHits++;
-      //       }
-      //     });
-      //   });
-      // }
     }, 500);
   }
 
@@ -362,8 +351,14 @@ export class HomePage implements OnInit {
   ionViewDidEnter() {
     setTimeout(() => {
       try { this.slider.startAutoplay(); } catch (error) { }
-      try { this.sliderProducts.startAutoplay(); } catch (error) { }
-      this.featuredProducts = this.shuffle(this.featuredProducts);
+      try { this.sliderProductsDiscount.startAutoplay(); } catch (error) { }
+      try { this.sliderProductsNoDiscount.startAutoplay(); } catch (error) { }
+      try { this.sliderStores.startAutoplay(); } catch (error) { }
+      try { this.sliderGifts.startAutoplay(); } catch (error) { }
+
+      this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
+      this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
+      this.gifts = this.shuffle(this.gifts);
       this.stores = this.shuffle(this.stores);
     }, 300);
   }
