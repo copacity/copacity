@@ -35,6 +35,10 @@ export class HomePage implements OnInit {
   idStoreCategory: string = '0';
   idSector: string = '0';
 
+  searchingProductsDiscount: boolean = false;
+  searchingProductsNoDiscount: boolean = false;
+  searchingGifts: boolean = false;
+
   searchingStores: boolean = false;
   storeSearchHits: number = 0;
   storeSearchText: string = '';
@@ -43,6 +47,7 @@ export class HomePage implements OnInit {
   @ViewChild('sliderHomeProductsDiscount', null) sliderProductsDiscount: any;
   @ViewChild('sliderHomeStores', null) sliderStores: any;
   @ViewChild('sliderHomeProductsNoDiscount', null) sliderProductsNoDiscount: any;
+  @ViewChild('sliderHomeProductsNoDiscount2', null) sliderProductsNoDiscount2: any;
   @ViewChild('sliderHomeGifts', null) sliderGifts: any;
   
   @Input('header') header: any;
@@ -219,7 +224,9 @@ export class HomePage implements OnInit {
   getStores() {
     this.stores = null;
     this.searchingStores = true;
-    //this.storeSearchHits = 0;
+    this.searchingProductsDiscount = true;
+    this.searchingProductsNoDiscount = true;
+    this.searchingGifts = true;
 
     setTimeout(async () => {
       this.stores = [];
@@ -228,7 +235,6 @@ export class HomePage implements OnInit {
         this.storesService.getAll(this.storeSearchText).then(stores => {
           //this.stores = stores;
           this.searchingStores = false;
-          //this.storeSearchHits = 0;
 
           stores.forEach((store: Store) => {
             if (store) {
@@ -242,6 +248,7 @@ export class HomePage implements OnInit {
                 });
 
                 this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
+                this.searchingProductsDiscount = false;
                 subs.unsubscribe();
               });
 
@@ -252,6 +259,7 @@ export class HomePage implements OnInit {
                 });
 
                 this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
+                this.searchingProductsNoDiscount = false;
                 subs2.unsubscribe();
               });
 
@@ -262,6 +270,7 @@ export class HomePage implements OnInit {
                 });
 
                 this.gifts = this.shuffle(this.gifts);
+                this.searchingGifts = false;
                 subs3.unsubscribe();
               });
             }
@@ -351,9 +360,10 @@ export class HomePage implements OnInit {
   ionViewDidEnter() {
     setTimeout(() => {
       try { this.slider.startAutoplay(); } catch (error) { }
+      try { this.sliderStores.startAutoplay(); } catch (error) { }
       try { this.sliderProductsDiscount.startAutoplay(); } catch (error) { }
       try { this.sliderProductsNoDiscount.startAutoplay(); } catch (error) { }
-      try { this.sliderStores.startAutoplay(); } catch (error) { }
+      try { this.sliderProductsNoDiscount2.startAutoplay(); } catch (error) { }
       try { this.sliderGifts.startAutoplay(); } catch (error) { }
 
       this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);

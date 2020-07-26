@@ -179,6 +179,7 @@ export class ProductsService {
       .where('isFeatured', '==', true)
       .where('discount', '<=', "0")
       .orderBy('discount')
+      .orderBy('name')
       .limit(top))
       .snapshotChanges().pipe(
         map(actions => actions.map(a => {
