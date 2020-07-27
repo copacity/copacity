@@ -321,13 +321,8 @@ export class AppService {
   }
 
   slideOptsProductsNoDiscount = {
-    speed: 500,
+    speed: 1000,
     slidesPerView: 2,
-  }
-
-  slideOptsProductsNoDiscount2 = {
-    speed: 500,
-    slidesPerView: 5,
   }
 
   slideOptsGifts = {

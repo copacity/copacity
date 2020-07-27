@@ -47,7 +47,6 @@ export class HomePage implements OnInit {
   @ViewChild('sliderHomeProductsDiscount', null) sliderProductsDiscount: any;
   @ViewChild('sliderHomeStores', null) sliderStores: any;
   @ViewChild('sliderHomeProductsNoDiscount', null) sliderProductsNoDiscount: any;
-  @ViewChild('sliderHomeProductsNoDiscount2', null) sliderProductsNoDiscount2: any;
   @ViewChild('sliderHomeGifts', null) sliderGifts: any;
 
   @Input('header') header: any;
@@ -267,7 +266,7 @@ export class HomePage implements OnInit {
               // -- GIFTS
               let subs3 = this.productsService.getGifts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
                 products.forEach((product: Product) => {
-                  this.gifts.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
+                  this.gifts.push({ product: product, url: "/store/" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
                 });
 
                 this.gifts = this.shuffle(this.gifts);
@@ -295,6 +294,11 @@ export class HomePage implements OnInit {
     }
     return arr;
   };
+
+  openWithOption(url: string, option: number) {
+    this.storesService.option = option;
+    this.router.navigate([url]);
+  }
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
@@ -373,9 +377,7 @@ export class HomePage implements OnInit {
         this.loadSliderStores(() => {
           this.loadSliderProductsDiscount(() => {
             this.loadSliderProductsNoDiscount(() => {
-              this.loadSliderProductsNoDiscount2(() => {
-                this.loadSliderGifts(() => {
-                });
+              this.loadSliderGifts(() => {
               });
             });
           });
@@ -424,17 +426,6 @@ export class HomePage implements OnInit {
         callBack4();
       } else {
         this.loadSlider(callBack4);
-      }
-    }, 1000);
-  }
-
-  loadSliderProductsNoDiscount2(callBack5) {
-    setTimeout(() => {
-      if (this.sliderProductsNoDiscount2) {
-        this.sliderProductsNoDiscount2.startAutoplay();
-        callBack5();
-      } else {
-        this.loadSlider(callBack5);
       }
     }, 1000);
   }

@@ -105,6 +105,7 @@ export class StoreReportsPage implements OnInit {
 
   async openOrderDetailPage(orderDetail: any) {
     this.router.navigate(['order-detail/' + orderDetail.idOrder + "&" + this.appService.currentStore.id]);
+    this.popoverController.dismiss();
 
     // let modal = await this.popoverController.create({
     //   component: OrderDetailPage,

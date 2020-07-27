@@ -187,6 +187,11 @@ export class StorePage implements OnInit {
         }
       });
     });
+
+    if(this.storesService.option == 4){
+      this.storesService.option = 0;
+      this.openStorePointsPage();
+    }
   }
 
   ngOnInit() {
