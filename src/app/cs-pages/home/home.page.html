@@ -151,7 +151,7 @@
           </ion-refresher-content>
         </ion-refresher>
 
-        <ion-slides *ngIf="!searchingProductsDiscount" #sliderHomeProductsDiscount
+        <ion-slides #sliderHomeProductsDiscount
           [options]="appService.slideOptsProductsDiscount" style="max-width: 450px;">
           <ion-slide [routerLink]="featuredProduct.url" *ngFor="let featuredProduct of featuredProductsDiscount;"
             style="padding: 2px; padding-top: 17px;">

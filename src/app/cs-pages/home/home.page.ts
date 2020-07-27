@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
   @ViewChild('sliderHomeProductsNoDiscount', null) sliderProductsNoDiscount: any;
   @ViewChild('sliderHomeProductsNoDiscount2', null) sliderProductsNoDiscount2: any;
   @ViewChild('sliderHomeGifts', null) sliderGifts: any;
-  
+
   @Input('header') header: any;
   angularFireAuth: any;
 
@@ -82,6 +82,7 @@ export class HomePage implements OnInit {
 
     this.initializePage();
   }
+
 
   ngOnInit(): void { }
 
@@ -244,7 +245,7 @@ export class HomePage implements OnInit {
               // -- PRODUCTS WITH DISCOUNT
               let subs = this.productsService.getFeaturedProductsDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
                 products.forEach((product: Product) => {
-                  this.featuredProductsDiscount.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id });
+                  this.featuredProductsDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id });
                 });
 
                 this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
@@ -255,7 +256,7 @@ export class HomePage implements OnInit {
               // -- PRODUCTS WITHOUT DISCOUNT
               let subs2 = this.productsService.getFeaturedProductsNoDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
                 products.forEach((product: Product) => {
-                  this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id, storeImage: store.logo?store.logo:'../../../assets/icon/no-image.png'});
+                  this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
                 });
 
                 this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
@@ -266,7 +267,7 @@ export class HomePage implements OnInit {
               // -- GIFTS
               let subs3 = this.productsService.getGifts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
                 products.forEach((product: Product) => {
-                  this.gifts.push({ product: product, url: "/product-detail/"+ product.id +"&" + store.id, storeImage: store.logo?store.logo:'../../../assets/icon/no-image.png'});
+                  this.gifts.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
                 });
 
                 this.gifts = this.shuffle(this.gifts);
@@ -284,16 +285,16 @@ export class HomePage implements OnInit {
 
   shuffle(arr) {
     let i,
-        j,
-        temp;
+      j,
+      temp;
     for (i = arr.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+      j = Math.floor(Math.random() * (i + 1));
+      temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
     }
-    return arr;    
-};
+    return arr;
+  };
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
@@ -358,19 +359,95 @@ export class HomePage implements OnInit {
   //--------------------------------       SLIDER VALIDATIONS
 
   ionViewDidEnter() {
-    setTimeout(() => {
-      try { this.slider.startAutoplay(); } catch (error) { }
-      try { this.sliderStores.startAutoplay(); } catch (error) { }
-      try { this.sliderProductsDiscount.startAutoplay(); } catch (error) { }
-      try { this.sliderProductsNoDiscount.startAutoplay(); } catch (error) { }
-      try { this.sliderProductsNoDiscount2.startAutoplay(); } catch (error) { }
-      try { this.sliderGifts.startAutoplay(); } catch (error) { }
+    this.loadAllSliders(300);
 
-      this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
-      this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
-      this.gifts = this.shuffle(this.gifts);
-      this.stores = this.shuffle(this.stores);
-    }, 300);
+    this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
+    this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
+    this.gifts = this.shuffle(this.gifts);
+    this.stores = this.shuffle(this.stores);
+  }
+
+  loadAllSliders(timeout) {
+    setTimeout(() => {
+      this.loadSlider(() => {
+        this.loadSliderStores(() => {
+          this.loadSliderProductsDiscount(() => {
+            this.loadSliderProductsNoDiscount(() => {
+              this.loadSliderProductsNoDiscount2(() => {
+                this.loadSliderGifts(() => {
+                });
+              });
+            });
+          });
+        });
+      });
+    }, timeout);
+  }
+
+  loadSlider(callBack1) {
+    setTimeout(() => {
+      if (this.slider) {
+        this.slider.startAutoplay();
+        callBack1();
+      } else {
+        this.loadSlider(callBack1);
+      }
+    }, 1000);
+  }
+
+  loadSliderStores(callBack2) {
+    setTimeout(() => {
+      if (this.sliderStores) {
+        this.sliderStores.startAutoplay();
+        callBack2();
+      } else {
+        this.loadSlider(callBack2);
+      }
+    }, 1000);
+  }
+
+  loadSliderProductsDiscount(callBack3) {
+    setTimeout(() => {
+      if (this.sliderProductsDiscount) {
+        this.sliderProductsDiscount.startAutoplay();
+        callBack3();
+      } else {
+        this.loadSlider(callBack3);
+      }
+    }, 1000);
+  }
+
+  loadSliderProductsNoDiscount(callBack4) {
+    setTimeout(() => {
+      if (this.sliderProductsNoDiscount) {
+        this.sliderProductsNoDiscount.startAutoplay();
+        callBack4();
+      } else {
+        this.loadSlider(callBack4);
+      }
+    }, 1000);
+  }
+
+  loadSliderProductsNoDiscount2(callBack5) {
+    setTimeout(() => {
+      if (this.sliderProductsNoDiscount2) {
+        this.sliderProductsNoDiscount2.startAutoplay();
+        callBack5();
+      } else {
+        this.loadSlider(callBack5);
+      }
+    }, 1000);
+  }
+
+  loadSliderGifts(callBack6) {
+    setTimeout(() => {
+      if (this.sliderGifts) {
+        this.sliderGifts.startAutoplay();
+        callBack6();
+      } else {
+        this.loadSlider(callBack6);
+      }
+    }, 1000);
   }
 
   //--------------------------------------------------------------

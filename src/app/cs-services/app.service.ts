@@ -250,6 +250,7 @@ export class AppService {
   }
 
   slideOpts = {
+    speed: 2000,
     on: {
       beforeInit() {
         const swiper = this;
