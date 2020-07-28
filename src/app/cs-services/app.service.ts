@@ -27,6 +27,7 @@ export class AppService {
   sectors: Observable<Sector[]> = null;
   appInfo: Observable<AppInfo[]>;
   banners: Observable<Banner[]>;
+  bannersFooter: Observable<Banner[]>;
   _sectors: Sector[] = [];
   _storeCategories: StoreCategory[] = [];
   _appInfo: AppInfo;
@@ -87,7 +88,8 @@ export class AppService {
       }
     });
 
-    this.banners = this.bannersService.getAll();
+    this.banners = this.bannersService.getByType(1);
+    this.bannersFooter= this.bannersService.getByType(2);
 
     this.appInfo = this.getAppInfo();
     this.appInfo.subscribe(result => {

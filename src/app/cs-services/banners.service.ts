@@ -23,4 +23,16 @@ export class BannersService {
       }))
     );
   }
+
+  public getByType(type: number): Observable<Banner[]> {
+    this.bannersCollection = this.angularFirestore.collection<Banner>('banners', ref => ref.where("type", "==", type).orderBy('name'));
+    return this.bannersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Banner;
+        const id = a.payload.doc.id;
+        
+        return { id, ...data };
+      }))
+    );
+  }
 }

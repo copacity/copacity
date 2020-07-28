@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController, IonSelect } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store, Product } from 'src/app/app-intefaces';
+import { Store, Product, StoreCategory } from 'src/app/app-intefaces';
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
@@ -24,6 +24,7 @@ import { SubscriptionPlansComponent } from 'src/app/cs-components/subscription-p
 })
 export class HomePage implements OnInit {
   idSelectedCategories: string[] = [];
+  selectedCategories: StoreCategory[] = [];
   batch: number = 20;
   lastToken: string = '';
 
@@ -47,6 +48,7 @@ export class HomePage implements OnInit {
   @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
 
   @ViewChild('sliderHome', null) slider: any;
+  @ViewChild('sliderHomeFooter', null) sliderFooter: any;
   @ViewChild('sliderHomeProductsDiscount', null) sliderProductsDiscount: any;
   @ViewChild('sliderHomeStores', null) sliderStores: any;
   @ViewChild('sliderHomeProductsNoDiscount', null) sliderProductsNoDiscount: any;
@@ -135,6 +137,32 @@ export class HomePage implements OnInit {
 
   openSelectCategories() {
     this.selectRef.open();
+  }
+
+  fillStoreCategories() {
+    this.selectedCategories = [];
+
+    this.idSelectedCategories.forEach(sc => {
+      this.appService._storeCategories.forEach(asc => {
+        if (sc == asc.id) {
+          this.selectedCategories.push(asc);
+        }
+      });
+    });
+  }
+
+  removeFilterOption(id: string) {
+    this.loaderComponent.startLoading("Aplicando filtro. Por favor espere un momento...");
+
+    for (let [index, p] of this.idSelectedCategories.entries()) {
+      if (p === id) {
+        this.idSelectedCategories.splice(index, 1);
+      }
+    }
+
+    setTimeout(() => {
+      this.getStores();
+    }, 500);
   }
 
   selectedCategories_OnChange(e: any) {
@@ -227,6 +255,18 @@ export class HomePage implements OnInit {
     });
   }
 
+  goToPage(url: string, image: string) {
+    this.loaderComponent.start(image).then(result => {
+      this.router.navigate([url]);
+      this.loaderComponent.stop();
+    });
+  }
+
+  openWithOption(url: string, image: string, option: number) {
+    this.storesService.option = option;
+    this.goToPage(url, image)
+  }
+
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------       GET STORES 
@@ -242,6 +282,7 @@ export class HomePage implements OnInit {
     this.searchingProductsDiscount = true;
     this.searchingProductsNoDiscount = true;
     this.searchingGifts = true;
+    this.fillStoreCategories();
 
     setTimeout(async () => {
       this.stores = [];
@@ -263,7 +304,7 @@ export class HomePage implements OnInit {
                 let subs = this.productsService.getFeaturedProductsDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
 
                   products.forEach((product: Product) => {
-                    this.featuredProductsDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id });
+                    this.featuredProductsDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
                   });
 
                   this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
@@ -301,6 +342,7 @@ export class HomePage implements OnInit {
 
               this.loadSliderStores(function () { });
               this.loadSlider(function () { });
+              this.loadSliderFooter(function () { });
             }
           });
 
@@ -323,11 +365,6 @@ export class HomePage implements OnInit {
     }
     return arr;
   };
-
-  openWithOption(url: string, option: number) {
-    this.storesService.option = option;
-    this.router.navigate([url]);
-  }
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
@@ -403,10 +440,12 @@ export class HomePage implements OnInit {
   loadAllSliders(timeout) {
     setTimeout(() => {
       this.loadSlider(() => {
-        this.loadSliderStores(() => {
-          this.loadSliderProductsDiscount(() => {
-            this.loadSliderProductsNoDiscount(() => {
-              this.loadSliderGifts(() => {
+        this.loadSliderFooter(() => {
+          this.loadSliderStores(() => {
+            this.loadSliderProductsDiscount(() => {
+              this.loadSliderProductsNoDiscount(() => {
+                this.loadSliderGifts(() => {
+                });
               });
             });
           });
@@ -422,6 +461,17 @@ export class HomePage implements OnInit {
         callBack1();
       } else {
         this.loadSlider(callBack1);
+      }
+    }, 1000);
+  }
+
+  loadSliderFooter(callBack1) {
+    setTimeout(() => {
+      if (this.sliderFooter) {
+        this.sliderFooter.startAutoplay();
+        callBack1();
+      } else {
+        this.loadSliderFooter(callBack1);
       }
     }, 1000);
   }
