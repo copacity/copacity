@@ -28,3 +28,10 @@ export enum NotificationStatus {
   Created = 1,
   Readed = 2
 }
+
+export enum BannerRedirectTypes {
+  Store = 1,
+  Product = 2,
+  Gift = 4,
+  Coupon = 5,
+}

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController, IonSelect } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store, Product, StoreCategory } from 'src/app/app-intefaces';
+import { Store, Product, StoreCategory, Banner } from 'src/app/app-intefaces';
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
@@ -16,6 +16,7 @@ import { LocationStrategy } from '@angular/common';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { SubscriptionPlansComponent } from 'src/app/cs-components/subscription-plans/subscription-plans.component';
+import { BannerRedirectTypes } from 'src/app/app-enums';
 
 @Component({
   selector: 'app-home',
@@ -260,6 +261,31 @@ export class HomePage implements OnInit {
       this.router.navigate([url]);
       this.loaderComponent.stop();
     });
+  }
+
+  redirectBanner(banner: Banner) {
+    switch (banner.redirectType) {
+      case BannerRedirectTypes.Store: {
+        this.goToPage('/store/' + banner.idStore, banner.storeImage);
+        break;
+      }
+      case BannerRedirectTypes.Product: {
+        this.goToPage('/product-detail/' + banner.redirectTypeId + '&' + banner.idStore, banner.storeImage)
+        this.router.navigate([]);
+        break;
+      }
+      case BannerRedirectTypes.Coupon: {
+        this.storesService.option = BannerRedirectTypes.Coupon;
+        this.goToPage('/store/' + banner.idStore, banner.storeImage);
+        break;
+      }
+      case BannerRedirectTypes.Gift: {
+        this.storesService.option = BannerRedirectTypes.Gift;
+        this.goToPage('/store/' + banner.idStore, banner.storeImage);
+        break;
+      }
+      default: break;
+    }
   }
 
   openWithOption(url: string, image: string, option: number) {

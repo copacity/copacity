@@ -192,7 +192,13 @@ export interface PropertiesSelection {
 
 export interface Banner {
   id: string;
+  idStore: string;
+  storeImage: string;
   image: string;
+  name: string;
+  redirectType: number;
+  redirectTypeId: string;
+  type: number;
 }
 
 export interface Sector {

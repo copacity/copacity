@@ -188,9 +188,12 @@ export class StorePage implements OnInit {
       });
     });
 
-    if(this.storesService.option == 4){
+    if (this.storesService.option == 4) {
       this.storesService.option = 0;
       this.openStorePointsPage();
+    } else if (this.storesService.option == 5) {
+      this.storesService.option = 0;
+      this.openStoreCouponsPage();
     }
   }
 

@@ -224,7 +224,7 @@
             <div class="content" class="{{idSelectedCategories.length == 0?'top-30':''}}"
               style="margin: 0px 5px 0px 5px;">
               <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
-                <ion-slide *ngFor="let banner of appService.banners | async">
+                <ion-slide (click)="redirectBanner(banner)" *ngFor="let banner of appService.banners | async">
                   <img class="round-medium" src="{{banner.image}}">
                 </ion-slide>
               </ion-slides>
@@ -320,12 +320,11 @@
               </div>
 
               <div class="content" style="margin: 0px 5px 0px 5px;">
-                <div style="text-align: -webkit-left;">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: opx;">&nbsp;</h4>
+                <div style="text-align: -webkit-left;" class="bottom-20">
+                  <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;Cupones Hoy!</h4>
                 </div>
-
                 <ion-slides #sliderHomeFooter [options]="appService.slideOpts" style="max-width: 450px;">
-                  <ion-slide *ngFor="let bannerF of appService.bannersFooter | async">
+                  <ion-slide (click)="redirectBanner(bannerF)" *ngFor="let bannerF of appService.bannersFooter | async">
                     <img class="round-medium" src="{{bannerF.image}}">
                   </ion-slide>
                 </ion-slides>
@@ -333,12 +332,12 @@
 
               <div class="content" style="margin: 40px 5px 0px 5px;">
                 <div style="text-align: -webkit-left;">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;">Regalos</h4>
+                  <h4 class="bolder color-highlight" style="font-size: 1em;">Acumula Puntos y Reclama Regalos</h4>
                 </div>
 
                 <ion-slides *ngIf="searchingGifts" [options]="appService.slideOptsGifts" style="max-width: 450px;">
                   <ion-slide *ngFor="let item of [1,2,3,4]"
-                    style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
+                    style="padding: 2px; padding-right: 5px;padding-left: 5px;">
                     <ion-skeleton-text animated
                       class="responsive-image preload-image shadow-small round-medium img-store"
                       style="width: 100px;height: 100px;">
@@ -347,7 +346,7 @@
                 </ion-slides>
 
                 <ion-slides *ngIf="!searchingGifts" #sliderHomeGifts [options]="appService.slideOptsGifts"
-                  style="max-width: 450px;padding-top: 20px;">
+                  style="max-width: 450px;">
                   <ion-slide (click)="openWithOption(gift.url, gift.storeImage, 4)" *ngFor="let gift of gifts;"
                     style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
                     <div class="profile-2">
@@ -358,15 +357,15 @@
                             class="preload-image shadow-small round-small"
                             [src]="gift.product.image?gift.product.image:'../../../assets/icon/no-image.png'" alt="img">
 
-                          <em
+                          <!-- <em
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px">
                             <img style="width: 30px;margin: 0px 0px 0px 0px;" class="preload-image round-large"
                               [src]="gift.storeImage" alt="img">
-                          </em>
+                          </em> -->
 
                           <em
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 20px;left: -10px">
-                            <img style="width: 40px;margin: 0px 0px 0px 0px;opacity: .7;"
+                            <img style="width: 60px;margin: 0px 0px 0px 0px;opacity: .7;"
                               class="preload-image round-medium" src="../../../assets/icon/gift.png" alt="img">
                           </em>
 
