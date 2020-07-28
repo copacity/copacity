@@ -327,10 +327,10 @@ export class AppService {
 
   slideOptsGifts = {
     speed: 500,
-    slidesPerView: 4,
+    slidesPerView: 3,
   }
 
-  slideOpts2 = {
+  slideOptsStoreMenu = {
     speed: 2000,
     slidesPerView: 5,
   }

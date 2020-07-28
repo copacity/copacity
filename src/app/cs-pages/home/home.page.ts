@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PopoverController, AlertController, ToastController } from '@ionic/angular';
+import { PopoverController, AlertController, ToastController, IonSelect } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { Store, Product } from 'src/app/app-intefaces';
@@ -23,6 +23,7 @@ import { SubscriptionPlansComponent } from 'src/app/cs-components/subscription-p
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+  idSelectedCategories: string[] = [];
   batch: number = 20;
   lastToken: string = '';
 
@@ -42,6 +43,8 @@ export class HomePage implements OnInit {
   searchingStores: boolean = false;
   storeSearchHits: number = 0;
   storeSearchText: string = '';
+
+  @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
 
   @ViewChild('sliderHome', null) slider: any;
   @ViewChild('sliderHomeProductsDiscount', null) sliderProductsDiscount: any;
@@ -130,6 +133,18 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
+  openSelectCategories() {
+    this.selectRef.open();
+  }
+
+  selectedCategories_OnChange(e: any) {
+    this.loaderComponent.startLoading("Aplicando filtro. Por favor espere un momento...");
+    this.idSelectedCategories = e.target.value;
+
+    setTimeout(() => {
+      this.getStores();
+    }, 500);
+  }
 
   // fullScreen(){
   //   let elem = document.documentElement;
@@ -230,53 +245,67 @@ export class HomePage implements OnInit {
 
     setTimeout(async () => {
       this.stores = [];
+      this.featuredProductsDiscount = [];
+      this.featuredProductsNoDiscount = [];
+      this.gifts = [];
 
       if (this.idStoreCategory == '0' && this.idSector == '0') {
         this.storesService.getAll(this.storeSearchText).then(stores => {
-          //this.stores = stores;
           this.searchingStores = false;
 
           stores.forEach((store: Store) => {
             if (store) {
-              this.stores.push(store);
-              //this.storeSearchHits++;
+              if (this.idSelectedCategories.length == 0 || this.idSelectedCategories.includes(store.idStoreCategory)) {
 
-              // -- PRODUCTS WITH DISCOUNT
-              let subs = this.productsService.getFeaturedProductsDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
-                products.forEach((product: Product) => {
-                  this.featuredProductsDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id });
+                this.stores.push(store);
+
+                // -- PRODUCTS WITH DISCOUNT
+                let subs = this.productsService.getFeaturedProductsDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
+
+                  products.forEach((product: Product) => {
+                    this.featuredProductsDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id });
+                  });
+
+                  this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
+                  this.searchingProductsDiscount = false;
+                  this.loadSliderProductsDiscount(function () { });
+                  subs.unsubscribe();
                 });
 
-                this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
-                this.searchingProductsDiscount = false;
-                subs.unsubscribe();
-              });
+                // -- PRODUCTS WITHOUT DISCOUNT
+                let subs2 = this.productsService.getFeaturedProductsNoDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
 
-              // -- PRODUCTS WITHOUT DISCOUNT
-              let subs2 = this.productsService.getFeaturedProductsNoDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
-                products.forEach((product: Product) => {
-                  this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
+                  products.forEach((product: Product) => {
+                    this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
+                  });
+
+                  this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
+                  this.searchingProductsNoDiscount = false;
+                  this.loadSliderProductsNoDiscount(function () { });
+                  subs2.unsubscribe();
                 });
 
-                this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
-                this.searchingProductsNoDiscount = false;
-                subs2.unsubscribe();
-              });
+                // -- GIFTS
+                let subs3 = this.productsService.getGifts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
 
-              // -- GIFTS
-              let subs3 = this.productsService.getGifts(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
-                products.forEach((product: Product) => {
-                  this.gifts.push({ product: product, url: "/store/" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
+                  products.forEach((product: Product) => {
+                    this.gifts.push({ product: product, url: "/store/" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
+                  });
+
+                  this.gifts = this.shuffle(this.gifts);
+                  this.searchingGifts = false;
+                  this.loadSliderGifts(function () { });
+                  subs3.unsubscribe();
                 });
+              }
 
-                this.gifts = this.shuffle(this.gifts);
-                this.searchingGifts = false;
-                subs3.unsubscribe();
-              });
+              this.loadSliderStores(function () { });
+              this.loadSlider(function () { });
             }
           });
 
           this.stores = this.shuffle(this.stores);
+          this.loaderComponent.stopLoading();
         });
       }
     }, 500);

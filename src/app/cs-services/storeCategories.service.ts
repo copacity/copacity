@@ -27,9 +27,10 @@ export class StoreCategoriesService {
     return this.storeCategoryCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as StoreCategory;
-        const id = a.payload.doc.id;
+        
+        data.id = a.payload.doc.id;
 
-        return { id, ...data };
+        return data;
       }))
     );
   }

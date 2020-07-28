@@ -86,7 +86,7 @@ export class StorePage implements OnInit {
 
   productsBatch: number = 50;
   lastProductToken: string = '';
-  idProductCategory: string = '-1';
+  idProductCategory: string = '0';
   productCategoriesCount: number = 0;
   searchingProducts: boolean = false;
   productSearchHits: number = 0;
