@@ -45,8 +45,8 @@
       </ion-toolbar>
       <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
         <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
       </div>
     </ion-header>
 
@@ -131,38 +131,18 @@
   <super-tabs-container>
     <super-tab>
       <ion-content class="content-background">
-        <!-- 
-        <ion-slides #sliderProductDetail [options]="appService.slideOpts" style="max-width: 450px;">
-          <ion-slide *ngFor="let banner of appService.banners | async">
-            <img src="{{banner.image}}">
-          </ion-slide>
-        </ion-slides> -->
-
         <div class="profile-1 bottom-30 top-30">
-          <!-- <div class="profile-header" style="background-color: transparent;margin: 0px 0px 0px 0px;">
-
-            <ion-slides #sliderProductDetail [options]="appService.slideOpts" style="height: 150px;">
-              <ion-slide style="padding-right: 10px;padding-left: 10px;padding-top: 10px;"
-                *ngFor="let banner of appService.banners | async">
-                <img src="{{banner.image}}" class="round-medium">
-              </ion-slide>
-            </ion-slides>
-          </div>
-          <div class="profile-header-clear" style="height: 180px;"></div> -->
           <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
 
             <a (click)="openBarCodeScanner()"
               style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
               <i class="fa fa-qrcode"></i>&nbsp;QR</a>
-            <!-- <i (click)="close()" class="fa fa-times-circle"
-              style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-            <a style="background-color: white; color: black;font-size: 16px;"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">LECTOR
-              QR</a> -->
+            <a *ngIf="product?.video" (click)="openVideoPlayerComponent($event, product?.video)"
+              style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
+              <i class="fab fa-youtube"></i>&nbsp;Video</a>
 
-            <a (click)="shareProduct($event)"
-              style="background-color: white; color: black;border-radius:15px"
+            <a (click)="shareProduct($event)" style="background-color: white; color: black;border-radius:15px"
               class="profile-button button shadow-large button-m button-round round-medium uppercase bolder button-center-medium">
               <i class="fa fa-share-alt" style="padding-right: 10px;color: black;"></i>
               <strong>Compartir</strong>
@@ -184,7 +164,8 @@
             <div class="profile-body-no-apply">
 
               <div class="store-product">
-                <h2 class="store-product-title" style="font-size: 1.5em;padding-top: 5px;padding-right: 140px;">{{product?.name }}</h2>
+                <h2 class="store-product-title" style="font-size: 1.5em;padding-top: 5px;padding-right: 140px;">
+                  {{product?.name }}</h2>
 
                 <span class="store-product-price">
                   <em *ngIf="product?.discount && product?.discount > 0"

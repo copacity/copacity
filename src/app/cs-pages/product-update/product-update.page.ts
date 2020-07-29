@@ -298,6 +298,7 @@ export class ProductUpdatePage implements OnInit {
         ref: [this.navParams.data.ref, [Validators.maxLength(10)]],
         category: [this.navParams.data.idProductCategory.toString(), [Validators.required]],
         price: [this.navParams.data.price, [Validators.required]],
+        video: [this.navParams.data.video],
         description: [this.navParams.data.description, [Validators.maxLength(500)]],
         discount: [this.navParams.data.discount ? this.navParams.data.discount.toString() : '0'],
       });
@@ -323,6 +324,7 @@ export class ProductUpdatePage implements OnInit {
         ref: this.form.value.ref,
         idProductCategory: this.form.value.category,
         price: this.form.value.price,
+        video: this.form.value.video,
         description: this.form.value.description,
         discount: this.form.value.discount,
       }

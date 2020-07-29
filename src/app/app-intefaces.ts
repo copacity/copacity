@@ -154,6 +154,7 @@ export interface Product {
   description: string;
   price: number;
   image: string;
+  video: string;
   lastUpdated: Date;
   dateCreated: Date;
   deleted: boolean;

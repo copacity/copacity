@@ -1,0 +1,12 @@
+<div class="profile-popover" style="width: 100%;text-align: -webkit-center;">
+
+  <i (click)="close()" class="fa fa-times-circle round-small"
+    style="right: 0px;position: absolute;top: 0;font-size: 1.6em;padding: 2px;z-index: 9;color: red;background-color: white;"></i>
+
+  <div style="width: 100%;text-align: -webkit-center;position: absolute;">
+    <img src="../../../assets/icon/wait.gif" style="padding-top: 50px;width: 30px;" />
+  </div>
+
+  <iframe [src]="safeSrc" frameborder="0" style="width: 100%;height: 300px;"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

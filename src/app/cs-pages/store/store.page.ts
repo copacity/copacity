@@ -45,6 +45,7 @@ import { StoreBillingPage } from '../store-billing/store-billing.page';
 import { StoreVendorsPage } from '../store-vendors/store-vendors.page';
 import { StoreReportsPage } from '../store-reports/store-reports.page';
 import { StoreVendorsAdminPage } from '../store-vendors-admin/store-vendors-admin.page';
+import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 
 @Component({
   selector: 'app-store',
@@ -1119,6 +1120,23 @@ export class StorePage implements OnInit {
     }
   }
 
+  async openVideoPlayerComponent(e: any, url: string) {
+    let modal = await this.popoverController.create({
+      component: VideoPlayerComponent,
+      mode: 'ios',
+      cssClass: 'cs-video-popover',
+      componentProps: { url: url },
+      event: e
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
+  }
+
   async openProductInventoryPage(product: Product) {
     let modal = await this.popoverController.create({
       component: ProductInventoryPage,
@@ -1134,10 +1152,6 @@ export class StorePage implements OnInit {
 
     modal.present();
   }
-
-  // openStoreCouponsPage() {
-  //   this.presentAlert("El equipo de CopaCity esta trabajando en esta funcionalidad, muy pronto estara disponible para su uso", '', () => { });
-  // }
 
   searchFeaturedProducts() {
     this.idProductCategory = '-1';

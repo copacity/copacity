@@ -231,7 +231,7 @@
               </ion-slides>
             </div>
 
-            <div id="page-no-apply" class="bottom-20">
+            <div id="page-no-apply">
               <div class="content" style="margin: 0px 5px 0px 5px;">
                 <div style="text-align: -webkit-left;" class="top-15">
                   <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Tiendas</h4>
@@ -369,6 +369,9 @@
                               {{ gift.product.price }} Puntos</span>
                           </em>
                         </a>
+
+                        <strong class="strong-store"
+                          style="font-size: .7em;padding-top: 30px;">{{((gift.product.name.length<=32)?gift.product.name:gift.product.name.substring(0, 32) + '...')}}</strong>
                       </div>
                     </div>
                   </ion-slide>

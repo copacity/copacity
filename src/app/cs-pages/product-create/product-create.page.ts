@@ -253,6 +253,7 @@ export class ProductCreatePage implements OnInit {
         ref: ['', [Validators.maxLength(10)]],
         category: ['', [Validators.required]],
         price: ['', [Validators.required]],
+        video: [''],
         description: ['', [Validators.maxLength(500)]],
         discount: ['0'],
       });
@@ -287,6 +288,7 @@ export class ProductCreatePage implements OnInit {
           ref: this.form.value.ref,
           description: this.form.value.description,
           price: this.form.value.price,
+          video: this.form.value.video,
           idProductCategory: this.form.value.category,
           discount: this.form.value.discount,
           soldOut: true,

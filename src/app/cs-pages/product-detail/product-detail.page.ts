@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
+import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -51,6 +52,7 @@ export class ProductDetailPage implements OnInit {
     private ngNavigatorShareService: NgNavigatorShareService,
     private storesService: StoresService,
     private productService: ProductsService,
+    private popoverController: PopoverController,
     public appService: AppService) {
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
@@ -118,6 +120,23 @@ export class ProductDetailPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  async openVideoPlayerComponent(e: any, url: string) {
+    let modal = await this.popoverController.create({
+      component: VideoPlayerComponent,
+      mode: 'ios',
+      cssClass: 'cs-video-popover',
+      componentProps: { url: url },
+      event: e
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
   }
 
   async presentMenuUser(e) {

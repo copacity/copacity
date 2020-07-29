@@ -376,8 +376,8 @@
               <ion-list style="padding-bottom: 0px">
                 <ion-item>
                   <ion-label style="font-size: .8em;">Sección:</ion-label>
-                  <ion-select #selectCategories style="padding-right: 10px;font-size: .8em;" mode="ios" cancelText="Cancelar"
-                    value="{{ idProductCategory }}" okText="Okay!" interface='action-sheet'
+                  <ion-select #selectCategories style="padding-right: 10px;font-size: .8em;" mode="ios"
+                    cancelText="Cancelar" value="{{ idProductCategory }}" okText="Okay!" interface='action-sheet'
                     (ionChange)="productCategory_OnChange($event)">
                     <ion-select-option value="0">Todas</ion-select-option>
                     <ion-select-option value="-1">Destacados</ion-select-option>
@@ -429,16 +429,17 @@
                       <span style="padding: 0px 0px 0px 0px;"
                         class="{{(product?.discount && product?.discount > 0)?'line-through color-gray font-15':'color-black font-18 top-10'}} {{(product?.soldOut)?'sold-out':'' }}">
                         {{ product?.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
-                      <span *ngIf="product?.discount && product?.discount > 0" 
+                      <span *ngIf="product?.discount && product?.discount > 0"
                         style="color:black;padding: 0px 0px 0px 0px;background-color: yellow;color: black;font-weight: bold;"
                         class="{{(product?.soldOut)?'sold-out':'' }} font-18">
                         {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}
                       </span>
                     </em>
 
-                    <!-- <em *ngIf="product?.discount && product?.discount > 0" class="{{(product?.soldOut)?'sold-out':'' }}"
-                      style="background-color: yellow;color: black;font-weight: bold;font-size: 1em;margin-top: 20px;">
-                      {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</em> -->
+                    <em *ngIf="product.video" (click)="openVideoPlayerComponent($event, product.video)"
+                      style="background-color: white;padding: 0px 0px;right: 0px;" class="top-5">
+                      <i class="fab fa-youtube" style="font-size: 2.8em;color: red;"></i>
+                    </em>
 
                     <em *ngIf="product?.discount && product?.discount > 0" style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;
                         top: -5px;right: -25px" class="{{(product?.soldOut)?'sold-out':'' }}">

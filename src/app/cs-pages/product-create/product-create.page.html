@@ -72,6 +72,11 @@
             </ion-select>
           </ion-item>
           <ion-item>
+            <ion-label position="floating" style="color: gray;font-size: 15px;">Video
+            </ion-label>
+            <ion-input formControlName="video" style="font-size: 15px;"></ion-input>
+          </ion-item>
+          <ion-item>
             <ion-label position="floating" style="color: gray;">Descripción <small style="color: gray;">
                 ({{this.form.get('description').value.length}}/500)</small></ion-label>
             <ion-textarea formControlName="description"></ion-textarea>
