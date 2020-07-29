@@ -154,8 +154,8 @@
 
         <ion-slides #sliderHomeProductsDiscount [options]="appService.slideOptsProductsDiscount"
           style="max-width: 450px;">
-          <ion-slide (click)="goToPage(featuredProduct.url, featuredProduct.storeImage)" *ngFor="let featuredProduct of featuredProductsDiscount;"
-            style="padding: 2px; padding-top: 17px;">
+          <ion-slide (click)="goToPage(featuredProduct.url, featuredProduct.storeImage)"
+            *ngFor="let featuredProduct of featuredProductsDiscount;" style="padding: 2px; padding-top: 17px;">
             <div class="profile-2">
               <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                 <a>
@@ -223,6 +223,7 @@
 
             <div class="content" class="{{idSelectedCategories.length == 0?'top-30':''}}"
               style="margin: 0px 5px 0px 5px;">
+
               <ion-slides #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
                 <ion-slide (click)="redirectBanner(banner)" *ngFor="let banner of appService.banners | async">
                   <img class="round-medium" src="{{banner.image}}">
@@ -236,7 +237,7 @@
                   <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Tiendas</h4>
                 </div>
 
-                <ion-slides *ngIf="searchingStores" [options]="appService.slideOptsStores" style="max-width: 450px;">
+                <ion-slides *ngIf="searchingStores" [options]="appService.slideOptsStores" style="max-width: 450px;" style="padding-bottom: 20px;">
                   <ion-slide *ngFor="let item of [1,2,3]"
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
                     <ion-skeleton-text animated
@@ -268,8 +269,8 @@
                           <i class="fa fa-star color-yellow1-dark"></i>
                         </div>
 
-                        <strong class="strong-store bold"
-                          style="font-size: .6em;padding-top: 0px;">{{((store?.name.length<=32)?store?.name:store?.name.substring(0, 32) + '...')}}</strong>
+                        <strong class="strong-store"
+                          style="font-size: .7em;padding-top: 0px;">{{((store?.name.length<=32)?store?.name:store?.name.substring(0, 32) + '...')}}</strong>
                       </a>
                     </div>
                   </ion-slide>
@@ -277,8 +278,8 @@
               </div>
 
               <div class="content" style="margin: 0px 5px 0px 5px;">
-                <div style="text-align: -webkit-left;" class="top-15">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;">Productos Destacados</h4>
+                <div style="text-align: -webkit-left;">
+                  <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Productos Destacados</h4>
                 </div>
 
                 <div *ngIf="searchingProductsNoDiscount">
@@ -292,7 +293,7 @@
                 </div>
 
                 <ion-slides *ngIf="!searchingProductsNoDiscount" #sliderHomeProductsNoDiscount
-                  [options]="appService.slideOptsProductsNoDiscount" style="max-width: 450px;padding-top: 20px;">
+                  [options]="appService.slideOptsProductsNoDiscount" style="max-width: 450px;">
                   <ion-slide (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.storeImage)"
                     *ngFor="let featuredProductNoDiscount of featuredProductsNoDiscount;"
                     style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
@@ -306,13 +307,13 @@
                             alt="img">
                           <em
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -25px;left: 0px">
-                            <span style="padding: 0px 0px 0px 0px;" class="color-black font-12 top-10">
+                            <span style="padding: 0px 0px 0px 0px;" class="color-black font-15 top-10">
                               {{ featuredProductNoDiscount.product.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
                           </em>
                         </a>
 
                         <strong class="strong-store"
-                          style="font-size: .6em;padding-top: 20px;">{{((featuredProductNoDiscount.product.name.length<=32)?featuredProductNoDiscount.product.name:featuredProductNoDiscount.product.name.substring(0, 32) + '...')}}</strong>
+                          style="font-size: .7em;padding-top: 20px;">{{((featuredProductNoDiscount.product.name.length<=32)?featuredProductNoDiscount.product.name:featuredProductNoDiscount.product.name.substring(0, 32) + '...')}}</strong>
                       </div>
                     </div>
                   </ion-slide>
@@ -330,14 +331,13 @@
                 </ion-slides>
               </div>
 
-              <div class="content" style="margin: 40px 5px 0px 5px;">
+              <div class="content" style="margin: 30px 5px 0px 5px;">
                 <div style="text-align: -webkit-left;">
                   <h4 class="bolder color-highlight" style="font-size: 1em;">Acumula Puntos y Reclama Regalos</h4>
                 </div>
 
                 <ion-slides *ngIf="searchingGifts" [options]="appService.slideOptsGifts" style="max-width: 450px;">
-                  <ion-slide *ngFor="let item of [1,2,3,4]"
-                    style="padding: 2px; padding-right: 5px;padding-left: 5px;">
+                  <ion-slide *ngFor="let item of [1,2,3,4]" style="padding: 2px; padding-right: 5px;padding-left: 5px;">
                     <ion-skeleton-text animated
                       class="responsive-image preload-image shadow-small round-medium img-store"
                       style="width: 100px;height: 100px;">
@@ -386,7 +386,7 @@
                 <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
               </div>
               <a href="#" class="footer-title"><span style="color: red;">COPA</span>CITY</a>
-              <p class="footer-text" style="padding-top: 20px;margin-bottom: 15px;">Tu Centro Comercial Virtual</p>
+              <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro Comercial Virtual</p>
               <div class="footer-socials" style="padding-left: 30px;">
                 <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
                     class="fab fa-facebook-f"></i></a>
