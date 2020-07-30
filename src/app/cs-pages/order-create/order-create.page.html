@@ -211,8 +211,8 @@
 
                 <ion-item>
                   <ion-label style="color: gray;font-size: .8em;">Selecciona: <b style="color: red;">(*)</b></ion-label>
-                  <ion-select (ionChange)="shippingMethodChanged($event)" style="padding-right: 10px;font-size: .8em;" mode="ios"
-                    cancelText="Cancelar" okText="Aceptar" interface='action-sheet'>
+                  <ion-select (ionChange)="shippingMethodChanged($event)" style="padding-right: 10px;font-size: .8em;"
+                    mode="ios" cancelText="Cancelar" okText="Aceptar" interface='action-sheet'>
                     <ion-select-option *ngFor="let shippingMethod of shippingMethods | async;"
                       value="{{shippingMethod.id}}">
                       {{shippingMethod.name}}</ion-select-option>
@@ -241,13 +241,117 @@
                 style="border: red;">
                 <a (click)="openAddressListPage()" class="round-small shadow-tiny">
                   <i style="font-size: 1.5em;color: black;top: 25px;" class="fa fa-map-marker-alt"></i>
-                  <strong style="font-size: 1.5em;padding-top: 10px;color: red;">Dirección:</strong>
-                  <span
-                    style="font-size: 1.5em;padding-top: 20px;color: black;">{{appService.addressChecked?.address}}</span>
+                  <strong style="font-size: 1.2em;padding-top: 10px;color: red;">Seleccionar Dirección:</strong>
+                  
+                  <div *ngIf="appService.idAddressChecked" class="content" style="margin: 0px 0px 40px 0px;">
+                    <table class="table-borders-dark store-product-table top-20 bottom-20 round-medium"
+                      style="border: solid 1px rgba(0,0,0,0.08);">
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Nombre
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.name}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Apellido
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.lastName}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Tel 1
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.phone1}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Tel 2
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.phone2}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          País
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.country}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Ciudad
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.city}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Dirección
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.address}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Código Postal
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.postalCode}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Descripción
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.description}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
                   <i style="font-size: 1.5em;color: red;top: 25px;" class="fa fa-long-arrow-alt-right"></i>
                 </a>
                 <strong *ngIf="!appService.addressChecked"
-                  style="font-size: 1.2em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
+                  style="font-size: 1em;padding-top: 20px;color: red;font-weight: bold;padding-bottom: 15px;padding-left: 0px;">Por
                   favor seleccione una
                   dirección!</strong>
               </div>
@@ -271,8 +375,9 @@
 
                 <ion-item>
                   <ion-label style="color: gray;font-size: .8em;">Selecciona: <b style="color: red;">(*)</b></ion-label>
-                  <ion-select (ionChange)="paymentMethodChanged($event)" style="padding-right: 10px;font-size: .8em;" mode="ios"
-                    cancelText="Cancelar" okText="Aceptar" interface='action-sheet' value="{{ paymentMethod?.id }}">
+                  <ion-select (ionChange)="paymentMethodChanged($event)" style="padding-right: 10px;font-size: .8em;"
+                    mode="ios" cancelText="Cancelar" okText="Aceptar" interface='action-sheet'
+                    value="{{ paymentMethod?.id }}">
                     <ion-select-option *ngFor="let paymentMethodbyShipping of paymentsMethodbyShipping "
                       value="{{paymentMethodbyShipping.id}}">
                       {{paymentMethodbyShipping.name}}</ion-select-option>
@@ -400,8 +505,8 @@
               <ion-list lines="full" class="ion-no-margin ion-no-padding">
                 <ion-item>
                   <ion-label style="color: gray;font-size: .8em;">Selecciona: <b style="color: red;">(*)</b></ion-label>
-                  <ion-select [formControl]="idVendor" style="padding-right: 10px;font-size: .8em;" mode="ios" cancelText="Cancelar" okText="Okay!"
-                    interface='action-sheet'>
+                  <ion-select [formControl]="idVendor" style="padding-right: 10px;font-size: .8em;" mode="ios"
+                    cancelText="Cancelar" okText="Okay!" interface='action-sheet'>
                     <ion-select-option value="1">Compra directa sin asesor</ion-select-option>
                     <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
                   </ion-select>
@@ -425,7 +530,8 @@
                 <div class="link-list link-list-3">
                   <ion-list>
                     <ion-item>
-                      <ion-label position="floating" style="color: gray;font-size: .8em;">Agrega una nota:<small style="color: gray;">
+                      <ion-label position="floating" style="color: gray;font-size: .8em;">Agrega una nota:<small
+                          style="color: gray;">
                           ({{messageToStore.value.length}}/500)</small></ion-label>
                       <ion-textarea [formControl]="messageToStore"></ion-textarea>
                     </ion-item>

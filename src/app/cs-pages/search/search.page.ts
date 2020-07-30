@@ -47,8 +47,8 @@ export class SearchPage {
         stores.forEach((store: Store) => {
           let subs = this.productsService.getAll(store.id).subscribe(products => {
             products.forEach((product: Product) => {
-              if (product.name.toUpperCase().indexOf(this.searchService.searchText.toUpperCase()) != -1) {
-                this.searchService.products.push({ product: product, idStore: store.id });
+              if (this.removeAccents(product.name).toUpperCase().indexOf(this.removeAccents(this.searchService.searchText).toUpperCase()) != -1 || this.searchInText(product.name.split(" "), this.searchService.searchText)) {
+                this.searchService.products.push({ product: product, idStore: store.id, storeName: store.name });
               }
 
               this.searchService.searching = false;
@@ -61,6 +61,21 @@ export class SearchPage {
       this.searchService.searching = false;
     }
   }
+
+  searchInText(array: string[], text: string) {
+    let result = false;
+    array.forEach(word => {
+      if (text.toUpperCase().indexOf(this.removeAccents(word).trim().toUpperCase()) != -1 && this.removeAccents(word).trim()) {
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  removeAccents = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  } 
 
   async openImageViewer(product: Product, storeId: string) {
     let images: string[] = [];
@@ -88,8 +103,23 @@ export class SearchPage {
     });
   }
 
-  goToProductDetail(product: any){
+  goToProductDetail(product: any) {
     this.router.navigate(['product-detail', product.product.id + "&" + product.idStore]);
     this.popoverCtrl.dismiss();
+  }
+
+  ionViewDidEnter() {
+    this.loadSearchbar(() => { });
+  }
+
+  loadSearchbar(callBack1) {
+    setTimeout(() => {
+      if (this.searchbar) {
+        this.searchbar.setFocus();
+        callBack1();
+      } else {
+        this.loadSearchbar(callBack1);
+      }
+    }, 500);
   }
 }
