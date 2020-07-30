@@ -58,6 +58,13 @@
     width: 90%;
 }
 
+.cs-search-popover .popover-content {   
+    width: 90%;
+    top:5%!important;
+    background-color: transparent; 
+    box-shadow: none;
+}
+
 @media screen and (min-width: 450px) {
     .cs-popovers .popover-content {   
         width: 450px;
@@ -69,6 +76,13 @@
     .cs-video-popover .popover-content {   
         width: 450px;
     }   
+
+    .cs-search-popover .popover-content {   
+        width: 450px;
+        top:5%!important;
+        background-color: transparent; 
+        box-shadow: none;
+    }
 }
 
 

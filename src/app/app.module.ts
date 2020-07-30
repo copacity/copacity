@@ -48,6 +48,7 @@ import { StoreVendorsPageModule } from './cs-pages/store-vendors/store-vendors.m
 import { StoreReportsPageModule } from './cs-pages/store-reports/store-reports.module';
 import { StoreVendorsAdminPageModule } from './cs-pages/store-vendors-admin/store-vendors-admin.module';
 import { StoreVendorsUpdatePageModule } from './cs-pages/store-vendors-update/store-vendors-update.module';
+import { SearchPageModule } from './cs-pages/search/search.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -100,6 +101,7 @@ import { StoreVendorsUpdatePageModule } from './cs-pages/store-vendors-update/st
     StoreVendorsAdminPageModule,
     StoreVendorsUpdatePageModule,
     StoreReportsPageModule,
+    SearchPageModule,
     PipesModule
   ],
   providers: [

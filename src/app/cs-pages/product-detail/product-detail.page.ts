@@ -21,6 +21,7 @@ import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/produ
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
+import { SearchPage } from '../search/search.page';
 
 @Component({
   selector: 'app-product-detail',
@@ -120,6 +121,21 @@ export class ProductDetailPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  async openSearchPage() {
+    let modal = await this.popoverController.create({
+      component: SearchPage,
+      cssClass: 'cs-search-popover',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+      });
+
+    modal.present();
   }
 
   async openVideoPlayerComponent(e: any, url: string) {

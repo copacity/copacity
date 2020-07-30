@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, Notification, ErrorMessage } from '../app-intefaces';
 import { UsersService } from './users.service';
-import { SectorsService } from './sectors.service';
 import { StoreCategoriesService } from './storeCategories.service';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { BannersService } from './banners.service';
@@ -56,7 +55,6 @@ export class AppService {
     public angularFirestore: AngularFirestore,
     private usersService: UsersService,
     private afMessaging: AngularFireMessaging,
-    private sectorsService: SectorsService,
     private storeCategoriesService: StoreCategoriesService,
     private storesService: StoresService,
     private addressesService: AddressesService,

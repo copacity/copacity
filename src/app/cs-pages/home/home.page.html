@@ -10,17 +10,11 @@
       </ion-menu-toggle>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <!-- routerLink="/search/0" -->
-      <ion-button>
+      <ion-button (click)="openSearchPage()">
         <span style="font-size: 1em; color: black;">
           <i class="fa fa-search" style="font-size: 1.2em"></i>
         </span>
       </ion-button>
-      <!-- <ion-button (click)="fullScreen()">
-        <span style="font-size: 1em; color: black;">
-          <i class="fa fa-arrows-alt" style="font-size: 1.2em"></i>
-        </span>
-      </ion-button> -->
       <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
         <span style="font-size: 1em; color: black;">
           <i class="fa fa-bell" style="font-size: 1.2em"></i>
@@ -33,9 +27,6 @@
           <i class="fa fa-user" style="font-size: 1.2em"></i>
         </span>
       </ion-button>
-      <!-- <ion-button (click)="shareApp($event)">
-        <i class="fa fa-share-alt" style="font-size: 1.2em; color: black;"></i>
-      </ion-button> -->
     </ion-buttons>
     <ion-title>
       <a class="header-title bold"><span style="color: red;">COPA</span>CITY</a>

@@ -88,7 +88,6 @@ export class HomePage implements OnInit {
     this.initializePage();
   }
 
-
   ngOnInit(): void { }
 
   signOut() {
@@ -226,16 +225,6 @@ export class HomePage implements OnInit {
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------       SEARCH PAGE
-
-  async openSearch() {
-
-    let modal = await this.popoverController.create({
-      component: SearchPage,
-      cssClass: 'login'
-    });
-
-    modal.present();
-  }
 
   async SignIn() {
     const popover = await this.popoverController.create({
@@ -449,6 +438,20 @@ export class HomePage implements OnInit {
     modal.present();
   }
 
+  async openSearchPage() {
+    let modal = await this.popoverController.create({
+      component: SearchPage,
+      cssClass: 'cs-search-popover',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+      });
+
+    modal.present();
+  }
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
