@@ -97,6 +97,10 @@ export class SearchPage {
     });
   }
 
+  close() {
+    this.popoverCtrl.dismiss();
+  }
+
   goToProductDetail(product: any) {
     this.router.navigate(['product-detail', product.product.id + "&" + product.idStore]);
     this.popoverCtrl.dismiss();

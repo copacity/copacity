@@ -6,7 +6,7 @@
   </div>
 
   <div *ngIf="cartManagerService.getTotalCount() > 0">
-    <ion-item class="{{ ((cartService.getCartItemCount() | async) <= 0)?'hidden':''}}" (click)="openCart(cartService.store.id)" style="padding: 3px;"
+    <ion-item class="{{ (cartService && cartService?.getCartItemCount() <= 0)?'hidden':''}}" (click)="openCart(cartService.store.id)" style="padding: 3px;"
       *ngFor="let cartService of cartManagerService.carts; let i = index">
       <table style="margin-bottom: 0px;">
         <tr>
