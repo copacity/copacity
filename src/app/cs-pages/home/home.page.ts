@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController, IonSelect } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
@@ -17,6 +17,10 @@ import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/b
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { SubscriptionPlansComponent } from 'src/app/cs-components/subscription-plans/subscription-plans.component';
 import { BannerRedirectTypes } from 'src/app/app-enums';
+import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.component';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
+import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
+import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +51,7 @@ export class HomePage implements OnInit {
   storeSearchText: string = '';
 
   @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
+  @ViewChild('cartHome', { static: false, read: ElementRef }) shoppingCart: ElementRef;
 
   @ViewChild('sliderHome', null) slider: any;
   @ViewChild('sliderHomeFooter', null) sliderFooter: any;
@@ -64,6 +69,8 @@ export class HomePage implements OnInit {
 
   constructor(private router: Router,
     private loaderComponent: LoaderComponent,
+    public cartInventoryService: CartInventoryService,
+    public cartManagerService: CartManagerService,
     private ngNavigatorShareService: NgNavigatorShareService,
     public appService: AppService,
     private swUpdate: SwUpdate,
@@ -78,12 +85,6 @@ export class HomePage implements OnInit {
     this.locationStrategy.onPopState(() => {
       history.pushState(null, null, window.location.href);
     });
-
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.available.subscribe(async () => {
-        window.location.reload();
-      });
-    }
 
     this.initializePage();
   }
@@ -174,14 +175,83 @@ export class HomePage implements OnInit {
     }, 500);
   }
 
-  // fullScreen(){
-  //   let elem = document.documentElement;
-  //   let methodToBeInvoked = elem.requestFullscreen ||
-  //     elem.webkitRequestFullScreen || elem['mozRequestFullscreen']
-  //     ||
-  //     elem['msRequestFullscreen'];
-  //   if (methodToBeInvoked) methodToBeInvoked.call(elem);
-  // }
+  async addToCart(e: any, featuredProductNoDiscount: any) {
+    this.sliderProductsNoDiscount.stopAutoplay();
+
+    let cartSevice = this.cartManagerService.getCartService(featuredProductNoDiscount.store)
+
+    if (!featuredProductNoDiscount.product.soldOut) {
+      this.cartInventoryService.clearCart();
+      let subs = this.productsService.getCartInventory(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id)
+        .subscribe((cartP) => {
+
+          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id);
+
+          let subscribe = productPropertiesResult.subscribe(async productProperties => {
+            productProperties.forEach(productProperty => {
+              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id, productProperty.id);
+              let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+                productProperty.productPropertyOptions = productPropertyOptions;
+                subscribe2.unsubscribe();
+              });
+            });
+
+            productProperties = productProperties;
+            subscribe.unsubscribe();
+
+            let modal = await this.popoverController.create({
+              component: ProductPropertiesSelectionComponent,
+              mode: 'ios',
+              event: e,
+              componentProps: { store: featuredProductNoDiscount.store, isInventory: false, product: featuredProductNoDiscount.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
+            });
+
+            modal.onDidDismiss()
+              .then((data) => {
+                const result = data['data'];
+                this.sliderProductsNoDiscount.startAutoplay();
+
+                if (result) {
+                  this.animateCSS('tada');
+                  cartSevice.addProduct(result);
+                  this.presentToastCart(featuredProductNoDiscount.product.name + ' ha sido agregado al carrito!', result.product.image);
+                }
+              });
+
+            modal.present();
+          });
+
+
+          subs.unsubscribe();
+        });
+    }
+  }
+
+  async presentToastCart(message: string, image: string) {
+    const toast = await this.toastController.create({
+      duration: 3000,
+      message: message,
+      position: 'bottom',
+      buttons: ['Cerrar']
+    });
+    toast.present();
+  }
+
+  animateCSS(animationName: any, keepAnimated = false) {
+
+    const node = this.shoppingCart.nativeElement;
+    node.classList.add('animated', animationName)
+
+    function handleAnimationEnd() {
+      if (!keepAnimated) {
+        node.classList.remove('animated', animationName);
+      }
+
+      node.removeEventListener('animationend', handleAnimationEnd)
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd)
+  }
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
@@ -190,6 +260,19 @@ export class HomePage implements OnInit {
   async presentMenuUser(e) {
     const popover = await this.popoverController.create({
       component: MenuUserComponent,
+      animated: false,
+      showBackdrop: true,
+      mode: 'ios',
+      translucent: false,
+      event: e
+    });
+
+    return await popover.present();
+  }
+
+  async presentMenuCart(e) {
+    const popover = await this.popoverController.create({
+      component: MenuCartComponent,
       animated: false,
       showBackdrop: true,
       mode: 'ios',
@@ -219,6 +302,12 @@ export class HomePage implements OnInit {
   //--------------------------------       INITIALIZE
 
   initializePage() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(async () => {
+        window.location.reload();
+      });
+    }
+
     this.getStores();
   }
 
@@ -332,7 +421,7 @@ export class HomePage implements OnInit {
                 let subs2 = this.productsService.getFeaturedProductsNoDiscount(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
 
                   products.forEach((product: Product) => {
-                    this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
+                    this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id, store: store, storeImage: store.logo ? store.logo : '../../../assets/icon/no-image.png' });
                   });
 
                   this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
@@ -442,6 +531,7 @@ export class HomePage implements OnInit {
     let modal = await this.popoverController.create({
       component: SearchPage,
       cssClass: 'cs-search-popover',
+      backdropDismiss: true,
     });
 
     modal.onDidDismiss()
@@ -604,7 +694,7 @@ export class HomePage implements OnInit {
 
   doRefresh(event) {
     setTimeout(() => {
-      window.location.reload();
+      this.initializePage();
       event.target.complete();
     }, 500);
   }

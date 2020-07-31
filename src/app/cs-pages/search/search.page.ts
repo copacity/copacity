@@ -1,16 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IonSearchbar, PopoverController, AlertController, ToastController } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { IonSearchbar, PopoverController, ToastController } from '@ionic/angular';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store, Product, CartProduct, ProductImage } from 'src/app/app-intefaces';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
+import { Store, Product, ProductImage } from 'src/app/app-intefaces';
 import { AppService } from 'src/app/cs-services/app.service';
 import { ProductsService } from 'src/app/cs-services/products.service';
-import { CartService } from '../../cs-services/cart.service';
-import { CartPage } from '../cart/cart.page';
-import { ProductDetailPage } from '../product-detail/product-detail.page';
-import { ProductUpdatePage } from '../product-update/product-update.page';
 import { SearchService } from 'src/app/cs-services/search.service';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
@@ -75,7 +69,7 @@ export class SearchPage {
 
   removeAccents = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  } 
+  }
 
   async openImageViewer(product: Product, storeId: string) {
     let images: string[] = [];
@@ -115,7 +109,9 @@ export class SearchPage {
   loadSearchbar(callBack1) {
     setTimeout(() => {
       if (this.searchbar) {
-        this.searchbar.setFocus();
+        if (!this.searchService.products || this.searchService.products.length == 0) {
+          this.searchbar.setFocus();
+        }
         callBack1();
       } else {
         this.loadSearchbar(callBack1);

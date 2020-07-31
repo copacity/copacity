@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AlertController, ToastController, PopoverController } from '@ionic/angular';
-import { Product, ProductImage, ProductProperty } from 'src/app/app-intefaces';
+import { Product, ProductImage, ProductProperty, Store } from 'src/app/app-intefaces';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { CartService } from 'src/app/cs-services/cart.service';
@@ -22,6 +22,8 @@ import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/b
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 import { SearchPage } from '../search/search.page';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
+import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -29,10 +31,13 @@ import { SearchPage } from '../search/search.page';
   styleUrls: ['./product-detail.page.scss'],
 })
 export class ProductDetailPage implements OnInit {
+  store: Store;
+  cartSevice: CartService;
+
   @ViewChild('sliderProductDetail', null) slider: any;
   product: Product;
   productImageCollection: ProductImage[] = [];
-  @ViewChild('cart', { static: false, read: ElementRef }) shoppingCart: ElementRef;
+  @ViewChild('cartProductDetail', { static: false, read: ElementRef }) shoppingCart: ElementRef;
   isAdmin: boolean = false;
 
   productProperties: ProductProperty[] = []
@@ -44,8 +49,8 @@ export class ProductDetailPage implements OnInit {
     private router: Router,
     private popoverCtrl: PopoverController,
     public toastController: ToastController,
+    public cartManagerService: CartManagerService,
     private route: ActivatedRoute,
-    public cartSevice: CartService,
     public cartInventoryService: CartInventoryService,
     public alertController: AlertController,
     private angularFireAuth: AngularFireAuth,
@@ -68,6 +73,8 @@ export class ProductDetailPage implements OnInit {
     let storeId = this.route.snapshot.params.id.toString().split("&")[1];
 
     this.storesService.getById(storeId).then(result => {
+      this.store = result;
+      this.cartSevice = this.cartManagerService.getCartService(result);
       this.appService.currentStore = result;
 
       this.productService.getById(this.appService.currentStore.id, productId).then((productResult: Product) => {
@@ -123,10 +130,24 @@ export class ProductDetailPage implements OnInit {
   ngOnInit() {
   }
 
+  async presentMenuCart(e) {
+    const popover = await this.popoverController.create({
+      component: MenuCartComponent,
+      animated: false,
+      showBackdrop: true,
+      mode: 'ios',
+      translucent: false,
+      event: e
+    });
+
+    return await popover.present();
+  }
+
   async openSearchPage() {
     let modal = await this.popoverController.create({
       component: SearchPage,
       cssClass: 'cs-search-popover',
+      backdropDismiss: true,
     });
 
     modal.onDidDismiss()
@@ -430,7 +451,7 @@ export class ProductDetailPage implements OnInit {
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
               event: e,
-              componentProps: { isInventory: false, product: this.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 },
+              componentProps: { store: this.store, isInventory: false, product: this.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 },
               backdropDismiss: false,
             });
 

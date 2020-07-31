@@ -28,6 +28,7 @@ import { PaymentMethodsService } from 'src/app/cs-services/payment-methods.servi
 import { ProfileUpdatePage } from '../profile-update/profile-update.page';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 
 @Component({
   selector: 'app-order-create',
@@ -35,6 +36,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./order-create.page.scss'],
 })
 export class OrderCreatePage implements OnInit {
+  cartService: CartService;
+
   messageToStore: FormControl;
   couponCode: FormControl;
   idVendor: FormControl;
@@ -57,9 +60,9 @@ export class OrderCreatePage implements OnInit {
 
   constructor(public appService: AppService,
     private router: Router,
+    public cartManagerService: CartManagerService,
     private route: ActivatedRoute,
     public alertController: AlertController,
-    public cartService: CartService,
     private usersService: UsersService,
     private storesService: StoresService,
     private ngNavigatorShareService: NgNavigatorShareService,
@@ -80,6 +83,7 @@ export class OrderCreatePage implements OnInit {
   initialize(){
     let storeId = this.route.snapshot.params.id.toString();
     this.storesService.getById(storeId).then(result => {
+      this.cartService = this.cartManagerService.getCartService(result);
 
       this.store = result;
       this.cart = this.cartService.getCart();

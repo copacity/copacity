@@ -5,6 +5,7 @@ import { ProductsService } from 'src/app/cs-services/products.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { CartService } from 'src/app/cs-services/cart.service';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 
 @Component({
   selector: 'app-product-properties-selection',
@@ -23,12 +24,14 @@ export class ProductPropertiesSelectionComponent implements OnInit {
   constructor(
     private popoverCtrl: PopoverController,
     public appService: AppService,
+    public cartManagerService: CartManagerService,
     private alertController: AlertController,
     public navParams: NavParams,
     private productsService: ProductsService,
     public cartInventoryService: CartInventoryService
   ) {
-    this.cartService = new CartService(this.appService);
+
+    this.cartService = this.cartManagerService.getCartService(this.navParams.data.store);
     this.buttonEnabled = true;
 
     if (this.navParams.data.isInventory) {
@@ -108,7 +111,6 @@ export class ProductPropertiesSelectionComponent implements OnInit {
         propertiesSelection: this.propertiesSelection,
         maxLimit: 0
       };
-
 
       let cartQuantity = 0;
       for (let [index, p] of this.cartService.getCart().entries()) {

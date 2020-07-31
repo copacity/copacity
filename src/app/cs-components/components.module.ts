@@ -22,6 +22,7 @@ import { BarcodeGeneratorComponent } from './barcode-generator/barcode-generator
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { SubscriptionPlansComponent } from './subscription-plans/subscription-plans.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
+import { MenuCartComponent } from './menu-cart/menu-cart.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
     PasswordResetEmailComponent,
     MenuNotificationsComponent,
     MenuUserComponent,
+    MenuCartComponent,
     CopyToClipboardComponent,
     CropperImageComponent,
     PopoverMessageComponent,
@@ -57,6 +59,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
     PasswordResetEmailComponent,
     MenuNotificationsComponent,
     MenuUserComponent,
+    MenuCartComponent,
     CopyToClipboardComponent,
     CropperImageComponent,
     PopoverMessageComponent,
@@ -76,6 +79,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
     PasswordResetEmailComponent,
     MenuNotificationsComponent,
     MenuUserComponent,
+    MenuCartComponent,
     CopyToClipboardComponent,
     CropperImageComponent,
     PopoverMessageComponent,

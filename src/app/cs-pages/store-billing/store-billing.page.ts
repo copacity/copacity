@@ -130,7 +130,7 @@ export class StoreBillingPage implements OnInit {
             coupon = _coupon;
           });
 
-          let cartService = new CartService(this.appService);
+          let cartService = new CartService();
           cartService.setCart(cartProducts);
 
           let totalValue = cartService.getTotalDetail(0);

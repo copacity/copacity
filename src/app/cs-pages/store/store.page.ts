@@ -47,6 +47,9 @@ import { StoreReportsPage } from '../store-reports/store-reports.page';
 import { StoreVendorsAdminPage } from '../store-vendors-admin/store-vendors-admin.page';
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 import { SearchPage } from '../search/search.page';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
+import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.component';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-store',
@@ -54,6 +57,7 @@ import { SearchPage } from '../search/search.page';
   styleUrls: ['./store.page.scss'],
 })
 export class StorePage implements OnInit {
+  public cartSevice: CartService;
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
@@ -115,10 +119,11 @@ export class StorePage implements OnInit {
     public toastController: ToastController,
     public alertController: AlertController,
     public popoverController: PopoverController,
+    public cartManagerService: CartManagerService,
     private route: ActivatedRoute,
+    private swUpdate: SwUpdate,
     private loaderComponent: LoaderComponent,
     public cartInventoryService: CartInventoryService,
-    public cartSevice: CartService,
     public appService: AppService,
     private storageService: StorageService,
     private storesService: StoresService,
@@ -140,6 +145,7 @@ export class StorePage implements OnInit {
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
       this.storesService.getById(this.route.snapshot.params.id).then(result => {
+        this.cartSevice = this.cartManagerService.getCartService(result);
         this.store = result;
 
         if (user && (this.store.idUser == user.uid)) {
@@ -160,12 +166,10 @@ export class StorePage implements OnInit {
   }
 
   initialize(firstTime: boolean) {
-    if (this.appService.currentStore && this.appService.currentStore.id != this.store.id) {
-      this.cartSevice.clearCart();
-    }
-
-    if (!this.appService.currentStore) {
-      this.cartSevice.clearCart();
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(async () => {
+        window.location.reload();
+      });
     }
 
     this.appService.currentStore = this.store;
@@ -203,6 +207,19 @@ export class StorePage implements OnInit {
 
   }
 
+  async presentMenuCart(e) {
+    const popover = await this.popoverController.create({
+      component: MenuCartComponent,
+      animated: false,
+      showBackdrop: true,
+      mode: 'ios',
+      translucent: false,
+      event: e
+    });
+
+    return await popover.present();
+  }
+
   async SignIn() {
     const popover = await this.popoverController.create({
       component: SigninComponent,
@@ -238,6 +255,7 @@ export class StorePage implements OnInit {
     setTimeout(() => {
       this.angularFireAuth.auth.onAuthStateChanged(user => {
         this.storesService.getById(this.route.snapshot.params.id).then(result => {
+          this.cartSevice = this.cartManagerService.getCartService(result);
           this.store = result;
 
           if (user && (this.store.idUser == user.uid)) {
@@ -517,7 +535,7 @@ export class StorePage implements OnInit {
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
               event: e,
-              componentProps: { isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
+              componentProps: { store: this.store, isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
             });
 
             modal.onDidDismiss()
@@ -900,6 +918,7 @@ export class StorePage implements OnInit {
 
   ionViewDidEnter() {
     this.storesService.getById(this.route.snapshot.params.id).then(result => {
+      this.cartSevice = this.cartManagerService.getCartService(result);
       this.store = result;
 
       if (this.appService.currentUser && (this.store.idUser == this.appService.currentUser.id)) {
@@ -1142,6 +1161,7 @@ export class StorePage implements OnInit {
     let modal = await this.popoverController.create({
       component: SearchPage,
       cssClass: 'cs-search-popover',
+      backdropDismiss: true,
     });
 
     modal.onDidDismiss()

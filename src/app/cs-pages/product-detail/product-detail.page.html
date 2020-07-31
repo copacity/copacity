@@ -3,6 +3,7 @@
     <ion-buttons slot="start">
       <ion-button (click)="close()">
         <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
+        <a routerLink="/home" class="header-title bold color-highlight"><span style="color: red;padding-left: 10px;">COPA</span>CITY</a>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
@@ -11,10 +12,10 @@
           <i class="fa fa-search" style="font-size: 1.2em"></i>
         </span>
       </ion-button>
-      <ion-button #cart (click)="openCart()" *ngIf="!isAdmin">
-        <i class="fa fa-shopping-cart" style="color: black;"></i>
-        <ion-badge *ngIf="(cartSevice.getCartItemCount() | async) > 0" id="badge-cart" color="danger" slot="end">
-          {{ cartSevice.getCartItemCount() | async }}
+      <ion-button #cartProductDetail (click)="presentMenuCart($event)">
+        <i class="fa fa-shopping-cart" style="color: black;font-size: 1.2em"></i>
+        <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
+          {{ cartManagerService.getTotalCount() }}
         </ion-badge>
       </ion-button>
       <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
@@ -26,10 +27,6 @@
         <i class="fa fa-user" style="color: black"></i>
       </ion-button>
     </ion-buttons>
-
-    <ion-title style="font-size: medium;">
-      <a routerLink="/home" class="header-title bold"><span style="color: red;">COPA</span>CITY</a>
-    </ion-title>
   </ion-toolbar>
 
   <!-- Left Side Menu Only To Big Browsers -->
@@ -90,7 +87,7 @@
             <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
           </div>
 
-          <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+          <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
               style="color: red;">COPA</span>CITY</a>
           <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
 

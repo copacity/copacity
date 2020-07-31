@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/cs-services/cart.service';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/cs-services/app.service';
-import { CartProduct, ProductImage, Product } from 'src/app/app-intefaces';
+import { CartProduct, ProductImage, Product, Store } from 'src/app/app-intefaces';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
+import { StoresService } from 'src/app/cs-services/stores.service';
 
 @Component({
   selector: 'cs-cart',
@@ -14,13 +16,21 @@ import { ProductsService } from 'src/app/cs-services/products.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
+  store: Store;
+  cartService: CartService;
   cart: CartProduct[] = [];
   constructor(private router: Router,
-    public cartService: CartService,
+    public cartManagerService: CartManagerService,
     public popoverController: PopoverController,
     private productService: ProductsService,
+    private storesService: StoresService,
+    private navParams: NavParams,
     public appService: AppService) {
-    this.cart = this.cartService.getCart();
+    this.storesService.getById(this.navParams.data.storeId).then(store => {
+      this.store = store;
+      this.cartService = this.cartManagerService.getCartService(store);
+      this.cart = this.cartService.getCart();
+    });
   }
 
   ngOnInit() {
@@ -117,7 +127,7 @@ export class CartPage implements OnInit {
   }
 
   validateMaxLimitLimit(cartProduct: CartProduct, value): boolean {
-    if (cartProduct.maxLimit ) {
+    if (cartProduct.maxLimit) {
       return true;
     } else if (cartProduct.maxLimit > value) {
       return true;

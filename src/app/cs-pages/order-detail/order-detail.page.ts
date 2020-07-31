@@ -70,7 +70,7 @@ export class OrderDetailPage implements OnInit {
   }
 
   initialize(user?: any) {
-    this.cartService = new  CartService(this.appService);
+    this.cartService = new  CartService();
     let orderId = this.route.snapshot.params.id.toString().split("&")[0];
     let storeId = this.route.snapshot.params.id.toString().split("&")[1];
     this.storesService.getById(storeId).then(result => {

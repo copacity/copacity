@@ -3,6 +3,7 @@
     <ion-buttons slot="start">
       <ion-button (click)="close()">
         <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
+        <a routerLink="/home" class="header-title bold color-highlight"><span style="color: red;padding-left: 10px;">COPA</span>CITY</a>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
@@ -21,9 +22,6 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title style="font-size: medium;">
-      <a routerLink="/home" class="header-title ultrabold"><span style="color: red;">COPA</span>CITY</a>
-    </ion-title>
   </ion-toolbar>
 
   <!-- Left Side Menu Only To Big Browsers -->
@@ -84,7 +82,7 @@
             <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
           </div>
 
-          <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+          <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
               style="color: red;">COPA</span>CITY</a>
           <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
 
@@ -440,11 +438,11 @@
                       🥳🎉</span>
                   </td>
                   <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
-                    {{ ((!cartProduct.product?.isGift)? (cartService.getProductSubTotalUnity(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
+                    {{ ((!cartProduct.product?.isGift)? (cartService?.getProductSubTotalUnity(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
                   </td>
                   <td style="vertical-align: top" class="bolder">{{cartProduct.quantity}}</td>
                   <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ ((!cartProduct.product?.isGift)? (cartService.getProductTotal(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
+                    {{ ((!cartProduct.product?.isGift)? (cartService?.getProductTotal(cartProduct)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}
                   </td>
                 </tr>
                 <tr *ngIf="storeCoupon">
@@ -456,7 +454,7 @@
                   </td>
                   <td style="vertical-align: top; text-align: right;background-color: yellow;">
                     <span style="color: black;">
-                      -{{ (cartService.getTotal() * (storeCoupon.discount/100))  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                      -{{ (cartService?.getTotal() * (storeCoupon.discount/100))  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
               </table>
@@ -470,19 +468,19 @@
                 <div class="store-cart-total">
                   <strong class="color-highlight">Ahorro</strong>
                   <span class="color-highlight">
-                    {{ cartService.getDiscount() + ((storeCoupon)?(cartService.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                    {{ cartService?.getDiscount() + ((storeCoupon)?(cartService?.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   <div class="clear"></div>
                 </div>
                 <div class="store-cart-total">
                   <strong style="color: red;">IVA <small>(Incluido)</small></strong>
-                  <span>{{ ((cartService.getTotal() - ((storeCoupon)?(cartService.getTotal() * (storeCoupon.discount/100)):0)) * (appService._appInfo?.tax/100 )) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                  <span>{{ ((cartService?.getTotal() - ((storeCoupon)?(cartService?.getTotal() * (storeCoupon.discount/100)):0)) * (appService._appInfo?.tax/100 )) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   <div class="clear"></div>
                 </div>
                 <div style="background-color: red;" class="divider opacity-350"></div>
                 <div class="store-cart-total bottom-20" style="font-size: 18px;">
                   <strong class="uppercase bold">Total</strong>
                   <span
-                    class="uppercase bold">{{ (cartService.getTotal()) + (shippingMethod?shippingMethod.price:0) - ((storeCoupon)?(cartService.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
+                    class="uppercase bold">{{ (cartService?.getTotal()) + (shippingMethod?shippingMethod.price:0) - ((storeCoupon)?(cartService?.getTotal() * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0'}}</span>
                   <div class="clear"></div>
                 </div>
               </div>

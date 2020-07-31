@@ -4,15 +4,67 @@ import { Store, StoreCoupon, PQRSF, ShippingMethod, PlatformFee, Vendor, ErrorMe
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StoreStatus, VendorStatus } from '../app-enums';
+import { error } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoresService {
+  option: number = 0;
   private collectionName: string = 'stores';
   private storesCollection: AngularFirestoreCollection<any>;
 
   constructor(public angularFirestore: AngularFirestore) { }
+
+  // public createTest(value: string) {
+  //   debugger;
+
+
+
+  //   this.angularFirestore.firestore.runTransaction(transaction => {
+  //     // This code may get re-run multiple times if there are conflicts.
+
+
+
+  //     // Create a reference to a document that doesn't exist yet, it has a random id
+  //     const newOrderRef = this.angularFirestore.firestore.collection('Test').doc("BvtueF5DUs5ZmVBuuCZI");
+  //     const newOrderRef2 = this.angularFirestore.firestore.collection('Test').doc()
+
+  //     let test1 = transaction.get(newOrderRef).then(function (sfDoc) {
+  //       if (!sfDoc.exists) {
+  //         throw "Document does not exist!";
+  //       }
+
+  //       // Add one person to the city population.
+  //       // Note: this could be done without a transaction
+  //       //       by updating the population using FieldValue.increment()
+
+  //       transaction.update(newOrderRef, { newId: newOrderRef2.id });
+  //       transaction.set(newOrderRef2, { value: value });
+  //     }).then(result => {
+  //       return transaction.get(newOrderRef).then(function (sfDoc) {
+  //         if (!sfDoc.exists) {
+  //           throw "Document does not exist!";
+  //         }
+  
+  //         let newOrderRef2_SubColletionDoc = newOrderRef2.collection("sub").doc();
+  //         transaction.set(newOrderRef2_SubColletionDoc, { value: value });
+  
+  //         //throw new Error("UPS");
+  //       });
+
+  //     });
+
+      
+  //   }).then(function () {
+  //     console.log("Transaction successfully committed!");
+  //   }).catch(function (error) {
+  //     console.log("Transaction failed: ", error);
+  //   });
+
+  //   // Then, later in a transaction:
+  //   //transaction.set(newDocRef, { ... });
+  // }
 
   public create(store: Store): Promise<DocumentReference> {
     return this.angularFirestore.collection(this.collectionName).add(store);

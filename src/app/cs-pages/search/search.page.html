@@ -5,7 +5,7 @@
   </div>
   <div class="profile-body" style="margin: 0px 5px;padding: 0px 0px;">
 
-    <ion-searchbar animated placeholder="Que estas buscando?" [value]="searchService.searchText" class="round-medium"
+    <ion-searchbar animated placeholder="Que artículo buscas?" [value]="searchService.searchText" class="round-medium"
       (ionChange)="search($event)" debounce="1000"></ion-searchbar>
 
     <div class="content" style="margin: 0px 10px 0px 10px;">
@@ -77,7 +77,7 @@
                 </tr>
                 <tr>
                   <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a (click)="goToProductDetail(product)" style="color:white;background-color: red;padding: 5px 10px;font-size: .7em;"
+                    <a *ngIf="!product.product?.soldOut" (click)="goToProductDetail(product)" style="color:white;background-color: red;padding: 5px 10px;font-size: .7em;"
                       class="button button-round-small shadow-small button-sm button-s">
                       Ver Detalle</a>
                   </td>

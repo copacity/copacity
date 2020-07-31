@@ -2,10 +2,11 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-toggle>
-        <ion-button class="menu-icon-bars">
-          <span style="font-size: 1em; color: black;">
+        <ion-button>
+          <span style="font-size: 1em; color: black;" class="menu-icon-bars">
             <i class="fa fa-bars" style="font-size: 1.2em"></i>
           </span>
+          <a routerLink="/home" class="header-title bold color-highlight"><span style="color: red;padding-left: 10px;">COPA</span>CITY</a>
         </ion-button>
       </ion-menu-toggle>
     </ion-buttons>
@@ -14,6 +15,12 @@
         <span style="font-size: 1em; color: black;">
           <i class="fa fa-search" style="font-size: 1.2em"></i>
         </span>
+      </ion-button>
+      <ion-button #cartHome (click)="presentMenuCart($event)">
+        <i class="fa fa-shopping-cart" style="color: black;font-size: 1.2em"></i>
+        <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
+          {{ cartManagerService.getTotalCount() }}
+        </ion-badge>
       </ion-button>
       <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
         <span style="font-size: 1em; color: black;">
@@ -28,9 +35,6 @@
         </span>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      <a class="header-title bold"><span style="color: red;">COPA</span>CITY</a>
-    </ion-title>
   </ion-toolbar>
 
   <!-- Left Side Menu Only To Big Browsers -->
@@ -91,7 +95,7 @@
             <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
           </div>
 
-          <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+          <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
               style="color: red;">COPA</span>CITY</a>
           <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
 
@@ -228,7 +232,8 @@
                   <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Tiendas</h4>
                 </div>
 
-                <ion-slides *ngIf="searchingStores" [options]="appService.slideOptsStores" style="max-width: 450px;" style="padding-bottom: 20px;">
+                <ion-slides *ngIf="searchingStores" [options]="appService.slideOptsStores" style="max-width: 450px;"
+                  style="padding-bottom: 20px;">
                   <ion-slide *ngFor="let item of [1,2,3]"
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
                     <ion-skeleton-text animated
@@ -285,12 +290,12 @@
 
                 <ion-slides *ngIf="!searchingProductsNoDiscount" #sliderHomeProductsNoDiscount
                   [options]="appService.slideOptsProductsNoDiscount" style="max-width: 450px;">
-                  <ion-slide (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.storeImage)"
+                  <ion-slide 
                     *ngFor="let featuredProductNoDiscount of featuredProductsNoDiscount;"
                     style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                        <a>
+                        <a (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.storeImage)">
 
                           <img style="width: 200px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
                             class="preload-image shadow-small round-small"
@@ -303,8 +308,13 @@
                           </em>
                         </a>
 
-                        <strong class="strong-store"
+                        <strong class="strong-store" (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.storeImage)"
                           style="font-size: .7em;padding-top: 20px;">{{((featuredProductNoDiscount.product.name.length<=32)?featuredProductNoDiscount.product.name:featuredProductNoDiscount.product.name.substring(0, 32) + '...')}}</strong>
+                        
+                          <a (click)="addToCart($event, featuredProductNoDiscount)" style="background-color: red;color:white;font-size: .55em;"
+                          class="button button-round-small shadow-small button-sm button-s top-20 {{(product?.soldOut)?'sold-out':'' }}">
+                          <i class="fa fa-shopping-cart add-button"
+                            style="color: white;padding-right: 5px;"></i>Agregar</a>
                       </div>
                     </div>
                   </ion-slide>
@@ -373,7 +383,7 @@
               <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
                 <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
               </div>
-              <a href="#" class="footer-title"><span style="color: red;">COPA</span>CITY</a>
+              <a href="#" class="footer-title color-highlight"><span style="color: red;">COPA</span>CITY</a>
               <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro Comercial Virtual</p>
               <div class="footer-socials" style="padding-left: 30px;">
                 <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i

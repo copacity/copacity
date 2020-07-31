@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { CartProduct } from '../app-intefaces';
-import { AppService } from './app.service';
+import { CartProduct, Store } from '../app-intefaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  public store: Store;
   data: CartProduct[];
 
   private cart = [];
   private cartItemCount = new BehaviorSubject(0);
 
-  constructor(private appService: AppService) { }
+  constructor() { }
 
   getCart() {
     return this.cart;
@@ -33,11 +33,7 @@ export class CartService {
   }
 
   getTotal() {
-    if (this.appService.currentStore) {
-      return this.cart.reduce((i, j) => i + ((!j.product.isGift) ? this.getProductSubTotal(j) : 0), 0) + (this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0) - this.getDiscount();
-    }
-
-    return 0;
+    return this.cart.reduce((i, j) => i + ((!j.product.isGift) ? this.getProductSubTotal(j) : 0), 0) + (this.store.deliveryPrice ? this.store.deliveryPrice : 0) - this.getDiscount();
   }
 
   getTotalDetail(deliveryPrice: number) {
@@ -87,11 +83,7 @@ export class CartService {
   }
 
   getDiscount() {
-    if (this.appService.currentStore) {
-      return this.cart.reduce((i, j) => i + ((!j.product.isGift && j.product.discount && j.product.discount > 0) ? (this.getProductDiscount(j)) : 0), 0);
-    }
-
-    return 0;
+    return this.cart.reduce((i, j) => i + ((!j.product.isGift && j.product.discount && j.product.discount > 0) ? (this.getProductDiscount(j)) : 0), 0);
   }
 
   getPoints(): number {

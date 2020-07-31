@@ -65,7 +65,7 @@ export class ProductInventoryPage implements OnInit {
         component: ProductPropertiesSelectionComponent,
         mode: 'ios',
         event: e,
-        componentProps: { isInventory: true, product: product, productProperties: productProperties, cart: [], limitQuantity: 100, quantityByPoints: -1 }
+        componentProps: { store: this.appService.currentStore, isInventory: true, product: product, productProperties: productProperties, cart: [], limitQuantity: 100, quantityByPoints: -1 }
       });
 
       modal.onDidDismiss()

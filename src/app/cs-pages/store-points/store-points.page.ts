@@ -13,6 +13,7 @@ import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/produ
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { ProductInventoryPage } from '../product-inventory/product-inventory.page';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 
 @Component({
   selector: 'app-store-points',
@@ -20,6 +21,7 @@ import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service
   styleUrls: ['./store-points.page.scss'],
 })
 export class StorePointsPage implements OnInit {
+  public cartService: CartService;
   isAdmin: boolean;
   products: Observable<Product[]>;
   searchingProducts: boolean = false;
@@ -28,13 +30,14 @@ export class StorePointsPage implements OnInit {
 
   constructor(public popoverController: PopoverController,
     public appService: AppService,
-    public cartService: CartService,
+    public cartManagerService: CartManagerService,
     private usersService: UsersService,
     public alertController: AlertController,
     public cartInventoryService: CartInventoryService,
     public navParams: NavParams,
     private storesService: StoresService,
     private productsService: ProductsService) {
+    this.cartService = this.cartManagerService.getCartService(this.appService.currentStore);
     this.isAdmin = this.navParams.data.isAdmin;
     this.getProducts();
     this.GetPoints();
@@ -129,7 +132,7 @@ export class StorePointsPage implements OnInit {
       });
     }).catch(err => {
       alert(err);
-      this.appService.logError({id:'', message: err, function:'GetPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+      this.appService.logError({ id: '', message: err, function: 'GetPoints', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 
@@ -196,7 +199,7 @@ export class StorePointsPage implements OnInit {
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
               event: e,
-              componentProps: { isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: parseInt((this.points / product.price).toString()) }
+              componentProps: { store: this.appService.currentStore, isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: parseInt((this.points / product.price).toString()) }
             });
 
             modal.onDidDismiss()
