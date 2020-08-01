@@ -1,20 +1,27 @@
 <ion-list style="padding-top: 10px;">
   <div *ngIf="cartManagerService.getTotalCount() <= 0">
     <ion-item style="padding: 3px;">
-       <span style="color:red;font-size: .8em;">Tu carrito esta vacío</span>
+      <span style="color:red;font-size: .8em;">Tu carrito esta vacío</span>
     </ion-item>
   </div>
 
   <div *ngIf="cartManagerService.getTotalCount() > 0">
-    <ion-item class="{{ (cartService.getCartItemCount().value <= 0)?'hidden':''}}" (click)="openCart(cartService.store.id)" style="padding: 3px;"
+    <ion-item class="{{ (cartService.getCartItemCount().value <= 0)?'hidden':''}}"
+      (click)="openCart(cartService.store.id)" style="padding: 3px;"
       *ngFor="let cartService of cartManagerService.carts; let i = index">
       <table style="margin-bottom: 0px;">
         <tr>
-          <td style="text-align: left;padding: 0px 5px 10px 5px;vertical-align: top;font-size: 1.3em;"> <span
-              style="font-weight: 700;color: black;"
-              class="color-highlight">{{ cartService.store.name.substring(0, 12) + '...'}}</span>
+          <td style="padding: 0px 0px 0px 0px;vertical-align: top;">
+            <img style="width: 40px;margin: 0px 0px 10px 0px;border-radius: 100%"
+              class="preload-image"
+              [src]="cartService.store.logo?cartService.store.logo:'../../../assets/icon/no-image.png'"
+              alt="img">
           </td>
-          <td style="text-align: left;padding: 0px 5px 10px 10px;vertical-align: top;"> <span
+          <td style="text-align: left;padding: 0px 5px 10px 5px;vertical-align: top;font-size: 1.3em;width: 180px;">
+            <span style="font-weight: 700;color: black;"
+              class="color-highlight">{{ (cartService.store.name.length > 18)?(cartService.store.name.substring(0, 18) + '...'):cartService.store.name}}</span>
+          </td>
+          <td style="text-align: left;padding: 10px 5px 10px 10px;vertical-align: top;"> <span
               style="font-weight: 700;color: black;">
 
               <i class="fa fa-shopping-cart" style="color: black;font-size: 1.5em;"></i>

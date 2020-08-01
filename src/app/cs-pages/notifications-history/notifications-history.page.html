@@ -51,28 +51,19 @@
         <ion-list>
           <ion-item style="padding: 3px;" routerLink="/home">
             <i class="fa fa-home"></i>
-            <ion-label style="padding-left:10px">Inicio</ion-label>
+            <ion-label style="padding-left:10px;font-size: 15px;">Inicio</ion-label>
           </ion-item>
           <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
             <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
-            <ion-label style="padding-left:10px">Mis Pedidos</ion-label>
+            <ion-label style="padding-left:10px;font-size: 15px;">Mis Pedidos</ion-label>
           </ion-item>
-          <!-- <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
-            routerLink="/store/{{ appService._userStoreId }}">
-            <i class="fa fa-store"></i>
-            <ion-label style="padding-left:10px">Mi Tienda</ion-label>
-          </ion-item> -->
           <ion-item style="padding: 3px;" routerLink="/contact">
             <i class="fa fa-paper-plane"></i>
-            <ion-label style="padding-left:10px">Mensajes</ion-label>
+            <ion-label style="padding-left:10px;font-size: 15px;">Mensajes</ion-label>
           </ion-item>
-          <!-- <ion-item style="padding: 3px;">
-            <i class="fa fa-info-circle"></i>
-            <ion-label style="padding-left:10px">Acerca de</ion-label>
-          </ion-item> -->
           <ion-item style="padding: 3px; cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
             <i class="fa fa-sign-out-alt"></i>
-            <ion-label style="padding-left:10px">Cerrar Sesión</ion-label>
+            <ion-label style="padding-left:10px;font-size: 15px;">Cerrar Sesión</ion-label>
           </ion-item>
         </ion-list>
         <ion-toolbar style="padding-top: 30px;">

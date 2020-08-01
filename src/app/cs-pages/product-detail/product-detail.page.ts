@@ -138,7 +138,8 @@ export class ProductDetailPage implements OnInit {
       showBackdrop: true,
       mode: 'ios',
       translucent: false,
-      event: e
+      event: e,
+      cssClass: 'notification-popover'
     });
 
     return await popover.present();

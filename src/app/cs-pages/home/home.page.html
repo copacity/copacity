@@ -67,28 +67,19 @@
       <ion-list>
         <ion-item style="padding: 3px;" routerLink="/home">
           <i class="fa fa-home"></i>
-          <ion-label style="padding-left:10px">Inicio</ion-label>
+          <ion-label style="padding-left:10px;font-size: 15px;">Inicio</ion-label>
         </ion-item>
         <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
           <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
-          <ion-label style="padding-left:10px">Mis Pedidos</ion-label>
+          <ion-label style="padding-left:10px;font-size: 15px;">Mis Pedidos</ion-label>
         </ion-item>
-        <!-- <ion-item style="padding: 3px;" *ngIf="appService?.currentUser && appService?.currentUser.isAdmin"
-          routerLink="/store/{{ appService._userStoreId }}">
-          <i class="fa fa-store"></i>
-          <ion-label style="padding-left:10px">Mi Tienda</ion-label>
-        </ion-item> -->
         <ion-item style="padding: 3px;" routerLink="/contact">
           <i class="fa fa-paper-plane"></i>
-          <ion-label style="padding-left:10px">Mensajes</ion-label>
+          <ion-label style="padding-left:10px;font-size: 15px;">Mensajes</ion-label>
         </ion-item>
-        <!-- <ion-item style="padding: 3px;">
-          <i class="fa fa-info-circle"></i>
-          <ion-label style="padding-left:10px">Acerca de</ion-label>
-        </ion-item> -->
         <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
           <i class="fa fa-sign-out-alt"></i>
-          <ion-label style="padding-left:10px">Cerrar Sesión</ion-label>
+          <ion-label style="padding-left:10px;font-size: 15px;">Cerrar Sesión</ion-label>
         </ion-item>
       </ion-list>
       <ion-toolbar style="padding-top: 30px;">
@@ -297,9 +288,9 @@
                     style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                        <a (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.storeImage)">
+                        <a>
 
-                          <img style="width: 200px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
+                          <img (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.storeImage)" style="width: 200px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
                             class="preload-image shadow-small round-small"
                             [src]="featuredProductNoDiscount.product.image?featuredProductNoDiscount.product.image:'../../../assets/icon/no-image.png'"
                             alt="img">
@@ -307,6 +298,12 @@
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -25px;left: 0px">
                             <span style="padding: 0px 0px 0px 0px;" class="color-black font-15 top-10">
                               {{ featuredProductNoDiscount.product.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
+                          </em>
+
+                          <em *ngIf="featuredProductNoDiscount.product.video" (click)="openVideoPlayerComponent($event, featuredProductNoDiscount.product.video)"
+                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -30px;right: 0px;padding: 3px 5px 3px 0px">
+                            <span style="padding: 0px 0px 0px 0px;" class="color-black font-15">
+                              <i class="fab fa-youtube" style="font-size: 1.8em;color: red;margin-right: 0px;"></i></span>
                           </em>
                         </a>
 
@@ -317,8 +314,8 @@
                         <a (click)="addToCart($event, featuredProductNoDiscount)"
                           style="background-color: red;color:white;font-size: .55em;"
                           class="button button-round-small shadow-small button-sm button-s top-20 {{(featuredProductNoDiscount.product?.soldOut)?'sold-out':'' }}">
-                          <i class="fa fa-shopping-cart add-button"
-                            style="color: white;padding-right: 5px;"></i>Agregar</a>
+                          <i class="fa fa-shopping-cart add-button" style="color: white;padding-right: 5px;"></i>LO
+                          QUIERO!</a>
                       </div>
                     </div>
                   </ion-slide>

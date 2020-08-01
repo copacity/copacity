@@ -21,6 +21,7 @@ import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.com
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
+import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 
 @Component({
   selector: 'app-home',
@@ -277,7 +278,8 @@ export class HomePage implements OnInit {
       showBackdrop: true,
       mode: 'ios',
       translucent: false,
-      event: e
+      event: e,
+      cssClass: 'notification-popover'
     });
 
     return await popover.present();
@@ -339,6 +341,25 @@ export class HomePage implements OnInit {
       this.router.navigate([url]);
       this.loaderComponent.stop();
     });
+  }
+
+  async openVideoPlayerComponent(e: any, url: string) {
+    this.sliderProductsNoDiscount.stopAutoplay();
+    let modal = await this.popoverController.create({
+      component: VideoPlayerComponent,
+      mode: 'ios',
+      cssClass: 'cs-video-popover',
+      componentProps: { url: url },
+      event: e
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+        this.sliderProductsNoDiscount.startAutoplay();
+      });
+
+    modal.present();
   }
 
   redirectBanner(banner: Banner) {
@@ -694,7 +715,8 @@ export class HomePage implements OnInit {
 
   doRefresh(event) {
     setTimeout(() => {
-      this.initializePage();
+      //this.initializePage();
+      location.reload();
       event.target.complete();
     }, 500);
   }
