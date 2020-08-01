@@ -30,7 +30,6 @@ export class ProductPropertiesSelectionComponent implements OnInit {
     private productsService: ProductsService,
     public cartInventoryService: CartInventoryService
   ) {
-
     this.cartService = this.cartManagerService.getCartService(this.navParams.data.store);
     this.buttonEnabled = true;
 
@@ -44,7 +43,7 @@ export class ProductPropertiesSelectionComponent implements OnInit {
       this.validateQuantity();
 
       if(this.cartInventoryService.cartItemCount.value <= 0){
-        this.productsService.update(this.appService.currentStore.id, this.navParams.data.product.id, { soldOut: true });
+        this.productsService.update(this.navParams.data.store.id, this.navParams.data.product.id, { soldOut: true });
         this.presentAlert("Lo sentimos se acaban de agotar todas las unidades de este producto", "", () => { });
         this.buttonEnabled = false;
       }

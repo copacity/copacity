@@ -9,6 +9,7 @@ import { ToastController } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { PrivacyPolicyPage } from 'src/app/cs-pages/privacy-policy/privacy-policy.page';
 import { TermsServicePage } from 'src/app/cs-pages/terms-service/terms-service.page';
+import { ReturnsPolicyPage } from 'src/app/cs-pages/returns-policy/returns-policy.page';
 
 @Component({
   selector: 'app-signup',
@@ -115,6 +116,20 @@ export class SignupComponent implements OnInit {
 
   close() {
     this.popoverController.dismiss(true);
+  }
+
+  async popoverReturnsPolicy() {
+    const popover = await this.popoverController.create({
+      component: ReturnsPolicyPage,
+      cssClass: "cs-popovers"
+    });
+
+    popover.onDidDismiss()
+      .then((data) => {
+        let result = data['data'];
+      });
+
+    return await popover.present();
   }
 
   async popoverTermsService() {

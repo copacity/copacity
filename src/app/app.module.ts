@@ -49,6 +49,7 @@ import { StoreReportsPageModule } from './cs-pages/store-reports/store-reports.m
 import { StoreVendorsAdminPageModule } from './cs-pages/store-vendors-admin/store-vendors-admin.module';
 import { StoreVendorsUpdatePageModule } from './cs-pages/store-vendors-update/store-vendors-update.module';
 import { SearchPageModule } from './cs-pages/search/search.module';
+import { ReturnsPolicyPageModule } from './cs-pages/returns-policy/returns-policy.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -88,6 +89,7 @@ import { SearchPageModule } from './cs-pages/search/search.module';
     AddressCreatePageModule,
     ProfileUpdatePageModule,
     TermsServicePageModule,
+    ReturnsPolicyPageModule,
     PrivacyPolicyPageModule,
     StorePointsPageModule,
     StoreCouponsPageModule,

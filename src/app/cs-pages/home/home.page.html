@@ -388,7 +388,7 @@
               </div>
               <a href="#" class="footer-title color-highlight"><span style="color: red;">COPA</span>CITY</a>
               <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro Comercial Virtual</p>
-              <div class="footer-socials" style="padding-left: 30px;">
+              <div class="footer-socials" style="padding-left: 24px;">
                 <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
                     class="fab fa-facebook-f"></i></a>
                 <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
@@ -405,6 +405,11 @@
             </div>
           </div>
         </div>
+
+        <a href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity."
+          class="float" target="_blank">
+          <i class="fab fa-whatsapp my-float"></i>
+        </a>
       </ion-content>
     </super-tab>
   </super-tabs-container>

@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="close()">
-        <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
+      <ion-button>
+        <i (click)="close()" class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
         <a routerLink="/home" class="header-title bold color-highlight" style="font-size: 1.2em;"><span style="color: red;padding-left: 10px;">COPA</span>CITY</a>
       </ion-button>
     </ion-buttons>
@@ -200,6 +200,16 @@
                 </div>
               </div>
 
+              <div>
+                <div class="divider top-50"></div>
+                <h4 class="bold color-highlight">Politicas de cambios y devoluciones</h4>
+                <div class="container">
+                  <p>
+                    Ver las politicas de cambios y devoluciones <a (click)="popoverReturnsPolicy()">CLICK AQUI</a>
+                  </p>
+                </div>
+              </div>
+
               <div *ngIf="productProperties.length != 0">
                 <div class="divider top-50"></div>
                 <h4 class="bold color-highlight">Características</h4>
@@ -218,6 +228,7 @@
                   </tr>
                 </table>
               </div>
+
               <div class="divider divider-margins top-15"></div>
             </div>
             <div class="top-20"></div>

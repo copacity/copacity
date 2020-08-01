@@ -24,6 +24,7 @@ import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-p
 import { SearchPage } from '../search/search.page';
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.component';
+import { ReturnsPolicyPage } from '../returns-policy/returns-policy.page';
 
 @Component({
   selector: 'app-product-detail',
@@ -139,6 +140,20 @@ export class ProductDetailPage implements OnInit {
       translucent: false,
       event: e
     });
+
+    return await popover.present();
+  }
+
+  async popoverReturnsPolicy() {
+    const popover = await this.popoverController.create({
+      component: ReturnsPolicyPage,
+      cssClass: "cs-popovers"
+    });
+
+    popover.onDidDismiss()
+      .then((data) => {
+        let result = data['data'];
+      });
 
     return await popover.present();
   }

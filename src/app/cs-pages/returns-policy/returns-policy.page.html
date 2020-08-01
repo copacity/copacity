@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <i class="fa fa-times" style="font-size: 1.8em;color:black"></i>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="font-size: medium;padding-left: 10px;">
+      <a style="color: black;" class="header-title bold">Políticas de cambios y devoluciones</a>
+    </ion-title>
+  </ion-toolbar>
+
+  <div class="page-content header-clear-small"  [innerHtml]="appService._appInfo.returnsPolicyTemplate">
+    
+  </div>

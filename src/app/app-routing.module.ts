@@ -143,7 +143,11 @@ const routes: Routes = [
   {
     path: 'store-vendors-update',
     loadChildren: () => import('./cs-pages/store-vendors-update/store-vendors-update.module').then( m => m.StoreVendorsUpdatePageModule)
+  },  {
+    path: 'returns-policy',
+    loadChildren: () => import('./cs-pages/returns-policy/returns-policy.module').then( m => m.ReturnsPolicyPageModule)
   }
+
 ];
 
 @NgModule({
