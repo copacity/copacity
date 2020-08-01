@@ -3,7 +3,10 @@
     <ion-buttons slot="start">
       <ion-button>
         <i (click)="close()" class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
-        <a routerLink="/home" class="header-title bold color-highlight" style="font-size: 1.2em;"><span style="color: red;padding-left: 10px;">COPA</span>CITY</a>
+      </ion-button>
+      <ion-button>
+        <a routerLink="/home" class="header-title bold color-highlight" style="font-size: 1.2em;"><span
+            style="color: red;">COPA</span>CITY</a>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
@@ -43,8 +46,8 @@
       </ion-toolbar>
       <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
         <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
       </div>
     </ion-header>
 
@@ -166,36 +169,36 @@
                     <div class="content header-clear-small">
                       <ion-list lines="full" class="ion-no-margin ion-no-padding">
 
-                      <ion-item>
-                        <ion-label>Tienda:</ion-label>
-                        <ion-select style="padding-right: 10px;" formControlName="idStore" mode="ios" cancelText="Cancelar" okText="Okay!"
-                          interface='action-sheet'>
-                          <ion-select-option *ngFor="let store of stores" value="{{store.id}}">{{store.name}}
-                          </ion-select-option>
-                        </ion-select>
-                      </ion-item>
+                        <ion-item>
+                          <ion-label>Tienda:</ion-label>
+                          <ion-select style="padding-right: 10px;" formControlName="idStore" mode="ios"
+                            cancelText="Cancelar" okText="Okay!" interface='action-sheet'>
+                            <ion-select-option *ngFor="let store of stores" value="{{store.id}}">{{store.name}}
+                            </ion-select-option>
+                          </ion-select>
+                        </ion-item>
 
-                      <ion-item>
-                        <ion-label>Motivo:</ion-label>
-                        <ion-select style="padding-right: 10px;" formControlName="idType" mode="ios" cancelText="Cancelar" okText="Okay!"
-                          interface='action-sheet'>
-                          <ion-select-option value="1">Petición</ion-select-option>
-                          <ion-select-option value="2">Queja</ion-select-option>
-                          <ion-select-option value="3">Reclamo</ion-select-option>
-                          <ion-select-option value="4">Sugerencia</ion-select-option>
-                          <ion-select-option value="5">Felicitación</ion-select-option>
-                        </ion-select>
-                      </ion-item>
+                        <ion-item>
+                          <ion-label>Motivo:</ion-label>
+                          <ion-select style="padding-right: 10px;" formControlName="idType" mode="ios"
+                            cancelText="Cancelar" okText="Okay!" interface='action-sheet'>
+                            <ion-select-option value="1">Petición</ion-select-option>
+                            <ion-select-option value="2">Queja</ion-select-option>
+                            <ion-select-option value="3">Reclamo</ion-select-option>
+                            <ion-select-option value="4">Sugerencia</ion-select-option>
+                            <ion-select-option value="5">Felicitación</ion-select-option>
+                          </ion-select>
+                        </ion-item>
 
-                      <!-- <ion-item>
+                        <!-- <ion-item>
                         <ion-label position="floating" style="color: gray;">Titulo</ion-label>
                         <ion-input formControlName="title"></ion-input>
                       </ion-item> -->
-                      <ion-item>
-                        <ion-label position="floating" style="color: gray;">Mensaje <small style="color: gray;">
-                            ({{this.form.get('message').value.length}}/500)</small></ion-label>
-                        <ion-textarea formControlName="message"></ion-textarea>
-                      </ion-item>
+                        <ion-item>
+                          <ion-label position="floating" style="color: gray;">Mensaje <small style="color: gray;">
+                              ({{this.form.get('message').value.length}}/500)</small></ion-label>
+                          <ion-textarea formControlName="message"></ion-textarea>
+                        </ion-item>
                       </ion-list>
 
                       <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
@@ -217,8 +220,8 @@
 
                   <div>
                     <a (click)="sendMessage()"
-                        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-                        class="button button-round-small shadow-large button-full button-s">ENVIAR!</a>
+                      style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+                      class="button button-round-small shadow-large button-full button-s">ENVIAR!</a>
                   </div>
 
                 </div>

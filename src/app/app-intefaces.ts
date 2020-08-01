@@ -8,6 +8,7 @@ export interface AppInfo {
   domain: string;
   termsServiceTemplate: string;
   privacyPolicyTemplate: string;
+  returnsPolicyTemplate: string;
   tax: number;
   featuredProductsXStore: number;
 }

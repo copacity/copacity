@@ -7,10 +7,11 @@
             <i class="fa fa-bars" style="font-size: 1.2em"></i>
           </span>
         </ion-menu-toggle>
-        <a routerLink="/home" class="header-title bold color-highlight" style="font-size: 1.2em;"><span
-            style="color: red;padding-left: 10px;">COPA</span>CITY</a>
       </ion-button>
-
+      <ion-button>
+        <a routerLink="/home" class="header-title bold color-highlight" style="font-size: 1.2em;"><span
+            style="color: red;">COPA</span>CITY</a>
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button (click)="openSearchPage()">
@@ -405,11 +406,14 @@
             </div>
           </div>
         </div>
-
-        <a href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity."
-          class="float" target="_blank">
-          <i class="fab fa-whatsapp my-float"></i>
-        </a>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button color="success">
+            <a style="color: white;"
+              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+              <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+            </a>
+          </ion-fab-button>
+        </ion-fab>
       </ion-content>
     </super-tab>
   </super-tabs-container>
