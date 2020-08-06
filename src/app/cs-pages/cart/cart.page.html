@@ -152,7 +152,7 @@
 
       <div>
         <a (click)="close()"
-          style="background-color: white;color:red;font-weight: bold;"
+          style="background-color: white;color:red;font-weight: bold;margin-bottom: 5px;"
           class="button button-round-small shadow-small button-full button-s">Seguir comprando</a>
         <a (click)="goToCreateOrder()"
           *ngIf="((cartService?.getTotal() >= (store?.orderMinAmount?store?.orderMinAmount:0) && cart.length != 0) || cartService?.hasGifts())"

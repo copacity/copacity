@@ -10,6 +10,8 @@ import { SigninComponent } from './cs-components/signin/signin.component';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoaderComponent } from './cs-components/loader/loader.component';
 import { CopyToClipboardComponent } from './cs-components/copy-to-clipboard/copy-to-clipboard.component';
+import { SignupComponent } from './cs-components/signup/signup.component';
+import { AskForAccountComponent } from './cs-components/ask-for-account/ask-for-account.component';
 
 @Component({
   selector: 'app-root',
@@ -148,10 +150,45 @@ export class AppComponent {
   }
 
   async SignIn() {
+    this.popoverController.dismiss();
+
     const popover = await this.popoverController.create({
-      component: SigninComponent,
+      component: AskForAccountComponent,
       cssClass: "signin-popover",
     });
-    return await popover.present();
+
+    popover.onDidDismiss()
+      .then(async (data) => {
+        const result = data['data'];
+
+        this.popoverController.dismiss();
+        if (result == 0) {
+          const popover2 = await this.popoverController.create({
+            component: SignupComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover2.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover2.present();
+        } else if (result == 1) {
+          const popover3 = await this.popoverController.create({
+            component: SigninComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover3.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover3.present();
+        }
+      });
+
+    popover.present();
   }
 }

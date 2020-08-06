@@ -7,48 +7,44 @@
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">REGISTRO</a>
+    <a style="background-color: transparent; color: black; top: -8px; padding: 0px 0px;"
+      class="profile-button button button-m button-round uppercase bolder button-center-large">
+      <div class="user-list-left" style="text-align: -webkit-center;">
+        <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+      </div>
+    </a>
 
     <div id="menu-signup" class="round-medium menu-active" data-menu-effect="menu-over"
       style="opacity: 1; display: block;">
-      <div class="content top-20" style="margin: 0px 0px 0px 0px;">
-        <p class="center-text font-15 under-heading bottom-30">
-          ¿No tienes una cuenta? Regístrate a continuación.
-        </p>
+      <div class="content" style="margin: 0px 0px 0px 0px;">
 
         <div class="input-style has-icon input-style-1 input-required">
-          <i class="input-icon fa fa-user font-18"></i>
-          <span style="font-size: 18px;">Usuario</span>
-          <em style="font-size: 15px;">(requerido)</em>
-          <input style="font-size: 18px;" id="_user" type="name" placeholder="Usuario">
+          <i class="input-icon fa fa-user font-12"></i>
+          <span>Usuario</span>
+          <em style="font-size: 12px;">(requerido)</em>
+          <input id="_user" type="name" placeholder="Usuario">
         </div>
         <div class="input-style has-icon input-style-1 input-required">
-          <i class="input-icon fa fa-at font-18"></i>
-          <span style="font-size: 18px;">Email</span>
-          <em style="font-size: 15px;">(requerido)</em>
-          <input style="font-size: 18px;" id="_email" type="email" placeholder="Email">
+          <i class="input-icon fa fa-at font-12"></i>
+          <span>Email</span>
+          <em style="font-size: 12px;">(requerido)</em>
+          <input id="_email" type="email" placeholder="Email">
         </div>
         <div class="input-style has-icon input-style-1 input-required">
-          <i class="input-icon fa fa-lock font-18"></i>
-          <span style="font-size: 18px;">Contraseña</span>
-          <em style="font-size: 15px;">(requerido)</em>
-          <input style="font-size: 18px;" id="_password" type="password" placeholder="Contraseña">
+          <i class="input-icon fa fa-lock font-12"></i>
+          <span>Contraseña</span>
+          <em style="font-size: 12px;">(requerido)</em>
+          <input id="_password" type="password" placeholder="Contraseña">
         </div>
         <div class="input-style has-icon input-style-1 input-required">
-          <i class="input-icon fa fa-lock font-18"></i>
-          <span style="font-size: 18px;">Repetir Contraseña</span>
-          <em style="font-size: 15px;">(requerido)</em>
-          <input style="font-size: 18px;" id="_repeatPassword" type="password" placeholder="Repetir Contraseña">
+          <i class="input-icon fa fa-lock font-12"></i>
+          <span>Repetir Contraseña</span>
+          <em style="font-size: 12px;">(requerido)</em>
+          <input id="_repeatPassword" type="password" placeholder="Repetir Contraseña">
         </div>
-
-        <!-- <div class="top-20 bottom-20">
-          <a (click)="close()" data-menu="menu-signin" class="center-text font-15 color-gray2-dark">
-            ¿Ya registrado? ingrese aquí.</a>
-        </div> -->
 
         <div class="clear"></div>
-        <a (click)="signupEmail()" style="font-size: 18px;"
+        <a (click)="signupEmail()"
           class="button button-full button-s shadow-large button-round-small bg-green1-dark top-10">REGISTRARSE</a>
 
         <a (click)="signupGoogle()" style="font-size: 12px;"
@@ -61,7 +57,8 @@
       </div>
       <p class="top-10" style="color: black;">
         Al registrarse o iniciar sesión estás aceptando las <a (click)="popoverPrivacyPolicy()"> políticas de
-          privacidad, </a><a (click)="popoverReturnsPolicy()">políticas de cambios y devoluciones</a> y <a (click)="popoverTermsService()">términos de uso
+          privacidad, </a><a (click)="popoverReturnsPolicy()">políticas de cambios y devoluciones</a> y <a
+          (click)="popoverTermsService()">términos de uso
         </a></p>
     </div>
 

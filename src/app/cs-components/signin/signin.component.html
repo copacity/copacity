@@ -7,45 +7,40 @@
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">LOGIN</a>
+    <a style="background-color: transparent; color: black; top: -8px; padding: 0px 0px;"
+      class="profile-button button button-m button-round uppercase bolder button-center-large">
+      <div class="user-list-left" style="text-align: -webkit-center;">
+        <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+      </div>
+    </a>
 
     <div id="menu-signin" class="round-medium menu-active" data-menu-height="470" data-menu-effect="menu-over"
       style="opacity: 1; display: block;">
-      <div class="content top-20" style="margin: 0px 0px 0px 0px;">
-        <div class="content contact-message top-20 bottom-20" style="margin: 0px 0px 0px 0px;background-color: yellow;">
-          <div class="content content-box round-small shadow-large" style="padding: 5px;margin: 0px 0px 0px 0px;">
-            <span class="center-text bolder" style="color: black;margin-bottom: 0px;line-height: 15px;">
-              Gracias por visitar Copacity, Por favor inicia sesión para continuar.
-            </span>
-          </div>
-        </div>
-        <!-- <p class="center-text font-15 under-heading bottom-30">
-          Por favor ingrese sus credenciales a continuación.
-        </p> -->
+      <div class="content" style="margin: 0px 0px 0px 0px;">
+
         <div class="input-style has-icon input-style-1 input-required">
-          <i class="input-icon fa fa-user font-18"></i>
+          <i class="input-icon fa fa-user font-12"></i>
           <span>Email</span>
-          <em style="font-size: 15px;">(requerido)</em>
-          <input style="font-size: 18px;" id="email" type="email" placeholder="Email">
+          <em style="font-size: 12px;">(requerido)</em>
+          <input id="email" type="email" placeholder="Email">
         </div>
         <div class="input-style has-icon input-style-1 input-required">
-          <i class="input-icon fa fa-lock font-18"></i>
+          <i class="input-icon fa fa-lock font-12"></i>
           <span>Contraseña</span>
-          <em style="font-size: 15px;">(requerido)</em>
-          <input style="font-size: 18px;" id="password" type="password" placeholder="Contraseña">
+          <em style="font-size: 12px;">(requerido)</em>
+          <input id="password" type="password" placeholder="Contraseña">
         </div>
         <div class="top-20">
           <div (click)="popoverPasswordResetEmail()" class="one-half"><a data-menu="menu-forgot"
-              class="left-text font-15">¿Se te olvidó tu contraseña?</a></div>
+              class="left-text font-12">¿Se te olvidó tu contraseña?</a></div>
           <div (click)="createAccount()" class="one-half last-column"><a data-menu="menu-signup"
-              class="right-text font-15">
+              class="right-text font-12">
               Crear una cuenta</a></div>
         </div>
 
         <div class="clear"></div>
 
-        <a (click)="signinEmail()" style="font-size: 18px;"
+        <a (click)="signinEmail()"
           class="button button-full button-s shadow-large button-round-small bg-green1-dark top-10">Iniciar Sesión</a>
 
         <a (click)="signinGoogle()" style="font-size: 12px;"
@@ -58,7 +53,8 @@
       </div>
       <p class="top-10" style="color: black;">
         Al registrarse o iniciar sesión estás aceptando las <a (click)="popoverPrivacyPolicy()"> políticas de
-          privacidad, </a><a (click)="popoverReturnsPolicy()">políticas de cambios y devoluciones</a> y <a (click)="popoverTermsService()">términos de uso
+          privacidad, </a><a (click)="popoverReturnsPolicy()">políticas de cambios y devoluciones</a> y <a
+          (click)="popoverTermsService()">términos de uso
         </a></p>
     </div>
   </div>

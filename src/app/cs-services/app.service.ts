@@ -87,7 +87,7 @@ export class AppService {
     });
 
     this.banners = this.bannersService.getByType(1);
-    this.bannersFooter= this.bannersService.getByType(2);
+    this.bannersFooter = this.bannersService.getByType(2);
 
     this.appInfo = this.getAppInfo();
     this.appInfo.subscribe(result => {
@@ -98,19 +98,23 @@ export class AppService {
   }
 
   updateUserData(idUser: string) {
-    this.usersService.getById(idUser).then(user => {
-      this.currentUser = user;
-      this.getAddressesByUser();
-      this.getNotificationsByUser();
+    return new Promise((resolve, reject) => {
+      this.usersService.getById(idUser).then(user => {
+        this.currentUser = user;
+        this.getAddressesByUser();
+        this.getNotificationsByUser();
 
-      if (this.currentUser && this.currentUser.isAdmin) {
+        if (this.currentUser && this.currentUser.isAdmin) {
 
-        this.storesService.getByUserId(this.currentUser.id).then(stores => {
-          stores.forEach(store => {
-            this._userStoreId = store.id;
+          this.storesService.getByUserId(this.currentUser.id).then(stores => {
+            stores.forEach(store => {
+              this._userStoreId = store.id;
+            });
           });
-        });
-      }
+        }
+
+        resolve();
+      });
     });
   }
 
@@ -157,12 +161,17 @@ export class AppService {
   }
 
   setuserCredential(idUser: string) {
-    if (idUser) {
-      this.updateUserData(idUser);
-      this.requestPermission(idUser);
-    } else {
-      this.clareSessionData();
-    }
+    return new Promise((resolve, reject) => {
+      if (idUser) {
+        this.updateUserData(idUser).then(() => {
+          this.requestPermission(idUser);
+          resolve();
+        });
+      } else {
+        this.clareSessionData();
+        resolve();
+      }
+    });
   }
 
   clareSessionData() {
@@ -217,7 +226,7 @@ export class AppService {
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as AppInfo;
         const id = a.payload.doc.id;
-        
+
         return { id, ...data };
       }))
     );
@@ -341,9 +350,9 @@ export class AppService {
       .collection("appErrors").add(error);
   }
 
-  public getImageIdByUrl(url: string){
+  public getImageIdByUrl(url: string) {
     let array = url.split('/');
-    let idImage =  array[array.length - 1].split('?')[0];
+    let idImage = array[array.length - 1].split('?')[0];
     return idImage;
   }
 }

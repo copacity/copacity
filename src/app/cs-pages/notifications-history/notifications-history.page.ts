@@ -14,6 +14,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { Router } from '@angular/router';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
+import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
+import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 
 @Component({
   selector: 'app-notifications-history',
@@ -124,11 +126,46 @@ export class NotificationsHistoryPage implements OnInit {
   }
 
   async SignIn() {
+    this.popoverController.dismiss();
+
     const popover = await this.popoverController.create({
-      component: SigninComponent,
+      component: AskForAccountComponent,
       cssClass: "signin-popover",
     });
-    return await popover.present();
+
+    popover.onDidDismiss()
+      .then(async (data) => {
+        const result = data['data'];
+
+        this.popoverController.dismiss();
+        if (result == 0) {
+          const popover2 = await this.popoverController.create({
+            component: SignupComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover2.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover2.present();
+        } else if (result == 1) {
+          const popover3 = await this.popoverController.create({
+            component: SigninComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover3.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover3.present();
+        }
+      });
+
+    popover.present();
   }
 
 

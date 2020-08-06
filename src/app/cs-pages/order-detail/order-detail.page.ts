@@ -22,6 +22,8 @@ import { NgNavigatorShareService } from 'ng-navigator-share';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
+import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
+import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -161,11 +163,46 @@ export class OrderDetailPage implements OnInit {
   }
 
   async SignIn() {
+    this.popoverCtrl.dismiss();
+
     const popover = await this.popoverCtrl.create({
-      component: SigninComponent,
+      component: AskForAccountComponent,
       cssClass: "signin-popover",
     });
-    return await popover.present();
+
+    popover.onDidDismiss()
+      .then(async (data) => {
+        const result = data['data'];
+
+        this.popoverCtrl.dismiss();
+        if (result == 0) {
+          const popover2 = await this.popoverCtrl.create({
+            component: SignupComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover2.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover2.present();
+        } else if (result == 1) {
+          const popover3 = await this.popoverCtrl.create({
+            component: SigninComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover3.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover3.present();
+        }
+      });
+
+    popover.present();
   }
 
   async presentMenuUser(e) {

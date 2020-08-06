@@ -95,14 +95,16 @@ export class SignupComponent implements OnInit {
               isSuperUser: false
             }
             await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
-              this.appService.setuserCredential(userCredential.user.uid);
-              this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
-              this.popoverController.dismiss(true);
-              this.loaderComponent.stopLoading();
+              this.appService.setuserCredential(userCredential.user.uid).then(async () => {
+                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
+                this.popoverController.dismiss(true);
+                this.loaderComponent.stopLoading();
+              });
             })
           }
           else {
-            this.presentToast("El usuario ya está registrado.", "danger");
+            //this.presentToast("El usuario ya está registrado.", "danger");
+            this.popoverController.dismiss(true);
             this.loaderComponent.stopLoading();
           }
         })
@@ -188,14 +190,16 @@ export class SignupComponent implements OnInit {
                 isSuperUser: false
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
-                this.appService.setuserCredential(userCredential.user.uid);
-                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
-                this.popoverController.dismiss(true);
-                this.loaderComponent.stopLoading();
+                this.appService.setuserCredential(userCredential.user.uid).then(async () => {
+                  this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
+                  this.popoverController.dismiss(true);
+                  this.loaderComponent.stopLoading();
+                });
               })
             }
             else {
-              this.presentToast("El usuario ya está registrado.", "danger");
+              //this.presentToast("El usuario ya está registrado.", "danger");
+              this.popoverController.dismiss(true);
               this.loaderComponent.stopLoading();
             }
           });
@@ -232,14 +236,16 @@ export class SignupComponent implements OnInit {
                 isSuperUser: false
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
-                this.appService.setuserCredential(userCredential.user.uid);
-                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
-                this.popoverController.dismiss(true);
-                this.loaderComponent.stopLoading();
+                this.appService.setuserCredential(userCredential.user.uid).then(async () => {
+                  this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
+                  this.popoverController.dismiss(true);
+                  this.loaderComponent.stopLoading();
+                });
               })
             }
             else {
-              this.presentToast("El usuario ya está registrado.", "danger");
+              //this.presentToast("El usuario ya está registrado.", "danger");
+              this.popoverController.dismiss(true);
               this.loaderComponent.stopLoading();
             }
           });

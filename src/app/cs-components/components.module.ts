@@ -24,6 +24,7 @@ import { SubscriptionPlansComponent } from './subscription-plans/subscription-pl
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { MenuCartComponent } from './menu-cart/menu-cart.component';
 import { WhatsappOrderComponent } from './whatsapp-order/whatsapp-order.component';
+import { AskForAccountComponent } from './ask-for-account/ask-for-account.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { WhatsappOrderComponent } from './whatsapp-order/whatsapp-order.componen
     BarcodeGeneratorComponent,
     SubscriptionPlansComponent,
     VideoPlayerComponent,
-    WhatsappOrderComponent
+    WhatsappOrderComponent,
+    AskForAccountComponent
   ],
   imports: [
     IonicModule,
@@ -74,7 +76,8 @@ import { WhatsappOrderComponent } from './whatsapp-order/whatsapp-order.componen
     BarcodeGeneratorComponent,
     SubscriptionPlansComponent,
     VideoPlayerComponent,
-    WhatsappOrderComponent
+    WhatsappOrderComponent,
+    AskForAccountComponent
   ],
   entryComponents: [
     SigninComponent,
@@ -95,7 +98,8 @@ import { WhatsappOrderComponent } from './whatsapp-order/whatsapp-order.componen
     BarcodeGeneratorComponent,
     SubscriptionPlansComponent,
     VideoPlayerComponent,
-    WhatsappOrderComponent
+    WhatsappOrderComponent,
+    AskForAccountComponent
   ]
 })
 export class ComponentsModule { }

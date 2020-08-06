@@ -82,13 +82,13 @@ export class ProductCreatePage implements OnInit {
     }
   };
 
-  async SignIn() {
-    const popover = await this.popoverCtrl.create({
-      component: SigninComponent,
-      cssClass: "signin-popover",
-    });
-    return await popover.present();
-  }
+  // async SignIn() {
+  //   const popover = await this.popoverCtrl.create({
+  //     component: SigninComponent,
+  //     cssClass: "signin-popover",
+  //   });
+  //   return await popover.present();
+  // }
 
 
   signOut() {

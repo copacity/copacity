@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoaderComponent } from '../loader/loader.component';
 import { StoreCreatePage } from 'src/app/cs-pages/store-create/store-create.page';
+import { AskForAccountComponent } from '../ask-for-account/ask-for-account.component';
+import { SignupComponent } from '../signup/signup.component';
 
 @Component({
   selector: 'app-menu-user',
@@ -29,13 +31,46 @@ export class MenuUserComponent implements OnInit {
     this.popoverController.dismiss();
 
     const popover = await this.popoverController.create({
-      component: SigninComponent,
+      component: AskForAccountComponent,
       cssClass: "signin-popover",
     });
-    return await popover.present();
+
+    popover.onDidDismiss()
+      .then(async (data) => {
+        const result = data['data'];
+
+        this.popoverController.dismiss();
+        if (result == 0) {
+          const popover2 = await this.popoverController.create({
+            component: SignupComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover2.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover2.present();
+        } else if (result == 1) {
+          const popover3 = await this.popoverController.create({
+            component: SigninComponent,
+            cssClass: "signin-popover",
+          });
+
+          popover3.onDidDismiss()
+            .then((data) => {
+              const result = data['data'];
+            });
+
+          popover3.present();
+        }
+      });
+
+    popover.present();
   }
 
-    //--------------------------------------------------------------
+  //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------       STORE CREATION
 

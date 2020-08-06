@@ -1,0 +1,39 @@
+<div class="profile-auth bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: transparent; color: black; top: -8px; padding: 0px 0px;"
+      class="profile-button button button-m button-round uppercase bolder button-center-large">
+      <div class="user-list-left" style="text-align: -webkit-center;">
+        <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+      </div>
+    </a>
+
+    <div id="menu-signup" class="round-medium menu-active" data-menu-effect="menu-over"
+      style="opacity: 1; display: block;">
+      <div class="content" style="margin: 0px 0px 0px 0px;">
+        <div class="footer" style="padding: 0px 18px 8px 18px;">
+          <p class="footer-text bold" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;color:black">
+            Gracias por visitar Copacity, Por favor inicia sesión para continuar.
+          </p>
+
+          <div class="boxed-text-huge">
+            <div style="padding-top: 10px;text-align: -webkit-center;">
+              <a (click)="signIn()" style="background-color: green;color:white;font-weight: bold;margin-bottom: 0px;"
+                class="button button-round-small shadow-large button-full button-s">Ya tengo Cuenta</a>
+            </div>
+
+            <div style="padding-top: 10px;text-align: -webkit-center;">
+              <a (click)="signUp()" style="background-color: red;color:white;font-weight: bold;margin-bottom: 0px;"
+                class="button button-round-small shadow-large button-full button-s">Soy nuevo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
