@@ -177,55 +177,75 @@ export class HomePage implements OnInit {
   }
 
   async addToCart(e: any, featuredProductNoDiscount: any) {
-    this.sliderProductsNoDiscount.stopAutoplay();
+    if (!this.appService.currentUser || this.appService.currentUser.id != featuredProductNoDiscount.store.iduser) {
+      this.sliderProductsNoDiscount.stopAutoplay();
 
-    let cartSevice = this.cartManagerService.getCartService(featuredProductNoDiscount.store)
+      let cartSevice = this.cartManagerService.getCartService(featuredProductNoDiscount.store)
 
-    if (!featuredProductNoDiscount.product.soldOut) {
-      this.cartInventoryService.clearCart();
-      let subs = this.productsService.getCartInventory(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id)
-        .subscribe((cartP) => {
+      if (!featuredProductNoDiscount.product.soldOut) {
+        this.cartInventoryService.clearCart();
+        let subs = this.productsService.getCartInventory(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id)
+          .subscribe((cartP) => {
 
-          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id);
+            let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id);
 
-          let subscribe = productPropertiesResult.subscribe(async productProperties => {
-            productProperties.forEach(productProperty => {
-              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id, productProperty.id);
-              let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
-                productProperty.productPropertyOptions = productPropertyOptions;
-                subscribe2.unsubscribe();
-              });
-            });
-
-            productProperties = productProperties;
-            subscribe.unsubscribe();
-
-            let modal = await this.popoverController.create({
-              component: ProductPropertiesSelectionComponent,
-              mode: 'ios',
-              event: e,
-              componentProps: { store: featuredProductNoDiscount.store, isInventory: false, product: featuredProductNoDiscount.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
-            });
-
-            modal.onDidDismiss()
-              .then((data) => {
-                const result = data['data'];
-                this.sliderProductsNoDiscount.startAutoplay();
-
-                if (result) {
-                  this.animateCSS('tada');
-                  cartSevice.addProduct(result);
-                  this.presentToastCart(featuredProductNoDiscount.product.name + ' ha sido agregado al carrito!', result.product.image);
-                }
+            let subscribe = productPropertiesResult.subscribe(async productProperties => {
+              productProperties.forEach(productProperty => {
+                let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(featuredProductNoDiscount.store.id, featuredProductNoDiscount.product.id, productProperty.id);
+                let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+                  productProperty.productPropertyOptions = productPropertyOptions;
+                  subscribe2.unsubscribe();
+                });
               });
 
-            modal.present();
+              productProperties = productProperties;
+              subscribe.unsubscribe();
+
+              let modal = await this.popoverController.create({
+                component: ProductPropertiesSelectionComponent,
+                mode: 'ios',
+                event: e,
+                componentProps: { store: featuredProductNoDiscount.store, isInventory: false, product: featuredProductNoDiscount.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
+              });
+
+              modal.onDidDismiss()
+                .then((data) => {
+                  const result = data['data'];
+                  this.sliderProductsNoDiscount.startAutoplay();
+
+                  if (result) {
+                    this.animateCSS('tada');
+                    cartSevice.addProduct(result);
+                    this.presentToastCart(featuredProductNoDiscount.product.name + ' ha sido agregado al carrito!', result.product.image);
+                  }
+                });
+
+              modal.present();
+            });
+
+
+            subs.unsubscribe();
           });
-
-
-          subs.unsubscribe();
-        });
+      }
+    } else {
+      this.presentAlert("No puedes agregar productos al carrito por que eres el administrador de esta tienda. Gracias", "", () => { });
     }
+  }
+
+  async presentAlert(title: string, message: string, done: Function) {
+
+    const alert = await this.alertController.create({
+      header: title,
+      message: message,
+      mode: 'ios',
+      translucent: true,
+      animated: true,
+      backdropDismiss: false,
+      buttons: ['Aceptar!']
+    });
+
+    alert.onDidDismiss().then(done());
+    await alert.present();
   }
 
   async presentToastCart(message: string, image: string) {

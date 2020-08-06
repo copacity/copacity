@@ -1,13 +1,13 @@
 <ion-header class="ion-header" style="background-color:white">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button>
-        <ion-menu-toggle style="padding-top: 0px">
+      <ion-menu-toggle>
+        <ion-button>
           <span style="font-size: 1em; color: black;" class="menu-icon-bars">
             <i class="fa fa-bars" style="font-size: 1.2em"></i>
           </span>
-        </ion-menu-toggle>
-      </ion-button>
+        </ion-button>
+      </ion-menu-toggle>
       <ion-button routerLink="/home">
         <a class="header-title bold color-highlight" style="font-size: 1.2em;"><span
             style="color: red;">COPA</span>CITY</a>
@@ -423,23 +423,30 @@
                 Tenemos grandes descuentos, cupones, regalos y muchas sorpresas más!!
               </p>
               <div class="link-list-1">
-                  <a><i class="fa fa-gift color-red2-dark"></i><span>Regalos</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a><i class="fa fa-tags color-yellow2-dark"></i><span>Descuentos</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a><i class="fa fa-ticket-alt color-blue2-dark"></i><span>Cupones</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a><i class="fa fa-percentage color-magenta2-dark"></i><span>Promociones</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a><i class="fa fa-handshake color-blue1-dark"></i><span>Comisiones para vendedores</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a><i class="fa fa-parachute-box color-pink1-dark"></i><span>Domicilios Inmediatos Antioquia y Area Metropolitana</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a><i class="fa fa-dollar-sign color-yellow2-dark"></i><span>Métodos de pago</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a><i class="fa fa-truck color-pink1-dark"></i><span>Envíos Nacionales</span><i class="fa fa-check color-green1-dark"></i></a>
-                  <a class="no-border"><i class="fa fa-trophy color-yellow2-dark"></i><span class="no-border">Satisfacción Garantizada</span><i class="fa fa-check color-green1-dark"></i></a>
+                <a><i class="fa fa-gift color-red2-dark"></i><span>Regalos</span><i
+                    class="fa fa-check color-green1-dark"></i></a>
+                <a><i class="fa fa-tags color-yellow2-dark"></i><span>Descuentos</span><i
+                    class="fa fa-check color-green1-dark"></i></a>
+                <a><i class="fa fa-ticket-alt color-blue2-dark"></i><span>Cupones</span><i
+                    class="fa fa-check color-green1-dark"></i></a>
+                <a><i class="fa fa-percentage color-magenta2-dark"></i><span>Promociones</span><i
+                    class="fa fa-check color-green1-dark"></i></a>
+                <a><i class="fa fa-handshake color-blue1-dark"></i><span>Comisiones para vendedores</span><i
+                    class="fa fa-check color-green1-dark"></i></a>
+                <a><i class="fa fa-dollar-sign color-yellow2-dark"></i><span>Métodos de pago</span><i
+                    class="fa fa-check color-green1-dark"></i></a>
+                <a><i class="fa fa-truck color-pink1-dark"></i><span>Envíos Nacionales</span><i
+                    class="fa fa-check color-green1-dark"></i></a>
+                <a class="no-border"><i class="fa fa-trophy color-yellow2-dark"></i><span class="no-border">Satisfacción
+                    Garantizada</span><i class="fa fa-check color-green1-dark"></i></a>
               </div>
-          </div>
+            </div>
 
             <div class="footer" style="box-shadow:none;padding: 0px 30px 10px 30px;">
               <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
                 <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
               </div>
-              <a href="#" class="footer-title color-highlight"><span style="color: red;">COPA</span>CITY</a>
+              <a class="footer-title color-highlight"><span style="color: red;">COPA</span>CITY</a>
               <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro Comercial Virtual</p>
               <div class="footer-socials" style="padding-left: 24px;">
                 <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i

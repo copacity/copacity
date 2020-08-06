@@ -134,7 +134,7 @@
               style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
               <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
-            <a *ngIf="product?.video" (click)="openVideoPlayerComponent($event, product?.video)"
+            <a #video *ngIf="product?.video" (click)="openVideoPlayerComponent($event, product?.video)"
               style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
               <i class="fab fa-youtube"></i>&nbsp;Video</a>
 
@@ -194,7 +194,7 @@
                 </div>
               </div>
 
-              <div>
+              <!-- <div>
                 <div class="divider top-50"></div>
                 <h4 class="bold color-highlight">Políticas de cambios y devoluciones</h4>
                 <div class="container">
@@ -202,7 +202,7 @@
                     Para ver las políticas de cambios y devoluciones has click <a (click)="popoverReturnsPolicy()" class="bold" style="text-decoration-line: underline;">AQUI</a>
                   </p>
                 </div>
-              </div>
+              </div> -->
 
               <div *ngIf="productProperties.length != 0">
                 <div class="divider top-50"></div>
@@ -226,6 +226,9 @@
               <div class="divider divider-margins top-15"></div>
             </div>
             <div class="top-20"></div>
+            <p class="bottom-20" style="color: black;">
+              <a (click)="popoverReturnsPolicy()">Políticas de cambio y devoluciones.</a>
+            </p>
             <a (click)="addToCart($event)"
               style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
               class="button button-round-small shadow-large button-full button-s">AGREGAR AL CARRITO!</a>

@@ -23,6 +23,7 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { SubscriptionPlansComponent } from './subscription-plans/subscription-plans.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { MenuCartComponent } from './menu-cart/menu-cart.component';
+import { WhatsappOrderComponent } from './whatsapp-order/whatsapp-order.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MenuCartComponent } from './menu-cart/menu-cart.component';
     BarcodeScannerComponent,
     BarcodeGeneratorComponent,
     SubscriptionPlansComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    WhatsappOrderComponent
   ],
   imports: [
     IonicModule,
@@ -71,7 +73,8 @@ import { MenuCartComponent } from './menu-cart/menu-cart.component';
     BarcodeScannerComponent,
     BarcodeGeneratorComponent,
     SubscriptionPlansComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    WhatsappOrderComponent
   ],
   entryComponents: [
     SigninComponent,
@@ -91,7 +94,8 @@ import { MenuCartComponent } from './menu-cart/menu-cart.component';
     BarcodeScannerComponent,
     BarcodeGeneratorComponent,
     SubscriptionPlansComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    WhatsappOrderComponent
   ]
 })
 export class ComponentsModule { }

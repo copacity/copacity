@@ -9,6 +9,7 @@ import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-v
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
+import { WhatsappOrderComponent } from 'src/app/cs-components/whatsapp-order/whatsapp-order.component';
 
 @Component({
   selector: 'cs-cart',
@@ -59,7 +60,7 @@ export class CartPage implements OnInit {
     if (this.appService.currentUser) {
       this.popoverController.dismiss(true);
     } else {
-      this.SignIn();
+      this.openWhatsAppOrder();
     }
   }
 
@@ -87,6 +88,62 @@ export class CartPage implements OnInit {
       modal.present();
       subs.unsubscribe();
     });
+  }
+
+  async openWhatsAppOrder() {
+    let modal = await this.popoverController.create({
+      component: WhatsappOrderComponent,
+      componentProps: { idStore: this.store.id },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if (result && result == "Login") {
+          this.SignIn();
+        } else
+          if (result && result == "Copacity") {
+            window.open(this.buildWhatsAppMessage({ whatsapp: this.appService._appInfo.whatsapp, name: "Copacity" }), 'popup', 'width=450,height=600');
+          } else if (result) {
+            window.open(this.buildWhatsAppMessage(result), 'popup', 'width=450,height=600');
+          }
+      });
+
+    return await modal.present();
+  }
+
+  buildWhatsAppMessage(user: any) {
+    let message = "https://api.whatsapp.com/send?phone=57" + user.whatsapp + "&text=¡Hola " + encodeURIComponent(user.name) + "! Mi pedido en la tienda " + encodeURIComponent(this.store.name) + " es:" + encodeURIComponent("\n\n");
+
+    this.cart.forEach(cartProduct => {
+      message += cartProduct.quantity + " unidad(es)";
+      message += (cartProduct.product.ref != undefined && cartProduct.product.ref != null) ? " - Ref " + cartProduct.product.ref : "";
+      message += ": " + cartProduct.product.name + ",";
+
+      // Properties
+      cartProduct.propertiesSelection.forEach(property => {
+        message += " [" + property.propertyName + ":" + property.propertyOptionName + ((property.price > 0) ? (", " + this.toMoneyFormat(property.price)) : "") + "]"
+      });
+
+      message += (cartProduct.product.discount && cartProduct.product.discount != 0) ? " [Descuento: " + cartProduct.product.discount + "%]" : "";
+      message += " Precio: " + this.toMoneyFormat(this.cartService.getProductTotal(cartProduct)) + encodeURIComponent("\n\n‎")
+
+    });
+
+    message += "Total: " + this.toMoneyFormat(this.cartService.getTotal());
+
+    return message;
+  }
+
+  toMoneyFormat(value: number) {
+    let formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+
+    return formatter.format(value);
   }
 
   async SignIn() {

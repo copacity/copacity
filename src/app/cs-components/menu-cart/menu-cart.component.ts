@@ -18,10 +18,30 @@ export class MenuCartComponent implements OnInit {
     private router: Router,
     public cartManagerService: CartManagerService,
     public popoverController: PopoverController) {
-
+    this.validateActiveCarts();
   }
 
   ngOnInit() { }
+
+  validateActiveCarts() {
+    let currentCart: any;
+    let cartCount = 0;
+    let cartItems = this.cartManagerService.getTotalCount();
+
+    this.cartManagerService.carts.forEach(cart => {
+      if (cart.getCartItemCount().value != 0) {
+        currentCart = cart;
+        cartCount++;
+      }
+    });
+
+    if (cartCount == 1 && cartItems != 0) {
+      setTimeout(() => {
+        this.openCart(currentCart.store.id);
+        this.popoverController.dismiss();
+      }, 500);
+    }
+  }
 
   async openCart(storeId: string) {
     this.popoverController.dismiss();

@@ -39,6 +39,7 @@ export class ProductDetailPage implements OnInit {
   product: Product;
   productImageCollection: ProductImage[] = [];
   @ViewChild('cartProductDetail', { static: false, read: ElementRef }) shoppingCart: ElementRef;
+  @ViewChild('video', { static: false, read: ElementRef }) videoIcon: ElementRef;
   isAdmin: boolean = false;
 
   productProperties: ProductProperty[] = []
@@ -124,11 +125,23 @@ export class ProductDetailPage implements OnInit {
             this.router.navigate(['/home']);
           }
         }
+
+        this.animateVideo();
       });
     });
   }
 
   ngOnInit() {
+  }
+
+  async animateVideo() {
+    if (this.product && this.product.video) {
+      return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            this.animateVideoCSS('swing');
+          }, 3000);
+      }).catch(err => { });
+    }
   }
 
   async presentMenuCart(e) {
@@ -537,7 +550,24 @@ export class ProductDetailPage implements OnInit {
     node.addEventListener('animationend', handleAnimationEnd)
   }
 
+  animateVideoCSS(animationName: any, keepAnimated = false) {
+
+    const node = this.videoIcon.nativeElement;
+    node.classList.add('animated', animationName)
+
+    function handleAnimationEnd() {
+      if (!keepAnimated) {
+        node.classList.remove('animated', animationName);
+      }
+
+      node.removeEventListener('animationend', handleAnimationEnd)
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd)
+  }
+
   ionViewDidEnter() {
+    this.animateVideo();
     try { this.slider.startAutoplay(); } catch (error) { }
   }
 
