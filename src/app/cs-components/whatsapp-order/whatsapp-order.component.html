@@ -1,49 +1,59 @@
-<div class="round-medium" style="background-color: white;">
+<div class="profile-auth bottom-30">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-  <i (click)="close()" class="fa fa-times-circle"
-    style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
-
-  <div class="footer" style="padding: 10px 18px 8px 18px;">
-
-    <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-      <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
-    </div>
-
-    <p class="footer-text bold" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;color:black">Para acumular puntos,
-      reclamar regalos o usar cupones es necesario que inicies sesión y realices tus pedidos como usuario registrado.
-    </p>
-
-    <div class="boxed-text-huge">
-      <div style="padding-top: 10px;text-align: -webkit-center;">
-        <a (click)="login()" style="background-color: red;color:white;font-weight: bold;"
-          class="button button-round-small shadow-large button-full button-s">Iniciar Sesión</a>
+    <a style="background-color: transparent; color: black; top: -8px; padding: 0px 0px;"
+      class="profile-button button button-m button-round uppercase bolder button-center-large">
+      <div class="user-list-left" style="text-align: -webkit-center;">
+        <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
       </div>
+    </a>
 
-      <p class="footer-text bold" style="margin-bottom: 10px;padding: 20px 0px 0px 0px;color: black">De lo contrario puedes hacerlo
-        directamente a nuestros representantes por whatsapp.
-      </p>
+    <div id="menu-signup" class="round-medium menu-active" data-menu-effect="menu-over"
+      style="opacity: 1; display: block;">
+      <div class="content" style="margin: 0px 0px 30px 0px;">
+        <div class="boxed-text-huge">
+          <p class="footer-text bold" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;color:black">Para acumular
+            puntos, reclamar regalos o usar cupones es necesario que inicies sesión y realices tus pedidos como usuario
+            registrado.
+          </p>
 
-      <div class="boxed-text-huge">
-        <ion-list lines="full" class="ion-no-margin ion-no-padding">
-          <ion-item>
-            <ion-label style="color: gray;font-size: .8em;">Selecciona: <b style="color: red;">(*)</b></ion-label>
-            <ion-select [formControl]="idVendor" (ionChange)="vendorChange($event)"
-              style="padding-right: 10px;font-size: .8em;" mode="ios" cancelText="Cancelar" okText="Okay!"
-              interface='action-sheet'>
-              <ion-select-option value="1">Copacity Ventas</ion-select-option>
-              <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-list>
+          <div style="padding-top: 10px;text-align: -webkit-center;">
+            <a (click)="login()" style="background-color: red;color:white;font-weight: bold;"
+              class="button button-round-small shadow-large button-full button-s">Iniciar Sesión</a>
+          </div>
 
-        <span *ngIf="validationMessage" style="color: red;padding-top: 10px;">{{validationMessage}}</span>
+          <p class="footer-text bold" style="margin-bottom: 10px;padding: 20px 0px 0px 0px;color: black">De lo contrario
+            puedes hacerlo directamente por whatsapp a los representantes de la tienda.
+          </p>
 
-        <div style="padding-top: 10px;text-align: -webkit-center;">
-          <a (click)="sendToWhatssApp()" style="border: double;margin-bottom: 0px;"
-            class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
-              style="font-size: 1.5em;"></i>&nbsp;Enviar pedido por Whatsapp</a>
+          <div class="boxed-text-huge">
+            <ion-list lines="full" class="ion-no-margin ion-no-padding">
+              <ion-item>
+                <ion-label style="color: gray;font-size: .8em;">Selecciona: <b style="color: red;">(*)</b></ion-label>
+                <ion-select [formControl]="idVendor" (ionChange)="vendorChange($event)"
+                  style="padding-right: 10px;font-size: .8em;" mode="ios" cancelText="Cancelar" okText="Okay!"
+                  interface='action-sheet'>
+                  <ion-select-option value="1">Copacity Ventas</ion-select-option>
+                  <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+
+            <span *ngIf="validationMessage" style="color: red;padding-top: 10px;">{{validationMessage}}</span>
+
+            <div style="padding-top: 10px;text-align: -webkit-center;">
+              <a (click)="sendToWhatssApp()" style="border: double;margin-bottom: 0px;"
+                class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
+                  style="font-size: 1.5em;"></i>&nbsp;Enviar pedido por Whatsapp</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

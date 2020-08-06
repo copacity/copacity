@@ -11,7 +11,7 @@
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">CUPONES</a>
 
     <div *ngIf="!isAdmin" class="content contact-message top-20"
-      style="margin: 0px 0px 0px 0px;background-color: yellow;">
+      style="margin: 0px 0px 0px 0px;">
       <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
         <span class="center-text bolder" style="color: black;margin-bottom: 0px;line-height: 20px;">
           A continuación podrás ver la lista de cupones que tenemos disponibles para ti, en la pantalla de pedido puedes
@@ -139,9 +139,9 @@
                       <i class="fa fa-edit" style="color: black"></i></a>
                   </td>
                 </tr>
-                <tr *ngIf="(!isAdmin && !dashboard)">
+                <tr *ngIf="(!isAdmin)">
                   <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a (click)="selectCoupon(storeCoupon)" style="color:white;background-color: red;"
+                    <a (click)="setLikeTemporalCoupon(storeCoupon)" style="color:white;background-color: red;"
                       class="button button-round-small shadow-large button-full button-s {{ (!isAdmin && !dashboard && orderTotal < storeCoupon.minAmount)?'sold-out':'' }}">
                       Tomar Cupón</a>
                   </td>

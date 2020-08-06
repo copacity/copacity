@@ -228,7 +228,7 @@ export class StorePage implements OnInit {
 
     const popover = await this.popoverController.create({
       component: AskForAccountComponent,
-      cssClass: "signin-popover",
+      cssClass: 'cs-popovers',
     });
 
     popover.onDidDismiss()
@@ -449,7 +449,7 @@ export class StorePage implements OnInit {
 
     let modal = await this.popoverController.create({
       component: StoreInformationComponent,
-      cssClass: 'cs-popovers',
+      cssClass: "signin-popover",
       //event: event,
       componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName },
       // backdropDismiss: false
@@ -1130,6 +1130,10 @@ export class StorePage implements OnInit {
       modal.onDidDismiss()
         .then((data) => {
           const result = data['data'];
+
+          if (result) {
+            this.appService.temporalCoupon = result;
+          }
         });
 
       modal.present();

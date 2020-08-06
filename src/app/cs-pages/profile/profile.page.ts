@@ -49,6 +49,12 @@ export class ProfilePage implements OnInit {
     this.locationStrategy.onPopState(() => {
       history.pushState(null, null, window.location.href);
     });
+
+    this.angularFireAuth.auth.onAuthStateChanged(user => {
+      if (!user) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   ngOnInit() {
@@ -210,7 +216,7 @@ export class ProfilePage implements OnInit {
 
     const popover = await this.popoverController.create({
       component: AskForAccountComponent,
-      cssClass: "signin-popover",
+      cssClass: 'cs-popovers',
     });
 
     popover.onDidDismiss()

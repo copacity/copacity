@@ -107,7 +107,7 @@ export class CartPage implements OnInit {
           this.SignIn();
         } else
           if (result && result == "Copacity") {
-            window.open(this.buildWhatsAppMessage({ whatsapp: this.appService._appInfo.whatsapp, name: "Copacity" }), 'popup', 'width=450,height=600');
+            window.open(this.buildWhatsAppMessage({ whatsapp: this.appService._appInfo.whatsapp, name: "" }), 'popup', 'width=450,height=600');
           } else if (result) {
             window.open(this.buildWhatsAppMessage(result), 'popup', 'width=450,height=600');
           }
@@ -153,7 +153,7 @@ export class CartPage implements OnInit {
 
     const popover = await this.popoverController.create({
       component: AskForAccountComponent,
-      cssClass: "signin-popover",
+      cssClass: 'cs-popovers',
     });
 
     popover.onDidDismiss()

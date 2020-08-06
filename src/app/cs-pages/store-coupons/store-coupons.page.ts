@@ -175,9 +175,11 @@ export class StoreCouponsPage implements OnInit {
     modal.present();
   }
 
-  selectCoupon(storeCoupon: StoreCoupon) {
-    if (this.orderTotal >= storeCoupon.minAmount) {
+  setLikeTemporalCoupon(storeCoupon: StoreCoupon) {
+    if (!this.appService.temporalCoupon) {
       this.popoverController.dismiss(storeCoupon);
+    }else{
+      this.presentAlert("Ya tienes un cupón en tus manos, debes descartarlo primero si quieres tomar otro", "", () => {});
     }
   }
 }

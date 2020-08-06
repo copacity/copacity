@@ -65,7 +65,7 @@ export class StoreCouponsDetailPage implements OnInit {
 
     const popover = await this.popoverCtrl.create({
       component: AskForAccountComponent,
-      cssClass: "signin-popover",
+      cssClass: 'cs-popovers',
     });
 
     popover.onDidDismiss()

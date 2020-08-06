@@ -19,7 +19,7 @@
       </ion-item>
     </ion-list>
     <ion-radio-group (ionChange)="addressChecked($event)" [formControl]="idAddressChecked">
-      <table class="table-borders" style="font-size: 18px;">
+      <table class="table-borders">
         <tr *ngFor="let address of appService.addressCollection | async">
           <td style="vertical-align: top;padding-right: 10px;">
             <ion-radio style="height: 30px;width: 30px;" checked="true" class="top-5" slot="start"

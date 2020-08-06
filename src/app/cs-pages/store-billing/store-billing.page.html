@@ -11,22 +11,14 @@
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">FACTURA
       PLAN</a>
 
-    <div class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
-      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
-        <span class="center-text" style="color: black;margin-bottom: 0px;line-height: 15px;font-size: 1.2em;">
-          A continuación podrás revisar el reporte mensual de las facturas generadas por el uso de la plataforma Copacity
-        </span>
-      </div>
-    </div>
-
     <div class="content" style="margin: 0px 0px 0px 0px;">
       <div class="top-20">
         <form [formGroup]="form">
           <div class="content header-clear-small">
             <ion-list lines="full" class="ion-no-margin ion-no-padding">
               <ion-item>
-                <ion-label>Fecha</ion-label>
-                <ion-datetime formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
+                <ion-label style="font-size: .8em;">Fecha</ion-label>
+                <ion-datetime style="font-size: .8em;" formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
                   monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
                   [min]="minDate" [max]="maxDate" displayFormat="MMMM YYYY" cancelText="Cancelar" doneText="Aceptar">
                 </ion-datetime>
@@ -45,18 +37,18 @@
 
       <div>
         <a (click)="generate()"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">Generar Factura</a>
+          style="background-color: red;color:white;"
+          class="button button-round-small button-full button-s">Generar Factura</a>
       </div>
     </div>
 
     <div id="page" *ngIf="billingDate">
-      <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
-        <div class="top-30 bottom-30">
-          <h4 class="bold color-highlight">Factura {{ billingDate | date: 'MM/yyyy' }} <span
+      <div class="content" style="margin: 0px 0px 0px 0px;">
+        <div class="bottom-30">
+          <h4 class="bold color-highlight" style="font-size: 1.2em;">Factura {{ billingDate | date: 'MM/yyyy' }} <span
               style="color:red">(Pendiente de pago)</span></h4>
           <div class="container top-20">
-            <table class="table-borders" style="font-size: 18px;">
+            <table class="table-borders">
               <tr>
                 <th style="text-align: left; padding-left: 5px;"></th>
                 <th style="text-align: right;">V/U</th>
@@ -126,15 +118,15 @@
                 </td>
               </tr>
             </table>
-            <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
-              <div class="store-cart-total">
+            <div style="margin: 10px 15px 5px 15px;">
+              <div class="store-cart-total font-15">
                 <strong class="color-highlight">Ahorro</strong>
                 <span class="color-highlight">
                   {{ saving | currency: 'USD': 'symbol' : '1.0-0' }}
                 </span>
                 <div class="clear"></div>
               </div>
-              <div class="store-cart-total">
+              <div class="store-cart-total font-15">
                 <strong style="color: red;">IVA <small>(Incluido)</small></strong>
                 <span>
                   {{ iva | currency: 'USD': 'symbol' : '1.0-0' }}
@@ -142,9 +134,9 @@
                 <div class="clear"></div>
               </div>
               <div style="background-color: red;" class="divider opacity-350"></div>
-              <div class="store-cart-total bottom-20" style="font-size: 25px;">
-                <strong class="uppercase bold">Total</strong>
-                <span class="uppercase bold">
+              <div class="store-cart-total bottom-20">
+                <strong class="uppercase bold font-15">Total</strong>
+                <span class="uppercase bold font-15">
                   {{ total | currency: 'USD': 'symbol' : '1.0-0' }}
                 </span>
                 <div class="clear"></div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, Notification, ErrorMessage } from '../app-intefaces';
+import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, Notification, ErrorMessage, StoreCoupon } from '../app-intefaces';
 import { UsersService } from './users.service';
 import { StoreCategoriesService } from './storeCategories.service';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
@@ -41,6 +41,7 @@ export class AppService {
   idAddressChecked: string = '';
   addressChecked: Address = null;
   addressCount: number = 0;
+  temporalCoupon: StoreCoupon = null;
 
   // APPSUBSCRIPTIONS
   appSubcriptions_Stores: Subscription[] = [];
@@ -354,5 +355,37 @@ export class AppService {
     let array = url.split('/');
     let idImage = array[array.length - 1].split('?')[0];
     return idImage;
+  }
+
+  async presentConfirm(message: string, done: Function, cancel?: Function) {
+     
+    const alert = await this.alertController.create({
+      header: message,
+      mode: 'ios',
+      translucent: true,
+      animated: true,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => cancel ? cancel() : null
+        },
+        { text: 'Estoy Seguro!', handler: () => done() }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  public discardTemoralCoupon() {
+    this.presentConfirm("Estás seguro que quieres descartar el cupón?, lo puedes tomar nuevamente mientras siga vigente", () => {
+      this.temporalCoupon = null;
+    });
+  }
+
+  public applyTemporalCoupon() {
+    this.presentAlert("Debes aplicar el cupón cuando tengas tu pedido listo y des click al botón 'Preparar pedido' en tu carrito de compras. Gracias","", () => {});
   }
 }

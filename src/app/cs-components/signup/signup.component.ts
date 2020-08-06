@@ -96,7 +96,7 @@ export class SignupComponent implements OnInit {
             }
             await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
               this.appService.setuserCredential(userCredential.user.uid).then(async () => {
-                this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
+                this.presentToast("Bienvenido a CopaCity!", "light");
                 this.popoverController.dismiss(true);
                 this.loaderComponent.stopLoading();
               });
@@ -104,6 +104,7 @@ export class SignupComponent implements OnInit {
           }
           else {
             //this.presentToast("El usuario ya está registrado.", "danger");
+            this.presentToast("Bienvenido a CopaCity!", "light");
             this.popoverController.dismiss(true);
             this.loaderComponent.stopLoading();
           }
@@ -191,7 +192,7 @@ export class SignupComponent implements OnInit {
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid).then(async () => {
-                  this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
+                  this.presentToast("Bienvenido a CopaCity!", "light");
                   this.popoverController.dismiss(true);
                   this.loaderComponent.stopLoading();
                 });
@@ -199,6 +200,7 @@ export class SignupComponent implements OnInit {
             }
             else {
               //this.presentToast("El usuario ya está registrado.", "danger");
+              this.presentToast("Bienvenido a CopaCity!", "light");
               this.popoverController.dismiss(true);
               this.loaderComponent.stopLoading();
             }
@@ -237,7 +239,7 @@ export class SignupComponent implements OnInit {
               }
               await this.angularFirestore.collection('users').doc(userCredential.user.uid).set(newUser).then(() => {
                 this.appService.setuserCredential(userCredential.user.uid).then(async () => {
-                  this.presentToast("Registro exitoso, Bienvenido!. Recuerda actualizar tu foto, teléfonos y whatsapp en tu perfil de usuario", "light");
+                  this.presentToast("Bienvenido a CopaCity!", "light");
                   this.popoverController.dismiss(true);
                   this.loaderComponent.stopLoading();
                 });
@@ -245,6 +247,7 @@ export class SignupComponent implements OnInit {
             }
             else {
               //this.presentToast("El usuario ya está registrado.", "danger");
+              this.presentToast("Bienvenido a CopaCity!", "light");
               this.popoverController.dismiss(true);
               this.loaderComponent.stopLoading();
             }

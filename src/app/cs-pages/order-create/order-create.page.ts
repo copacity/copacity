@@ -82,7 +82,7 @@ export class OrderCreatePage implements OnInit {
     this.initialize();
   }
 
-  initialize(){
+  initialize() {
     let storeId = this.route.snapshot.params.id.toString();
     this.storesService.getById(storeId).then(result => {
       this.cartService = this.cartManagerService.getCartService(result);
@@ -116,7 +116,7 @@ export class OrderCreatePage implements OnInit {
         subs.unsubscribe();
       });
 
-      if(!this.appService.currentUser || this.cart.length == 0){
+      if (!this.appService.currentUser || this.cart.length == 0) {
         this.router.navigate(['/store', this.store.id]);
       }
     });
@@ -171,7 +171,7 @@ export class OrderCreatePage implements OnInit {
 
     const popover = await this.popoverController.create({
       component: AskForAccountComponent,
-      cssClass: "signin-popover",
+      cssClass: 'cs-popovers',
     });
 
     popover.onDidDismiss()
@@ -813,8 +813,13 @@ export class OrderCreatePage implements OnInit {
               let currentDate: any = new Date();
               let couponDate: any = storeCoupon.dateExpiration;
               if (couponDate.toDate().getTime() > currentDate.getTime()) {
-                this.storeCoupon = storeCoupon;
-                resolve(true);
+                if (this.cartService.getTotal() >= storeCoupon.minAmount) {
+                  this.storeCoupon = storeCoupon;
+                  resolve(true);
+                } else {
+                  this.presentAlert("Lo sentimos el valor de tu compra debe ser mayor a " + this.toMoneyFormat(storeCoupon.minAmount) + " para que el cupón sea valido", "", () => { });
+                  resolve(false);
+                }
               } else {
                 this.presentAlert("Lo sentimos el cupón seleccionado esta vencido", "", () => { });
                 resolve(false);
@@ -824,6 +829,7 @@ export class OrderCreatePage implements OnInit {
               resolve(false);
             }
           } else {
+            this.presentAlert("Lo sentimos el cupón seleccionado no existe en esta tienda", "", () => { });
             resolve(false);
           }
         }).catch(function (error) {
@@ -832,6 +838,29 @@ export class OrderCreatePage implements OnInit {
       } else {
         resolve(false);
       }
+    });
+  }
+
+  toMoneyFormat(value: number) {
+    let formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+
+    return formatter.format(value);
+  }
+
+
+  applyTemporalCoupon() {
+    this.buildStoreCoupon(this.appService.temporalCoupon.id);
+
+    this.validateCoupon().then(result => {
+      if (result) {
+        this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
+      }
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({ id: '', message: err, function: 'openStoreCouponsPage', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
   }
 }

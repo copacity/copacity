@@ -95,14 +95,14 @@
       </div>
 
       <div class="content" style="margin: 0px 0px 0px 0px;">
-        <h4 class="bold color-highlight">Consulta de comisiones</h4>
+        <h4 class="bold color-highlight" style="font-size: 1.2em;">Consulta de comisiones</h4>
         <div>
           <form [formGroup]="form">
             <div class="content header-clear-small">
               <ion-list lines="full" class="ion-no-margin ion-no-padding">
                 <ion-item>
-                  <ion-label>Fecha</ion-label>
-                  <ion-datetime formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
+                  <ion-label style="font-size: .8em;">Fecha</ion-label>
+                  <ion-datetime style="font-size: .8em;" formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
                     monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
                     [min]="minDate" [max]="maxDate" displayFormat="MMMM YYYY" cancelText="Cancelar" doneText="Aceptar">
                   </ion-datetime>
@@ -121,15 +121,15 @@
 
         <div>
           <a (click)="generate()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small shadow-large button-full button-s">Calcular Comisión</a>
+            style="background-color: red;color:white;"
+            class="button button-round-small button-full button-s">Calcular Comisión</a>
         </div>
       </div>
 
       <div id="page" *ngIf="billingDate">
         <div class="content" style="margin: 0px 0px 0px 0px;">
           <div class="bottom-30">
-            <h4 class="bold color-highlight">Comisión {{ billingDate | date: 'MM/yyyy' }}</h4>
+            <h4 class="bold color-highlight" style="font-size: 1.2em;">Comisión {{ billingDate | date: 'MM/yyyy' }}</h4>
             <div class="container top-20">
               <table class="table-borders" style="font-size: 18px;">
                 <tr>
@@ -146,18 +146,18 @@
                   </td>
                 </tr>
               </table>
-              <div style="margin: 10px 15px 5px 15px;font-size: 18px;">
+              <div style="margin: 10px 15px 5px 15px;">
                 <div style="background-color: red;" class="divider opacity-350"></div>
-                <div class="store-cart-total bottom-20" style="font-size: 25px;">
-                  <strong class="uppercase font-20">Venta Total</strong>
-                  <span class="uppercase font-20">
+                <div class="store-cart-total bottom-20">
+                  <strong class="uppercase font-15">Venta Total</strong>
+                  <span class="uppercase font-15">
                     {{ total | currency: 'USD': 'symbol' : '1.0-0' }}
                   </span>
                   <div class="clear"></div>
                 </div>
-                <div class="store-cart-total bottom-20" style="font-size: 25px;">
-                  <strong class="uppercase bold font-20">Comisión ({{ vendor.commissionForSale }}%)</strong>
-                  <span class="uppercase bold font-20">
+                <div class="store-cart-total bottom-20">
+                  <strong class="uppercase bold font-15">Comisión ({{ vendor.commissionForSale }}%)</strong>
+                  <span class="uppercase bold font-15">
                     {{ commissionForSale | currency: 'USD': 'symbol' : '1.0-0' }}
                   </span>
                   <div class="clear"></div>

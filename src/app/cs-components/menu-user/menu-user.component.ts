@@ -32,7 +32,7 @@ export class MenuUserComponent implements OnInit {
 
     const popover = await this.popoverController.create({
       component: AskForAccountComponent,
-      cssClass: "signin-popover",
+      cssClass: 'cs-popovers',
     });
 
     popover.onDidDismiss()

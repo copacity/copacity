@@ -129,7 +129,7 @@
           </ion-slide>
         </ion-slides> -->
 
-        <div class="profile-1 bottom-30 top-30">
+        <div class="profile-1 bottom-60 top-30">
           <!-- <div class="profile-header" style="background-color: transparent;margin: 0px 0px 0px 0px;">
 
             <ion-slides #sliderProfile [options]="appService.slideOpts" style="height: 150px;">
@@ -322,3 +322,24 @@
     </super-tab>
   </super-tabs-container>
 </super-tabs>
+
+<div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
+  style="position: fixed;background-color: lawngreen;height: 60px;">
+  <a (click)="appService.applyTemporalCoupon()" class="ad-close" style="font-size: 1.3em;left: 0px;margin: 3px;"><i class="fa fa-info-circle" style="color: black;"></i></a>
+
+  <h6 (click)="appService.applyTemporalCoupon()"  class="center-vertical center-text color-red bolder font-12"
+    style="top: 3px;padding-left: 10px;padding-right: 10px;">Tomaste
+    un cupón con {{ appService?.temporalCoupon?.discount }}% de descuento para compras mayores a {{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}
+  </h6>
+
+  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 47px;">
+    <table>
+      <tr>
+        <td style="background-color: lawngreen;padding: 0px 0px 9px 0px;width: 50%"><a
+            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: blue;">Descartar</a></td>
+        <td style="background-color: lawngreen;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
+            style="font-size: .95em;color: blue;">Aplicar</a></td>
+      </tr>
+    </table>
+  </h6>
+</div>

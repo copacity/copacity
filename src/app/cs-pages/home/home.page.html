@@ -169,7 +169,7 @@
           </ion-slide>
         </ion-slides>
 
-        <div class="profile-1 bottom-10 {{featuredProductsDiscount.length == 0?'top-30':'top-15'}}" style="z-index: 9;">
+        <div class="profile-1 bottom-60 {{featuredProductsDiscount.length == 0?'top-30':'top-15'}}" style="z-index: 9;">
           <div class="profile-body" style="margin: 0px 5px;padding: 0px 5px;">
             <a (click)="shareApp($event)" style="background-color: white; color: black;border-radius:10px;"
               class="profile-button shadow-small button button-m button-round uppercase bolder button-center-medium">Centro
@@ -465,8 +465,16 @@
             </div>
           </div>
         </div>
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button color="success">
+        <ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button color="success" >
+            <a style="color: white;"
+              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+              <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+            </a>
+          </ion-fab-button>
+        </ion-fab>
+        <ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-60">
+          <ion-fab-button color="success" >
             <a style="color: white;"
               href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
               <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
@@ -477,3 +485,24 @@
     </super-tab>
   </super-tabs-container>
 </super-tabs>
+
+<div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
+  style="position: fixed;background-color: lawngreen;height: 60px;">
+  <a (click)="appService.applyTemporalCoupon()" class="ad-close" style="font-size: 1.3em;left: 0px;margin: 3px;"><i class="fa fa-info-circle" style="color: black;"></i></a>
+
+  <h6 (click)="appService.applyTemporalCoupon()"  class="center-vertical center-text color-red bolder font-12"
+    style="top: 3px;padding-left: 10px;padding-right: 10px;">Tomaste
+    un cupón con {{ appService?.temporalCoupon?.discount }}% de descuento para compras mayores a {{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}
+  </h6>
+
+  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 47px;">
+    <table>
+      <tr>
+        <td style="background-color: lawngreen;padding: 0px 0px 9px 0px;width: 50%"><a
+            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: blue;">Descartar</a></td>
+        <td style="background-color: lawngreen;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
+            style="font-size: .95em;color: blue;">Aplicar</a></td>
+      </tr>
+    </table>
+  </h6>
+</div>
