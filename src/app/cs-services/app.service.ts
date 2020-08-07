@@ -41,7 +41,7 @@ export class AppService {
   idAddressChecked: string = '';
   addressChecked: Address = null;
   addressCount: number = 0;
-  temporalCoupon: StoreCoupon = null;
+  temporalCoupon: any = null;
 
   // APPSUBSCRIPTIONS
   appSubcriptions_Stores: Subscription[] = [];
@@ -386,6 +386,6 @@ export class AppService {
   }
 
   public applyTemporalCoupon() {
-    this.presentAlert("Debes aplicar el cupón cuando tengas tu pedido listo y des click al botón 'Preparar pedido' en tu carrito de compras. Gracias","", () => {});
+    this.presentAlert("Debes aplicar el cupón cuando tengas listos los artículos que vas a comprar e ingreses a la opción 'Preparar pedido' en tu carrito de compras. Gracias","", () => {});
   }
 }

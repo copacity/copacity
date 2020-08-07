@@ -817,7 +817,7 @@ export class OrderCreatePage implements OnInit {
                   this.storeCoupon = storeCoupon;
                   resolve(true);
                 } else {
-                  this.presentAlert("Lo sentimos el valor de tu compra debe ser mayor a " + this.toMoneyFormat(storeCoupon.minAmount) + " para que el cupón sea valido", "", () => { });
+                  this.presentAlert("Lo sentimos el valor de tu compra debe ser mayor a " + this.toMoneyFormat(storeCoupon.minAmount) + " para que el cupón sea válido", "", () => { });
                   resolve(false);
                 }
               } else {
@@ -852,11 +852,12 @@ export class OrderCreatePage implements OnInit {
 
 
   applyTemporalCoupon() {
-    this.buildStoreCoupon(this.appService.temporalCoupon.id);
+    this.buildStoreCoupon(this.appService.temporalCoupon.storeCoupon.id);
 
     this.validateCoupon().then(result => {
       if (result) {
         this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
+        this.appService.discardTemoralCoupon();
       }
     }).catch(err => {
       alert(err);

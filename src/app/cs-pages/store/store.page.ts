@@ -1044,7 +1044,7 @@ export class StorePage implements OnInit {
   }
 
   async openStorePointsPage() {
-    if (this.appService.currentUser) {
+    //if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StorePointsPage,
         componentProps: { isAdmin: this.isAdmin },
@@ -1058,9 +1058,9 @@ export class StorePage implements OnInit {
         });
 
       modal.present();
-    } else {
-      this.SignIn();
-    }
+    // } else {
+    //   this.SignIn();
+    // }
   }
 
   async openStoreVendorsPage() {
@@ -1119,7 +1119,7 @@ export class StorePage implements OnInit {
   }
 
   async openStoreCouponsPage() {
-    if (this.appService.currentUser) {
+    //if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StoreCouponsPage,
         componentProps: { isAdmin: this.isAdmin, dashboard: true, orderTotal: -1 },
@@ -1132,14 +1132,14 @@ export class StorePage implements OnInit {
           const result = data['data'];
 
           if (result) {
-            this.appService.temporalCoupon = result;
+            this.appService.temporalCoupon = { storeCoupon: result, store: this.store};
           }
         });
 
       modal.present();
-    } else {
-      this.SignIn();
-    }
+    // } else {
+    //   this.SignIn();
+    // }
   }
 
   async openStoreOrdersPage() {

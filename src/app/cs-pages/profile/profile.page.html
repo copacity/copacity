@@ -324,15 +324,18 @@
 </super-tabs>
 
 <div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
-  style="position: fixed;background-color: lawngreen;height: 60px;">
-  <a (click)="appService.applyTemporalCoupon()" class="ad-close" style="font-size: 1.3em;left: 0px;margin: 3px;"><i class="fa fa-info-circle" style="color: black;"></i></a>
-
+  style="position: fixed;background-color: lawngreen;height: 80px;">
   <h6 (click)="appService.applyTemporalCoupon()"  class="center-vertical center-text color-red bolder font-12"
-    style="top: 3px;padding-left: 10px;padding-right: 10px;">Tomaste
-    un cupón con {{ appService?.temporalCoupon?.discount }}% de descuento para compras mayores a {{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}
+    style="top: -5px;padding-left: 5px;padding-right: 5px;"><i class="fa fa-info-circle" style="color: black;font-size: 1.3em;"></i>
+    {{ appService?.temporalCoupon?.store?.name }}
   </h6>
 
-  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 47px;">
+  <h6 (click)="appService.applyTemporalCoupon()"  class="center-vertical center-text color-red font-12"
+    style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
+    un cupón con <b>{{ appService?.temporalCoupon?.storeCoupon?.discount }}%</b> de descuento para compras mayores a <b>{{ appService?.temporalCoupon?.storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
+  </h6>
+
+  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 67px;">
     <table>
       <tr>
         <td style="background-color: lawngreen;padding: 0px 0px 9px 0px;width: 50%"><a
