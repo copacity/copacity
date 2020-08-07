@@ -283,6 +283,21 @@ export class StoresService {
     );
   }
 
+  public getStoreCouponsXStore(idStore: string, top: number): Observable<StoreCoupon[]> {
+    let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
+      .where('deleted', '==', false)
+      .limit(top));
+
+    return storesCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as StoreCoupon;
+        data.id = a.payload.doc.id;
+
+        return data;
+      }))
+    );
+  }
+
   public getStoreCouponsNoVIP(idStore: string): Observable<StoreCoupon[]> {
     let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
       .where('deleted', '==', false)

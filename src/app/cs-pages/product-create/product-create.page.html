@@ -71,7 +71,7 @@
               </ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-item>
+          <ion-item *ngIf="!isGift">
             <ion-label position="floating" style="color: gray;font-size: 15px;">Video
             </ion-label>
             <ion-input formControlName="video" style="font-size: 15px;"></ion-input>

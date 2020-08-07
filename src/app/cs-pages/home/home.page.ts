@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController, IonSelect } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store, Product, StoreCategory, Banner } from 'src/app/app-intefaces';
+import { Store, Product, StoreCategory, Banner, StoreCoupon } from 'src/app/app-intefaces';
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
@@ -41,6 +41,7 @@ export class HomePage implements OnInit {
   featuredProductsDiscount: Array<any> = [];
   featuredProductsNoDiscount: Array<any> = [];
   gifts: Array<any> = [];
+  storeCoupons: Array<any> = [];
 
   idStoreCategory: string = '0';
   idSector: string = '0';
@@ -48,8 +49,9 @@ export class HomePage implements OnInit {
   searchingProductsDiscount: boolean = false;
   searchingProductsNoDiscount: boolean = false;
   searchingGifts: boolean = false;
-
+  searchingStoreCoupons: boolean = false;
   searchingStores: boolean = false;
+
   storeSearchHits: number = 0;
   storeSearchText: string = '';
 
@@ -62,6 +64,7 @@ export class HomePage implements OnInit {
   @ViewChild('sliderHomeStores', null) sliderStores: any;
   @ViewChild('sliderHomeProductsNoDiscount', null) sliderProductsNoDiscount: any;
   @ViewChild('sliderHomeGifts', null) sliderGifts: any;
+  @ViewChild('sliderStoreCoupons', null) sliderStoreCoupons: any;
 
   @Input('header') header: any;
   angularFireAuth: any;
@@ -464,6 +467,7 @@ export class HomePage implements OnInit {
     this.searchingProductsDiscount = true;
     this.searchingProductsNoDiscount = true;
     this.searchingGifts = true;
+    this.searchingStoreCoupons = true;
     this.fillStoreCategories();
 
     setTimeout(async () => {
@@ -519,6 +523,24 @@ export class HomePage implements OnInit {
                   this.searchingGifts = false;
                   this.loadSliderGifts(function () { });
                   subs3.unsubscribe();
+                });
+
+                // -- COUPONS
+                let subs4 = this.storesService.getStoreCouponsXStore(store.id, this.appService._appInfo.featuredProductsXStore).subscribe(storeCoupons => {
+                  storeCoupons.forEach((storeCoupon: StoreCoupon) => {
+                    let today = new Date(new Date().setHours(23, 59, 59, 0));
+                    let dateExpiration: any = storeCoupon.dateExpiration;
+                    
+                    if (today.getTime() <= dateExpiration.toDate().getTime() && storeCoupon.quantity > 0) {
+                      this.storeCoupons.push({ storeCoupon: storeCoupon, url: "/store-coupons-detail/" + storeCoupon.id + "&" + store.id, store: store });
+                    }
+                  });
+
+                  this.storeCoupons = this.shuffle(this.storeCoupons);
+                  this.searchingStoreCoupons = false;
+
+                  this.loadSliderStoreCoupons(function () { });
+                  subs4.unsubscribe();
                 });
               }
 
@@ -642,6 +664,8 @@ export class HomePage implements OnInit {
             this.loadSliderProductsDiscount(() => {
               this.loadSliderProductsNoDiscount(() => {
                 this.loadSliderGifts(() => {
+                  this.loadSliderStoreCoupons(() => {
+                  });
                 });
               });
             });
@@ -679,7 +703,7 @@ export class HomePage implements OnInit {
         this.sliderStores.startAutoplay();
         callBack2();
       } else {
-        this.loadSlider(callBack2);
+        this.loadSliderStores(callBack2);
       }
     }, 1000);
   }
@@ -690,7 +714,7 @@ export class HomePage implements OnInit {
         this.sliderProductsDiscount.startAutoplay();
         callBack3();
       } else {
-        this.loadSlider(callBack3);
+        this.loadSliderProductsDiscount(callBack3);
       }
     }, 1000);
   }
@@ -701,7 +725,7 @@ export class HomePage implements OnInit {
         this.sliderProductsNoDiscount.startAutoplay();
         callBack4();
       } else {
-        this.loadSlider(callBack4);
+        this.loadSliderProductsNoDiscount(callBack4);
       }
     }, 1000);
   }
@@ -712,7 +736,18 @@ export class HomePage implements OnInit {
         this.sliderGifts.startAutoplay();
         callBack6();
       } else {
-        this.loadSlider(callBack6);
+        this.loadSliderGifts(callBack6);
+      }
+    }, 1000);
+  }
+
+  loadSliderStoreCoupons(callBack7) {
+    setTimeout(() => {
+      if (this.sliderStoreCoupons) {
+        this.sliderStoreCoupons.startAutoplay();
+        callBack7();
+      } else {
+        this.loadSliderStoreCoupons(callBack7);
       }
     }, 1000);
   }
@@ -776,5 +811,13 @@ export class HomePage implements OnInit {
       location.reload();
       event.target.complete();
     }, 500);
+  }
+
+  takeTemporalCoupon(storeCoupon: any) {
+    if (!this.appService.temporalCoupon) {
+      this.appService.temporalCoupon = storeCoupon;
+    } else {
+      this.presentAlert("Ya tienes un cupón en tus manos, debes descartarlo primero si quieres tomar otro", "", () => { });
+    }
   }
 }

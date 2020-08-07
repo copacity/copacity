@@ -1044,7 +1044,7 @@ export class StorePage implements OnInit {
   }
 
   async openStorePointsPage() {
-    //if (this.appService.currentUser) {
+    if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StorePointsPage,
         componentProps: { isAdmin: this.isAdmin },
@@ -1058,9 +1058,9 @@ export class StorePage implements OnInit {
         });
 
       modal.present();
-    // } else {
-    //   this.SignIn();
-    // }
+    } else {
+      this.SignIn();
+    }
   }
 
   async openStoreVendorsPage() {

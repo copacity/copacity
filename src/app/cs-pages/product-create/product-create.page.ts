@@ -288,7 +288,7 @@ export class ProductCreatePage implements OnInit {
           ref: this.form.value.ref,
           description: this.form.value.description,
           price: this.form.value.price,
-          video: this.form.value.video,
+          video: this.isGift?'':this.form.value.video,
           idProductCategory: this.form.value.category,
           discount: this.form.value.discount,
           soldOut: true,

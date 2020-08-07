@@ -19,7 +19,7 @@ import { AngularFireMessaging } from '@angular/fire/messaging';
 })
 export class AppService {
   // APP VERSION
-  appVersion: string = "1.0.7 Beta"
+  appVersion: string = "1.0.8 Beta"
 
   // APP DATA
   storeCategories: Observable<StoreCategory[]> = null;
@@ -338,6 +338,11 @@ export class AppService {
   slideOptsGifts = {
     speed: 500,
     slidesPerView: 3,
+  }
+
+  slideOptsStoreCoupons = {
+    speed: 1500,
+    slidesPerView: 1,
   }
 
   slideOptsStoreMenu = {

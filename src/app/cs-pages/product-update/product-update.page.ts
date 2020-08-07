@@ -324,7 +324,7 @@ export class ProductUpdatePage implements OnInit {
         ref: this.form.value.ref,
         idProductCategory: this.form.value.category,
         price: this.form.value.price,
-        video: this.form.value.video,
+        video: this.isGift?'':this.form.value.video,
         description: this.form.value.description,
         discount: this.form.value.discount,
       }
