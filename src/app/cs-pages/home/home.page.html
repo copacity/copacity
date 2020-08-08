@@ -369,13 +369,13 @@
                           <em
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 95px;left: 120px">
                             <span style="padding: 0px 0px 0px 0px;">
-                              de descuento</span>
+                              descuento!!</span>
                           </em>
 
                           <em
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 140px;left: 10px">
                             <label style="padding: 0px 0px 0px 0px;color: red;text-decoration: none;">
-                              Compras mayor a
+                              Compras mayores a
                               <b
                                 style="font-size: 1.5em;">{{storeCoupon.storeCoupon.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b></label>
                           </em>
@@ -547,7 +547,8 @@
 </super-tabs>
 
 <div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
-  style="position: fixed;background-color: floralwhite;height: 80px;border: dashed;border-color: lawngreen;">
+  style="position: fixed;height: 80px;background: rgb(255,255,0);
+  background: radial-gradient(circle, rgba(255,255,0,0.9559174011401436) 91%, rgba(255,0,0,1) 100%);">
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
     style="top: -5px;padding-left: 5px;padding-right: 5px;"><i class="fa fa-info-circle"
       style="color: black;font-size: 1.3em;"></i>
@@ -563,10 +564,10 @@
   <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 67px;">
     <table>
       <tr>
-        <td style="background-color: lawngreen;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: blue;">Descartar</a></td>
-        <td style="background-color: lawngreen;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
-            style="font-size: .95em;color: blue;">Aplicar</a></td>
+        <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
+            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;">Descartar</a></td>
+        <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
+            style="font-size: .95em;color: white;">Aplicar</a></td>
       </tr>
     </table>
   </h6>

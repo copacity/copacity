@@ -857,7 +857,7 @@ export class OrderCreatePage implements OnInit {
     this.validateCoupon().then(result => {
       if (result) {
         this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
-        this.appService.discardTemoralCoupon();
+        this.appService.temporalCoupon = null;
       }
     }).catch(err => {
       alert(err);

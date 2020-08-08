@@ -475,6 +475,7 @@ export class HomePage implements OnInit {
       this.featuredProductsDiscount = [];
       this.featuredProductsNoDiscount = [];
       this.gifts = [];
+      this.storeCoupons = [];
 
       if (this.idStoreCategory == '0' && this.idSector == '0') {
         this.storesService.getAll(this.storeSearchText).then(stores => {

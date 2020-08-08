@@ -61,10 +61,10 @@
                   </div>
                   <div>
 
-                    <h4 style="font-size: 20px;"
+                    <h4
                       class="bolder {{ order?.status == 1?'color-red1-light':order?.status == 2?'color-green1-light':order?.status == 3?'color-dark2-dark':'' }}">
                       Pedido {{ order?.status | orderStatusName }}</h4>
-                    <p class="under-heading font-15 bold top-15" style="margin-bottom: 0px;"><b
+                    <p class="under-heading font-12 bold top-15" style="margin-bottom: 0px;"><b
                         class="font-14 bolder">Ref:</b>{{ order?.ref }}
                     </p>
                     <h4 *ngIf="order?.status != 1" style="font-size: 10px;margin-top: 0px;padding-bottom: 10px;"
