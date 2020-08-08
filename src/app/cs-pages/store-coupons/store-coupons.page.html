@@ -139,9 +139,16 @@
                       <i class="fa fa-edit" style="color: black"></i></a>
                   </td>
                 </tr>
-                <tr *ngIf="(!isAdmin)">
+                <tr *ngIf="(!isAdmin && dashboard)">
                   <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
                     <a (click)="setLikeTemporalCoupon(storeCoupon)" style="color:white;background-color: red;"
+                      class="button button-round-small shadow-large button-full button-s {{ (!isAdmin && !dashboard && orderTotal < storeCoupon.minAmount)?'sold-out':'' }}">
+                      Tomar Cupón</a>
+                  </td>
+                </tr>
+                <tr *ngIf="(!isAdmin && !dashboard)">
+                  <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
+                    <a (click)="selectCoupon(storeCoupon)" style="color:white;background-color: red;"
                       class="button button-round-small shadow-large button-full button-s {{ (!isAdmin && !dashboard && orderTotal < storeCoupon.minAmount)?'sold-out':'' }}">
                       Tomar Cupón</a>
                   </td>

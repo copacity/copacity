@@ -163,7 +163,7 @@ export class StoreBillingPage implements OnInit {
           this.vendorsQuantity = this.appService.currentStore.vendorsLimit - 3;
           this.vendorsPrice = (this.platformFee ? this.platformFee.additionalVendor : 0) * this.vendorsQuantity;
 
-          this.couponsQuantity = this.appService.currentStore.couponsLimit - 5;
+          this.couponsQuantity = this.appService.currentStore.couponsLimit - 3;
           this.couponsPrice = (this.platformFee ? this.platformFee.additionalCoupon : 0) * this.couponsQuantity;
 
           this.productsQuantity = this.appService.currentStore.productsLimit - 100;

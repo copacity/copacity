@@ -111,7 +111,7 @@ export class StoreCreatePage implements OnInit {
           orderMinAmount: 0,
           productsCount: 0,
           productsLimit: 100,
-          couponsLimit: 5,
+          couponsLimit: 3,
           vendorsLimit: 3
         }
 

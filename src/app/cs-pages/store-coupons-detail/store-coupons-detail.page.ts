@@ -4,7 +4,7 @@ import { AlertController, PopoverController, ToastController } from '@ionic/angu
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { StoreCoupon } from 'src/app/app-intefaces';
+import { StoreCoupon, Store } from 'src/app/app-intefaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
@@ -23,6 +23,7 @@ import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 export class StoreCouponsDetailPage implements OnInit {
   storeCoupon: StoreCoupon;
   storeId: string;
+  store: Store;
   couponExpirationDate: any;
 
   constructor(
@@ -48,12 +49,16 @@ export class StoreCouponsDetailPage implements OnInit {
     let storeCouponId = this.route.snapshot.params.id.toString().split("&")[0];
     this.storeId = this.route.snapshot.params.id.toString().split("&")[1];
 
-    this.storesService.getCouponById(this.storeId, storeCouponId).then((storeCoupon: StoreCoupon) => {
-      if (storeCoupon) {
-        
-        this.storeCoupon = storeCoupon
-        this.couponExpirationDate = this.storeCoupon.dateExpiration;
-      }
+    this.storesService.getById(this.storeId).then(result => {
+      this.store = result;
+
+      this.storesService.getCouponById(this.storeId, storeCouponId).then((storeCoupon: StoreCoupon) => {
+        if (storeCoupon) {
+          
+          this.storeCoupon = storeCoupon
+          this.couponExpirationDate = this.storeCoupon.dateExpiration;
+        }
+      });
     });
   }
 
@@ -239,5 +244,29 @@ export class StoreCouponsDetailPage implements OnInit {
 
   close() {
     this.router.navigate(['/store', this.storeId]);
+  }
+
+  async presentAlert(title: string, message: string, done: Function) {
+
+    const alert = await this.alertController.create({
+      header: title,
+      message: message,
+      mode: 'ios',
+      translucent: true,
+      animated: true,
+      backdropDismiss: false,
+      buttons: ['Aceptar!']
+    });
+
+    alert.onDidDismiss().then(done());
+    await alert.present();
+  }
+
+  setLikeTemporalCoupon(storeCoupon: StoreCoupon) {
+    if (!this.appService.temporalCoupon) {
+      this.appService.temporalCoupon = { storeCoupon: storeCoupon, store: this.store};
+    }else{
+      this.presentAlert("Ya tienes un cupón en tus manos, debes descartarlo primero si quieres tomar otro", "", () => {});
+    }
   }
 }

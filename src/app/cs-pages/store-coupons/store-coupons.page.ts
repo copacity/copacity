@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController, AlertController, NavParams } from '@ionic/angular';
 import { Observable } from 'rxjs';
-import { StoreCoupon } from 'src/app/app-intefaces';
+import { StoreCoupon, Store } from 'src/app/app-intefaces';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoreCouponsCreatePage } from '../store-coupons-create/store-coupons-create.page';
 import { StoresService } from 'src/app/cs-services/stores.service';
@@ -13,6 +13,7 @@ import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generat
   styleUrls: ['./store-coupons.page.scss'],
 })
 export class StoreCouponsPage implements OnInit {
+  store: Store;
   isAdmin: boolean;
   dashboard: boolean;
   orderTotal: number;
@@ -31,6 +32,7 @@ export class StoreCouponsPage implements OnInit {
     this.isAdmin = this.navParams.data.isAdmin;
     this.dashboard = this.navParams.data.dashboard;
     this.orderTotal = this.navParams.data.orderTotal;
+    this.store = this.navParams.data.store;
     this.getCoupons();
   }
 
@@ -41,7 +43,7 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async openBarCodeGenerator(storeCoupon: StoreCoupon) {
-    let value = this.appService._appInfo.domain + "/store-coupons-detail/" + storeCoupon.id + "&" + this.appService.currentStore.id;
+    let value = this.appService._appInfo.domain + "/store-coupons-detail/" + storeCoupon.id + "&" + this.store.id;
 
     let modal = await this.popoverController.create({
       component: BarcodeGeneratorComponent,
@@ -98,7 +100,7 @@ export class StoreCouponsPage implements OnInit {
 
   async presentDeleteProductPrompt(storeCoupon: StoreCoupon) {
     this.presentConfirm('Esta seguro que desea eliminar el cupón: ' + storeCoupon.name + '?', () => {
-      this.storesService.updateStoreCoupon(this.appService.currentStore.id, storeCoupon.id, { deleted: true }).then(() => {
+      this.storesService.updateStoreCoupon(this.store.id, storeCoupon.id, { deleted: true }).then(() => {
         this.presentAlert("Cupon eliminado exitosamente!", '', () => { });
       });
     });
@@ -112,7 +114,7 @@ export class StoreCouponsPage implements OnInit {
     setTimeout(() => {
 
       if (this.isAdmin) {
-        this.storeCoupons = this.storesService.getAllStoreCoupons(this.appService.currentStore.id);
+        this.storeCoupons = this.storesService.getAllStoreCoupons(this.store.id);
 
         this.storeCoupons.subscribe((products) => {
           this.couponSearchHits = 0;
@@ -124,7 +126,7 @@ export class StoreCouponsPage implements OnInit {
           });
         });
       } else {
-        this.storeCoupons = this.storesService.getStoreCouponsNoVIP(this.appService.currentStore.id);
+        this.storeCoupons = this.storesService.getStoreCouponsNoVIP(this.store.id);
 
         this.storeCoupons.subscribe((products) => {
           this.couponSearchHits = 0;
@@ -140,7 +142,7 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async openStoreCouponsCreatePage() {
-    if (this.couponSearchHits < this.appService.currentStore.couponsLimit) {
+    if (this.couponSearchHits < this.store.couponsLimit) {
       let modal = await this.popoverController.create({
         component: StoreCouponsCreatePage,
         componentProps: {},
@@ -178,8 +180,14 @@ export class StoreCouponsPage implements OnInit {
   setLikeTemporalCoupon(storeCoupon: StoreCoupon) {
     if (!this.appService.temporalCoupon) {
       this.popoverController.dismiss(storeCoupon);
-    }else{
-      this.presentAlert("Ya tienes un cupón en tus manos, debes descartarlo primero si quieres tomar otro", "", () => {});
+    } else {
+      this.presentAlert("Ya tienes un cupón en tus manos, debes descartarlo primero si quieres tomar otro", "", () => { });
+    }
+  }
+
+  selectCoupon(storeCoupon: StoreCoupon) {
+    if (this.orderTotal >= storeCoupon.minAmount) {
+      this.popoverController.dismiss(storeCoupon);
     }
   }
 }
