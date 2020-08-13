@@ -190,6 +190,25 @@ export class ProductsService {
       );
   }
 
+  getFeaturedProductsNoFeatured(idStore: string, top: number) {
+    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+      .where('deleted', '==', false)
+      .where('isGift', '==', false)
+      .where('soldOut', '==', false)
+      .where('isFeatured', '==', false)
+      .where('discount', '<=', "0")
+      .orderBy('discount')
+      .orderBy('dateCreated', "desc")
+      .limit(top))
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Product;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+
   getGifts(idStore: string, top: number) {
     return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
       .where('deleted', '==', false)

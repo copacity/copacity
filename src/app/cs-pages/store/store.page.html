@@ -508,17 +508,32 @@
           </div>
           <div class="clear"></div>
         </div>
+
+        <ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button color="success">
+            <a style="color: white;"
+              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+              <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+            </a>
+          </ion-fab-button>
+        </ion-fab>
+        <ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-80">
+          <ion-fab-button color="success">
+            <a style="color: white;"
+              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+              <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+            </a>
+          </ion-fab-button>
+        </ion-fab>
       </ion-content>
     </super-tab>
   </super-tabs-container>
 </super-tabs>
 
 <div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
-  style="position: fixed;height: 80px;background: rgb(255,255,0);
-  background: radial-gradient(circle, rgba(255,255,0,0.9559174011401436) 91%, rgba(255,0,0,1) 100%);">
+  style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
-    style="top: -5px;padding-left: 5px;padding-right: 5px;"><i class="fa fa-info-circle"
-      style="color: black;font-size: 1.3em;"></i>
+    style="top: -5px;padding-left: 5px;padding-right: 5px;">
     {{ appService?.temporalCoupon?.store?.name }}
   </h6>
 

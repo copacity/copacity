@@ -335,6 +335,11 @@ export class AppService {
     slidesPerView: 2,
   }
 
+  slideOptsProductsNoFeatured = {
+    speed: 2000,
+    slidesPerView: 2,
+  }
+
   slideOptsGifts = {
     speed: 500,
     slidesPerView: 3,

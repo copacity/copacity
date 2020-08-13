@@ -39,7 +39,7 @@
                 <ion-select [formControl]="idVendor" (ionChange)="vendorChange($event)"
                   style="padding-right: 10px;font-size: .8em;" mode="ios" cancelText="Cancelar" okText="Okay!"
                   interface='action-sheet'>
-                  <ion-select-option value="1">Copacity Ventas</ion-select-option>
+                  <ion-select-option value="1">Area de Ventas Copacity</ion-select-option>
                   <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
                 </ion-select>
               </ion-item>
@@ -49,7 +49,7 @@
 
             <div style="padding-top: 10px;text-align: -webkit-center;">
               <a (click)="sendToWhatssApp()" style="border: double;margin-bottom: 0px;"
-                class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
+                class="button button-round-small button-s bg-whatsapp"><i class="fab fa-whatsapp"
                   style="font-size: 1.5em;"></i>&nbsp;Enviar pedido por Whatsapp</a>
             </div>
           </div>

@@ -533,7 +533,7 @@ export class OrderCreatePage implements OnInit {
                   });
                 }, 500);
               } else {
-                this.presentAlert("Debes seleccionar una opción en 'Quien te Asesoro?' antes de hacer el pedido", "", () => { }, 'Entendido!');
+                this.presentAlert("Debes seleccionar un representante de ventas antes de hacer el pedido", "", () => { }, 'Entendido!');
               }
             } else {
               this.presentAlert("Debes seleccionar una dirección antes de hacer el pedido", "", () => { }, 'Entendido!');

@@ -40,6 +40,7 @@ export class HomePage implements OnInit {
   stores: Array<Store>;
   featuredProductsDiscount: Array<any> = [];
   featuredProductsNoDiscount: Array<any> = [];
+  featuredProductsNoFeatured: Array<any> = [];
   gifts: Array<any> = [];
   storeCoupons: Array<any> = [];
 
@@ -48,6 +49,7 @@ export class HomePage implements OnInit {
 
   searchingProductsDiscount: boolean = false;
   searchingProductsNoDiscount: boolean = false;
+  searchingProductsNoFeatured: boolean = false;
   searchingGifts: boolean = false;
   searchingStoreCoupons: boolean = false;
   searchingStores: boolean = false;
@@ -63,6 +65,7 @@ export class HomePage implements OnInit {
   @ViewChild('sliderHomeProductsDiscount', null) sliderProductsDiscount: any;
   @ViewChild('sliderHomeStores', null) sliderStores: any;
   @ViewChild('sliderHomeProductsNoDiscount', null) sliderProductsNoDiscount: any;
+  @ViewChild('sliderHomeProductsNoFeatured', null) sliderHomeProductsNoFeatured: any;
   @ViewChild('sliderHomeGifts', null) sliderGifts: any;
   @ViewChild('sliderStoreCoupons', null) sliderStoreCoupons: any;
 
@@ -466,6 +469,7 @@ export class HomePage implements OnInit {
     this.searchingStores = true;
     this.searchingProductsDiscount = true;
     this.searchingProductsNoDiscount = true;
+    this.searchingProductsNoFeatured = true;
     this.searchingGifts = true;
     this.searchingStoreCoupons = true;
     this.fillStoreCategories();
@@ -474,6 +478,7 @@ export class HomePage implements OnInit {
       this.stores = [];
       this.featuredProductsDiscount = [];
       this.featuredProductsNoDiscount = [];
+      this.featuredProductsNoFeatured = [];
       this.gifts = [];
       this.storeCoupons = [];
 
@@ -531,10 +536,26 @@ export class HomePage implements OnInit {
                   storeCoupons.forEach((storeCoupon: StoreCoupon) => {
                     let today = new Date(new Date().setHours(23, 59, 59, 0));
                     let dateExpiration: any = storeCoupon.dateExpiration;
-                    
+
                     if (today.getTime() <= dateExpiration.toDate().getTime() && storeCoupon.quantity > 0) {
                       this.storeCoupons.push({ storeCoupon: storeCoupon, url: "/store-coupons-detail/" + storeCoupon.id + "&" + store.id, store: store });
                     }
+                  });
+
+                  // -- PRODUCTS NO FEATURED
+                  let subs5 = this.productsService.getFeaturedProductsNoFeatured(store.id, 4).subscribe(products => {
+
+                    let noFeaturedProducts = [];
+                    products.forEach((product: Product) => {
+                      noFeaturedProducts.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id });
+                    });
+
+                    this.featuredProductsNoFeatured.push({ noFeaturedProducts: noFeaturedProducts, store: store, url: "/store/" + store.id });
+
+                    this.featuredProductsNoFeatured = this.shuffle(this.featuredProductsNoFeatured);
+                    this.searchingProductsNoFeatured = false;
+                    this.loadSliderProductsNoFeatured(function () { });
+                    subs5.unsubscribe();
                   });
 
                   this.storeCoupons = this.shuffle(this.storeCoupons);
@@ -653,6 +674,7 @@ export class HomePage implements OnInit {
 
     this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
     this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
+    this.featuredProductsNoFeatured = this.shuffle(this.featuredProductsNoFeatured);
     this.gifts = this.shuffle(this.gifts);
     this.stores = this.shuffle(this.stores);
   }
@@ -666,6 +688,8 @@ export class HomePage implements OnInit {
               this.loadSliderProductsNoDiscount(() => {
                 this.loadSliderGifts(() => {
                   this.loadSliderStoreCoupons(() => {
+                    this.loadSliderProductsNoFeatured(() => {
+                    });
                   });
                 });
               });
@@ -749,6 +773,17 @@ export class HomePage implements OnInit {
         callBack7();
       } else {
         this.loadSliderStoreCoupons(callBack7);
+      }
+    }, 1000);
+  }
+
+  loadSliderProductsNoFeatured(callBack8) {
+    setTimeout(() => {
+      if (this.sliderHomeProductsNoFeatured) {
+        this.sliderHomeProductsNoFeatured.startAutoplay();
+        callBack8();
+      } else {
+        this.loadSliderProductsNoFeatured(callBack8);
       }
     }, 1000);
   }

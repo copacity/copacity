@@ -240,11 +240,9 @@
 </super-tabs>
 
 <div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
-  style="position: fixed;height: 80px;background: rgb(255,255,0);
-  background: radial-gradient(circle, rgba(255,255,0,0.9559174011401436) 91%, rgba(255,0,0,1) 100%);">
+  style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
-    style="top: -5px;padding-left: 5px;padding-right: 5px;"><i class="fa fa-info-circle"
-      style="color: black;font-size: 1.3em;"></i>
+    style="top: -5px;padding-left: 5px;padding-right: 5px;">
     {{ appService?.temporalCoupon?.store?.name }}
   </h6>
 
