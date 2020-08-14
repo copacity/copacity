@@ -16,13 +16,13 @@
           </div>
         </div>
 
-        <ion-title *ngIf="!appService?.currentUser">
+        <div class="content top-30" *ngIf="!appService?.currentUser">
           <ion-menu-toggle auto-hide="true">
             <a (click)="SignIn()"
               style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
               class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
           </ion-menu-toggle>
-        </ion-title>
+        </div>
       </ion-toolbar>
     </ion-header>
     <ion-content class="menu-content">

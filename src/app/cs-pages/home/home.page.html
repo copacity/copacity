@@ -43,8 +43,8 @@
   <!-- Left Side Menu Only To Big Browsers -->
   <div id="main-menu-large">
     <ion-header>
-      <ion-toolbar *ngIf="appService?.currentUser">
-        <div class="content top-30">
+      <ion-toolbar>
+        <div class="content top-30" *ngIf="appService?.currentUser">
           <div class="user-slider owl-carousel  bottom-0">
             <div class="user-list-left">
               <img
@@ -55,12 +55,15 @@
             </div>
           </div>
         </div>
+
+        <div class="content top-30" *ngIf="!appService?.currentUser">
+          <ion-menu-toggle auto-hide="true">
+            <a (click)="SignIn()"
+              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+              class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
+          </ion-menu-toggle>
+        </div>
       </ion-toolbar>
-      <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
-        <a (click)="SignIn()"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
-      </div>
     </ion-header>
 
     <ion-content class="side-content">
@@ -143,7 +146,8 @@
 
         <ion-slides #sliderHomeProductsDiscount [options]="appService.slideOptsProductsDiscount"
           style="max-width: 450px;">
-          <ion-slide (click)="goToPage(featuredProduct.url, featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png')"
+          <ion-slide
+            (click)="goToPage(featuredProduct.url, featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png')"
             *ngFor="let featuredProduct of featuredProductsDiscount;" style="padding: 2px; padding-top: 17px;">
             <div class="profile-2">
               <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
@@ -290,7 +294,8 @@
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                         <a>
 
-                          <img (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.product.image?featuredProductNoDiscount.product.image:'../../../assets/icon/no-image.png')"
+                          <img
+                            (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.product.image?featuredProductNoDiscount.product.image:'../../../assets/icon/no-image.png')"
                             style="width: 200px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
                             class="preload-image shadow-small round-small"
                             [src]="featuredProductNoDiscount.product.image?featuredProductNoDiscount.product.image:'../../../assets/icon/no-image.png'"
@@ -329,24 +334,46 @@
                   </h4>
                 </div>
 
-                <div class="gallery gallery-collection bottom-40 top-20">
+                <div *ngIf="searchingProductsNoFeatured">
+                  <div class="one-half" *ngFor="let item of [1,2]">
+                    <div class="blog-col-item">
+                      <a>
+                        <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="gallery gallery-collection bottom-20 top-20">
                   <ion-slides #sliderHomeProductsNoFeatured [options]="appService.slideOptsProductsNoFeatured"
                     style="max-width: 450px;">
                     <ion-slide *ngFor="let nofeaturedProduct of featuredProductsNoFeatured;"
                       style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
-                      <a style="width: 100%;">
-                        <i (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png')">
-                          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-                            <img src="{{nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png'}}" alt="img" style="width: 80px;">
-                          </div>
-                        </i>
 
-                        <img (click)="goToPage(nofeaturedItem.url, nofeaturedItem.product.image?nofeaturedItem.product.image:'../../../assets/icon/no-image.png')"
-                          *ngFor="let nofeaturedItem of nofeaturedProduct.noFeaturedProducts;"
-                          src="{{nofeaturedItem.product.image?nofeaturedItem.product.image:'../../../assets/icon/no-image.png'}}"
-                          alt="img" class="preload-image round-small">
-                        <div class="clear"></div>
-                      </a>
+                      <div class="profile-2">
+                        <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                          <a style="width: 100%;">
+                            <i
+                              (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png')">
+                              <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+                                <img
+                                  src="{{nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png'}}"
+                                  alt="img" style="width: 80px;">
+                              </div>
+                            </i>
+
+                            <img
+                              (click)="goToPage(nofeaturedItem.url, nofeaturedItem.product.image?nofeaturedItem.product.image:'../../../assets/icon/no-image.png')"
+                              *ngFor="let nofeaturedItem of nofeaturedProduct.noFeaturedProducts;"
+                              src="{{nofeaturedItem.product.image?nofeaturedItem.product.image:'../../../assets/icon/no-image.png'}}"
+                              alt="img" class="preload-image round-small">
+                            <div class="clear"></div>
+                          </a>
+
+                          <a (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png')"
+                            style="padding-top: 10px;font-size: .7em;">Ver mas...</a>
+                        </div>
+                      </div>
                     </ion-slide>
                   </ion-slides>
                 </div>
@@ -365,6 +392,17 @@
                   <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;Aprovecha los
                     cupones para hoy!!</h4>
                 </div>
+
+                <ion-slides *ngIf="searchingStoreCoupons" [options]="appService.slideOptsStoreCoupons" style="max-width: 450px;"
+                  style="padding-bottom: 20px;">
+                  <ion-slide *ngFor="let item of [1,2,3]"
+                    style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
+                    <ion-skeleton-text animated
+                      class="responsive-image preload-image shadow-small round-medium img-store"
+                      style="width: 100px;height: 100px;">
+                    </ion-skeleton-text>
+                  </ion-slide>
+                </ion-slides>
 
                 <ion-slides #sliderStoreCoupons [options]="appService.slideOptsStoreCoupons" style="max-width: 450px;">
                   <ion-slide *ngFor="let storeCoupon of storeCoupons;">
@@ -442,8 +480,9 @@
 
                 <ion-slides *ngIf="!searchingGifts" #sliderHomeGifts [options]="appService.slideOptsGifts"
                   style="max-width: 450px;">
-                  <ion-slide (click)="openWithOption(gift.url, gift.product.image?gift.product.image:'../../../assets/icon/no-image.png', 4)" *ngFor="let gift of gifts;"
-                    style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
+                  <ion-slide
+                    (click)="openWithOption(gift.url, gift.product.image?gift.product.image:'../../../assets/icon/no-image.png', 4)"
+                    *ngFor="let gift of gifts;" style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                         <a>

@@ -26,8 +26,8 @@
    <!-- Left Side Menu Only To Big Browsers -->
    <div id="main-menu-large">
     <ion-header>
-      <ion-toolbar *ngIf="appService?.currentUser">
-        <div class="content top-30">
+      <ion-toolbar>
+        <div class="content top-30" *ngIf="appService?.currentUser">
           <div class="user-slider owl-carousel  bottom-0">
             <div class="user-list-left">
               <img
@@ -38,12 +38,15 @@
             </div>
           </div>
         </div>
+
+        <div class="content top-30" *ngIf="!appService?.currentUser">
+          <ion-menu-toggle auto-hide="true">
+            <a (click)="SignIn()"
+              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+              class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
+          </ion-menu-toggle>
+        </div>
       </ion-toolbar>
-      <div *ngIf="!appService?.currentUser" style="padding-bottom: 1px;">
-        <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small button-full button-s">INICIAR SESIÓN</a>
-      </div>
     </ion-header>
 
     <ion-content class="side-content">

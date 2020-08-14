@@ -550,7 +550,7 @@ export class HomePage implements OnInit {
                       noFeaturedProducts.push({ product: product, url: "/product-detail/" + product.id + "&" + store.id });
                     });
 
-                    this.featuredProductsNoFeatured.push({ noFeaturedProducts: noFeaturedProducts, store: store, url: "/store/" + store.id });
+                    this.featuredProductsNoFeatured.push({ noFeaturedProducts: this.shuffle(noFeaturedProducts), store: store, url: "/store/" + store.id });
 
                     this.featuredProductsNoFeatured = this.shuffle(this.featuredProductsNoFeatured);
                     this.searchingProductsNoFeatured = false;
