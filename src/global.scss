@@ -169,3 +169,9 @@ ion-toast {
 .sold-out {
 	opacity: 0.3;
 }
+
+@media screen and (max-width: 1179px) {
+	#img-title {
+	  display: none;
+	}
+  }

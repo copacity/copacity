@@ -5,6 +5,7 @@
         <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
       </ion-button>
       <ion-button routerLink="/home">
+        <img id="img-title" src="../assets/icon/favicon.png" alt="img" style="width: 30px;padding-right: 5px;">
         <a class="header-title bold color-highlight" style="font-size: 1.2em;"><span
             style="color: red;">COPA</span>CITY</a>
       </ion-button>
@@ -177,7 +178,9 @@
             <div class="top-20"></div>
 
             <ion-slides #sliderMenu [options]="appService.slideOptsStoreMenu" style="max-width: 450px;">
-              <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
+              <!-- <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;"> -->
+              <ion-slide (click)="scrollToBottom()" style="margin: 3px;width: 60px;">
+
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
                   <table>
@@ -492,8 +495,8 @@
                         <td style="text-align: center;">
                           <a (click)="addToCart($event, product)" style="background-color: red;color:white;"
                             class="button button-round-small shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
-                            <i class="fa fa-shopping-cart add-button"
-                              style="color: white;padding-right: 5px;"></i>LO QUIERO!</a>
+                            <i class="fa fa-shopping-cart add-button" style="color: white;padding-right: 5px;"></i>LO
+                            QUIERO!</a>
                         </td>
                       </tr>
                     </table>
@@ -514,16 +517,14 @@
 
         <ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
           <ion-fab-button color="success">
-            <a style="color: white;"
-              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+            <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}">
               <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
           </ion-fab-button>
         </ion-fab>
         <ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-80">
           <ion-fab-button color="success">
-            <a style="color: white;"
-              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+            <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}">
               <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
           </ion-fab-button>

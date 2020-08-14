@@ -1,5 +1,5 @@
 <ion-header class="ion-header" style="background-color:white">
-  <ion-toolbar>
+  <ion-toolbar id="tool-bar-header">
     <ion-buttons slot="start">
       <ion-menu-toggle>
         <ion-button>
@@ -9,6 +9,7 @@
         </ion-button>
       </ion-menu-toggle>
       <ion-button routerLink="/home">
+        <img id="img-title" src="../assets/icon/favicon.png" alt="img" style="width: 30px;padding-right: 5px;">
         <a class="header-title bold color-highlight" style="font-size: 1.2em;"><span
             style="color: red;">COPA</span>CITY</a>
       </ion-button>
@@ -393,8 +394,8 @@
                     cupones para hoy!!</h4>
                 </div>
 
-                <ion-slides *ngIf="searchingStoreCoupons" [options]="appService.slideOptsStoreCoupons" style="max-width: 450px;"
-                  style="padding-bottom: 20px;">
+                <ion-slides *ngIf="searchingStoreCoupons" [options]="appService.slideOptsStoreCoupons"
+                  style="max-width: 450px;" style="padding-bottom: 20px;">
                   <ion-slide *ngFor="let item of [1,2,3]"
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
                     <ion-skeleton-text animated
@@ -593,16 +594,14 @@
         </div>
         <ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
           <ion-fab-button color="success">
-            <a style="color: white;"
-              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+            <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}">
               <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
           </ion-fab-button>
         </ion-fab>
         <ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-80">
           <ion-fab-button color="success">
-            <a style="color: white;"
-              href="https://api.whatsapp.com/send?phone=57{{appService._appInfo?.whatsapp}}&text=Hola%21%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos%20en%20CopaCity.">
+            <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}">
               <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
           </ion-fab-button>

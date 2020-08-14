@@ -130,11 +130,12 @@ export class CartPage implements OnInit {
       });
 
       message += (cartProduct.product.discount && cartProduct.product.discount != 0) ? " [Descuento: " + cartProduct.product.discount + "%]" : "";
-      message += " Precio: " + this.toMoneyFormat(this.cartService.getProductTotal(cartProduct)) + encodeURIComponent("\n\n‎")
+      message += " Precio: " + this.toMoneyFormat(this.cartService.getProductTotal(cartProduct)) + encodeURIComponent("\n\n‎");
 
     });
 
-    message += "Total: " + this.toMoneyFormat(this.cartService.getTotal());
+    message += "Total: " + this.toMoneyFormat(this.cartService.getTotal()) + encodeURIComponent("\n\n‎");
+    message += "Muchas Gracias.";
 
     return message;
   }

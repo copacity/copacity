@@ -60,6 +60,10 @@ ion-menu-toggle{
   .notifications-icon{
     display: none;
   }
+
+  ion-fab {
+    right:260px
+  }
 } 
 
 @media screen and (max-width: 1179px) {
