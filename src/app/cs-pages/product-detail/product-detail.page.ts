@@ -27,6 +27,7 @@ import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.com
 import { ReturnsPolicyPage } from '../returns-policy/returns-policy.page';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
+import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -492,6 +493,24 @@ export class ProductDetailPage implements OnInit {
 
   async goToCreateOrder() {
     this.router.navigate(['/order-create', this.appService.currentStore.id]);
+  }
+
+  async openImageViewer(image: string) {
+    let images: string[] = [];
+    images.push(image);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
   }
 
   addToCart(e: any) {

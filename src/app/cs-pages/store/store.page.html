@@ -514,15 +514,17 @@
         </div>
 
         <ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button color="success">
-            <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}">
+          <ion-fab-button color="success" (click)="openVendorList($event)">
+            <!-- <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"> -->
+            <a style="color: white;">
               <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
           </ion-fab-button>
         </ion-fab>
         <ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-80">
-          <ion-fab-button color="success">
-            <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}">
+          <ion-fab-button color="success" (click)="openVendorList($event)">
+            <!-- <a style="color: white;" href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"> -->
+            <a style="color: white;">
               <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
           </ion-fab-button>

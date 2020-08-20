@@ -52,6 +52,7 @@ import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.com
 import { SwUpdate } from '@angular/service-worker';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
+import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
 
 @Component({
   selector: 'app-store',
@@ -610,6 +611,26 @@ export class StorePage implements OnInit {
         if (result) {
           this.goToCreateOrder();
         }
+      });
+
+    modal.present();
+  }
+
+  async openVendorList(e: any) {
+    let modal = await this.popoverController.create({
+      component: VendorsListComponent,
+      mode: 'ios',
+      event: e,
+      cssClass: 'notification-popover'
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        let result = data['data'];
+
+        // if (result) {
+        //   this.goToCreateOrder();
+        // }
       });
 
     modal.present();
