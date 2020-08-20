@@ -203,13 +203,13 @@
     <b>{{ appService?.temporalCoupon?.storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
   </h6>
 
-  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 67px;">
+  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">
     <table>
       <tr>
         <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;">Descartar</a></td>
+            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
         <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
-            style="font-size: .95em;color: white;">Aplicar</a></td>
+            style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
       </tr>
     </table>
   </h6>
