@@ -24,6 +24,7 @@ import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/produ
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
+import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
 
 @Component({
   selector: 'app-home',
@@ -855,5 +856,22 @@ export class HomePage implements OnInit {
     } else {
       this.presentAlert("Ya tienes un cupón en tus manos, debes descartarlo primero si quieres tomar otro", "", () => { });
     }
+  }
+
+  async openVendorList(e: any) {
+    let modal = await this.popoverController.create({
+      component: VendorsListComponent,
+      mode: 'ios',
+      event: e,
+      componentProps: { users: [] },
+      cssClass: 'notification-popover'
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        let result = data['data'];
+      });
+
+    modal.present();
   }
 }

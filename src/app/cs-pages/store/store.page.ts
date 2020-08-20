@@ -8,7 +8,7 @@ import { AppService } from 'src/app/cs-services/app.service';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { ProductCategoriesService } from 'src/app/cs-services/productCategories.service';
-import { Product, Store, ProductCategory, Order, File } from 'src/app/app-intefaces';
+import { Product, Store, ProductCategory, Order, File, Vendor } from 'src/app/app-intefaces';
 import { CartPage } from '../cart/cart.page';
 import { SuperTabs } from '@ionic-super-tabs/angular';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -53,6 +53,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
+import { UsersService } from 'src/app/cs-services/users.service';
 
 @Component({
   selector: 'app-store',
@@ -123,6 +124,7 @@ export class StorePage implements OnInit {
     public alertController: AlertController,
     public popoverController: PopoverController,
     public cartManagerService: CartManagerService,
+    private usersService: UsersService,
     private route: ActivatedRoute,
     private swUpdate: SwUpdate,
     private loaderComponent: LoaderComponent,
@@ -447,25 +449,36 @@ export class StorePage implements OnInit {
   }
 
   async openStoreInformationComponent(event) {
+    let subs = this.storesService.getActiveVendors(this.appService.currentStore.id).subscribe(result => {
 
-    let modal = await this.popoverController.create({
-      component: StoreInformationComponent,
-      cssClass: "signin-popover",
-      //event: event,
-      componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName },
-      // backdropDismiss: false
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        const result = data['data'];
-
-        if (result) {
-          this.store = result;
-        }
+      let vendorPromises = [];
+      result.forEach(vendor => {
+        vendorPromises.push(this.fillUsers(vendor));
       });
 
-    modal.present();
+      Promise.all(vendorPromises).then(async users => {
+        let modal = await this.popoverController.create({
+          component: StoreInformationComponent,
+          cssClass: "signin-popover",
+          //event: event,
+          componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName, users: users },
+          // backdropDismiss: false
+        });
+    
+        modal.onDidDismiss()
+          .then((data) => {
+            const result = data['data'];
+    
+            if (result) {
+              this.store = result;
+            }
+          });
+    
+        modal.present();
+      });
+
+      subs.unsubscribe();
+    });
   }
 
   async openStoreBillingPage(event) {
@@ -617,23 +630,44 @@ export class StorePage implements OnInit {
   }
 
   async openVendorList(e: any) {
-    let modal = await this.popoverController.create({
-      component: VendorsListComponent,
-      mode: 'ios',
-      event: e,
-      cssClass: 'notification-popover'
-    });
 
-    modal.onDidDismiss()
-      .then((data) => {
-        let result = data['data'];
+    let subs = this.storesService.getActiveVendors(this.appService.currentStore.id).subscribe(result => {
 
-        // if (result) {
-        //   this.goToCreateOrder();
-        // }
+      let vendorPromises = [];
+      result.forEach(vendor => {
+        vendorPromises.push(this.fillUsers(vendor));
       });
 
-    modal.present();
+      Promise.all(vendorPromises).then(async users => {
+        let modal = await this.popoverController.create({
+          component: VendorsListComponent,
+          mode: 'ios',
+          event: e,
+          componentProps: { users: users },
+          cssClass: 'notification-popover'
+        });
+
+        modal.onDidDismiss()
+          .then((data) => {
+            let result = data['data'];
+          });
+
+        modal.present();
+      });
+
+      subs.unsubscribe();
+    });
+  }
+
+  fillUsers(vendor: Vendor) {
+    return new Promise((resolve, reject) => {
+      this.usersService.getById(vendor.idUser).then(user => {
+        resolve(user);
+      });
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({ id: '', message: err, function: 'fillUsers', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
   }
 
   async goToCreateOrder() {
@@ -1141,23 +1175,23 @@ export class StorePage implements OnInit {
 
   async openStoreCouponsPage() {
     //if (this.appService.currentUser) {
-      let modal = await this.popoverController.create({
-        component: StoreCouponsPage,
-        componentProps: { store: this.store, isAdmin: this.isAdmin, dashboard: true, orderTotal: -1 },
-        cssClass: 'cs-popovers',
-        backdropDismiss: false,
+    let modal = await this.popoverController.create({
+      component: StoreCouponsPage,
+      componentProps: { store: this.store, isAdmin: this.isAdmin, dashboard: true, orderTotal: -1 },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+
+        if (result) {
+          this.appService.temporalCoupon = { storeCoupon: result, store: this.store };
+        }
       });
 
-      modal.onDidDismiss()
-        .then((data) => {
-          const result = data['data'];
-
-          if (result) {
-            this.appService.temporalCoupon = { storeCoupon: result, store: this.store};
-          }
-        });
-
-      modal.present();
+    modal.present();
     // } else {
     //   this.SignIn();
     // }

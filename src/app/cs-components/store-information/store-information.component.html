@@ -3,7 +3,7 @@
   </div>
   <div class="profile-header-clear" style="height: 30px;">
   </div>
-  <div class="profile-body" style="margin: 0px 5px;">
+  <div class="profile-body" style="margin: 0px 0px; padding: 0px 0px;">
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
@@ -25,25 +25,27 @@
             {{store?.description}}
           </p>
 
+          <app-vendors-list [usersAtt]="users"></app-vendors-list>
+
           <div class="boxed-text-huge">
             <div style="padding-top: 10px;text-align: -webkit-center;">
-              <a style="color: red;border: double;margin-bottom: 0px;" href="tel:{{ store?.phone1 }}"
-                class="button button-round-small button-s"><i class="fa fa-phone"
-                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.phone1 }}</a>
-              <a style="border: double;margin-bottom: 0px;" href="https://wa.me/57{{ store?.whatsapp }}"
-                class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
-                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.whatsapp }}</a>
               <a style="border: double;margin-bottom: 0px;" href="https://www.facebook.com/{{ store?.facebook }}"
                 class="button button-round-small button-s color-facebook"><i class="fab fa-facebook-f color-facebook"
                   style="font-size: 1.5em;"></i>&nbsp;{{ store?.facebook }}</a>
               <a style="border: double;margin-bottom: 0px;" href="https://www.facebook.com/{{ store?.facebook }}"
                 class="button button-round-small button-s color-black"><i class="fa fa-map-marker-alt color-black"
                   style="font-size: 1.5em;"></i>&nbsp;{{ store?.address }}</a>
+              <!-- <a style="color: red;border: double;margin-bottom: 0px;" href="tel:{{ store?.phone1 }}"
+                class="button button-round-small button-s"><i class="fa fa-phone"
+                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.phone1 }}</a>
+              <a style="border: double;margin-bottom: 0px;" href="https://wa.me/57{{ store?.whatsapp }}"
+                class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
+                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.whatsapp }}</a> -->
             </div>
 
             <div style="padding-top: 10px;text-align: -webkit-center;">
-              <a *ngIf="isAdmin" style="color: red;border: double;margin-bottom: 0px;"
-                (click)="openBarCodeGenerator()" class="button button-round-small button-s"><i class="fa fa-qrcode"
+              <a *ngIf="isAdmin" style="color: red;border: double;margin-bottom: 0px;" (click)="openBarCodeGenerator()"
+                class="button button-round-small button-s"><i class="fa fa-qrcode"
                   style="font-size: 1.5em;"></i>&nbsp;Ver código QR de la tienda</a>
             </div>
           </div>

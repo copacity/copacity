@@ -511,7 +511,7 @@
             TE ASESORO?</a> -->
 
           <div style="text-align: -webkit-left;">
-            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;REPRESENTANTES DE VENTAS
+            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;ASESORES COMERCIALES
             </h4>
           </div>
 
@@ -522,12 +522,58 @@
                 <ion-item>
                   <ion-label style="color: gray;font-size: .8em;">Selecciona: <b style="color: red;">(*)</b></ion-label>
                   <ion-select [formControl]="idVendor" style="padding-right: 10px;font-size: .8em;" mode="ios"
-                    cancelText="Cancelar" okText="Okay!" interface='action-sheet'>
-                    <ion-select-option value="1">Compra directa sin representante</ion-select-option>
+                    cancelText="Cancelar" okText="Okay!" interface='action-sheet' (ionChange)="vendorChange($event)">
+                    <ion-select-option value="1">Compra directa sin asesor</ion-select-option>
                     <ion-select-option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</ion-select-option>
                   </ion-select>
                 </ion-item>
               </ion-list>
+
+              <table *ngIf="idVendor.value == 1" class="top-10" style="margin-bottom: 10px;">
+                <tr>
+                  <td style="vertical-align: top;width: 60px;text-align: left;">
+                    <img (click)="openImageViewerVendor('../../../assets/icon/favicon.png')" src="../../../assets/icon/favicon.png" alt="img"
+                      style="height: 50px;width: 50px;border-radius: 100%;">
+                  </td>
+                  <td style="vertical-align: top;">
+                    <table style="margin-bottom: 10px;">
+                      <tr>
+                        <td style="text-align: left;padding: 0px 0px 0px 0px;vertical-align: top;"> <span
+                            style="font-size: 1.2em;font-weight: 700;color: black;">Oficina de Ventas</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align: left;padding: 0px 0px 0px 0px;vertical-align: top;">
+                          <a>Copacity</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+  
+              <table *ngIf="idVendor.value != 1 && selectedUser" class="top-10" style="margin-bottom: 10px;">
+                <tr>
+                  <td style="vertical-align: top;width: 60px;text-align: left;">
+                    <img (click)="openImageViewerVendor(selectedUser.photoUrl?selectedUser.photoUrl:'../../../assets/icon/no-image.png')" [src]="selectedUser.photoUrl?selectedUser.photoUrl:'../../../assets/icon/no-image.png'" alt="img"
+                      style="height: 50px;width: 50px;border-radius: 100%;">
+                  </td>
+                  <td style="vertical-align: top;">
+                    <table style="margin-bottom: 10px;">
+                      <tr>
+                        <td style="text-align: left;padding: 0px 0px 0px 0px;vertical-align: top;"> <span
+                            style="font-size: 1.2em;font-weight: 700;color: black;">{{ selectedUser.name }}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align: left;padding: 0px 0px 0px 0px;vertical-align: top;">
+                          <a>Asesor Comercial</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>

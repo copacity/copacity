@@ -5,6 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { User, Vendor } from 'src/app/app-intefaces';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
+import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-whatsapp-order',
@@ -14,6 +15,7 @@ import { StoresService } from 'src/app/cs-services/stores.service';
 export class WhatsappOrderComponent implements OnInit {
   idVendor: FormControl;
   users: User[];
+  selectedUser: User;
   validationMessage: string = ''
 
   constructor(
@@ -41,6 +43,14 @@ export class WhatsappOrderComponent implements OnInit {
 
   vendorChange(event: any) {
     this.validationMessage = "";
+
+    if (this.idVendor.value != 1) {
+      this.users.forEach(user => {
+        if (user.id == this.idVendor.value) {
+          this.selectedUser = user
+        }
+      });
+    }
   }
 
   fillUsers(vendor: Vendor) {
@@ -71,18 +81,36 @@ export class WhatsappOrderComponent implements OnInit {
         }
       });
 
-      if(!selectedUser && this.idVendor.value == 1){
+      if (!selectedUser && this.idVendor.value == 1) {
         this.popoverController.dismiss("Copacity");
-      }else{
+      } else {
         this.popoverController.dismiss(selectedUser);
       }
     } else {
-      this.validationMessage = "Debes seleccionar un representante";
+      this.validationMessage = "Debes seleccionar un asesor";
       this.idVendor.markAllAsTouched();
     }
   }
 
   login() {
     this.popoverController.dismiss("Login");
+  }
+
+  async openImageViewer(img: string) {
+    let images: string[] = [];
+    images.push(img);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
   }
 }

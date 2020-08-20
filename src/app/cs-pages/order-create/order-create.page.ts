@@ -57,6 +57,7 @@ export class OrderCreatePage implements OnInit {
   paymentMethod: PaymentMethod = null;
 
   users: User[];
+  selectedUser: User;
 
   @ViewChild(SuperTabs, { static: false }) superTabs: SuperTabs;
 
@@ -533,7 +534,7 @@ export class OrderCreatePage implements OnInit {
                   });
                 }, 500);
               } else {
-                this.presentAlert("Debes seleccionar un representante de ventas antes de hacer el pedido", "", () => { }, 'Entendido!');
+                this.presentAlert("Debes seleccionar un asesor comercial antes de hacer el pedido", "", () => { }, 'Entendido!');
               }
             } else {
               this.presentAlert("Debes seleccionar una dirección antes de hacer el pedido", "", () => { }, 'Entendido!');
@@ -863,5 +864,33 @@ export class OrderCreatePage implements OnInit {
       alert(err);
       this.appService.logError({ id: '', message: err, function: 'openStoreCouponsPage', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
+  }
+
+  async openImageViewerVendor(img: string) {
+    let images: string[] = [];
+    images.push(img);
+
+    let modal = await this.popoverController.create({
+      component: ImageViewerComponent,
+      componentProps: { images: images },
+      cssClass: 'cs-popovers',
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
+  }
+
+  vendorChange(event: any) {
+    if (this.idVendor.value != 1) {
+      this.users.forEach(user => {
+        if (user.id == this.idVendor.value) {
+          this.selectedUser = user
+        }
+      });
+    }
   }
 }

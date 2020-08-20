@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import { Store, Product } from 'src/app/app-intefaces';
+import { Store, Product, User } from 'src/app/app-intefaces';
 import { LoaderComponent } from '../loader/loader.component';
 import { StoreStatus } from 'src/app/app-enums';
 import { StoresService } from 'src/app/cs-services/stores.service';
@@ -17,6 +17,7 @@ export class StoreInformationComponent implements OnInit {
   isAdmin: boolean = false;
   storeCategoryName: string;
   store: Store;
+  users: User[];
 
   constructor(public popoverController: PopoverController, 
     public navParams: NavParams,
@@ -26,7 +27,8 @@ export class StoreInformationComponent implements OnInit {
     ) {
     this.isAdmin = this.navParams.data.isAdmin;
     this.storeCategoryName = this.navParams.data.storeCategoryName;
-
+    this.users = this.navParams.data.users;
+    
     this.store = {
       id: this.navParams.data.store.id,
       address: this.navParams.data.store.address,
