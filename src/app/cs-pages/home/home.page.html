@@ -287,6 +287,11 @@
                   </div>
                 </div>
 
+                <div *ngIf="(featuredProductsNoDiscount && featuredProductsNoDiscount.length == 0) && !searchingProductsNoDiscount" class="boxed-text-huge"
+                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                  <h4 style="font-size: small;">No se encontraron resultados</h4>
+                </div>
+
                 <ion-slides *ngIf="!searchingProductsNoDiscount" #sliderHomeProductsNoDiscount
                   [options]="appService.slideOptsProductsNoDiscount" style="max-width: 450px;">
                   <ion-slide *ngFor="let featuredProductNoDiscount of featuredProductsNoDiscount;"
@@ -343,6 +348,11 @@
                       </a>
                     </div>
                   </div>
+                </div>
+
+                <div *ngIf="(featuredProductsNoFeatured && featuredProductsNoFeatured.length == 0) && !searchingProductsNoFeatured" class="boxed-text-huge"
+                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                  <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
                 <div class="gallery gallery-collection bottom-20 top-20">
@@ -404,6 +414,11 @@
                     </ion-skeleton-text>
                   </ion-slide>
                 </ion-slides>
+
+                <div *ngIf="(storeCoupons && storeCoupons.length == 0) && !searchingStoreCoupons" class="boxed-text-huge"
+                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                  <h4 style="font-size: small;">No se encontraron resultados</h4>
+                </div>
 
                 <ion-slides #sliderStoreCoupons [options]="appService.slideOptsStoreCoupons" style="max-width: 450px;">
                   <ion-slide *ngFor="let storeCoupon of storeCoupons;">
@@ -478,6 +493,11 @@
                     </ion-skeleton-text>
                   </ion-slide>
                 </ion-slides>
+
+                <div *ngIf="(gifts && gifts.length == 0) && !searchingGifts" class="boxed-text-huge"
+                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                  <h4 style="font-size: small;">No se encontraron resultados</h4>
+                </div>
 
                 <ion-slides *ngIf="!searchingGifts" #sliderHomeGifts [options]="appService.slideOptsGifts"
                   style="max-width: 450px;">

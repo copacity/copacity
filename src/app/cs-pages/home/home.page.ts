@@ -573,6 +573,14 @@ export class HomePage implements OnInit {
             }
           });
 
+          if (this.stores.length == 0) {
+            this.searchingProductsDiscount = false;
+            this.searchingProductsNoDiscount = false;
+            this.searchingProductsNoFeatured = false;
+            this.searchingGifts = false;
+            this.searchingStoreCoupons = false;
+          }
+
           this.stores = this.shuffle(this.stores);
           this.loaderComponent.stopLoading();
         });
