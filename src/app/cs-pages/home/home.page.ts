@@ -447,6 +447,10 @@ export class HomePage implements OnInit {
         this.goToPage('/store/' + banner.idStore, banner.storeImage);
         break;
       }
+      case BannerRedirectTypes.ExternalUrl: {
+        window.open(banner.externalUrl, 'popup');
+        break;
+      }
       default: break;
     }
   }

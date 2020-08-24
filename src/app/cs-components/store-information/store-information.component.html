@@ -25,6 +25,15 @@
             {{store?.description}}
           </p>
 
+          <iframe *ngIf="store?.video1" [src]="safeSrc1" frameborder="0" style="width: 100%;height: 300px;padding-bottom: 20px;"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+          <iframe *ngIf="store?.video2" [src]="safeSrc2" frameborder="0" style="width: 100%;height: 300px;padding-bottom: 20px;"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+          <iframe *ngIf="store?.video3" [src]="safeSrc3" frameborder="0" style="width: 100%;height: 300px;padding-bottom: 20px;"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
           <app-vendors-list [usersAtt]="users"></app-vendors-list>
 
           <div class="boxed-text-huge">
@@ -35,12 +44,6 @@
               <a style="border: double;margin-bottom: 0px;" href="https://www.facebook.com/{{ store?.facebook }}"
                 class="button button-round-small button-s color-black"><i class="fa fa-map-marker-alt color-black"
                   style="font-size: 1.5em;"></i>&nbsp;{{ store?.address }}</a>
-              <!-- <a style="color: red;border: double;margin-bottom: 0px;" href="tel:{{ store?.phone1 }}"
-                class="button button-round-small button-s"><i class="fa fa-phone"
-                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.phone1 }}</a>
-              <a style="border: double;margin-bottom: 0px;" href="https://wa.me/57{{ store?.whatsapp }}"
-                class="button button-round-small button-s color-whatsapp"><i class="fab fa-whatsapp color-whatsapp"
-                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.whatsapp }}</a> -->
             </div>
 
             <div style="padding-top: 10px;text-align: -webkit-center;">

@@ -11,7 +11,6 @@ import { PasswordResetEmailComponent } from '../password-reset-email/password-re
 import { LoaderComponent } from '../loader/loader.component';
 import { TermsServicePage } from 'src/app/cs-pages/terms-service/terms-service.page';
 import { PrivacyPolicyPage } from 'src/app/cs-pages/privacy-policy/privacy-policy.page';
-import { ReturnsPolicyPage } from 'src/app/cs-pages/returns-policy/returns-policy.page';
 
 @Component({
   selector: 'app-signin',
@@ -89,20 +88,6 @@ export class SigninComponent implements OnInit {
   async popoverPrivacyPolicy() {
     const popover = await this.popoverControllerAdd.create({
       component: PrivacyPolicyPage,
-      cssClass: "cs-popovers"
-    });
-
-    popover.onDidDismiss()
-      .then((data) => {
-        let result = data['data'];
-      });
-
-    return await popover.present();
-  }
-
-  async popoverReturnsPolicy() {
-    const popover = await this.popoverControllerAdd.create({
-      component: ReturnsPolicyPage,
       cssClass: "cs-popovers"
     });
 

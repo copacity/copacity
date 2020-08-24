@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, User, StoreCategory, Sector, Banner, Address, AppInfo, Notification, ErrorMessage, StoreCoupon } from '../app-intefaces';
+import { Store, User, StoreCategory, Banner, Address, AppInfo, Notification, ErrorMessage, StoreCoupon } from '../app-intefaces';
 import { UsersService } from './users.service';
 import { StoreCategoriesService } from './storeCategories.service';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
@@ -23,11 +23,9 @@ export class AppService {
 
   // APP DATA
   storeCategories: Observable<StoreCategory[]> = null;
-  sectors: Observable<Sector[]> = null;
   appInfo: Observable<AppInfo[]>;
   banners: Observable<Banner[]>;
   bannersFooter: Observable<Banner[]>;
-  _sectors: Sector[] = [];
   _storeCategories: StoreCategory[] = [];
   _appInfo: AppInfo;
 

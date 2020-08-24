@@ -12,12 +12,28 @@
       QR</a>
 
     <div class="round-medium" style="background-color: white;">
-      <div style="margin: 5px;padding-top: 20px;">
+      <div style="margin: 5px;">
         <i (click)="close()" class="fa fa-times-circle"
           style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
+        <div class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+          <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
+            <span class="center-text bolder" style="color: black;margin-bottom: 0px;line-height: 20px;">
+              Escanea el codigo del producto o cupón que tengas en mano para ver sus detalles.
+            </span>
+          </div>
+        </div>
+
         <video #video [hidden]="!scanActive" width="100%"></video>
         <canvas #canvas hidden></canvas>
+
+        <div *ngIf="message" class="content contact-message top-20" style="margin: 0px 0px 0px 0px;">
+          <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
+            <span class="center-text bolder" style="color: red;margin-bottom: 0px;line-height: 20px;">
+              {{message}}
+            </span>
+          </div>
+        </div>
 
       </div>
     </div>

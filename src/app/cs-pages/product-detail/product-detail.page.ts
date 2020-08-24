@@ -164,7 +164,8 @@ export class ProductDetailPage implements OnInit {
   async popoverReturnsPolicy() {
     const popover = await this.popoverController.create({
       component: ReturnsPolicyPage,
-      cssClass: "cs-popovers"
+      cssClass: "cs-popovers",
+      componentProps: { returnsPolicy: this.store.returnsPolicyTemplate }
     });
 
     popover.onDidDismiss()

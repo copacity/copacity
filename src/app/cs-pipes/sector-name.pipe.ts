@@ -9,11 +9,11 @@ export class SectorNamePipe implements PipeTransform {
 
   transform(idSector: string): string {
     let sectorName: string ='';
-    this.appService._sectors.forEach(sector => {
-      if (sector.id == idSector) {
-        sectorName = sector.name;
-      }
-    });
+    // this.appService._sectors.forEach(sector => {
+    //   if (sector.id == idSector) {
+    //     sectorName = sector.name;
+    //   }
+    // });
 
     return sectorName;
   }

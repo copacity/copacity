@@ -8,7 +8,6 @@ export interface AppInfo {
   domain: string;
   termsServiceTemplate: string;
   privacyPolicyTemplate: string;
-  returnsPolicyTemplate: string;
   tax: number;
   featuredProductsXStore: number;
 }
@@ -105,6 +104,10 @@ export interface Store {
   productsLimit: number;
   couponsLimit: number;
   vendorsLimit: number;
+  returnsPolicyTemplate: string;
+  video1: string;
+  video2: string;
+  video3: string;
 }
 
 export interface ProductCategory {
@@ -201,14 +204,7 @@ export interface Banner {
   redirectType: number;
   redirectTypeId: string;
   type: number;
-}
-
-export interface Sector {
-  id: string;
-  name: string;
-  lastUpdated: Date;
-  dateCreated: Date;
-  deleted: boolean;
+  externalUrl: string;
 }
 
 export interface User {

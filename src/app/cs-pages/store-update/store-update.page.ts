@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { StoreCategoriesService } from 'src/app/cs-services/storeCategories.service';
-import { Sector, StoreCategory, Store, ShippingMethod } from 'src/app/app-intefaces';
+import { StoreCategory, Store, ShippingMethod } from 'src/app/app-intefaces';
 import { Observable } from 'rxjs';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoreShippingMethodsCreatePage } from '../store-shipping-methods-create/store-shipping-methods-create.page';
@@ -63,10 +63,12 @@ export class StoreUpdatePage implements OnInit {
       phone2: [this.appService.currentStore.phone2, [Validators.max(999999999999999)]],
       whatsapp: [this.appService.currentStore.whatsapp, [Validators.max(999999999999999)]],
       facebook: [this.appService.currentStore.facebook, [Validators.maxLength(250)]],
-      //deliveryPrice: [this.appService.currentStore.deliveryPrice ? this.appService.currentStore.deliveryPrice : 0, [Validators.max(9999999999)]],
       orderMinAmount: [this.appService.currentStore.orderMinAmount ? this.appService.currentStore.orderMinAmount : 0, [Validators.max(9999999999)]],
       address: [this.appService.currentStore.address, [Validators.maxLength(250)]],
-      description: [this.appService.currentStore.description, [Validators.maxLength(500)]]
+      video1: [this.appService.currentStore.video1, [Validators.maxLength(250)]],
+      video2: [this.appService.currentStore.video2, [Validators.maxLength(250)]],
+      video3: [this.appService.currentStore.video3, [Validators.maxLength(250)]],
+      description: [this.appService.currentStore.description, [Validators.maxLength(500)]],
     });
   }
 
@@ -80,8 +82,10 @@ export class StoreUpdatePage implements OnInit {
       this.appService.currentStore.phone2 = this.form.value.phone2 ? this.form.value.phone2 : 0;
       this.appService.currentStore.whatsapp = this.form.value.whatsapp ? this.form.value.whatsapp : 0;
       this.appService.currentStore.facebook = this.form.value.facebook;
+      this.appService.currentStore.video1 = this.form.value.video1;
+      this.appService.currentStore.video2 = this.form.value.video2;
+      this.appService.currentStore.video3 = this.form.value.video3;
       this.appService.currentStore.address = this.form.value.address;
-      //this.appService.currentStore.idSector = this.form.value.sector;
       this.appService.currentStore.idStoreCategory = this.form.value.category;
       this.appService.currentStore.description = this.form.value.description;
       this.appService.currentStore.deliveryPrice = 0;

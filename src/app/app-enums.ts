@@ -34,4 +34,5 @@ export enum BannerRedirectTypes {
   Product = 2,
   Gift = 4,
   Coupon = 5,
+  ExternalUrl = 6
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { StoreCategory, Sector, Store, PlatformFee } from 'src/app/app-intefaces';
+import { StoreCategory, Store, PlatformFee } from 'src/app/app-intefaces';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms'
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -17,7 +17,7 @@ import { UsersService } from 'src/app/cs-services/users.service';
 })
 export class StoreCreatePage implements OnInit {
   storeCategories: Observable<StoreCategory[]> = null;
-  sectors: Observable<Sector[]> = null;
+  //sectors: Observable<Sector[]> = null;
 
   form: FormGroup;
 
@@ -33,7 +33,7 @@ export class StoreCreatePage implements OnInit {
 
     this.buildForm();
     this.storeCategories = this.appService.storeCategories;
-    this.sectors = this.appService.sectors;
+    //this.sectors = this.appService.sectors;
   }
 
   ngOnInit() {
@@ -102,7 +102,7 @@ export class StoreCreatePage implements OnInit {
           lastUpdated: new Date(),
           dateCreated: new Date(),
           name: this.form.value.name,
-          idSector:'',  //this.form.value.sector,
+          idSector: '',  //this.form.value.sector,
           idStoreCategory: this.form.value.category,
           description: this.form.value.description,
           status: StoreStatus.Created,
@@ -112,20 +112,24 @@ export class StoreCreatePage implements OnInit {
           productsCount: 0,
           productsLimit: 100,
           couponsLimit: 3,
-          vendorsLimit: 3
+          vendorsLimit: 3,
+          returnsPolicyTemplate:'',
+          video1: '',
+          video2: '',
+          video3: '',
         }
 
         this.storesService.create(newStore).then(async (doc) => {
 
-          let platformFee: PlatformFee = {  
+          let platformFee: PlatformFee = {
             id: '',
-            additionalCoupon:5000,
-            additionalProduct:1000,
-            additionalVendor:5000,
-            platformUse:19900,
-            platformUseDiscount:0,
-            commissionForSale:10
-            };
+            additionalCoupon: 5000,
+            additionalProduct: 1000,
+            additionalVendor: 5000,
+            platformUse: 19900,
+            platformUseDiscount: 0,
+            commissionForSale: 10
+          };
 
           this.storesService.createPlatformFess(doc.id, platformFee).then(async () => {
             this.storesService.update(doc.id, { id: doc.id }).then(() => {
@@ -141,7 +145,7 @@ export class StoreCreatePage implements OnInit {
           });
         }).catch(err => {
           alert(err);
-          this.appService.logError({id:'', message: err, function:'createStore', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+          this.appService.logError({ id: '', message: err, function: 'createStore', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
         });
       }, 500); // Animation Delay
     } else {

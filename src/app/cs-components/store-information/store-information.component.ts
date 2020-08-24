@@ -7,6 +7,7 @@ import { StoresService } from 'src/app/cs-services/stores.service';
 import { ActivatedRoute } from '@angular/router';
 import { BarcodeGeneratorComponent } from '../barcode-generator/barcode-generator.component';
 import { AppService } from 'src/app/cs-services/app.service';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-store-information',
@@ -14,21 +15,26 @@ import { AppService } from 'src/app/cs-services/app.service';
   styleUrls: ['./store-information.component.scss'],
 })
 export class StoreInformationComponent implements OnInit {
+  safeSrc1: SafeResourceUrl;
+  safeSrc2: SafeResourceUrl;
+  safeSrc3: SafeResourceUrl;
+
   isAdmin: boolean = false;
   storeCategoryName: string;
   store: Store;
   users: User[];
 
-  constructor(public popoverController: PopoverController, 
+  constructor(public popoverController: PopoverController,
     public navParams: NavParams,
     public appService: AppService,
     private loaderComponent: LoaderComponent,
+    private sanitizer: DomSanitizer,
     private storesService: StoresService,
-    ) {
+  ) {
     this.isAdmin = this.navParams.data.isAdmin;
     this.storeCategoryName = this.navParams.data.storeCategoryName;
     this.users = this.navParams.data.users;
-    
+
     this.store = {
       id: this.navParams.data.store.id,
       address: this.navParams.data.store.address,
@@ -52,8 +58,16 @@ export class StoreInformationComponent implements OnInit {
       visits: this.navParams.data.store.visits,
       whatsapp: this.navParams.data.store.whatsapp,
       couponsLimit: this.navParams.data.store.couponsLimit,
-      vendorsLimit: this.navParams.data.store.vendorsLimit
+      vendorsLimit: this.navParams.data.store.vendorsLimit,
+      returnsPolicyTemplate: this.navParams.data.store.returnsPolicyTemplate,
+      video1: this.navParams.data.store.video1,
+      video2: this.navParams.data.store.video2,
+      video3: this.navParams.data.store.video3
     }
+
+    this.safeSrc1 = this.sanitizer.bypassSecurityTrustResourceUrl(this.store.video1);
+    this.safeSrc2 = this.sanitizer.bypassSecurityTrustResourceUrl(this.store.video2);
+    this.safeSrc3 = this.sanitizer.bypassSecurityTrustResourceUrl(this.store.video3);
   }
 
   ngOnInit() { }

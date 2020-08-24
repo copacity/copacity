@@ -62,6 +62,18 @@
             <ion-input formControlName="address"></ion-input>
           </ion-item>
           <ion-item>
+            <ion-label position="floating" style="color: gray;">Video 1</ion-label>
+            <ion-input formControlName="video1"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Video 2</ion-label>
+            <ion-input formControlName="video2"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Video 3</ion-label>
+            <ion-input formControlName="video3"></ion-input>
+          </ion-item>
+          <ion-item>
             <ion-label position="floating" style="color: gray;">Escribe un mensaje <small style="color: gray;">
                 ({{this.form.get('description').value.length}}/500)</small></ion-label>
             <ion-textarea formControlName="description"></ion-textarea>
@@ -132,17 +144,19 @@
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('facebook').errors">
           <span *ngIf="form.get('facebook').hasError('maxlength')">Facebook debe ser máximo de 250 caracteres</span>
         </p>
-        <!-- <p style="color: red;font-size: 1.3em;" *ngIf="form.get('deliveryPrice').errors">
-            <span *ngIf="form.get('deliveryPrice').hasError('max')">Valor Envío debe ser máximo de 10
-              caracteres</span>
-          </p> -->
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('orderMinAmount').errors">
           <span *ngIf="form.get('orderMinAmount').hasError('max')">Valor mínimo de pedido debe ser máximo de 10
             caracteres</span>
         </p>
-        <!-- <p style="color: red;font-size: 1.3em;" *ngIf="form.get('sector').errors">
-            <span *ngIf="form.get('sector').hasError('required')">Sector es requerido</span>
-          </p> -->
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('video1').errors">
+          <span *ngIf="form.get('video1').hasError('maxlength')">Video 1 debe ser máximo de 250 caracteres</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('video2').errors">
+          <span *ngIf="form.get('video2').hasError('maxlength')">Video 2 debe ser máximo de 250 caracteres</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('video3').errors">
+          <span *ngIf="form.get('video3').hasError('maxlength')">Video 3 debe ser máximo de 250 caracteres</span>
+        </p>
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('address').errors">
           <span *ngIf="form.get('address').hasError('maxlength')">Dirección debe ser máximo de 250 caracteres</span>
         </p>
