@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, NavParams } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 
 @Component({
@@ -9,7 +9,13 @@ import { AppService } from 'src/app/cs-services/app.service';
 })
 export class ReturnsPolicyPage implements OnInit {
 
-  constructor(public popoverController: PopoverController, public appService: AppService) { }
+  returnsPoliciy: string;
+
+  constructor(public popoverController: PopoverController, 
+    public appService: AppService,
+    private navparams: NavParams) {
+      this.returnsPoliciy = this.navparams.data.returnsPolicy;
+     }
 
   ngOnInit() {
   }
