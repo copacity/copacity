@@ -1,7 +1,8 @@
 {
   "name": "CopaCity",
+  "description": "Tu Centro Comercial Virtual",
   "short_name": "CopaCity",
-  "theme_color": "#1976d2",
+  "theme_color": "#FF0000",
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "./",

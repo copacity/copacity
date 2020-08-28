@@ -138,7 +138,7 @@
 <super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
   <super-tabs-container>
     <super-tab>
-      <ion-content id="content-home" class="content-background">
+      <ion-content [scrollEvents]="true" (ionScrollStart)="scrollStart()" id="content-home" class="content-background">
         <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
           <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="crescent"
             refreshingText="Buscando actualizaciones...">

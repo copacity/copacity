@@ -328,6 +328,21 @@ export class HomePage implements OnInit {
     return await popover.present();
   }
 
+  scrollStart(){
+    setTimeout(() => {
+      //this.fullScreen();
+    }, 300);
+  }
+
+  fullScreen() {
+    let elem: any = document.documentElement;
+    let methodToBeInvoked = elem.requestFullscreen ||
+      elem.webkitRequestFullScreen || elem['mozRequestFullscreen']
+      ||
+      elem['msRequestFullscreen'];
+    if (methodToBeInvoked) methodToBeInvoked.call(elem);
+  }
+
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------       INITIALIZE
