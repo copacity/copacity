@@ -435,10 +435,15 @@ export class StorePage implements OnInit {
           this.loaderComponent.startLoading("Actualizando imagen, por favor espere un momento...");
           setTimeout(() => {
             this.storageService.ResizeImage(image, this.appService.currentStore.id, 500, 500).then((url) => {
-              this.storesService.update(this.appService.currentStore.id, { logo: url }).then(result => {
-                this.loaderComponent.stopLoading();
-                this.store.logo = url.toString();
-                this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+              this.storesService.update(this.appService.currentStore.id, { logo: url }).then(() => {
+                this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
+                  this.storesService.update(this.appService.currentStore.id, { thumb_logo: thumbUrl }).then(() => {
+                    this.loaderComponent.stopLoading();
+                    this.store.logo = url.toString();
+                    this.store.thumb_logo = thumbUrl.toString();
+                    this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+                  });
+                });
               });
             });
           }, 500);
@@ -464,16 +469,16 @@ export class StorePage implements OnInit {
           componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName, users: users },
           // backdropDismiss: false
         });
-    
+
         modal.onDidDismiss()
           .then((data) => {
             const result = data['data'];
-    
+
             if (result) {
               this.store = result;
             }
           });
-    
+
         modal.present();
       });
 
@@ -603,7 +608,6 @@ export class StorePage implements OnInit {
 
             modal.present();
           });
-
 
           subs.unsubscribe();
         });
@@ -866,12 +870,13 @@ export class StorePage implements OnInit {
   }
 
   takePicture() {
-
     this.storageService.takePhoto(this.appService.currentStore.id, 500, 500).then((url) => {
-      this.loaderComponent.startLoading("Actualizando foto, por favor espere un momento...");
-      this.storesService.update(this.appService.currentStore.id, { logo: url }).then(result => {
-        this.store.logo = url.toString();
-        this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+      this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
+        this.loaderComponent.startLoading("Actualizando foto, por favor espere un momento...");
+        this.storesService.update(this.appService.currentStore.id, { logo: url, thumb_logo: thumbUrl }).then(result => {
+          this.store.logo = url.toString();
+          this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+        });
       });
     });
   }

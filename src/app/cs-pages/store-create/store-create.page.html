@@ -43,14 +43,10 @@
             <ion-label position="floating" style="color: gray;">Facebook</ion-label>
             <ion-input formControlName="facebook"></ion-input>
           </ion-item>
-          <!-- <ion-item>
-            <ion-label style="color: gray;">Sector: <b style="color: red;">(*)</b></ion-label>
-            <ion-select formControlName="sector" cancelText="Cancelar" mode='ios' style="padding-right: 10px;"
-              okText="Okay!" interface='action-sheet'>
-              <ion-select-option *ngFor="let sector of sectors | async;" value="{{sector.id}}">
-                {{sector.name}}</ion-select-option>
-            </ion-select>
-          </ion-item> -->
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Instagram</ion-label>
+            <ion-input formControlName="instagram"></ion-input>
+          </ion-item>
           <ion-item>
             <ion-label position="floating" style="color: gray;">Dirección</ion-label>
             <ion-input formControlName="address"></ion-input>
@@ -84,9 +80,9 @@
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('facebook').errors">
             <span *ngIf="form.get('facebook').hasError('maxlength')">Facebook debe ser máximo de 250 caracteres</span>
           </p>
-          <!-- <p style="color: red;font-size: 1.3em;" *ngIf="form.get('sector').errors">
-            <span *ngIf="form.get('sector').hasError('required')">Sector es requerido</span>
-          </p> -->
+          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('instagram').errors">
+            <span *ngIf="form.get('instagram').hasError('maxlength')">Instagram debe ser máximo de 250 caracteres</span>
+          </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('address').errors">
             <span *ngIf="form.get('address').hasError('maxlength')">Dirección debe ser máximo de 250 caracteres</span>
           </p>

@@ -140,7 +140,7 @@
         <div class="profile-2">
           <img (click)="openImageViewer(store?.logo?store?.logo:'../../../assets/icon/no-image.png')"
             style="width: 150px;margin: 5px auto 0px auto;" class="profile-image preload-image"
-            [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img">
+            [src]="store?.thumb_logo?store?.thumb_logo:'../../../assets/icon/no-image.png'" alt="img">
 
           <div *ngIf="isAdmin" class="under-slider-button" style="top: 25px;">
             <div class="cta-socials" style="text-align: center;">

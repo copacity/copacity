@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { StoreCategory, Store, PlatformFee } from 'src/app/app-intefaces';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms'
 import { StoresService } from 'src/app/cs-services/stores.service';
@@ -69,7 +68,7 @@ export class StoreCreatePage implements OnInit {
       phone2: ['', [Validators.max(999999999999999)]],
       whatsapp: ['', [Validators.max(999999999999999)]],
       facebook: ['', [Validators.maxLength(250)]],
-      //sector: ['', [Validators.required]],
+      instagram: ['', [Validators.maxLength(250)]],
       address: ['', [Validators.maxLength(250)]],
       description: ['', [Validators.maxLength(500)]]
     });
@@ -95,10 +94,12 @@ export class StoreCreatePage implements OnInit {
           address: this.form.value.address,
           deleted: false,
           logo: '',
+          thumb_logo: '',
           phone1: this.form.value.phone1 ? this.form.value.phone1 : 0,
           phone2: this.form.value.phone2 ? this.form.value.phone2 : 0,
           whatsapp: this.form.value.whatsapp ? this.form.value.whatsapp : 0,
           facebook: this.form.value.facebook,
+          instagram: this.form.value.instagram,
           lastUpdated: new Date(),
           dateCreated: new Date(),
           name: this.form.value.name,

@@ -63,6 +63,7 @@ export class StoreUpdatePage implements OnInit {
       phone2: [this.appService.currentStore.phone2, [Validators.max(999999999999999)]],
       whatsapp: [this.appService.currentStore.whatsapp, [Validators.max(999999999999999)]],
       facebook: [this.appService.currentStore.facebook, [Validators.maxLength(250)]],
+      instagram: [this.appService.currentStore.instagram, [Validators.maxLength(250)]],
       orderMinAmount: [this.appService.currentStore.orderMinAmount ? this.appService.currentStore.orderMinAmount : 0, [Validators.max(9999999999)]],
       address: [this.appService.currentStore.address, [Validators.maxLength(250)]],
       video1: [this.appService.currentStore.video1, [Validators.maxLength(250)]],
@@ -82,6 +83,7 @@ export class StoreUpdatePage implements OnInit {
       this.appService.currentStore.phone2 = this.form.value.phone2 ? this.form.value.phone2 : 0;
       this.appService.currentStore.whatsapp = this.form.value.whatsapp ? this.form.value.whatsapp : 0;
       this.appService.currentStore.facebook = this.form.value.facebook;
+      this.appService.currentStore.instagram = this.form.value.instagram;
       this.appService.currentStore.video1 = this.form.value.video1;
       this.appService.currentStore.video2 = this.form.value.video2;
       this.appService.currentStore.video3 = this.form.value.video3;

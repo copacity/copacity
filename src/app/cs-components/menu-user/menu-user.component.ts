@@ -75,6 +75,8 @@ export class MenuUserComponent implements OnInit {
   //--------------------------------       STORE CREATION
 
   async openStoreCreatePage() {
+    this.popoverController.dismiss();
+
     if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StoreCreatePage,

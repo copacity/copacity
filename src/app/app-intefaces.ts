@@ -90,6 +90,7 @@ export interface Store {
   phone1: number;
   phone2: number;
   logo: string;
+  thumb_logo: string;
   status: number;
   description: string;
   lastUpdated: Date;
@@ -99,6 +100,7 @@ export interface Store {
   deliveryPrice: number;
   orderMinAmount: number;
   facebook: string;
+  instagram: string;
   whatsapp: number;
   productsCount: number;
   productsLimit: number;
@@ -212,6 +214,7 @@ export interface User {
   name: string;
   email: string;
   photoUrl: string;
+  thumb_photoUrl: string;
   phone1: number;
   phone2: number;
   whatsapp: number;

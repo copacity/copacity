@@ -41,7 +41,6 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <!-- Left Side Menu Only To Big Browsers -->
   <div id="main-menu-large">
     <ion-header>
       <ion-toolbar>
@@ -119,7 +118,6 @@
     </ion-content>
   </div>
 
-  <!-- Right Side Menu Only To Big Browsers -->
   <div id="main-menu-large-right">
     <ion-header>
       <ion-toolbar>
@@ -253,7 +251,7 @@
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
                     <div class="blog-col-item" style="margin-bottom: 0px">
                       <a (click)="goToStore($event, store)">
-                        <img src="{{store?.logo?store.logo:'../../../assets/icon/no-image.png'}}"
+                        <img src="{{store?.thumb_logo?store.thumb_logo:'../../../assets/icon/no-image.png'}}"
                           class="responsive-image preload-image shadow-small round-medium img-store" alt="img">
 
                         <div class="review-stars" style="padding-top: 5px;font-size: .6em;">
@@ -365,10 +363,10 @@
                         <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                           <a style="width: 100%;">
                             <i
-                              (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png')">
+                              (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.thumb_logo?nofeaturedProduct.store.thumb_logo:'../../../assets/icon/no-image.png')">
                               <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
                                 <img
-                                  src="{{nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png'}}"
+                                  src="{{nofeaturedProduct.store.thumb_logo?nofeaturedProduct.store.thumb_logo:'../../../assets/icon/no-image.png'}}"
                                   alt="img" style="width: 80px;">
                               </div>
                             </i>
@@ -381,7 +379,7 @@
                             <div class="clear"></div>
                           </a>
 
-                          <a (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.logo?nofeaturedProduct.store.logo:'../../../assets/icon/no-image.png')"
+                          <a (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.thumb_logo?nofeaturedProduct.store.thumb_logo:'../../../assets/icon/no-image.png')"
                             style="padding-top: 10px;font-size: .7em;">Ver mas...</a>
                         </div>
                       </div>
@@ -425,35 +423,35 @@
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                         <a>
-                          <img (click)="goToPage(storeCoupon.url, storeCoupon.store.logo)"
+                          <img (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
                             style="width: 250px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
                             class="preload-image shadow-large round-small" src="../../../assets/icon/couponTemplate.png"
                             alt="img">
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.logo)"
+                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 45px;left: 10px">
                             <span style="padding: 0px 0px 0px 0px;">
                               Tienda:</span>
                           </em>
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.logo)"
+                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 60px;left: 10px">
                             <span style="padding: 0px 0px 0px 0px;color: black;">
                               {{storeCoupon.store.name}}</span>
                           </em>
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.logo)"
+                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 105px;left: 10px">
                             <span style="padding: 0px 0px 0px 0px;font-size: 5em;color: lawngreen;">
                               {{storeCoupon.storeCoupon.discount}}%</span>
                           </em>
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.logo)"
+                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 95px;left: 120px">
                             <span style="padding: 0px 0px 0px 0px;">
                               descuento!!</span>
                           </em>
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.logo)"
+                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 140px;left: 10px">
                             <label style="padding: 0px 0px 0px 0px;color: red;text-decoration: none;">
                               Compras mayores a

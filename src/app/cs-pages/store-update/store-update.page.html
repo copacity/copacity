@@ -42,6 +42,10 @@
             <ion-label position="floating" style="color: gray;">Facebook</ion-label>
             <ion-input formControlName="facebook"></ion-input>
           </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Instagram</ion-label>
+            <ion-input formControlName="instagram"></ion-input>
+          </ion-item>
           <!-- <ion-item>
             <ion-label position="floating" style="color: gray;">Valor Envío</ion-label>
             <ion-input formControlName="deliveryPrice" type="number"></ion-input>
@@ -143,6 +147,9 @@
         </p>
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('facebook').errors">
           <span *ngIf="form.get('facebook').hasError('maxlength')">Facebook debe ser máximo de 250 caracteres</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('instagram').errors">
+          <span *ngIf="form.get('instagram').hasError('maxlength')">Instagram debe ser máximo de 250 caracteres</span>
         </p>
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('orderMinAmount').errors">
           <span *ngIf="form.get('orderMinAmount').hasError('max')">Valor mínimo de pedido debe ser máximo de 10

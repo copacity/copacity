@@ -123,10 +123,12 @@ export class ProfilePage implements OnInit {
           this.loaderComponent.startLoading("Actualizando imagen, por favor espere un momento...");
           setTimeout(() => {
             this.storageService.ResizeImage(image, this.appService.currentUser.id, 500, 500).then((url) => {
-              this.usersService.update(this.appService.currentUser.id, { photoUrl: url }).then(result => {
-                this.appService.currentUser.photoUrl = url.toString();
-                this.loaderComponent.stopLoading();
-                this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+              this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
+                this.usersService.update(this.appService.currentUser.id, { photoUrl: url, thumb_photoUrl: thumbUrl }).then(result => {
+                  this.appService.currentUser.photoUrl = url.toString();
+                  this.loaderComponent.stopLoading();
+                  this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+                });
               });
             });
           }, 500);
@@ -165,10 +167,12 @@ export class ProfilePage implements OnInit {
   takePictureProfile() {
 
     this.storageService.takePhoto(this.appService.currentUser.id, 500, 500).then((url) => {
-      this.loaderComponent.startLoading("Actualizando foto, por favor espere un momento...");
-      this.usersService.update(this.appService.currentUser.id, { photoUrl: url }).then(result => {
-        this.appService.currentUser.photoUrl = url.toString();
-        this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+      this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
+        this.loaderComponent.startLoading("Actualizando foto, por favor espere un momento...");
+        this.usersService.update(this.appService.currentUser.id, { photoUrl: url, thumb_photoUrl: thumbUrl }).then(result => {
+          this.appService.currentUser.photoUrl = url.toString();
+          this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+        });
       });
     });
   }
@@ -254,7 +258,7 @@ export class ProfilePage implements OnInit {
     popover.present();
   }
 
-  
+
   signOut() {
     this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
       this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
