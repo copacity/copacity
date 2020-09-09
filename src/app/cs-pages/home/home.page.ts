@@ -25,6 +25,7 @@ import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-p
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
+import { HostListener } from "@angular/core";
 
 @Component({
   selector: 'app-home',
@@ -97,6 +98,41 @@ export class HomePage implements OnInit {
     });
 
     this.initializePage();
+    this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    let screenHeight = window.innerHeight;
+    let screenWidth = window.innerWidth;
+    console.log(screenHeight, screenWidth);
+
+    if (screenWidth <= 450) {
+      
+      this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 4 }
+      this.appService.slideOptsStores = { speed: 800, slidesPerView: 3 }
+      this.appService.slideOptsProductsNoDiscount = { speed: 1000, slidesPerView: 2 }
+      this.appService.slideOptsProductsNoFeatured = { speed: 2000, slidesPerView: 2 }
+      this.appService.slideOptsStoreCoupons = { speed: 1500, slidesPerView: 1 }
+      this.appService.slideOptsGifts = { speed: 500, slidesPerView: 3 }
+
+    } else if (screenWidth > 450 && screenWidth <= 600) {
+      
+      this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 5 }
+      this.appService.slideOptsStores = { speed: 800, slidesPerView: 4 }
+      this.appService.slideOptsProductsNoDiscount = { speed: 1000, slidesPerView: 3 }
+      this.appService.slideOptsProductsNoFeatured = { speed: 2000, slidesPerView: 3 }
+      this.appService.slideOptsStoreCoupons = { speed: 1500, slidesPerView: 2 }
+      this.appService.slideOptsGifts = { speed: 500, slidesPerView: 4 }
+
+    } else if (screenWidth > 600) {
+      this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 6 }
+      this.appService.slideOptsStores = { speed: 800, slidesPerView: 5 }
+      this.appService.slideOptsProductsNoDiscount = { speed: 1000, slidesPerView: 4 }
+      this.appService.slideOptsProductsNoFeatured = { speed: 2000, slidesPerView: 4 }
+      this.appService.slideOptsStoreCoupons = { speed: 1500, slidesPerView: 2 }
+      this.appService.slideOptsGifts = { speed: 500, slidesPerView: 5 }
+    } 
   }
 
   ngOnInit(): void { }
@@ -328,7 +364,7 @@ export class HomePage implements OnInit {
     return await popover.present();
   }
 
-  scrollStart(){
+  scrollStart() {
     setTimeout(() => {
       //this.fullScreen();
     }, 300);

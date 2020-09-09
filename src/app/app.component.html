@@ -68,7 +68,8 @@
             <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
                 class="fa fa-share-alt"></i></a>
           </div>
-          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b> {{ appService.appVersion }} 
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
+            {{ appService.appVersion }}
           </p>
           <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
             &copy; Enabled <span id="copyright-year">2020</span>.
@@ -82,5 +83,4 @@
   <ion-router-outlet id="main"></ion-router-outlet>
 
   <app-loader></app-loader>
-
 </ion-app>
