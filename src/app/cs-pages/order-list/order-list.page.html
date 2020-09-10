@@ -42,11 +42,9 @@
         </div>
 
         <div class="content top-30" *ngIf="!appService?.currentUser">
-          <ion-menu-toggle auto-hide="true">
-            <a (click)="SignIn()"
-              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-              class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-          </ion-menu-toggle>
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -158,8 +156,8 @@
                     <ion-label>Selecciona Tienda:</ion-label>
                     <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
                       interface='action-sheet' (ionChange)="stores_OnChange($event)">
-                      <ion-select-option *ngFor="let store of stores"
-                        value="{{store.id}}">{{store.name}}</ion-select-option>
+                      <ion-select-option *ngFor="let store of stores" value="{{store.id}}">{{store.name}}
+                      </ion-select-option>
                     </ion-select>
                   </ion-item>
                 </ion-list>
@@ -182,7 +180,8 @@
                 </div>
 
                 <div class="boxed-text-huge">
-                  <label *ngIf="orderSearchHits == 0 && !searchingOrders" style="color: red;padding-top: 20px;font-size: 1em;">No se
+                  <label *ngIf="orderSearchHits == 0 && !searchingOrders"
+                    style="color: red;padding-top: 20px;font-size: 1em;">No se
                     encontraron pedidos</label>
                 </div>
 
@@ -191,7 +190,9 @@
                     <div
                       class="user-group-manager {{ order?.status == 1?'border-red1-light':order?.status == 2?'border-green1-light':order?.status == 3?'border-dark2-dark':'' }}"
                       style="border-width: 5px;">
-                      <img style="z-index: 9;" (click) = "openImageViewer(order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png')" class="shadow-large"
+                      <img style="z-index: 9;"
+                        (click)="openImageViewer(order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png')"
+                        class="shadow-large"
                         src="{{order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
                       <h4 class="color-theme">{{ order?.userName }}</h4>
                       <span style="font-size: 10px;margin-top: 0px;" class="color-theme bolder">
@@ -265,7 +266,8 @@
     <table>
       <tr>
         <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
+            (click)="appService.discardTemoralCoupon()"
+            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
         <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
             style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
       </tr>

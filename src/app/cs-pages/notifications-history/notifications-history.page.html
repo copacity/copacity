@@ -11,7 +11,7 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button (click)="presentMenuNotifications($event)"  class="notifications-icon">
+      <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
         <i class="fa fa-bell" style="font-size: 1.2em;color: black"></i>
         <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
           slot="end">{{appService.notificationsCount | async}}</ion-badge>
@@ -25,98 +25,97 @@
     </ion-buttons>
   </ion-toolbar>
 
-    <!-- Left Side Menu Only To Big Browsers -->
-    <div id="main-menu-large">
-      <ion-header>
-        <ion-toolbar>
-          <div class="content top-30" *ngIf="appService?.currentUser">
-            <div class="user-slider owl-carousel  bottom-0">
-              <div class="user-list-left">
-                <img
-                  [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
-                  alt="img" class="shadow-small">
-                <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
-                <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
-              </div>
+  <!-- Left Side Menu Only To Big Browsers -->
+  <div id="main-menu-large">
+    <ion-header>
+      <ion-toolbar>
+        <div class="content top-30" *ngIf="appService?.currentUser">
+          <div class="user-slider owl-carousel  bottom-0">
+            <div class="user-list-left">
+              <img
+                [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
+                alt="img" class="shadow-small">
+              <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
+              <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
             </div>
           </div>
-  
-          <div class="content top-30" *ngIf="!appService?.currentUser">
-            <ion-menu-toggle auto-hide="true">
-              <a (click)="SignIn()"
-                style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-                class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-            </ion-menu-toggle>
+        </div>
+
+        <div class="content top-30" *ngIf="!appService?.currentUser">
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <ion-list>
+        <ion-item style="padding: 3px;" routerLink="/home">
+          <i class="fa fa-home"></i>
+          <ion-label style="padding-left:10px;font-size: 15px;">Inicio</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
+          <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
+          <ion-label style="padding-left:10px;font-size: 15px;">Mis Pedidos</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px;" routerLink="/contact">
+          <i class="fa fa-paper-plane"></i>
+          <ion-label style="padding-left:10px;font-size: 15px;">Mensajes</ion-label>
+        </ion-item>
+        <ion-item style="padding: 3px; cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
+          <i class="fa fa-sign-out-alt"></i>
+          <ion-label style="padding-left:10px;font-size: 15px;">Cerrar Sesión</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-toolbar style="padding-top: 30px;">
+        <div class="footer" style="padding: 8px 8px 8px 8px;">
+
+          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+            <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
           </div>
-        </ion-toolbar>
-      </ion-header>
-  
-      <ion-content class="side-content">
-        <ion-list>
-          <ion-item style="padding: 3px;" routerLink="/home">
-            <i class="fa fa-home"></i>
-            <ion-label style="padding-left:10px;font-size: 15px;">Inicio</ion-label>
-          </ion-item>
-          <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
-            <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
-            <ion-label style="padding-left:10px;font-size: 15px;">Mis Pedidos</ion-label>
-          </ion-item>
-          <ion-item style="padding: 3px;" routerLink="/contact">
-            <i class="fa fa-paper-plane"></i>
-            <ion-label style="padding-left:10px;font-size: 15px;">Mensajes</ion-label>
-          </ion-item>
-          <ion-item style="padding: 3px; cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
-            <i class="fa fa-sign-out-alt"></i>
-            <ion-label style="padding-left:10px;font-size: 15px;">Cerrar Sesión</ion-label>
-          </ion-item>
-        </ion-list>
-        <ion-toolbar style="padding-top: 30px;">
-          <div class="footer" style="padding: 8px 8px 8px 8px;">
-  
-            <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-              <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
-            </div>
-  
-            <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
-                style="color: red;">COPA</span>CITY</a>
-            <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">La forma mas rápida de
-              comprar</p>
-  
-            <div class="footer-socials" style="padding-left: 20px;">
-              <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
-                  class="fab fa-facebook-f"></i></a>
-              <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
-                  class="fa fa-phone"></i></a>
-              <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
-                  class="fab fa-whatsapp"></i></a>
-              <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
-                  class="fa fa-share-alt"></i></a>
-            </div>
-            <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b> {{ appService.appVersion }}
-            </p>
-            <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
-              &copy; Enabled <span id="copyright-year">2020</span>.
-              All Rights Reserved.
-            </p>
+
+          <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
+              style="color: red;">COPA</span>CITY</a>
+          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">La forma mas rápida de
+            comprar</p>
+
+          <div class="footer-socials" style="padding-left: 20px;">
+            <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+                class="fa fa-phone"></i></a>
+            <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
+                class="fab fa-whatsapp"></i></a>
+            <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
+                class="fa fa-share-alt"></i></a>
           </div>
-        </ion-toolbar>
-      </ion-content>
-    </div>
-  
-    <!-- Right Side Menu Only To Big Browsers -->
-    <div id="main-menu-large-right">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title style="text-align: center;">
-            <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
-          </ion-title>
-        </ion-toolbar>
-      </ion-header>
-  
-      <ion-content class="side-content">
-        <app-menu-notifications></app-menu-notifications>
-      </ion-content>
-    </div>
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
+            {{ appService.appVersion }}
+          </p>
+          <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
+            &copy; Enabled <span id="copyright-year">2020</span>.
+            All Rights Reserved.
+          </p>
+        </div>
+      </ion-toolbar>
+    </ion-content>
+  </div>
+
+  <!-- Right Side Menu Only To Big Browsers -->
+  <div id="main-menu-large-right">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title style="text-align: center;">
+          <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+      <app-menu-notifications></app-menu-notifications>
+    </ion-content>
+  </div>
 </ion-header>
 
 <super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
@@ -158,12 +157,15 @@
                     <div
                       class="user-group-manager {{ notification?.status == 1?'border-red1-light':notification?.status == 2?'border-green1-light':'' }}"
                       style="border-width: 5px;">
-                      <img style="z-index: 9;" (click)="openImageViewer(notification?.photoUrl?notification?.photoUrl:'../../../assets/icon/no-image.png')" class="shadow-large"
-                        src="{{notification?.photoUrl?notification?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
+                      <img style="z-index: 9;"
+                        (click)="openImageViewer(notification?.photoUrl?notification?.photoUrl:'../../../assets/icon/no-image.png')"
+                        class="shadow-large"
+                        src="{{notification?.photoUrl?notification?.photoUrl:'../../../assets/icon/no-image.png'}}"
+                        alt="img">
                       <h4 class="color-theme">{{ notification?.userName }}</h4>
                     </div>
                     <div>
- 
+
                       <h4 style="font-size: 20px;"
                         class="bolder {{ notification?.status == 1?'color-red1-light':notification?.status == 2?'color-green1-light':'' }}">
                         Notificacion {{ notification?.status | notificationStatusName }}</h4>
@@ -207,7 +209,8 @@
     <table>
       <tr>
         <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
+            (click)="appService.discardTemoralCoupon()"
+            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
         <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
             style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
       </tr>

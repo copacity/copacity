@@ -145,10 +145,10 @@ export class StorePage implements OnInit {
     private ordersService: OrdersService
   ) {
 
-    history.pushState(null, null, window.location.href);
-    this.locationStrategy.onPopState(() => {
-      history.pushState(null, null, window.location.href);
-    });
+    // history.pushState(null, null, window.location.href);
+    // this.locationStrategy.onPopState(() => {
+    //   history.pushState(null, null, window.location.href);
+    // });
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
       this.storesService.getById(this.route.snapshot.params.id).then(result => {

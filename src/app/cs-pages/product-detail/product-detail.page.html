@@ -50,11 +50,9 @@
         </div>
 
         <div class="content top-30" *ngIf="!appService?.currentUser">
-          <ion-menu-toggle auto-hide="true">
-            <a (click)="SignIn()"
-              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-              class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-          </ion-menu-toggle>
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -151,7 +149,8 @@
             <ion-slides *ngIf="productImageCollection.length != 0" #sliderImageProductUpdate [options]="slideOpts"
               pager="true" style="padding-top: 20px;">
               <ion-slide *ngFor="let productImage of productImageCollection">
-                <img class="round-medium" [src]="productImage.image" alt="img" (click)='openImageViewer(productImage.image)'>
+                <img class="round-medium" [src]="productImage.image" alt="img"
+                  (click)='openImageViewer(productImage.image)'>
                 <!-- <em (click)="removeProductImage(productImage)" class="round-small" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
                   top: 0px;right: 0px">
                   <i class="fa fa-times-circle" style="margin: 5px;color: black;font-size: 2em;"></i></em> -->
@@ -260,7 +259,8 @@
     <table>
       <tr>
         <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
+            (click)="appService.discardTemoralCoupon()"
+            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
         <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
             style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
       </tr>

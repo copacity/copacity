@@ -55,10 +55,10 @@ export class ContactPage implements OnInit {
     private locationStrategy: LocationStrategy,
     public location: Location) {
 
-    history.pushState(null, null, window.location.href);
-    this.locationStrategy.onPopState(() => {
-      history.pushState(null, null, window.location.href);
-    });
+    // history.pushState(null, null, window.location.href);
+    // this.locationStrategy.onPopState(() => {
+    //   history.pushState(null, null, window.location.href);
+    // });
 
     this.buildForm();
     this.getStores();

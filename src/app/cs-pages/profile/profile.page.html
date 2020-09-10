@@ -13,7 +13,8 @@
     <ion-buttons slot="primary">
       <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
         <i class="fa fa-bell" style="color: black"></i>
-        <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger" slot="end">{{appService.notificationsCount | async}}</ion-badge>
+        <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
+          slot="end">{{appService.notificationsCount | async}}</ion-badge>
       </ion-button>
       <ion-button (click)="presentMenuUser($event)">
         <i class="fa fa-user" style="color: black"></i>
@@ -24,8 +25,8 @@
     </ion-buttons>
   </ion-toolbar>
 
-   <!-- Left Side Menu Only To Big Browsers -->
-   <div id="main-menu-large">
+  <!-- Left Side Menu Only To Big Browsers -->
+  <div id="main-menu-large">
     <ion-header>
       <ion-toolbar>
         <div class="content top-30" *ngIf="appService?.currentUser">
@@ -41,11 +42,9 @@
         </div>
 
         <div class="content top-30" *ngIf="!appService?.currentUser">
-          <ion-menu-toggle auto-hide="true">
-            <a (click)="SignIn()"
-              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-              class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-          </ion-menu-toggle>
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -90,7 +89,8 @@
             <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
                 class="fa fa-share-alt"></i></a>
           </div>
-          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b> {{ appService.appVersion }}
+          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
+            {{ appService.appVersion }}
           </p>
           <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
             &copy; Enabled <span id="copyright-year">2020</span>.
@@ -152,14 +152,15 @@
             </a>
 
             <img (click)="openImageViewer()" class="img-profile-store profile-image preload-image round-medium"
-            [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'" alt="img">
+              [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
+              alt="img">
 
             <div class="under-slider-button" style="z-index: 100;padding-left: 8px;text-align: center;">
 
               <div class="cta-socials">
                 <a class="icon icon-s icon-round shadow-small" style="background-color: white;">
                   <label for="file-upload">
-                    <i class="fa fa-upload" style="color: black;"></i> <a>Subir Imagen</a> 
+                    <i class="fa fa-upload" style="color: black;"></i> <a>Subir Imagen</a>
                   </label>
                   <input (change)="uploadFileProfile($event)" id="file-upload" type="file" />
                 </a>
@@ -182,136 +183,138 @@
               <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;text-align: left;">
                 <a href="tel:{{appService.currentUser?.phone1}}" class="round-small shadow-tiny">
                   <i class="fa fa-phone" style="color: green;"></i>
-                  <span *ngIf="(appService.currentUser?.phone1 !=0)" style="font-size: 18px;">{{appService.currentUser?.phone1}}</span>
+                  <span *ngIf="(appService.currentUser?.phone1 !=0)"
+                    style="font-size: 18px;">{{appService.currentUser?.phone1}}</span>
                 </a>
               </div>
 
               <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;text-align: left;">
                 <a href="tel:{{appService.currentUser?.phone2}}" class="round-small shadow-tiny">
                   <i class="fa fa-phone" style="color: green;"></i>
-                  <span *ngIf="(appService.currentUser?.phone2 !=0)" style="font-size: 18px;">{{appService.currentUser?.phone2}}</span>
+                  <span *ngIf="(appService.currentUser?.phone2 !=0)"
+                    style="font-size: 18px;">{{appService.currentUser?.phone2}}</span>
                 </a>
               </div>
 
               <div class="link-list link-list-3" style="padding-left: 20px;padding-right: 20px;text-align: left;">
-                <a href="https://wa.me/57{{appService.currentUser?.whatsapp}}"  class="round-small shadow-tiny">
+                <a href="https://wa.me/57{{appService.currentUser?.whatsapp}}" class="round-small shadow-tiny">
                   <i class="fab fa-whatsapp" style="color: green;"></i>
-                  <span *ngIf="(appService.currentUser?.whatsapp !=0)" style="font-size: 18px;">{{appService.currentUser?.whatsapp}}</span>
+                  <span *ngIf="(appService.currentUser?.whatsapp !=0)"
+                    style="font-size: 18px;">{{appService.currentUser?.whatsapp}}</span>
                 </a>
               </div>
 
               <div class="link-list link-list-3" style="padding-top: 20px;">
-                <a (click)="openAddressListPage()" class="round-small shadow-tiny"
-                  style="border-radius:15px">
+                <a (click)="openAddressListPage()" class="round-small shadow-tiny" style="border-radius:15px">
                   <i style="font-size: 2em;color: green;top: 32px;" class="fa fa-map-marker-alt"></i>
-                  <strong style="font-size: 1.5em;padding-top: 10px;color: green;padding-left: 0px;">Direcciones:</strong>
-                  
-                    <div class="content" style="margin: 0px 0px 40px 0px;">
-                      <table
-                        class="table-borders-dark store-product-table top-20 bottom-20 round-medium"
-                        style="border: solid 1px rgba(0,0,0,0.08);">
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Nombre
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.name}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Apellido
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.lastName}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Tel 1
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.phone1}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Tel 2
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.phone2}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            País
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.country}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Ciudad
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.city}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Dirección
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.address}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Código Postal
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.postalCode}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align: top;" class="bold color-theme">
-                            Descripción
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div>
-                              {{appService.addressChecked?.description}}
-                              <br />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                    
+                  <strong
+                    style="font-size: 1.5em;padding-top: 10px;color: green;padding-left: 0px;">Direcciones:</strong>
+
+                  <div class="content" style="margin: 0px 0px 40px 0px;">
+                    <table class="table-borders-dark store-product-table top-20 bottom-20 round-medium"
+                      style="border: solid 1px rgba(0,0,0,0.08);">
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Nombre
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.name}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Apellido
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.lastName}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Tel 1
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.phone1}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Tel 2
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.phone2}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          País
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.country}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Ciudad
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.city}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Dirección
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.address}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Código Postal
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.postalCode}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;" class="bold color-theme">
+                          Descripción
+                        </td>
+                        <td style="vertical-align: top;">
+                          <div>
+                            {{appService.addressChecked?.description}}
+                            <br />
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
                   <i style="font-size: 2em;color: green;top: 32px;" class="fa fa-arrow-right"></i>
                 </a>
               </div>
@@ -344,7 +347,8 @@
     <table>
       <tr>
         <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
+            (click)="appService.discardTemoralCoupon()"
+            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
         <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
             style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
       </tr>

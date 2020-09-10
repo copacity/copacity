@@ -46,11 +46,9 @@
         </div>
 
         <div class="content top-30" *ngIf="!appService?.currentUser">
-          <ion-menu-toggle auto-hide="true">
-            <a (click)="SignIn()"
-              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-              class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-          </ion-menu-toggle>
+          <a (click)="SignIn()"
+            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -216,7 +214,7 @@
                   <div>
                     <a (click)="sendMessage()"
                       style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-                      class="button button-round-small shadow-large button-full button-s">ENVIAR!</a>
+                      class="button button-round-small button-full button-s">ENVIAR!</a>
                   </div>
 
                 </div>
@@ -265,7 +263,8 @@
     <table>
       <tr>
         <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
+            (click)="appService.discardTemoralCoupon()"
+            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
         <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
             style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
       </tr>
