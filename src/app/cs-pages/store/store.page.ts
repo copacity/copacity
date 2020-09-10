@@ -117,6 +117,8 @@ export class StorePage implements OnInit {
   orderSearchHits = 0;
   orderSearchText: string = '';
 
+  selectedCategoryName: string = 'Todos los productos';
+
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------      CONSTRUCTOR 
@@ -730,7 +732,23 @@ export class StorePage implements OnInit {
     this.idProductCategory = e.target.value;
 
     setTimeout(() => {
-      this.getProducts(e.target.value)
+      this.getProducts(e.target.value);
+
+      if (e.target.value == "0") {
+        this.selectedCategoryName = "Todos los productos";
+      } else if (e.target.value == "-1") {
+        this.selectedCategoryName = "Productos destacados";
+      } else {
+        let sbs = this.productCategories.subscribe((item: ProductCategory[]) => {
+          item.forEach(pc => {
+            if (pc.id == e.target.value) {
+              this.selectedCategoryName = pc.name;
+            }
+          });
+
+          sbs.unsubscribe();
+        });
+      }
     }, 500);
   }
 
