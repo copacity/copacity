@@ -146,22 +146,21 @@
             class="profile-button button shadow-small button-m button-round uppercase bolder button-center-medium">CUPONES</a> -->
 
           <a (click)="openBarCodeScanner()"
-            style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;font-weight: 500;margin: 2px;"
-            class="color-highlight">
+            style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;font-weight: 500;margin: 2px;color: red;">
             <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
           <div style="text-align: -webkit-left;">
-            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;CUPONES</h4>
+            <h4 class="bolder" style="font-size: 1em;margin-top: 10px;color: black;">&nbsp;CUPONES</h4>
           </div>
 
           <div id="page" class="top-10">
             <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
               <table class="table-borders bottom-10" style="font-size: 1.2em;">
                 <tr>
-                  <td colspan="2" style="vertical-align: top; text-align: center;padding: 0px 0px 0px 0px;">
-                    <a (click)="openStoreCouponsPage()" style="padding: 8px 8px;border: dotted;"
+                  <td colspan="2" style="vertical-align: top; text-align: -webkit-center;padding: 0px 0px 0px 0px;">
+                    <a (click)="openStoreCouponsPage()" style="padding: 8px 8px;border: dotted;width: 180px;"
                       class="button button-round-small button-full button-s bg-highlight"> <i class="fa fa-cut"
-                        style="font-size: 1.5em;"></i> Ver Cupones Virtuales</a>
+                        style="font-size: 1.5em;"></i> Ver Cupones</a>
                   </td>
                 </tr>
                 <tr>
@@ -184,7 +183,7 @@
                   <td style="vertical-align: top; text-align: -webkit-left;padding: 10px 0px 0px 0px;">
                     <span *ngIf="storeCoupon" style="color: green;font-weight: bold;">Cupón Válido!!</span>
                   </td>
-                  <td style="vertical-align: top; text-align: -webkit-right;;padding: 10px 0px 0px 0px;">
+                  <td style="vertical-align: top; text-align: -webkit-right;padding: 10px 0px 0px 0px;">
                     <a (click)="validateCoupon_click()"
                       style="color:white;padding: 8px 8px;width: 75px; background-color: red;"
                       class="button button-round-small button-full button-s">Aplicar</a>
@@ -206,7 +205,7 @@
             DE ENVIO</a> -->
 
           <div style="text-align: -webkit-left;">
-            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;METODO DE ENVIO</h4>
+            <h4 class="bolder" style="font-size: 1em;margin-top: 10px;color: black;">&nbsp;METODO DE ENVIO</h4>
           </div>
 
           <div id="page">
@@ -374,7 +373,7 @@
             DE PAGO</a> -->
 
           <div style="text-align: -webkit-left;">
-            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;FORMAS DE PAGO</h4>
+            <h4 class="bolder" style="font-size: 1em;margin-top: 10px;color: black;">&nbsp;FORMAS DE PAGO</h4>
           </div>
 
           <div id="page">
@@ -417,7 +416,7 @@
           <!-- <a style="background-color: white; color: black; border-radius:15px;"
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FACTURA</a> -->
           <div style="text-align: -webkit-left;">
-            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;FACTURA</h4>
+            <h4 class="bolder" style="font-size: 1em;margin-top: 10px;color: black;">&nbsp;FACTURA</h4>
           </div>
 
           <div id="page">
@@ -438,16 +437,16 @@
                   </td>
                   <td style="text-align: left; padding-left: 5px;vertical-align: top">{{cartProduct.product.name}}
                     <span *ngFor="let property of cartProduct.propertiesSelection;"
-                      style="font-size: .7em;font-weight: 700;color: blue;">, {{property.propertyName }}:
+                      style="font-size: .9em;font-weight: 700;color: blue;">, {{property.propertyName }}:
                       {{property.propertyOptionName }}
                     </span>
 
                     <span *ngIf="cartProduct.product?.discount && cartProduct.product?.discount > 0"
-                      style="font-size: .7em;font-weight: 700;color: black;background-color: yellow;">
+                      style="font-size: .9em;font-weight: 700;color: black;background-color: yellow;">
                       (-{{cartProduct.product.discount}}%)</span>
 
                     <span *ngIf="cartProduct.product?.isGift"
-                      style="font-size: .7em;font-weight: 700;color: black;background-color: yellow;">🎁 REGALO!
+                      style="font-size: .9em;font-weight: 700;color: black;background-color: yellow;">🎁 REGALO!
                       🥳🎉</span>
                   </td>
                   <td style="vertical-align: top;text-align: right;" class="color-green1-dark">
@@ -511,7 +510,7 @@
             TE ASESORO?</a> -->
 
           <div style="text-align: -webkit-left;">
-            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;ASESORES COMERCIALES
+            <h4 class="bolder" style="font-size: 1em;margin-top: 10px;color: black;">&nbsp;ASESORES COMERCIALES
             </h4>
           </div>
 
@@ -587,7 +586,7 @@
             class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">FINALIZAR</a> -->
 
           <div style="text-align: -webkit-left;">
-            <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;FINALIZAR</h4>
+            <h4 class="bolder" style="font-size: 1em;margin-top: 10px;color: black;">&nbsp;FINALIZAR</h4>
           </div>
 
           <div id="page">

@@ -54,6 +54,7 @@ import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
 import { UsersService } from 'src/app/cs-services/users.service';
+import { HostListener } from "@angular/core";
 
 @Component({
   selector: 'app-store',
@@ -74,6 +75,7 @@ export class StorePage implements OnInit {
   photo: SafeResourceUrl;
   store: Store;
   isAdmin: boolean = false;
+  isBigScreen: boolean = false;
 
   file: File;
   public imagePath;
@@ -168,6 +170,24 @@ export class StorePage implements OnInit {
         this.initialize(true);
       });
     });
+
+    this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    let screenHeight = window.innerHeight;
+    let screenWidth = window.innerWidth;
+    console.log(screenHeight, screenWidth);
+
+    if (screenWidth <= 450) {
+      this.isBigScreen = false;
+      this.appService.slideOptsStoreMenu = { speed: 2000, slidesPerView: 5 }
+    }
+    else if (screenWidth > 450) {
+      this.isBigScreen = true;
+      this.appService.slideOptsStoreMenu = { speed: 2000, slidesPerView: 6 }
+    }
   }
 
   initialize(firstTime: boolean) {

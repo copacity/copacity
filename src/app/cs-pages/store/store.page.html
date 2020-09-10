@@ -177,7 +177,7 @@
 
             <div class="top-20"></div>
 
-            <ion-slides #sliderMenu [options]="appService.slideOptsStoreMenu" style="max-width: 450px;">
+            <ion-slides id="sliderMenu" #sliderMenu [options]="appService.slideOptsStoreMenu">
               <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
@@ -386,9 +386,9 @@
 
             <div class="content bottom-10">
               <div *ngIf="searchingProducts" style="padding-top:10px ;">
-                <div class="one-half" *ngFor="let item of [1,2,3,4,5,6]">
-                  <div class="blog-col-item">
-                    <a>
+                <div class="gallery-views {{isBigScreen?'gallery-view-1':'gallery-view-2'}}">
+                  <div class="blog-col-item" style="margin-bottom: 0px;">
+                    <a *ngFor="let item of [1,2,3,4,5,6]">
                       <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
                       <ion-label>
                         <h3>
@@ -412,10 +412,9 @@
                   encontraron productos en la sección seleccionada</label>
               </div>
 
-              <div class="one-half {{ (i %2 != 0? 'last-column':'' )}} "
-                *ngFor="let product of products | async; let i = index" style="padding-bottom: 50px">
+              <div class="gallery-views {{isBigScreen?'gallery-view-1':'gallery-view-2'}}">
                 <div class="blog-col-item" style="margin-bottom: 0px;">
-                  <a>
+                  <a *ngFor="let product of products | async; let i = index">
                     <img (click)="openProduct(product)"
                       src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}"
                       class="responsive-image preload-image round-medium shadow-small img-store {{(product?.soldOut)?'sold-out':'' }}"
@@ -456,24 +455,25 @@
                       <tr>
                         <td style="text-align: center;padding: 45px 0px 0px 0px;margin-top: 0px">
                           <a *ngIf="isAdmin" (click)="openBarCodeGenerator(product)"
-                            class="icon icon-s icon-round shadow-small">
+                            class="icon icon-s icon-round shadow-small" style="margin: 0px;">
                             <i class="fa fa-qrcode" style="color: black"></i></a>
                           <a *ngIf="isAdmin" (click)="presentDeleteProductPrompt(product)"
-                            class="icon icon-s icon-round shadow-small">
+                            class="icon icon-s icon-round shadow-small" style="margin: 0px;">
                             <i class="fa fa-trash" style="color: black"></i></a>
                           <a *ngIf="isAdmin" (click)="openProductUpdatePage(product)"
-                            class="icon icon-s icon-round shadow-small">
+                            class="icon icon-s icon-round shadow-small" style="margin: 0px;">
                             <i class="fa fa-edit" style="color: black"></i></a>
                         </td>
                       </tr>
                       <tr *ngIf="isAdmin">
                         <td style="padding: 0px 0px 0px 0px;">
-                          <a (click)="openProductInventoryPage(product)" *ngIf="isAdmin" style="color:red;"
+                          <a (click)="openProductInventoryPage(product)" *ngIf="isAdmin"
+                            style="color:red;width: 100%;top:5px"
                             class="button button-round-small shadow-small button-full button-s">
                             <i class="fa fa-dolly-flatbed add-button"
                               style="color: black;padding-right: 5px;"></i>Bodega</a>
 
-                          <ion-list *ngIf="isAdmin">
+                          <ion-list *ngIf="isAdmin" style="width: 100%;">
                             <ion-item style="text-align: -webkit-left;">
                               <ion-label style="color: gray;font-size: small;padding-left: 5px;">Destacado</ion-label>
                               <ion-toggle (ionChange)="productFeatured($event, product)" mode="ios" slot="start"
@@ -491,8 +491,8 @@
                       </tr>
                       <tr *ngIf="!isAdmin">
                         <td style="text-align: center;">
-                          <a (click)="addToCart($event, product)" style="background-color: red;color:white;"
-                            class="button button-round-small shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
+                          <a (click)="addToCart($event, product)" style="background-color: red;color:white;width: 100%;"
+                            class="button-round-small bold shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
                             <i class="fa fa-shopping-cart add-button" style="color: white;padding-right: 5px;"></i>LO
                             QUIERO!</a>
                         </td>

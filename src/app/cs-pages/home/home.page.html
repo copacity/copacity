@@ -143,7 +143,8 @@
           </ion-refresher-content>
         </ion-refresher>
 
-        <ion-slides id="sliderHomeProductsDiscount" #sliderHomeProductsDiscount [options]="appService.slideOptsProductsDiscount">
+        <ion-slides id="sliderHomeProductsDiscount" #sliderHomeProductsDiscount
+          [options]="appService.slideOptsProductsDiscount">
           <ion-slide
             (click)="goToPage(featuredProduct.url, featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png')"
             *ngFor="let featuredProduct of featuredProductsDiscount;" style="padding: 2px; padding-top: 17px;">
@@ -244,8 +245,8 @@
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
-                <ion-slides id="sliderHomeStores" #sliderHomeStores *ngIf="(stores && stores.length != 0) && !searchingStores"
-                  [options]="appService.slideOptsStores">
+                <ion-slides id="sliderHomeStores" #sliderHomeStores
+                  *ngIf="(stores && stores.length != 0) && !searchingStores" [options]="appService.slideOptsStores">
                   <ion-slide *ngFor="let store of stores; let i = index"
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
                     <div class="blog-col-item" style="margin-bottom: 0px">
@@ -274,23 +275,29 @@
                   <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Productos Destacados</h4>
                 </div>
 
-                <div *ngIf="searchingProductsNoDiscount">
-                  <div class="one-half" *ngFor="let item of [1,2]">
-                    <div class="blog-col-item">
+                <ion-slides *ngIf="searchingProductsNoDiscount" [options]="appService.slideOptsProductsNoDiscount">
+                  <ion-slide *ngFor="let item of [1,2,3,4,5,6]">
+                    <div class="blog-col-item" style="margin-bottom: 0px;width: 100%;padding: 10px;">
                       <a>
                         <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
+                        <ion-label>
+                          <h3>
+                            <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                          </h3>
+                        </ion-label>
                       </a>
                     </div>
-                  </div>
-                </div>
+                  </ion-slide>
+                </ion-slides>
 
-                <div *ngIf="(featuredProductsNoDiscount && featuredProductsNoDiscount.length == 0) && !searchingProductsNoDiscount" class="boxed-text-huge"
-                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                <div
+                  *ngIf="(featuredProductsNoDiscount && featuredProductsNoDiscount.length == 0) && !searchingProductsNoDiscount"
+                  class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
-                <ion-slides id="sliderHomeProductsNoDiscount" #sliderHomeProductsNoDiscount *ngIf="!searchingProductsNoDiscount"
-                  [options]="appService.slideOptsProductsNoDiscount">
+                <ion-slides id="sliderHomeProductsNoDiscount" #sliderHomeProductsNoDiscount
+                  *ngIf="!searchingProductsNoDiscount" [options]="appService.slideOptsProductsNoDiscount">
                   <ion-slide *ngFor="let featuredProductNoDiscount of featuredProductsNoDiscount;"
                     style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
                     <div class="profile-2">
@@ -337,7 +344,22 @@
                   </h4>
                 </div>
 
-                <div *ngIf="searchingProductsNoFeatured">
+                <ion-slides *ngIf="searchingProductsNoFeatured" [options]="appService.slideOptsProductsNoFeatured">
+                  <ion-slide *ngFor="let item of [1,2,3,4,5,6]">
+                    <div class="blog-col-item" style="margin-bottom: 0px;width: 100%;padding: 10px;">
+                      <a>
+                        <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
+                        <ion-label>
+                          <h3>
+                            <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                          </h3>
+                        </ion-label>
+                      </a>
+                    </div>
+                  </ion-slide>
+                </ion-slides>
+
+                <!-- <div *ngIf="searchingProductsNoFeatured">
                   <div class="one-half" *ngFor="let item of [1,2]">
                     <div class="blog-col-item">
                       <a>
@@ -345,15 +367,17 @@
                       </a>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
-                <div *ngIf="(featuredProductsNoFeatured && featuredProductsNoFeatured.length == 0) && !searchingProductsNoFeatured" class="boxed-text-huge"
-                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                <div
+                  *ngIf="(featuredProductsNoFeatured && featuredProductsNoFeatured.length == 0) && !searchingProductsNoFeatured"
+                  class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
                 <div class="gallery gallery-collection bottom-20 top-20">
-                  <ion-slides id="sliderHomeProductsNoFeatured" #sliderHomeProductsNoFeatured [options]="appService.slideOptsProductsNoFeatured">
+                  <ion-slides id="sliderHomeProductsNoFeatured" #sliderHomeProductsNoFeatured
+                    [options]="appService.slideOptsProductsNoFeatured">
                     <ion-slide *ngFor="let nofeaturedProduct of featuredProductsNoFeatured;"
                       style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
 
@@ -411,8 +435,8 @@
                   </ion-slide>
                 </ion-slides>
 
-                <div *ngIf="(storeCoupons && storeCoupons.length == 0) && !searchingStoreCoupons" class="boxed-text-huge"
-                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                <div *ngIf="(storeCoupons && storeCoupons.length == 0) && !searchingStoreCoupons"
+                  class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
@@ -482,7 +506,8 @@
                 </div>
 
                 <ion-slides *ngIf="searchingGifts" [options]="appService.slideOptsGifts" style="max-width: 450px;">
-                  <ion-slide *ngFor="let item of [1,2,3,4,5,6]" style="padding: 2px; padding-right: 5px;padding-left: 5px;">
+                  <ion-slide *ngFor="let item of [1,2,3,4,5,6]"
+                    style="padding: 2px; padding-right: 5px;padding-left: 5px;">
                     <ion-skeleton-text animated
                       class="responsive-image preload-image shadow-small round-medium img-store"
                       style="width: 100px;height: 100px;">
@@ -495,7 +520,8 @@
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
-                <ion-slides id="sliderHomeGifts" #sliderHomeGifts *ngIf="!searchingGifts" [options]="appService.slideOptsGifts">
+                <ion-slides id="sliderHomeGifts" #sliderHomeGifts *ngIf="!searchingGifts"
+                  [options]="appService.slideOptsGifts">
                   <ion-slide
                     (click)="openWithOption(gift.url, gift.product.image?gift.product.image:'../../../assets/icon/no-image.png', 4)"
                     *ngFor="let gift of gifts;" style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
@@ -643,7 +669,8 @@
     <table>
       <tr>
         <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()" style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
+            (click)="appService.discardTemoralCoupon()"
+            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
         <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
             style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
       </tr>

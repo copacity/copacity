@@ -108,31 +108,25 @@ export class HomePage implements OnInit {
     console.log(screenHeight, screenWidth);
 
     if (screenWidth <= 450) {
-      
       this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 4 }
       this.appService.slideOptsStores = { speed: 800, slidesPerView: 3 }
       this.appService.slideOptsProductsNoDiscount = { speed: 1000, slidesPerView: 2 }
       this.appService.slideOptsProductsNoFeatured = { speed: 2000, slidesPerView: 2 }
       this.appService.slideOptsStoreCoupons = { speed: 1500, slidesPerView: 1 }
       this.appService.slideOptsGifts = { speed: 500, slidesPerView: 3 }
-
-    } else if (screenWidth > 450 && screenWidth <= 600) {
-      
-      this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 5 }
+    }
+    else if (screenWidth > 450) {
+      if (screenWidth < 600) {
+        this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 5 }
+      } else {
+        this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 6 }
+      }
       this.appService.slideOptsStores = { speed: 800, slidesPerView: 4 }
       this.appService.slideOptsProductsNoDiscount = { speed: 1000, slidesPerView: 3 }
       this.appService.slideOptsProductsNoFeatured = { speed: 2000, slidesPerView: 3 }
       this.appService.slideOptsStoreCoupons = { speed: 1500, slidesPerView: 2 }
       this.appService.slideOptsGifts = { speed: 500, slidesPerView: 4 }
-
-    } else if (screenWidth > 600) {
-      this.appService.slideOptsProductsDiscount = { speed: 1000, slidesPerView: 6 }
-      this.appService.slideOptsStores = { speed: 800, slidesPerView: 5 }
-      this.appService.slideOptsProductsNoDiscount = { speed: 1000, slidesPerView: 4 }
-      this.appService.slideOptsProductsNoFeatured = { speed: 2000, slidesPerView: 4 }
-      this.appService.slideOptsStoreCoupons = { speed: 1500, slidesPerView: 2 }
-      this.appService.slideOptsGifts = { speed: 500, slidesPerView: 5 }
-    } 
+    }
   }
 
   ngOnInit(): void { }

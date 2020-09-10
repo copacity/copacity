@@ -66,14 +66,14 @@ ion-list {
 
 @media screen and (min-width: 450px) {
     .profile-1 {
-		width: 450px;
+		max-width: 700px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);
 	}
 
 	.new-store-profile{
-		width: 450px;
+		max-width: 700px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);	
@@ -84,19 +84,20 @@ ion-list {
 	#sliderHomeProductsNoDiscount { max-width: 450px;}
 	#sliderHomeProductsNoFeatured { max-width: 450px;}
 	#sliderStoreCoupons { max-width: 450px;}
-	#sliderHomeGifts  { max-width: 450px;}
+	#sliderHomeGifts { max-width: 450px;}
+	#sliderMenu { max-width: 450px;}
 }
 
 @media screen and (min-width: 600px) {
     .profile-1 {
-		width: 600px;
+		max-width: 600px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);
 	}
 
 	.new-store-profile{
-		width: 600px;
+		max-width: 600px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);	
@@ -108,29 +109,31 @@ ion-list {
 	#sliderHomeProductsNoFeatured  { max-width: 550px;}
 	#sliderStoreCoupons { max-width: 550px;}
 	#sliderHomeGifts  { max-width: 550px;}
+	#sliderMenu { max-width: 600px;}
 }
 
 @media screen and (min-width: 700px) {
     .profile-1 {
-		width: 700px;
+		max-width: 700px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);
 	}
 
 	.new-store-profile{
-		width: 700px;
+		max-width: 700px;
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, -0%);	
 	}
 
-	#sliderHomeProductsDiscount { max-width: 650px;}
-	#sliderHomeStores { max-width: 650px;}
+	#sliderHomeProductsDiscount { max-width: 700px;}
+	#sliderHomeStores { max-width: 600px;}
 	#sliderHomeProductsNoDiscount { max-width: 650px;}
 	#sliderHomeProductsNoFeatured  { max-width: 650px;}
-	#sliderStoreCoupons { max-width: 650px;}
-	#sliderHomeGifts  { max-width: 650px;}
+	#sliderStoreCoupons { max-width: 600px;}
+	#sliderHomeGifts  { max-width: 600px;}
+	#sliderMenu { max-width: 700px;}
 }
 
 popover-content  { --background: transparent;}
