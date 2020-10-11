@@ -439,7 +439,7 @@ export class HomePage implements OnInit {
   //--------------------------------       GO TO STORE PAGE
 
   goToStore(e: any, store: Store) {
-    this.loaderComponent.start(store.logo ? store.logo : "../../assets/icon/no-image.png").then(result => {
+    this.loaderComponent.start(store.thumb_logo ? store.thumb_logo : "../../assets/icon/no-image.png").then(result => {
       this.router.navigate(['/store', store.id]);
       this.loaderComponent.stop();
     });

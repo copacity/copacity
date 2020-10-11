@@ -376,8 +376,8 @@
               <a (click)="openSelectCategories()" class="bold top-10 font-12" style="text-align: left;width: 110px;"><i class="fas fa-th" style="font-size: 1.5em;color: red;padding-right: 5px;"></i> Mostrando:</a>
 
               <div class="chip top-15">
-                <div class="chip-content" style="padding-right: 0px;">{{selectedCategoryName}}</div>
-                <div class="chip-close" (click)="removeFilterOption(sc.id)">
+                <div class="chip-content" style="padding-right: 0px;padding-left: 18px;">{{selectedCategoryName}}</div>
+                <div class="chip-close">
                   <svg class="chip-svg" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                     <!-- <path
                       d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z">
@@ -509,7 +509,7 @@
                       <tr *ngIf="!isAdmin">
                         <td style="text-align: center;">
                           <a (click)="addToCart($event, product)" style="background-color: red;color:white;width: 100%;"
-                            class="button-round-small bold shadow-large button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
+                            class="button button-round-small bold shadow-large font-10 button-full button-s {{(product?.soldOut)?'sold-out':'' }}">
                             <i class="fa fa-shopping-cart add-button" style="color: white;padding-right: 5px;"></i>LO
                             QUIERO!</a>
                         </td>

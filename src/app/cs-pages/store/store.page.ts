@@ -458,14 +458,16 @@ export class StorePage implements OnInit {
           setTimeout(() => {
             this.storageService.ResizeImage(image, this.appService.currentStore.id, 500, 500).then((url) => {
               this.storesService.update(this.appService.currentStore.id, { logo: url }).then(() => {
-                this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
-                  this.storesService.update(this.appService.currentStore.id, { thumb_logo: thumbUrl }).then(() => {
-                    this.loaderComponent.stopLoading();
-                    this.store.logo = url.toString();
-                    this.store.thumb_logo = thumbUrl.toString();
-                    this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+                setTimeout(() => {
+                  this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
+                    this.storesService.update(this.appService.currentStore.id, { thumb_logo: thumbUrl }).then(() => {
+                      this.loaderComponent.stopLoading();
+                      this.store.logo = url.toString();
+                      this.store.thumb_logo = thumbUrl.toString();
+                      this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
+                    });
                   });
-                });
+                }, 15000);
               });
             });
           }, 500);
