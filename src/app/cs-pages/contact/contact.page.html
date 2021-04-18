@@ -162,14 +162,14 @@
                     <div class="content header-clear-small">
                       <ion-list lines="full" class="ion-no-margin ion-no-padding">
 
-                        <ion-item>
+                        <!-- <ion-item>
                           <ion-label>Tienda:</ion-label>
                           <ion-select style="padding-right: 10px;" formControlName="idStore" mode="ios"
                             cancelText="Cancelar" okText="Okay!" interface='action-sheet'>
                             <ion-select-option *ngFor="let store of stores" value="{{store.id}}">{{store.name}}
                             </ion-select-option>
                           </ion-select>
-                        </ion-item>
+                        </ion-item> -->
 
                         <ion-item>
                           <ion-label>Motivo:</ion-label>
@@ -196,9 +196,9 @@
 
                       <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
                         class="content content-box round-small shadow-large">
-                        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('idStore').errors">
+                        <!-- <p style="color: red;font-size: 1.3em;" *ngIf="form.get('idStore').errors">
                           <span *ngIf="form.get('idStore').hasError('required')">Tienda es requerido</span>
-                        </p>
+                        </p> -->
                         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('idType').errors">
                           <span *ngIf="form.get('idType').hasError('required')">Motivo es requerido</span>
                         </p>

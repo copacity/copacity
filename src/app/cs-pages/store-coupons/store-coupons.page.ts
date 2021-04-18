@@ -13,7 +13,7 @@ import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generat
   styleUrls: ['./store-coupons.page.scss'],
 })
 export class StoreCouponsPage implements OnInit {
-  store: Store;
+  //store: Store;
   isAdmin: boolean;
   dashboard: boolean;
   orderTotal: number;
@@ -32,7 +32,7 @@ export class StoreCouponsPage implements OnInit {
     this.isAdmin = this.navParams.data.isAdmin;
     this.dashboard = this.navParams.data.dashboard;
     this.orderTotal = this.navParams.data.orderTotal;
-    this.store = this.navParams.data.store;
+    //this.store = this.navParams.data.store;
     this.getCoupons();
   }
 
@@ -43,7 +43,7 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async openBarCodeGenerator(storeCoupon: StoreCoupon) {
-    let value = this.appService._appInfo.domain + "/store-coupons-detail/" + storeCoupon.id + "&" + this.store.id;
+    let value = this.appService._appInfo.domain + "/store-coupons-detail/" + storeCoupon.id;
 
     let modal = await this.popoverController.create({
       component: BarcodeGeneratorComponent,
@@ -100,7 +100,7 @@ export class StoreCouponsPage implements OnInit {
 
   async presentDeleteProductPrompt(storeCoupon: StoreCoupon) {
     this.presentConfirm('Esta seguro que desea eliminar el cupón: ' + storeCoupon.name + '?', () => {
-      this.storesService.updateStoreCoupon(this.store.id, storeCoupon.id, { deleted: true }).then(() => {
+      this.storesService.updateStoreCoupon(storeCoupon.id, { deleted: true }).then(() => {
         this.presentAlert("Cupon eliminado exitosamente!", '', () => { });
       });
     });
@@ -114,7 +114,7 @@ export class StoreCouponsPage implements OnInit {
     setTimeout(() => {
 
       if (this.isAdmin) {
-        this.storeCoupons = this.storesService.getAllStoreCoupons(this.store.id);
+        this.storeCoupons = this.storesService.getAllStoreCoupons();
 
         this.storeCoupons.subscribe((products) => {
           this.couponSearchHits = 0;
@@ -126,7 +126,7 @@ export class StoreCouponsPage implements OnInit {
           });
         });
       } else {
-        this.storeCoupons = this.storesService.getStoreCouponsNoVIP(this.store.id);
+        this.storeCoupons = this.storesService.getStoreCouponsNoVIP();
 
         this.storeCoupons.subscribe((products) => {
           this.couponSearchHits = 0;
@@ -142,7 +142,7 @@ export class StoreCouponsPage implements OnInit {
   }
 
   async openStoreCouponsCreatePage() {
-    if (this.couponSearchHits < this.store.couponsLimit) {
+    if (this.couponSearchHits < 100/*this.store.couponsLimit*/) {
       let modal = await this.popoverController.create({
         component: StoreCouponsCreatePage,
         componentProps: {},

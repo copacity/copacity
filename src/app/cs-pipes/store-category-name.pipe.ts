@@ -9,11 +9,11 @@ export class StoreCategoryNamePipe implements PipeTransform {
 
   transform(idStoreCategory: string): string {
     let storeCategoryName: string ='';
-    this.appService._storeCategories.forEach(storeCategory => {
-      if (storeCategory.id == idStoreCategory) {
-        storeCategoryName = storeCategory.name;
-      }
-    });
+    // this.appService._storeCategories.forEach(storeCategory => {
+    //   if (storeCategory.id == idStoreCategory) {
+    //     storeCategoryName = storeCategory.name;
+    //   }
+    // });
 
     return storeCategoryName;
   }

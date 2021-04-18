@@ -50,6 +50,7 @@ import { StoreVendorsAdminPageModule } from './cs-pages/store-vendors-admin/stor
 import { StoreVendorsUpdatePageModule } from './cs-pages/store-vendors-update/store-vendors-update.module';
 import { SearchPageModule } from './cs-pages/search/search.module';
 import { ReturnsPolicyPageModule } from './cs-pages/returns-policy/returns-policy.module';
+import { StoreUpdateCategoryPageModule } from './cs-pages/store-update-category/store-update-category.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -77,6 +78,7 @@ import { ReturnsPolicyPageModule } from './cs-pages/returns-policy/returns-polic
     CartPageModule,
     StoreCreatePageModule,
     StoreUpdatePageModule,
+    StoreUpdateCategoryPageModule,
     ProductCreatePageModule,
     ProductUpdatePageModule,
     ProductCategoriesPageModule,

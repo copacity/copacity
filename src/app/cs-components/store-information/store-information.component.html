@@ -10,8 +10,11 @@
     <a style="background-color: transparent; color: black; top: -8px; padding: 0px 0px;"
       class="profile-button button button-m button-round uppercase bolder button-center-large">
       <div class="user-list-left" style="text-align: -webkit-center;">
-        <img [src]="store?.logo?store?.logo:'../../../assets/icon/no-image.png'" alt="img" class="shadow-small"
-          style="width: 60px;">
+        <!-- <img [src]="appService._appInfo?.logo?appService._appInfo?.logo:'../../../assets/icon/no-image.png'" alt="img" class="shadow-small"
+          style="width: 60px;"> -->
+        <img src="../../../assets/icon/favicon.png" alt="img"
+          class="shadow-small" style="width: 60px;">
+        
       </div>
     </a>
 
@@ -19,21 +22,22 @@
       style="opacity: 1; display: block;">
       <div class="content" style="margin: 0px 0px 0px 0px;">
         <div class="boxed-text-huge">
-          <a class="nav-title color-theme" style="font-size: 20px;padding: 0px 0px 0px 0px;">{{store?.name}}</a>
+          <a class="nav-title color-theme"
+            style="font-size: 20px;padding: 0px 0px 0px 0px;">{{appService._appInfo?.name1}}{{appService._appInfo?.name2}}</a>
 
           <p class="center-text font-13 under-heading bottom-20 top-20">
-            {{store?.description}}
+            {{appService._appInfo?.description}}
           </p>
 
-          <iframe *ngIf="store?.video1" [src]="safeSrc1" frameborder="0"
+          <iframe *ngIf="appService._appInfo?.video1" [src]="safeSrc1" frameborder="0"
             style="width: 100%;height: 300px;padding-bottom: 20px;"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-          <iframe *ngIf="store?.video2" [src]="safeSrc2" frameborder="0"
+          <iframe *ngIf="appService._appInfo?.video2" [src]="safeSrc2" frameborder="0"
             style="width: 100%;height: 300px;padding-bottom: 20px;"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-          <iframe *ngIf="store?.video3" [src]="safeSrc3" frameborder="0"
+          <iframe *ngIf="appService._appInfo?.video3" [src]="safeSrc3" frameborder="0"
             style="width: 100%;height: 300px;padding-bottom: 20px;"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -41,14 +45,17 @@
 
           <div class="boxed-text-huge">
             <div style="padding-top: 10px;text-align: -webkit-center;">
-              <a style="border: double;margin-bottom: 0px;" href="https://www.facebook.com/{{ store?.facebook }}"
+              <a style="border: double;margin-bottom: 0px;"
+                href="https://www.facebook.com/{{ appService._appInfo?.facebook }}"
                 class="button button-round-small button-s color-facebook"><i class="fab fa-facebook-f color-facebook"
-                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.facebook }}</a>
-              <a style="border: double;margin-bottom: 0px;" href="https://www.instagram.com/{{ store?.instagram }}"
+                  style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.facebook }}</a>
+              <a style="border: double;margin-bottom: 0px;"
+                href="https://www.instagram.com/{{ appService._appInfo?.instagram }}"
                 class="button button-round-small button-s color-instagram"><i class="fab fa-instagram color-instagram"
-                  style="font-size: 1.5em;"></i>&nbsp;{{ store?.instagram }}</a>
+                  style="font-size: 1.5em;"></i>&nbsp;{{ appService._appInfo?.instagram }}</a>
               <a style="border: double;margin-bottom: 0px;" class="button button-round-small button-s color-black"><i
-                  class="fa fa-map-marker-alt color-black" style="font-size: 1.5em;"></i>&nbsp;{{ store?.address }}</a>
+                  class="fa fa-map-marker-alt color-black" style="font-size: 1.5em;"></i>&nbsp;{{
+                appService._appInfo?.address }}</a>
             </div>
 
             <div style="padding-top: 10px;text-align: -webkit-center;">

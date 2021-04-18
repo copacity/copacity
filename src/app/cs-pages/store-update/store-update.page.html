@@ -15,25 +15,24 @@
       <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
         <ion-list lines="full" class="ion-no-margin ion-no-padding" style="padding-bottom: 0px">
           <ion-item>
-            <ion-label position="floating" style="color: gray;">Nombre de tu Tienda <b style="color: red;">(*)</b>
+            <ion-label position="floating" style="color: gray;">Nombre 1 <b style="color: red;">(*)</b>
             </ion-label>
-            <ion-input formControlName="name"></ion-input>
+            <ion-input formControlName="name1"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label style="color: gray;">Categoría: <b style="color: red;">(*)</b></ion-label>
-            <ion-select formControlName="category" mode="ios" interface='action-sheet' style="padding-right: 10px;">
-              <ion-select-option *ngFor="let storeCategory of storeCategories | async;" value="{{storeCategory.id}}">
-                {{storeCategory.name}}</ion-select-option>
-            </ion-select>
+            <ion-label position="floating" style="color: gray;">Nombre 2 <b style="color: red;"></b>
+            </ion-label>
+            <ion-input formControlName="name2"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Home Title <b style="color: red;"></b>
+            </ion-label>
+            <ion-input formControlName="homeTitle"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="color: gray;">Tel <b style="color: red;">(*)</b></ion-label>
-            <ion-input type="number" formControlName="phone1"></ion-input>
-          </ion-item>
-          <!-- <ion-item>
-            <ion-label position="floating" style="color: gray;">Tel 2 </ion-label>
-            <ion-input type="number" formControlName="phone2"></ion-input>
-          </ion-item> -->
+            <ion-input type="number" formControlName="phone"></ion-input>
+          </ion-item>         
           <ion-item>
             <ion-label position="floating" style="color: gray;">Whatsapp </ion-label>
             <ion-input type="number" formControlName="whatsapp"></ion-input>
@@ -46,21 +45,10 @@
             <ion-label position="floating" style="color: gray;">Instagram</ion-label>
             <ion-input formControlName="instagram"></ion-input>
           </ion-item>
-          <!-- <ion-item>
-            <ion-label position="floating" style="color: gray;">Valor Envío</ion-label>
-            <ion-input formControlName="deliveryPrice" type="number"></ion-input>
-          </ion-item> -->
           <ion-item>
             <ion-label position="floating" style="color: gray;">Valor Mínimo de Pedido</ion-label>
             <ion-input formControlName="orderMinAmount" type="number"></ion-input>
           </ion-item>
-          <!-- <ion-item>
-            <ion-label style="color: gray;">Sector: <b style="color: red;">(*)</b></ion-label>
-            <ion-select formControlName="sector" interface='action-sheet'>
-              <ion-select-option *ngFor="let sector of sectors | async" value="{{sector.id}}">
-                {{sector.name}}</ion-select-option>
-            </ion-select>
-          </ion-item> -->
           <ion-item>
             <ion-label position="floating" style="color: gray;">Dirección</ion-label>
             <ion-input formControlName="address"></ion-input>
@@ -128,19 +116,20 @@
 
       <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
         class="content content-box round-small shadow-large">
-        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
-          <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-          <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50 caracteres</span>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name1').errors">
+          <span *ngIf="form.get('name1').hasError('required')">Nombre 1 es requerido</span>
+          <span *ngIf="form.get('name1').hasError('maxlength')">Nombre 1 debe ser máximo de 50 caracteres</span>
         </p>
-        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
-          <span *ngIf="form.get('category').hasError('required')">Categoría es requerido</span>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('homeTitle').errors">
+          <span *ngIf="form.get('homeTitle').hasError('required')">Home Title es requerido</span>
+          <span *ngIf="form.get('homeTitle').hasError('maxlength')">Home Title debe ser máximo de 20 caracteres</span>
         </p>
-        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone1').errors">
-          <span *ngIf="form.get('phone1').hasError('required')">Tel 1 es requerido</span>
-          <span *ngIf="form.get('phone1').hasError('max')">Tel 1 debe ser máximo de 15 caracteres</span>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name2').errors">
+          <span *ngIf="form.get('name2').hasError('maxlength')">Nombre 2 debe ser máximo de 50 caracteres</span>
         </p>
-        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone2').errors">
-          <span *ngIf="form.get('phone2').hasError('max')">Tel 2 debe ser máximo de 15 caracteres</span>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone').errors">
+          <span *ngIf="form.get('phone').hasError('required')">Tel 1 es requerido</span>
+          <span *ngIf="form.get('phone').hasError('max')">Tel 1 debe ser máximo de 15 caracteres</span>
         </p>
         <p style="color: red;font-size: 1.3em;" *ngIf="form.get('whatsapp').errors">
           <span *ngIf="form.get('whatssapp').hasError('max')">Whatsapp debe ser máximo de 15 caracteres</span>

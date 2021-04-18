@@ -9,7 +9,7 @@
 
     <a style="background-color: white; color: black;"
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Nueva
-      Tienda</a>
+      Categoria</a>
 
     <form [formGroup]="form" (ngSubmit)="save($event)">
       <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
@@ -19,23 +19,23 @@
             </ion-label>
             <ion-input formControlName="name"></ion-input>
           </ion-item>
-          <ion-item>
+          <!-- <ion-item>
             <ion-label style="color: gray;">Categoría: <b style="color: red;">(*)</b></ion-label>
             <ion-select formControlName="category" cancelText="Cancelar" mode='ios'
               style="padding-right: 10px;padding-right: 10px;" okText="Okay!" interface='action-sheet'>
               <ion-select-option *ngFor="let storeCategory of storeCategories | async;" value="{{storeCategory.id}}">
                 {{storeCategory.name}}</ion-select-option>
             </ion-select>
-          </ion-item>
-          <ion-item>
+          </ion-item> -->
+          <!-- <ion-item>
             <ion-label position="floating" style="color: gray;">Tel <b style="color: red;">(*)</b></ion-label>
             <ion-input type="number" formControlName="phone1"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <!-- <ion-item>
             <ion-label position="floating" style="color: gray;">Tel 2 </ion-label>
             <ion-input type="number" formControlName="phone2"></ion-input>
           </ion-item> -->
-          <ion-item>
+          <!-- <ion-item>
             <ion-label position="floating" style="color: gray;">Whatsapp </ion-label>
             <ion-input type="number" formControlName="whatsapp"></ion-input>
           </ion-item>
@@ -50,7 +50,7 @@
           <ion-item>
             <ion-label position="floating" style="color: gray;">Dirección</ion-label>
             <ion-input formControlName="address"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <ion-item>
             <ion-label position="floating" style="color: gray;">Escribe un mensaje <small style="color: gray;">
                 ({{this.form.get('description').value.length}}/500)</small></ion-label>
@@ -64,7 +64,7 @@
             <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
             <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50 caracteres</span>
           </p>
-          <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
+          <!-- <p style="color: red;font-size: 1.3em;" *ngIf="form.get('category').errors">
             <span *ngIf="form.get('category').hasError('required')">Categoría es requerido</span>
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('phone1').errors">
@@ -85,7 +85,7 @@
           </p>
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('address').errors">
             <span *ngIf="form.get('address').hasError('maxlength')">Dirección debe ser máximo de 250 caracteres</span>
-          </p>
+          </p> -->
           <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
             <span *ngIf="form.get('description').hasError('maxlength')">Descripción debe ser máximo de 500
               caracteres</span>
@@ -97,7 +97,7 @@
     <div>
       <a (click)="createStore()"
           style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">CREAR TIENDA</a>
+          class="button button-round-small shadow-large button-full button-s">CREAR CATEGORIA</a>
     </div>
   </div>
 </div>

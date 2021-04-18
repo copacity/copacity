@@ -1,0 +1,52 @@
+<div class="profile-popover">
+  <div class="profile-header">
+  </div>
+  <div class="profile-header-clear" style="height: 30px;">
+  </div>
+  <div class="profile-body" style="margin: 0px 5px;">
+    <i (click)="close()" class="fa fa-times-circle"
+      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+    <a style="background-color: white; color: black;"
+      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Actualizar
+      Categoria</a>
+
+    <form [formGroup]="form">
+      <div class="content header-clear-small" style="margin: 0px 0px 0px 0px;">
+        <ion-list lines="full" class="ion-no-margin ion-no-padding" style="padding-bottom: 0px">
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Nombre <b style="color: red;">(*)</b>
+            </ion-label>
+            <ion-input formControlName="name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="color: gray;">Escribe un mensaje <small style="color: gray;">
+                ({{this.form.get('description').value.length}}/500)</small></ion-label>
+            <ion-textarea formControlName="description"></ion-textarea>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <div class="top-30 bottom-30"></div>
+
+      <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+        class="content content-box round-small shadow-large">
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
+          <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
+          <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50 caracteres</span>
+        </p>
+        <p style="color: red;font-size: 1.3em;" *ngIf="form.get('description').errors">
+          <span *ngIf="form.get('description').hasError('required')">Descripción es requerido</span>
+          <span *ngIf="form.get('description').hasError('maxlength')">Descripción debe ser máximo de 500
+            caracteres</span>
+        </p>
+      </div>
+    </form>
+
+    <div>
+      <a (click)="updateStore()"
+        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+        class="button button-round-small shadow-large button-full button-s">ACTUALIZAR!</a>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { LocationStrategy } from '@angular/common';
+
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AlertController, PopoverController, ToastController, IonSelect } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,7 +13,6 @@ import { CartPage } from '../cart/cart.page';
 import { SuperTabs } from '@ionic-super-tabs/angular';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { StoreUpdatePage } from '../store-update/store-update.page';
 import { ProductUpdatePage } from '../product-update/product-update.page';
 import { ProductCreatePage } from '../product-create/product-create.page';
 import { StorageService } from 'src/app/cs-services/storage.service';
@@ -24,9 +23,7 @@ import { StoreStatus } from 'src/app/app-enums';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { StoreCategoryNamePipe } from 'src/app/cs-pipes/store-category-name.pipe';
 import { SectorNamePipe } from 'src/app/cs-pipes/sector-name.pipe';
-import { StoreCategoriesService } from 'src/app/cs-services/storeCategories.service';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { CropperImageComponent } from 'src/app/cs-components/cropper-image/cropper-image.component';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
@@ -48,13 +45,13 @@ import { StoreVendorsAdminPage } from '../store-vendors-admin/store-vendors-admi
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 import { SearchPage } from '../search/search.page';
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
-import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.component';
 import { SwUpdate } from '@angular/service-worker';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { HostListener } from "@angular/core";
+import { StoreUpdateCategoryPage } from '../store-update-category/store-update-category.page';
 
 @Component({
   selector: 'app-store',
@@ -140,10 +137,7 @@ export class StorePage implements OnInit {
     private productsService: ProductsService,
     private ngNavigatorShareService: NgNavigatorShareService,
     private productCategoriesService: ProductCategoriesService,
-    private storeCategoryNamePipe: StoreCategoryNamePipe,
     private sectornamePipe: SectorNamePipe,
-    private storeCategoryService: StoreCategoriesService,
-    private locationStrategy: LocationStrategy,
     private ordersService: OrdersService
   ) {
 
@@ -154,7 +148,7 @@ export class StorePage implements OnInit {
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
       this.storesService.getById(this.route.snapshot.params.id).then(result => {
-        this.cartSevice = this.cartManagerService.getCartService(result);
+        this.cartSevice = this.cartManagerService.getCartService();
         this.store = result;
 
         if (user && (this.store.idUser == user.uid)) {
@@ -213,13 +207,13 @@ export class StorePage implements OnInit {
       this.getProducts(this.idProductCategory);
     }
 
-    this.storeCategoryService.getAll().subscribe(storeCategoriesArray => {
-      this.appService._storeCategories.forEach(storeCategory => {
-        if (storeCategory.id == this.store.idStoreCategory) {
-          this.storeCategoryName = storeCategory.name;
-        }
-      });
-    });
+    // this.storeCategoryService.getAll().subscribe(storeCategoriesArray => {
+    //   this.appService._storeCategories.forEach(storeCategory => {
+    //     if (storeCategory.id == this.store.idStoreCategory) {
+    //       this.storeCategoryName = storeCategory.name;
+    //     }
+    //   });
+    // });
 
     if (this.storesService.option == 4) {
       this.storesService.option = 0;
@@ -234,18 +228,28 @@ export class StorePage implements OnInit {
 
   }
 
-  async presentMenuCart(e) {
-    const popover = await this.popoverController.create({
-      component: MenuCartComponent,
-      animated: false,
-      showBackdrop: true,
-      mode: 'ios',
-      translucent: false,
-      event: e,
-      cssClass: 'notification-popover'
+  async openCart() {
+    let modal = await this.popoverController.create({
+      component: CartPage,
+      componentProps: { storeId: '-1' },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
     });
 
-    return await popover.present();
+    modal.onDidDismiss()
+      .then((data) => {
+        let result = data['data'];
+
+        if (result) {
+          this.goToCreateOrder();
+        }
+      });
+
+    modal.present();
+  }
+
+  async goToCreateOrder() {
+    this.router.navigate(['/order-create']);
   }
 
   async SignIn() {
@@ -318,7 +322,7 @@ export class StorePage implements OnInit {
     setTimeout(() => {
       this.angularFireAuth.auth.onAuthStateChanged(user => {
         this.storesService.getById(this.route.snapshot.params.id).then(result => {
-          this.cartSevice = this.cartManagerService.getCartService(result);
+          this.cartSevice = this.cartManagerService.getCartService();
           this.store = result;
 
           if (user && (this.store.idUser == user.uid)) {
@@ -419,7 +423,7 @@ export class StorePage implements OnInit {
   async openStoreUpdatePage() {
 
     let modal = await this.popoverController.create({
-      component: StoreUpdatePage,
+      component: StoreUpdateCategoryPage,
       cssClass: 'cs-popovers',
       backdropDismiss: false,
     });
@@ -433,7 +437,7 @@ export class StorePage implements OnInit {
           this.store.idStoreCategory = this.appService.currentStore.idStoreCategory;
           this.store.description = this.appService.currentStore.description;
 
-          this.storeCategoryName = this.storeCategoryNamePipe.transform(this.store.idStoreCategory);
+          //this.storeCategoryName = this.storeCategoryNamePipe.transform(this.store.idStoreCategory);
           this.sectorName = this.sectornamePipe.transform(this.store.idSector);
         }
       });
@@ -478,7 +482,7 @@ export class StorePage implements OnInit {
   }
 
   async openStoreInformationComponent(event) {
-    let subs = this.storesService.getActiveVendors(this.appService.currentStore.id).subscribe(result => {
+    let subs = this.storesService.getActiveVendors().subscribe(result => {
 
       let vendorPromises = [];
       result.forEach(vendor => {
@@ -638,28 +642,9 @@ export class StorePage implements OnInit {
     }
   }
 
-  async openCart() {
-    let modal = await this.popoverController.create({
-      component: CartPage,
-      cssClass: 'cs-popovers',
-      backdropDismiss: false,
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        let result = data['data'];
-
-        if (result) {
-          this.goToCreateOrder();
-        }
-      });
-
-    modal.present();
-  }
-
   async openVendorList(e: any) {
 
-    let subs = this.storesService.getActiveVendors(this.appService.currentStore.id).subscribe(result => {
+    let subs = this.storesService.getActiveVendors().subscribe(result => {
 
       let vendorPromises = [];
       result.forEach(vendor => {
@@ -696,10 +681,6 @@ export class StorePage implements OnInit {
       alert(err);
       this.appService.logError({ id: '', message: err, function: 'fillUsers', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
     });
-  }
-
-  async goToCreateOrder() {
-    this.router.navigate(['/order-create', this.appService.currentStore.id]);
   }
 
   goToProducts() {
@@ -1056,7 +1037,7 @@ export class StorePage implements OnInit {
 
   ionViewDidEnter() {
     this.storesService.getById(this.route.snapshot.params.id).then(result => {
-      this.cartSevice = this.cartManagerService.getCartService(result);
+      this.cartSevice = this.cartManagerService.getCartService();
       this.store = result;
 
       if (this.appService.currentUser && (this.store.idUser == this.appService.currentUser.id)) {

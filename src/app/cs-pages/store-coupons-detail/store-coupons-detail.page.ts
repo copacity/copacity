@@ -52,7 +52,7 @@ export class StoreCouponsDetailPage implements OnInit {
     this.storesService.getById(this.storeId).then(result => {
       this.store = result;
 
-      this.storesService.getCouponById(this.storeId, storeCouponId).then((storeCoupon: StoreCoupon) => {
+      this.storesService.getCouponById(storeCouponId).then((storeCoupon: StoreCoupon) => {
         if (storeCoupon) {
           
           this.storeCoupon = storeCoupon

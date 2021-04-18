@@ -1,9 +1,9 @@
-import { Component, ViewChild, OnInit, Input, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController, IonSelect } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store, Product, StoreCategory, Banner, StoreCoupon } from 'src/app/app-intefaces';
+import { Store, Product, Banner, StoreCoupon, Vendor } from 'src/app/app-intefaces';
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
@@ -17,7 +17,6 @@ import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/b
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { SubscriptionPlansComponent } from 'src/app/cs-components/subscription-plans/subscription-plans.component';
 import { BannerRedirectTypes } from 'src/app/app-enums';
-import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.component';
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
@@ -26,6 +25,10 @@ import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
 import { HostListener } from "@angular/core";
+import { Observable } from 'rxjs';
+import { CartPage } from '../cart/cart.page';
+import { UsersService } from 'src/app/cs-services/users.service';
+import { StoreInformationComponent } from 'src/app/cs-components/store-information/store-information.component';
 
 @Component({
   selector: 'app-home',
@@ -34,12 +37,14 @@ import { HostListener } from "@angular/core";
 })
 export class HomePage implements OnInit {
   idSelectedCategories: string[] = [];
-  selectedCategories: StoreCategory[] = [];
+  selectedCategories: Store[] = [];
   batch: number = 20;
   lastToken: string = '';
 
   selectedStoreLogo: string = "";
   stores: Array<Store>;
+  _stores: Observable<Store[]>;
+
   featuredProductsDiscount: Array<any> = [];
   featuredProductsNoDiscount: Array<any> = [];
   featuredProductsNoFeatured: Array<any> = [];
@@ -70,6 +75,7 @@ export class HomePage implements OnInit {
   @ViewChild('sliderHomeProductsNoFeatured', null) sliderHomeProductsNoFeatured: any;
   @ViewChild('sliderHomeGifts', null) sliderGifts: any;
   @ViewChild('sliderStoreCoupons', null) sliderStoreCoupons: any;
+  @ViewChild('sliderMenu', null) sliderMenu: any;
 
   @Input('header') header: any;
   angularFireAuth: any;
@@ -90,6 +96,7 @@ export class HomePage implements OnInit {
     public toastController: ToastController,
     public popoverController: PopoverController,
     private storesService: StoresService,
+    private usersService: UsersService,
     private productsService: ProductsService) {
 
     history.pushState(null, null, window.location.href);
@@ -184,10 +191,12 @@ export class HomePage implements OnInit {
     this.selectedCategories = [];
 
     this.idSelectedCategories.forEach(sc => {
-      this.appService._storeCategories.forEach(asc => {
-        if (sc == asc.id) {
-          this.selectedCategories.push(asc);
-        }
+      this._stores.subscribe(array => {
+        array.forEach(asc => {
+          if (sc == asc.id) {
+            this.selectedCategories.push(asc);
+          }
+        });
       });
     });
   }
@@ -219,7 +228,7 @@ export class HomePage implements OnInit {
     if (!this.appService.currentUser || this.appService.currentUser.id != featuredProductNoDiscount.store.iduser) {
       this.sliderProductsNoDiscount.stopAutoplay();
 
-      let cartSevice = this.cartManagerService.getCartService(featuredProductNoDiscount.store)
+      let cartSevice = this.cartManagerService.getCartService(/*featuredProductNoDiscount.store*/)
 
       if (!featuredProductNoDiscount.product.soldOut) {
         this.cartInventoryService.clearCart();
@@ -330,20 +339,6 @@ export class HomePage implements OnInit {
     return await popover.present();
   }
 
-  async presentMenuCart(e) {
-    const popover = await this.popoverController.create({
-      component: MenuCartComponent,
-      animated: false,
-      showBackdrop: true,
-      mode: 'ios',
-      translucent: false,
-      event: e,
-      cssClass: 'notification-popover'
-    });
-
-    return await popover.present();
-  }
-
   async presentMenuNotifications(e) {
     const popover = await this.popoverController.create({
       component: MenuNotificationsComponent,
@@ -385,6 +380,7 @@ export class HomePage implements OnInit {
     }
 
     this.getStores();
+    this._stores = this.storesService.getAllStores();
   }
 
   //--------------------------------------------------------------
@@ -500,6 +496,30 @@ export class HomePage implements OnInit {
     }
   }
 
+  async openCart() {
+    let modal = await this.popoverController.create({
+      component: CartPage,
+      componentProps: { storeId: '-1' },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        let result = data['data'];
+
+        if (result) {
+          this.goToCreateOrder();
+        }
+      });
+
+    modal.present();
+  }
+
+  async goToCreateOrder() {
+    this.router.navigate(['/order-create']);
+  }
+
   openWithOption(url: string, image: string, option: number) {
     this.storesService.option = option;
     this.goToPage(url, image)
@@ -522,10 +542,10 @@ export class HomePage implements OnInit {
     this.searchingProductsNoFeatured = true;
     this.searchingGifts = true;
     this.searchingStoreCoupons = true;
-    this.fillStoreCategories();
 
     setTimeout(async () => {
       this.stores = [];
+      this.selectedCategories = [];
       this.featuredProductsDiscount = [];
       this.featuredProductsNoDiscount = [];
       this.featuredProductsNoFeatured = [];
@@ -538,7 +558,8 @@ export class HomePage implements OnInit {
 
           stores.forEach((store: Store) => {
             if (store) {
-              if (this.idSelectedCategories.length == 0 || this.idSelectedCategories.includes(store.idStoreCategory)) {
+              if (this.idSelectedCategories.length == 0 || this.idSelectedCategories.includes(store.id)) {
+                if (this.idSelectedCategories.includes(store.id)) { this.selectedCategories.push(store); }
 
                 this.stores.push(store);
 
@@ -723,6 +744,46 @@ export class HomePage implements OnInit {
     modal.present();
   }
 
+  async openStoreInformationComponent(event) {
+    let subs = this.storesService.getActiveVendors().subscribe(result => {
+
+      let vendorPromises = [];
+      result.forEach(vendor => {
+        vendorPromises.push(this.fillUsers(vendor));
+      });
+
+      Promise.all(vendorPromises).then(async users => {
+        let modal = await this.popoverController.create({
+          component: StoreInformationComponent,
+          cssClass: "signin-popover",
+          //event: event,
+          componentProps: { isAdmin: this.appService.currentUser.isAdmin, users: users },
+          // backdropDismiss: false
+        });
+
+        modal.onDidDismiss()
+          .then((data) => {
+            const result = data['data'];
+          });
+
+        modal.present();
+      });
+
+      subs.unsubscribe();
+    });
+  }
+
+  fillUsers(vendor: Vendor) {
+    return new Promise((resolve, reject) => {
+      this.usersService.getById(vendor.idUser).then(user => {
+        resolve(user);
+      });
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({ id: '', message: err, function: 'fillUsers', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
+  }
+
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------       SLIDER VALIDATIONS
@@ -747,6 +808,8 @@ export class HomePage implements OnInit {
                 this.loadSliderGifts(() => {
                   this.loadSliderStoreCoupons(() => {
                     this.loadSliderProductsNoFeatured(() => {
+                      this.loadSliderMenu(() => {
+                      });
                     });
                   });
                 });
@@ -842,6 +905,17 @@ export class HomePage implements OnInit {
         callBack8();
       } else {
         this.loadSliderProductsNoFeatured(callBack8);
+      }
+    }, 1000);
+  }
+
+  loadSliderMenu(callBack9) {
+    setTimeout(() => {
+      if (this.sliderMenu) {
+        this.sliderMenu.startAutoplay();
+        callBack9();
+      } else {
+        this.loadSliderMenu(callBack9);
       }
     }, 1000);
   }

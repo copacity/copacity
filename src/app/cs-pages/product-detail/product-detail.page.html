@@ -16,7 +16,7 @@
           <i class="fa fa-search" style="font-size: 1.2em"></i>
         </span>
       </ion-button>
-      <ion-button #cartProductDetail (click)="presentMenuCart($event)">
+      <ion-button #cartProductDetail (click)="openCart()">
         <i class="fa fa-shopping-cart" style="color: black;font-size: 1.2em"></i>
         <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
           {{ cartManagerService.getTotalCount() }}

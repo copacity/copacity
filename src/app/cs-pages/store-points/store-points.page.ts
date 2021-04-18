@@ -37,7 +37,7 @@ export class StorePointsPage implements OnInit {
     public navParams: NavParams,
     private storesService: StoresService,
     private productsService: ProductsService) {
-    this.cartService = this.cartManagerService.getCartService(this.appService.currentStore);
+    this.cartService = this.cartManagerService.getCartService();
     this.isAdmin = this.navParams.data.isAdmin;
     this.getProducts();
     this.GetPoints();

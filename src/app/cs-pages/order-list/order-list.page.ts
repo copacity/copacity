@@ -57,7 +57,7 @@ export class OrderListPage implements OnInit {
       if (!user) {
         this.router.navigate(['/home']);
       } else {
-        this.getStores();
+        this.getOrders();
       }
     });
   }
@@ -72,51 +72,48 @@ export class OrderListPage implements OnInit {
     });
   }
 
-  getOrders(idStore: string) {
+  getOrders() {
     this.orders = null;
     this.orderSearchHits = 0;
     this.searchingOrders = true;
 
-    this.storesService.getById(idStore).then(store => {
-      this.store = store;
-      if (this.appService.currentUser.id != store.idUser) {
-        this.isAdmin = false;
-        this.orders = this.ordersService.getByStoreAndUser(idStore, this.appService.currentUser.id, this.orderSearchText);
+    if (!this.appService.currentUser.isAdmin) {
+      this.isAdmin = false;
+      this.orders = this.ordersService.getByStoreAndUser(this.appService.currentUser.id, this.orderSearchText);
 
-        this.orders.subscribe(result => {
-          this.searchingOrders = false;
-          result.forEach(order => {
-            if (order) {
-              this.orderSearchHits++;
-            }
-          });
+      this.orders.subscribe(result => {
+        this.searchingOrders = false;
+        result.forEach(order => {
+          if (order) {
+            this.orderSearchHits++;
+          }
         });
-      } else {
-        this.isAdmin = true;
-        this.orders = this.ordersService.getByStore(idStore, this.orderSearchText);
+      });
+    } else {
+      this.isAdmin = true;
+      this.orders = this.ordersService.getByStore(this.orderSearchText);
 
-        this.orders.subscribe(result => {
-          this.searchingOrders = false;
-          result.forEach(order => {
-            if (order) {
-              this.orderSearchHits++;
-            }
-          });
+      this.orders.subscribe(result => {
+        this.searchingOrders = false;
+        result.forEach(order => {
+          if (order) {
+            this.orderSearchHits++;
+          }
         });
-      }
-    });
+      });
+    }
   }
 
-  stores_OnChange(event: any) {
-    this.idOrderState = parseInt(event.target.value);
+  // stores_OnChange(event: any) {
+  //   this.idOrderState = parseInt(event.target.value);
 
-    setTimeout(() => {
-      this.getOrders(event.target.value);
-    }, 500);
-  }
+  //   setTimeout(() => {
+  //     this.getOrders();
+  //   }, 500);
+  // }
 
   async openOrderDetailPage(idOrder: Order) {
-    this.router.navigate(['order-detail/' + idOrder + "&" + this.store.id]);
+    this.router.navigate(['order-detail/' + idOrder]);
 
     // let modal = await this.popoverController.create({
     //   component: OrderDetailPage,

@@ -18,19 +18,19 @@ export class CartManagerService {
 
   }
 
-  getCartService(store: Store) {
+  getCartService() {
     let exists = false;
     let currentCart: CartService = null;
     this.carts.forEach((cart: CartService) => {
-      if (cart.store.id == store.id) {
+      //if (cart.store.id == store.id) {
         exists = true;
         currentCart = cart;
-      }
+      //}
     });
 
     if (!exists) {
       currentCart = new CartService();
-      currentCart.store = store;
+      //currentCart.store = store;
       this.carts.push(currentCart);
     }
 

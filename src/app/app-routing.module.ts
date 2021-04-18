@@ -41,7 +41,7 @@ const routes: Routes = [
     loadChildren: () => import('./cs-pages/product-categories/product-categories.module').then( m => m.ProductCategoriesPageModule)
   },
   {
-    path: 'order-create/:id',
+    path: 'order-create',
     loadChildren: () => import('./cs-pages/order-create/order-create.module').then( m => m.OrderCreatePageModule)
   },
   {
@@ -143,11 +143,15 @@ const routes: Routes = [
   {
     path: 'store-vendors-update',
     loadChildren: () => import('./cs-pages/store-vendors-update/store-vendors-update.module').then( m => m.StoreVendorsUpdatePageModule)
-  },  {
+  },
+  {
     path: 'returns-policy',
     loadChildren: () => import('./cs-pages/returns-policy/returns-policy.module').then( m => m.ReturnsPolicyPageModule)
+  },
+  {
+    path: 'store-update-category',
+    loadChildren: () => import('./cs-pages/store-update-category/store-update-category.module').then( m => m.StoreUpdateCategoryPageModule)
   }
-
 ];
 
 @NgModule({

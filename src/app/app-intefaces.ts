@@ -2,7 +2,14 @@ import { Observable } from 'rxjs';
 
 export interface AppInfo {
   id: string;
+  name1: string;
+  name2: string;
+  homeTitle: string;
+  description: string;
+  logo: string;
   facebook: string;
+  instagram: string;
+  address: string;
   phone: number;
   whatsapp: number;
   domain: string;
@@ -10,6 +17,15 @@ export interface AppInfo {
   privacyPolicyTemplate: string;
   tax: number;
   featuredProductsXStore: number;
+  orderMinAmount: number;
+  productsCount: number;
+  productsLimit: number;
+  couponsLimit: number;
+  vendorsLimit: number;
+  returnsPolicyTemplate: string;
+  video1: string;
+  video2: string;
+  video3: string;
 }
 
 export interface PlatformFee {
@@ -154,6 +170,7 @@ export interface StoreCategory {
 
 export interface Product {
   id: string;
+  idStore: string;
   idProductCategory: string;
   name: string;
   ref: string;

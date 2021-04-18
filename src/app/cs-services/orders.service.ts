@@ -15,20 +15,19 @@ export class OrdersService {
 
   constructor(public angularFirestore: AngularFirestore, private appService: AppService) { }
 
-  public create(idStore: string, order: Order): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).add(order);
+  public create(order: Order): Promise<DocumentReference> {
+    return this.angularFirestore.collection(this.collectionName).add(order);
   }
 
-  public createOrderAddress(idStore: string, idOrder: string, address: Address): Promise<DocumentReference> {
+  public createOrderAddress(idOrder: string, address: Address): Promise<DocumentReference> {
     return this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idOrder)
       .collection('addresses').add(address);
   }
 
-  public getById(idStore: string, idOrder: string) {
+  public getById(idOrder: string) {
     return new Promise((resolve, reject) => {
-      this.angularFirestore.collection("stores").doc(idStore)
+      this.angularFirestore
         .collection(this.collectionName).doc(idOrder).ref.get().then(
           function (doc) {
             if (doc.exists) {
@@ -47,16 +46,16 @@ export class OrdersService {
         });
   }
 
-  public addCartProduct(idStore: string, idOrder: string, cartProduct: CartProduct): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public addCartProduct(idOrder: string, cartProduct: CartProduct): Promise<DocumentReference> {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idOrder)
       .collection('cartProducts').add(cartProduct);
   }
 
-  public getCartProducts(idStore: string, idOrder: string): Observable<CartProduct[]> {
+  public getCartProducts(idOrder: string): Observable<CartProduct[]> {
     this.ordersCollection;
 
-    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+    this.ordersCollection = this.angularFirestore
       .collection(this.collectionName).doc(idOrder)
       .collection('cartProducts');
 
@@ -70,10 +69,10 @@ export class OrdersService {
     );
   }
 
-  public getAddresses(idStore: string, idOrder: string): Observable<Address[]> {
+  public getAddresses(idOrder: string): Observable<Address[]> {
     this.ordersCollection;
 
-    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+    this.ordersCollection = this.angularFirestore
       .collection(this.collectionName).doc(idOrder)
       .collection('addresses');
 
@@ -87,10 +86,10 @@ export class OrdersService {
     );
   }
 
-  public getByStore(idStore: string, searchText: string): Observable<Order[]> {
+  public getByStore( searchText: string): Observable<Order[]> {
     this.ordersCollection;
 
-    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+    this.ordersCollection = this.angularFirestore
       .collection<Order>(this.collectionName, ref => ref
         .where('deleted', '==', false)
         // .where('status', '==', status)
@@ -151,10 +150,10 @@ export class OrdersService {
       })));
   }
 
-  public getByStoreAndUser(idStore: string, idUser: string, searchText: string): Observable<Order[]> {
+  public getByStoreAndUser( idUser: string, searchText: string): Observable<Order[]> {
     this.ordersCollection;
 
-    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+    this.ordersCollection = this.angularFirestore
       .collection<Order>(this.collectionName, ref => ref
         .where('deleted', '==', false)
         // .where('status', '==', status)
@@ -239,13 +238,12 @@ export class OrdersService {
     );
   }
 
-  public update(idStore: string, id: string, data: any) {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).doc(id).update(data);
+  public update(id: string, data: any) {
+    return this.angularFirestore.collection(this.collectionName).doc(id).update(data);
   }
 
-  public updateCartProduct(idStore: string, idOrder: string, idCartProduct, data: any) {
+  public updateCartProduct(idOrder: string, idCartProduct, data: any) {
     return this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idOrder)
       .collection('cartProducts').doc(idCartProduct)
       .update(data);
@@ -253,17 +251,16 @@ export class OrdersService {
 
   //------------------------------------- Coupons
 
-  public async addOrderCoupon(idStore: string, idOrder: string, storeCoupon: StoreCoupon): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public async addOrderCoupon(idOrder: string, storeCoupon: StoreCoupon): Promise<DocumentReference> {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idOrder)
       .collection('coupons').add(storeCoupon);
   }
 
-  public getOrderCoupons(idStore: string, idOrder: string): Observable<StoreCoupon[]> {
+  public getOrderCoupons(idOrder: string): Observable<StoreCoupon[]> {
     this.ordersCollection;
 
     this.ordersCollection = this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idOrder)
       .collection('coupons', ref => ref
         .where('deleted', '==', false));
@@ -280,17 +277,16 @@ export class OrdersService {
 
   // -------------------------------- Order Shipping Methods
 
-  public async addOrderShippingMethod(idStore: string, idOrder: string, shippingMethod: ShippingMethod): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public async addOrderShippingMethod(idOrder: string, shippingMethod: ShippingMethod): Promise<DocumentReference> {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idOrder)
       .collection('shippingMethods').add(shippingMethod);
   }
 
-  public getOrderShippingMethods(idStore: string, idOrder: string): Observable<ShippingMethod[]> {
+  public getOrderShippingMethods(idOrder: string): Observable<ShippingMethod[]> {
     this.ordersCollection;
 
     this.ordersCollection = this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idOrder)
       .collection('shippingMethods', ref => ref
         .where('deleted', '==', false));

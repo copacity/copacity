@@ -43,8 +43,8 @@ export class StoreOrdersPage implements OnInit {
     this.orderSearchHits = 0;
     this.searchingOrders = true;
 
-    if (this.appService.currentUser.id != this.appService.currentStore.idUser) {
-      this.orders = this.ordersService.getByStoreAndUser(this.appService.currentStore.id, this.appService.currentUser.id, "");
+    if (!this.appService.currentUser.isAdmin) {
+      this.orders = this.ordersService.getByStoreAndUser(this.appService.currentUser.id, "");
       this.orders.subscribe(result => {
         this.searchingOrders = false;
         result.forEach(order => {
@@ -54,7 +54,7 @@ export class StoreOrdersPage implements OnInit {
         });
       });
     } else {
-      this.orders = this.ordersService.getByStore(this.appService.currentStore.id, "");
+      this.orders = this.ordersService.getByStore("");
       this.orders.subscribe(result => {
         this.searchingOrders = false;
         result.forEach(order => {
@@ -67,7 +67,7 @@ export class StoreOrdersPage implements OnInit {
   }
 
   async openOrderDetailPage(idOrder: Order) {
-    this.router.navigate(['order-detail/' + idOrder + "&" + this.appService.currentStore.id]);
+    this.router.navigate(['order-detail/' + idOrder]);
     this.popoverController.dismiss();
 
     // let modal = await this.popoverController.create({

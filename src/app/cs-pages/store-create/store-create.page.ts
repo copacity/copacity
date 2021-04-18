@@ -15,7 +15,7 @@ import { UsersService } from 'src/app/cs-services/users.service';
   styleUrls: ['./store-create.page.scss'],
 })
 export class StoreCreatePage implements OnInit {
-  storeCategories: Observable<StoreCategory[]> = null;
+  //storeCategories: Observable<StoreCategory[]> = null;
   //sectors: Observable<Sector[]> = null;
 
   form: FormGroup;
@@ -31,7 +31,7 @@ export class StoreCreatePage implements OnInit {
   ) {
 
     this.buildForm();
-    this.storeCategories = this.appService.storeCategories;
+    //this.storeCategories = this.appService.storeCategories;
     //this.sectors = this.appService.sectors;
   }
 
@@ -63,13 +63,13 @@ export class StoreCreatePage implements OnInit {
 
     this.form = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
-      category: ['', [Validators.required]],
-      phone1: ['', [Validators.required, Validators.max(999999999999999)]],
-      phone2: ['', [Validators.max(999999999999999)]],
-      whatsapp: ['', [Validators.max(999999999999999)]],
-      facebook: ['', [Validators.maxLength(250)]],
-      instagram: ['', [Validators.maxLength(250)]],
-      address: ['', [Validators.maxLength(250)]],
+      // category: ['', [Validators.required]],
+      // phone1: ['', [Validators.required, Validators.max(999999999999999)]],
+      // phone2: ['', [Validators.max(999999999999999)]],
+      // whatsapp: ['', [Validators.max(999999999999999)]],
+      // facebook: ['', [Validators.maxLength(250)]],
+      // instagram: ['', [Validators.maxLength(250)]],
+      // address: ['', [Validators.maxLength(250)]],
       description: ['', [Validators.maxLength(500)]]
     });
   }
@@ -91,29 +91,29 @@ export class StoreCreatePage implements OnInit {
         {
           id: '',
           idUser: this.appService.currentUser.id,
-          address: this.form.value.address,
+          address: '',
           deleted: false,
           logo: '',
           thumb_logo: '',
-          phone1: this.form.value.phone1 ? this.form.value.phone1 : 0,
-          phone2: this.form.value.phone2 ? this.form.value.phone2 : 0,
-          whatsapp: this.form.value.whatsapp ? this.form.value.whatsapp : 0,
-          facebook: this.form.value.facebook,
-          instagram: this.form.value.instagram,
+          phone1: 0,
+          phone2: 0,
+          whatsapp: 0,
+          facebook: '',
+          instagram: '',
           lastUpdated: new Date(),
           dateCreated: new Date(),
           name: this.form.value.name,
-          idSector: '',  //this.form.value.sector,
-          idStoreCategory: this.form.value.category,
+          idSector: '',
+          idStoreCategory: '',
           description: this.form.value.description,
-          status: StoreStatus.Created,
+          status: StoreStatus.Published,
           visits: 0,
           deliveryPrice: 0,
           orderMinAmount: 0,
           productsCount: 0,
-          productsLimit: 100,
-          couponsLimit: 3,
-          vendorsLimit: 3,
+          productsLimit: 0,
+          couponsLimit: 0,
+          vendorsLimit: 0,
           returnsPolicyTemplate:'',
           video1: '',
           video2: '',

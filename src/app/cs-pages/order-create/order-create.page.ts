@@ -45,7 +45,7 @@ export class OrderCreatePage implements OnInit {
   idVendor: FormControl;
   storeCoupon: StoreCoupon;
 
-  store: Store;
+  //store: Store;
   cart: CartProduct[];
   isValidInventory: boolean = true;
 
@@ -84,43 +84,41 @@ export class OrderCreatePage implements OnInit {
   }
 
   initialize() {
-    let storeId = this.route.snapshot.params.id.toString();
-    this.storesService.getById(storeId).then(result => {
-      this.cartService = this.cartManagerService.getCartService(result);
 
-      this.store = result;
-      this.cart = this.cartService.getCart();
-      this.paymentMethods = this.paymentMethodsService.getAll();
-      this.shippingMethods = this.storesService.getShippingMethods(this.store.id);
+    this.cartService = this.cartManagerService.getCartService();
 
-      this.messageToStore = new FormControl('', [Validators.maxLength(500)]);
-      this.idVendor = new FormControl('', [Validators.required]);
-      this.buildStoreCoupon('');
+    //this.store = result;
+    this.cart = this.cartService.getCart();
+    this.paymentMethods = this.paymentMethodsService.getAll();
+    this.shippingMethods = this.storesService.getShippingMethods();
 
-      setTimeout(() => {
-        if (this.appService.currentUser.phone1 == 0 || this.appService.currentUser.phone2 == 0 || this.appService.currentUser.whatsapp == 0) {
-          this.openProfileUpdatePage();
-        }
-      }, 5000);
+    this.messageToStore = new FormControl('', [Validators.maxLength(500)]);
+    this.idVendor = new FormControl('', [Validators.required]);
+    this.buildStoreCoupon('');
 
-      let subs = this.storesService.getActiveVendors(this.store.id).subscribe(result => {
+    setTimeout(() => {
+      if (this.appService.currentUser.phone1 == 0 || this.appService.currentUser.phone2 == 0 || this.appService.currentUser.whatsapp == 0) {
+        this.openProfileUpdatePage();
+      }
+    }, 5000);
 
-        let vendorPromises = [];
-        result.forEach(vendor => {
-          vendorPromises.push(this.fillUsers(vendor));
-        });
+    let subs = this.storesService.getActiveVendors().subscribe(result => {
 
-        Promise.all(vendorPromises).then(users => {
-          this.users = users;
-        });
-
-        subs.unsubscribe();
+      let vendorPromises = [];
+      result.forEach(vendor => {
+        vendorPromises.push(this.fillUsers(vendor));
       });
 
-      if (!this.appService.currentUser || this.cart.length == 0) {
-        this.router.navigate(['/store', this.store.id]);
-      }
+      Promise.all(vendorPromises).then(users => {
+        this.users = users;
+      });
+
+      subs.unsubscribe();
     });
+
+    if (!this.appService.currentUser || this.cart.length == 0) {
+      this.router.navigate(['/home']);
+    }
 
     this.messageToStore = new FormControl('', [Validators.maxLength(500)]);
     this.idVendor = new FormControl('', [Validators.required]);
@@ -287,7 +285,7 @@ export class OrderCreatePage implements OnInit {
   async openImageViewer(product: Product) {
     let images: string[] = [];
 
-    let result = this.productsService.getProductImages(this.store.id, product.id);
+    let result = this.productsService.getProductImages(product.idStore, product.id);
 
     let subs = result.subscribe(async (productImages: ProductImage[]) => {
       productImages.forEach(img => {
@@ -415,20 +413,16 @@ export class OrderCreatePage implements OnInit {
             let storeCouponId = value[value.length - 1].toString().split("&")[0];
             let storeId = value[value.length - 1].toString().split("&")[1];
 
-            if (this.store.id == storeId) {
-              this.buildStoreCoupon(storeCouponId);
+            this.buildStoreCoupon(storeCouponId);
 
-              this.validateCoupon().then(result => {
-                if (result) {
-                  this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
-                }
-              }).catch(err => {
-                alert(err);
-                this.appService.logError({ id: '', message: err, function: 'openBarCodeScanner', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
-              });
-            } else {
-              this.presentAlert("Lo sentimos, el cupón seleccionado no pertenece a esta tienda", "", () => { });
-            }
+            this.validateCoupon().then(result => {
+              if (result) {
+                this.presentAlert("Cupón aplicado exitosamente, El descuento se verá reflejado en la factura del pedido. Gracias", "", () => { });
+              }
+            }).catch(err => {
+              alert(err);
+              this.appService.logError({ id: '', message: err, function: 'openBarCodeScanner', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+            });
           } else {
             this.presentAlert("El código leído no es un cupón", "", () => { });
           }
@@ -439,6 +433,7 @@ export class OrderCreatePage implements OnInit {
   }
 
   async sendOrder() {
+    debugger;
     if (this.messageToStore.valid) {
       if (this.appService.currentUser) {
         if (this.shippingMethod) {
@@ -452,7 +447,7 @@ export class OrderCreatePage implements OnInit {
                     id: '',
                     ref: new Date().getTime(),
                     deleted: false,
-                    idStore: this.store.id,
+                    idStore: '-1',
                     idUser: this.appService.currentUser.id,
                     idPaymentMethod: this.paymentMethod.id,
                     idVendor: this.idVendor.value,
@@ -470,27 +465,27 @@ export class OrderCreatePage implements OnInit {
                     id: '',
                     description: '',
                     deleted: false,
-                    idStore: this.store.id,
+                    idStore: '-1',
                     dateCreated: new Date(),
                     status: NotificationStatus.Created,
                     idUser: this.appService.currentUser.id,
                     photoUrl: this.appService.currentUser.photoUrl,
                     userName: this.appService.currentUser.name,
                     idOrder: '',
-                    idUserNotification: this.store.idUser
+                    idUserNotification: 'pAAuLaSiDNg3RukHr4QLZrmbZ3v2'/*this.store.idUser*/
                   }
 
                   this.validateFromInventory().then(() => {
                     if (this.isValidInventory) {
                       // 1. Create Order
-                      this.ordersService.create(this.store.id, order).then(doc => {
+                      this.ordersService.create(order).then(doc => {
 
                         // 2. Udpate Id field into Orders collection
-                        this.ordersService.update(this.store.id, doc.id, { id: doc.id }).then(async result => {
+                        this.ordersService.update(doc.id, { id: doc.id }).then(async result => {
 
                           // 3. Added checked address into Addresses sub-collection into order
                           if (this.appService.addressChecked) {
-                            await this.ordersService.createOrderAddress(this.store.id, doc.id, this.appService.addressChecked);
+                            await this.ordersService.createOrderAddress(doc.id, this.appService.addressChecked);
                           }
 
                           // 4. Added cart Products into cartProducts sub-collection into order
@@ -506,17 +501,17 @@ export class OrderCreatePage implements OnInit {
                                 this.discountPoints().then(async () => {
 
                                   if (this.storeCoupon) {
-                                    await this.ordersService.addOrderCoupon(this.store.id, doc.id, this.storeCoupon);
+                                    await this.ordersService.addOrderCoupon(doc.id, this.storeCoupon);
                                   }
 
                                   // 8. Discount Coupon Quantity
                                   this.discountCouponQuantity().then(() => {
 
-                                    notification.description = "Ha realizado un nuevo pedido en " + this.store.name;
+                                    notification.description = "Ha realizado un nuevo pedido";
                                     notification.idOrder = doc.id;
 
                                     // 9. Configure Notification
-                                    this.notificationsService.create(this.store.idUser, notification).then(result => {
+                                    this.notificationsService.create('pAAuLaSiDNg3RukHr4QLZrmbZ3v2'/*this.store.idUser*/, notification).then(result => {
                                       this.loaderComponent.stopLoading();
                                       this.cartService.clearCart();
                                       this.presentAlert("El pedido ha sido enviado a la tienda exitosamente! Tu numero de pedido es: " + order.ref, "", () => {
@@ -562,7 +557,7 @@ export class OrderCreatePage implements OnInit {
       }
 
       Promise.all(promises).then(() => {
-        resolve();
+        resolve('');
       });
     }).catch(err => {
       alert(err);
@@ -572,8 +567,8 @@ export class OrderCreatePage implements OnInit {
 
   addShippingMethod(idOrder: string) {
     return new Promise((resolve, reject) => {
-      this.ordersService.addOrderShippingMethod(this.store.id, idOrder, this.shippingMethod).then(() => {
-        resolve();
+      this.ordersService.addOrderShippingMethod(idOrder, this.shippingMethod).then(() => {
+        resolve('');
       });
     }).catch(err => {
       alert(err);
@@ -584,19 +579,19 @@ export class OrderCreatePage implements OnInit {
   updateCartProductInventory(cartProduct: CartProduct) {
     return new Promise((resolve, reject) => {
 
-      let subs = this.productsService.getCartInventory(this.store.id, cartProduct.product.id)
+      let subs = this.productsService.getCartInventory(cartProduct.product.idStore, cartProduct.product.id)
         .subscribe((cartP) => {
           for (let [index, pInventory] of cartP.entries()) {
             if (this.cartService.compareProducts(pInventory, cartProduct)) {
               let finalProductQuantity = pInventory.quantity - cartProduct.quantity;
-              this.productsService.updateCartInventory(this.store.id, cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
+              this.productsService.updateCartInventory(cartProduct.product.idStore, cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
             }
           }
 
           subs.unsubscribe();
         });
 
-      resolve();
+      resolve('');
     }).catch(err => {
       alert(err);
       this.appService.logError({ id: '', message: err, function: 'updateCartProductInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
@@ -609,16 +604,17 @@ export class OrderCreatePage implements OnInit {
 
         let hasPoints = false;
         StorePoints.forEach(storePoint => {
-          if (storePoint.idStore === this.store.id) {
+          debugger;
+          //if (storePoint.idStore === this.store.id) {
             let points = storePoint.points - this.cartService.getPoints();
             this.usersService.updateStorePoint(this.appService.currentUser.id, storePoint.id, { points: points }).then(() => {
-              resolve();
+              resolve('');
             });
-          }
+          //}
         });
 
         if (!hasPoints) {
-          resolve();
+          resolve('');
         }
 
         subscribe.unsubscribe();
@@ -652,7 +648,7 @@ export class OrderCreatePage implements OnInit {
           resolve(true);
         }
         else {
-          this.ordersService.addCartProduct(this.store.id, idOrder, this.cart[index]).then(() => {
+          this.ordersService.addCartProduct(idOrder, this.cart[index]).then(() => {
             addToCart(++index);
           });
         }
@@ -679,7 +675,7 @@ export class OrderCreatePage implements OnInit {
 
       this.isValidInventory = true;
       Promise.all(promises).then(values => {
-        resolve();
+        resolve('');
       });
     }).catch(err => {
       this.presentAlert(err, "", () => { });
@@ -691,7 +687,7 @@ export class OrderCreatePage implements OnInit {
   validateCartProductInventory(cartProduct: CartProduct) {
     return new Promise((resolve, reject) => {
 
-      let subs = this.productsService.getCartInventory(this.store.id, cartProduct.product.id)
+      let subs = this.productsService.getCartInventory(cartProduct.product.idStore, cartProduct.product.id)
         .subscribe((cartP) => {
           for (let [index, pInventory] of cartP.entries()) {
             if (this.cartService.compareProducts(pInventory, cartProduct)) {
@@ -725,9 +721,9 @@ export class OrderCreatePage implements OnInit {
     return new Promise((resolve, reject) => {
       if (this.storeCoupon) {
         // validate Coupon 
-        this.storesService.getCouponById(this.store.id, this.couponCode.value).then((storeCoupon: StoreCoupon) => {
+        this.storesService.getCouponById(this.couponCode.value).then((storeCoupon: StoreCoupon) => {
           if (storeCoupon) {
-            this.storesService.updateStoreCoupon(this.store.id, this.couponCode.value, { quantity: (storeCoupon.quantity - 1) }).then(() => {
+            this.storesService.updateStoreCoupon(this.couponCode.value, { quantity: (storeCoupon.quantity - 1) }).then(() => {
               resolve(true);
             });
           } else {
@@ -744,7 +740,7 @@ export class OrderCreatePage implements OnInit {
     if (this.appService.currentUser) {
       let modal = await this.popoverController.create({
         component: StoreCouponsPage,
-        componentProps: { store: this.store, isAdmin: false, dashboard: false, orderTotal: this.cartService.getTotalDetail(this.store.deliveryPrice) },
+        componentProps: { isAdmin: false, dashboard: false, orderTotal: this.cartService.getTotalDetail(0) },
         cssClass: 'cs-popovers',
         backdropDismiss: false,
       });
@@ -808,7 +804,7 @@ export class OrderCreatePage implements OnInit {
 
       this.storeCoupon = null;
       if (this.couponCode.value) {
-        this.storesService.getCouponById(this.store.id, this.couponCode.value).then((storeCoupon: StoreCoupon) => {
+        this.storesService.getCouponById(this.couponCode.value).then((storeCoupon: StoreCoupon) => {
           if (storeCoupon) {
             if (storeCoupon.quantity > 0) {
               let currentDate: any = new Date();

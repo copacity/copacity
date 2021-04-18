@@ -280,6 +280,7 @@ export class ProductCreatePage implements OnInit {
         let newProduct: Product =
         {
           id: '',
+          idStore: this.appService.currentStore.id,
           deleted: false,
           image: '',
           lastUpdated: new Date(),

@@ -8,6 +8,7 @@ import { LoaderComponent } from '../loader/loader.component';
 import { StoreCreatePage } from 'src/app/cs-pages/store-create/store-create.page';
 import { AskForAccountComponent } from '../ask-for-account/ask-for-account.component';
 import { SignupComponent } from '../signup/signup.component';
+import { StoreUpdatePage } from 'src/app/cs-pages/store-update/store-update.page';
 
 @Component({
   selector: 'app-menu-user',
@@ -120,6 +121,22 @@ export class MenuUserComponent implements OnInit {
   goToUserStore() {
     this.router.navigate(['store/' + this.appService._userStoreId]);
     this.popoverController.dismiss();
+  }
+
+  async openStoreUpdatePage() {
+    this.popoverController.dismiss();
+    let modal = await this.popoverController.create({
+      component: StoreUpdatePage,
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const updated = data['data'];
+      });
+
+    modal.present();
   }
 
   async presentToast(message: string) {

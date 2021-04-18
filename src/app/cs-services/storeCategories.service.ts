@@ -18,24 +18,24 @@ export class StoreCategoriesService {
     return this.angularFirestore.collection(this.collectionName).add(storeCategory);
   }
 
-  public getById(Id: string) {
-    return this.angularFirestore.collection(this.collectionName).doc(Id).snapshotChanges();
-  }
+  // public getById(Id: string) {
+  //   return this.angularFirestore.collection(this.collectionName).doc(Id).snapshotChanges();
+  // }
 
-  public getAll(): Observable<StoreCategory[]> {
-    this.storeCategoryCollection = this.angularFirestore.collection<StoreCategory>(this.collectionName, ref => ref.orderBy('name'));
-    return this.storeCategoryCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as StoreCategory;
+  // public getAll(): Observable<StoreCategory[]> {
+  //   this.storeCategoryCollection = this.angularFirestore.collection<StoreCategory>(this.collectionName, ref => ref.orderBy('name'));
+  //   return this.storeCategoryCollection.snapshotChanges().pipe(
+  //     map(actions => actions.map(a => {
+  //       const data = a.payload.doc.data() as StoreCategory;
         
-        data.id = a.payload.doc.id;
+  //       data.id = a.payload.doc.id;
 
-        return data;
-      }))
-    );
-  }
+  //       return data;
+  //     }))
+  //   );
+  // }
 
-  public set(id: string, data: any) {
-    return this.angularFirestore.collection(this.collectionName).doc(id).set(data);
-  }
+  // public set(id: string, data: any) {
+  //   return this.angularFirestore.collection(this.collectionName).doc(id).set(data);
+  // }
 }

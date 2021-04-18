@@ -32,7 +32,6 @@ import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/as
 })
 export class OrderDetailPage implements OnInit {
   isAdmin: boolean;
-  store: Store;
   order: Order;
   cartProducts: Observable<CartProduct[]>;
   storeCoupon: StoreCoupon;
@@ -72,74 +71,64 @@ export class OrderDetailPage implements OnInit {
   }
 
   initialize(user?: any) {
-    this.cartService = new  CartService();
-    let orderId = this.route.snapshot.params.id.toString().split("&")[0];
-    let storeId = this.route.snapshot.params.id.toString().split("&")[1];
-    this.storesService.getById(storeId).then(result => {
-      this.store = result;
-      this.ordersService.getById(this.store.id, orderId).then((orderResult: Order) => {
-        this.usersService.getById(orderResult.idUser).then(result => {
-          this.user = result;
-        });
-
-        this.order = orderResult;
-        this.cartProducts = this.ordersService.getCartProducts(this.store.id, this.order.id);
-        this.addresses = this.ordersService.getAddresses(this.store.id, this.order.id);
-
-        // Get Coupon
-        this.storeCoupon = null;
-        let subs = this.ordersService.getOrderCoupons(this.store.id, this.order.id).subscribe(orderCoupons => {
-          orderCoupons.forEach(coupon => {
-            this.storeCoupon = coupon;
-          });
-
-          subs.unsubscribe;
-        });
-
-        // Get shipping method
-        this.shippingMethod = null;
-        let subs1 = this.ordersService.getOrderShippingMethods(this.store.id, this.order.id).subscribe(sm => {
-          sm.forEach(shippingMethod => {
-            this.shippingMethod = shippingMethod;
-          });
-
-          subs1.unsubscribe;
-        });
-
-        // Get PaymentMethod
-        this.paymentMethodsService.getById(this.order.idPaymentMethod).then((result: PaymentMethod) => {
-          this.paymentMethod = result;
-        });
-
-        this.cartProducts.subscribe((cartP) => {
-          this.cartService.setCart(cartP);
-        });
-
-        if (this.order.idVendor == "1") {
-          this.vendorName = "Compra directa sin asesor";
-        } else {
-          this.usersService.getById(this.order.idVendor).then((_user: User) => {
-            this.vendorName = _user.name;
-          });
-        }
-
-        if (this.appService.currentUser && this.store.idUser == this.appService.currentUser.id) {
-          this.isAdmin = true;
-          this.buttons = true;
-        } else {
-          if (this.appService.currentUser && this.order.idUser == this.appService.currentUser.id) {
-            this.isAdmin = false;
-          } else {
-            this.router.navigate(['/store', this.store.id]);
-          }
-        }
-
-        if (this.store.status != StoreStatus.Published) {
-          if (!this.isAdmin) {
-            this.router.navigate(['/home']);
-          }
-        }
+    this.cartService = new CartService();
+    let orderId = this.route.snapshot.params.id;
+    this.ordersService.getById(orderId).then((orderResult: Order) => {
+      this.usersService.getById(orderResult.idUser).then(result => {
+        this.user = result;
       });
+
+      this.order = orderResult;
+      this.cartProducts = this.ordersService.getCartProducts(this.order.id);
+      this.addresses = this.ordersService.getAddresses(this.order.id);
+
+      // Get Coupon
+      this.storeCoupon = null;
+      let subs = this.ordersService.getOrderCoupons(this.order.id).subscribe(orderCoupons => {
+        orderCoupons.forEach(coupon => {
+          this.storeCoupon = coupon;
+        });
+
+        subs.unsubscribe;
+      });
+
+      // Get shipping method
+      this.shippingMethod = null;
+      let subs1 = this.ordersService.getOrderShippingMethods(this.order.id).subscribe(sm => {
+        sm.forEach(shippingMethod => {
+          this.shippingMethod = shippingMethod;
+        });
+
+        subs1.unsubscribe;
+      });
+
+      // Get PaymentMethod
+      this.paymentMethodsService.getById(this.order.idPaymentMethod).then((result: PaymentMethod) => {
+        this.paymentMethod = result;
+      });
+
+      this.cartProducts.subscribe((cartP) => {
+        this.cartService.setCart(cartP);
+      });
+
+      if (this.order.idVendor == "1") {
+        this.vendorName = "Compra directa sin asesor";
+      } else {
+        this.usersService.getById(this.order.idVendor).then((_user: User) => {
+          this.vendorName = _user.name;
+        });
+      }
+
+      if (this.appService.currentUser && this.appService.currentUser.isAdmin) {
+        this.isAdmin = true;
+        this.buttons = true;
+      } else {
+        if (this.appService.currentUser && this.order.idUser == this.appService.currentUser.id) {
+          this.isAdmin = false;
+        } else {
+          this.router.navigate(['/home']);
+        }
+      }
     });
   }
 
@@ -233,7 +222,7 @@ export class OrderDetailPage implements OnInit {
   async openImageViewer(product: Product) {
     let images: string[] = [];
 
-    let result = this.productsService.getProductImages(this.store.id, product.id);
+    let result = this.productsService.getProductImages(product.idStore, product.id);
 
     let subs = result.subscribe(async (productImages: ProductImage[]) => {
       productImages.forEach(img => {
@@ -343,7 +332,7 @@ export class OrderDetailPage implements OnInit {
   }
 
   getTotal() {
-    return this.total + (this.store && this.store.deliveryPrice ? this.store.deliveryPrice : 0) - this.discount;
+    return this.total + 0 /*DeliveryPrice*/ - this.discount;
   }
 
   async openMessage(event: any) {
@@ -395,7 +384,7 @@ export class OrderDetailPage implements OnInit {
   }
 
   checkProduct(event, cartProduct: CartProduct) {
-    this.ordersService.updateCartProduct(this.store.id, this.order.id, cartProduct.id, { checked: event.target.checked })
+    this.ordersService.updateCartProduct(this.order.id, cartProduct.id, { checked: event.target.checked })
   }
 
   async openImageViewerUser(img: string) {
@@ -422,19 +411,19 @@ export class OrderDetailPage implements OnInit {
       id: '',
       description: '',
       deleted: false,
-      idStore: this.store.id,
+      idStore: "",
       dateCreated: new Date(),
       status: NotificationStatus.Created,
       idUser: this.appService.currentUser.id,
-      photoUrl: this.store.logo,
-      userName: this.store.name,
+      photoUrl: this.appService._appInfo.logo,
+      userName: this.appService._appInfo.name1 + this.appService._appInfo.name1,
       idOrder: '',
       idUserNotification: this.order.idUser
     }
 
     this.loaderCOmponent.startLoading("Confirmando pedido, por favor espere un momento...")
     setTimeout(() => {
-      this.ordersService.update(this.store.id, this.order.id, { status: OrderStatus.Sent, lastUpdated: new Date() }).then(result => {
+      this.ordersService.update(this.order.id, { status: OrderStatus.Sent, lastUpdated: new Date() }).then(result => {
         this.addPoints().then(points => {
 
           if (points > 0) {
@@ -454,7 +443,7 @@ export class OrderDetailPage implements OnInit {
             this.loaderCOmponent.stopLoading();
             this.presentAlert("El pedido ha sido confirmado exitosamente", "", () => {
               this.cartService.clearCart();
-              this.router.navigate(['/store', this.store.id]);
+              this.router.navigate(['/home']);
             });
           });
         });
@@ -468,16 +457,16 @@ export class OrderDetailPage implements OnInit {
 
         let hasPoints = false;
         StorePoints.forEach(storePoint => {
-          if (storePoint.idStore === this.store.id) {
+          //if (storePoint.idStore === this.store.id) {
             let points = storePoint.points + this.cartService.getPoints();
             this.usersService.updateStorePoint(this.user.id, storePoint.id, { points: points }).then(() => {
-              resolve();
+              resolve('');
             });
-          }
+          //}
         });
 
         if (!hasPoints) {
-          resolve();
+          resolve('');
         }
 
         subscribe.unsubscribe();
@@ -490,7 +479,7 @@ export class OrderDetailPage implements OnInit {
 
   addPoints() {
     return new Promise((resolve, reject) => {
-      let total = this.cartService.getTotalDetail(this.store.deliveryPrice);
+      let total = this.cartService.getTotalDetail(0);
 
       let points = (this.storeCoupon ? (total * this.storeCoupon.discount / 100) : total) / 500;
 
@@ -499,7 +488,7 @@ export class OrderDetailPage implements OnInit {
 
         let currentStorePoint: StorePoint = {
           id: '',
-          idStore: this.store.id,
+          idStore: "",
           points: 0,
           deleted: false,
           dateCreated: new Date(),
@@ -507,10 +496,10 @@ export class OrderDetailPage implements OnInit {
         };
 
         StorePoints.forEach(storePoint => {
-          if (storePoint.idStore === this.store.id) {
+          //if (storePoint.idStore === this.store.id) {
             currentStorePoint = storePoint
             hasStorepoints = true;
-          }
+          //}
         });
 
         if (hasStorepoints) {
@@ -538,19 +527,19 @@ export class OrderDetailPage implements OnInit {
       id: '',
       description: '',
       deleted: false,
-      idStore: this.store.id,
+      idStore: "",
       dateCreated: new Date(),
       status: NotificationStatus.Created,
       idUser: this.appService.currentUser.id,
-      photoUrl: this.store.logo,
-      userName: this.store.name,
+      photoUrl: this.appService._appInfo.logo,
+      userName: this.appService._appInfo.name1 + this.appService._appInfo.name2,
       idOrder: '',
       idUserNotification: this.order.idUser
     }
 
     this.loaderCOmponent.startLoading("Cancelando pedido, por favor espere un momento...")
     setTimeout(() => {
-      this.ordersService.update(this.store.id, this.order.id, { status: OrderStatus.Cancelled, lastUpdated: new Date(), messageRejected: message }).then(result => {
+      this.ordersService.update(this.order.id, { status: OrderStatus.Cancelled, lastUpdated: new Date(), messageRejected: message }).then(result => {
         notification.description = "Lo sentimos, tu pedido fue rechazado.";
         notification.idOrder = this.order.id;
         this.notificationsService.create(this.order.idUser, notification).then(result => {
@@ -567,7 +556,7 @@ export class OrderDetailPage implements OnInit {
                 this.loaderCOmponent.stopLoading();
                 this.presentAlert("El pedido ha sido rechazado exitosamente", "", () => {
                   this.cartService.clearCart();
-                  this.router.navigate(['/store', this.store.id]);
+                  this.router.navigate(['/home']);
                 });
               });
             });
@@ -586,7 +575,7 @@ export class OrderDetailPage implements OnInit {
       }
 
       Promise.all(promises).then(() => {
-        resolve();
+        resolve('');
       });
     }).catch(err => {
       alert(err);
@@ -609,7 +598,7 @@ export class OrderDetailPage implements OnInit {
           subs.unsubscribe();
         });
 
-      resolve();
+      resolve('');
     }).catch(err => {
       alert(err);
       this.appService.logError({ id: '', message: err, function: 'updateCartProductInventory', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
@@ -620,9 +609,9 @@ export class OrderDetailPage implements OnInit {
     return new Promise((resolve, reject) => {
       if (this.storeCoupon) {
         // validate Coupon 
-        this.storesService.getCouponById(this.store.id, this.storeCoupon.id).then((storeCoupon: StoreCoupon) => {
+        this.storesService.getCouponById(this.storeCoupon.id).then((storeCoupon: StoreCoupon) => {
           if (storeCoupon) {
-            this.storesService.updateStoreCoupon(this.store.id, this.storeCoupon.id, { quantity: (storeCoupon.quantity + 1) }).then(() => {
+            this.storesService.updateStoreCoupon(this.storeCoupon.id, { quantity: (storeCoupon.quantity + 1) }).then(() => {
               resolve(true);
             });
           } else {

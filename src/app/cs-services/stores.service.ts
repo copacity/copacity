@@ -247,6 +247,23 @@ export class StoresService {
     });
   }
 
+  public getAllStores(): Observable<Store[]> {
+    this.storesCollection = this.angularFirestore.collection<Store>(this.collectionName, ref => ref
+          .where('deleted', '==', false)
+          .where('status', '==', StoreStatus.Published)
+          .orderBy('productsCount', 'desc'));
+
+    return this.storesCollection.snapshotChanges().pipe(
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data() as Store;
+            
+            data.id = a.payload.doc.id;
+    
+            return data;
+          }))
+        );
+  }
+
   public set(id: string, data: any) {
     return this.angularFirestore.collection(this.collectionName).doc(id).set(data);
   }
@@ -262,14 +279,13 @@ export class StoresService {
       .collection('coupons').add(storeCoupon);
   }
 
-  public updateStoreCoupon(idStore: string, idStoreCoupon: string, data: any) {
+  public updateStoreCoupon(idStoreCoupon: string, data: any) {
     return this.angularFirestore
-      .collection(this.collectionName).doc(idStore)
       .collection('coupons').doc(idStoreCoupon).update(data);
   }
 
-  public getAllStoreCoupons(idStore: string): Observable<StoreCoupon[]> {
-    let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
+  public getAllStoreCoupons(): Observable<StoreCoupon[]> {
+    let storesCollection = this.angularFirestore.collection("coupons", ref => ref
       .where('deleted', '==', false)
       .orderBy('minAmount'));
 
@@ -298,8 +314,8 @@ export class StoresService {
     );
   }
 
-  public getStoreCouponsNoVIP(idStore: string): Observable<StoreCoupon[]> {
-    let storesCollection = this.angularFirestore.collection<Store>(this.collectionName).doc(idStore).collection("coupons", ref => ref
+  public getStoreCouponsNoVIP(): Observable<StoreCoupon[]> {
+    let storesCollection = this.angularFirestore.collection("coupons", ref => ref
       .where('deleted', '==', false)
       .where('isVIP', '==', false)
       .orderBy('minAmount'));
@@ -314,9 +330,9 @@ export class StoresService {
     );
   }
 
-  public getCouponById(idStore: string, idStoreCoupon: string) {
+  public getCouponById(idStoreCoupon: string) {
     return new Promise((resolve, reject) => {
-      this.angularFirestore.collection("stores").doc(idStore)
+      this.angularFirestore
         .collection("coupons").doc(idStoreCoupon).ref.get().then(
           function (doc) {
             if (doc.exists) {
@@ -324,7 +340,7 @@ export class StoresService {
               const id = doc.id;
               resolve({ id, ...data });
             } else {
-              resolve();
+              resolve('');
             }
           }).catch(function (error) {
             console.log("Error getting document:", error);
@@ -338,9 +354,8 @@ export class StoresService {
 
   //------------------------------- PQRSF
 
-  public createPQRSF(idStore: string, pqrsf: PQRSF): Promise<DocumentReference> {
+  public createPQRSF(pqrsf: PQRSF): Promise<DocumentReference> {
     return this.angularFirestore
-      .collection(this.collectionName).doc(idStore)
       .collection("pqrsf").add(pqrsf);
   }
 
@@ -380,21 +395,18 @@ export class StoresService {
   }
 
   //------------------------------- Shipping Methods
-  public createShippingMethod(idStore: string, shippingMethod: ShippingMethod): Promise<DocumentReference> {
+  public createShippingMethod(shippingMethod: ShippingMethod): Promise<DocumentReference> {
     return this.angularFirestore
-      .collection(this.collectionName).doc(idStore)
       .collection("shippingMethods").add(shippingMethod);
   }
 
-  public updateShippingMethod(idStore: string, idShippingMethod: string, data: any) {
+  public updateShippingMethod(idShippingMethod: string, data: any) {
     return this.angularFirestore
-      .collection(this.collectionName).doc(idStore)
       .collection("shippingMethods").doc(idShippingMethod).update(data);
   }
 
-  public getShippingMethods(idStore: string): Observable<ShippingMethod[]> {
+  public getShippingMethods(): Observable<ShippingMethod[]> {
     let storesCollection = this.angularFirestore
-      .collection<Store>(this.collectionName).doc(idStore)
       .collection("shippingMethods", ref => ref
         .where('deleted', '==', false)
         .orderBy('name', 'desc'));
@@ -438,9 +450,8 @@ export class StoresService {
     );
   }
 
-  public getActiveVendors(idStore: string): Observable<Vendor[]> {
+  public getActiveVendors(): Observable<Vendor[]> {
     let storesCollection = this.angularFirestore
-      .collection<Store>(this.collectionName).doc(idStore)
       .collection("vendors", ref => ref
         .where('status', '==', VendorStatus.Confirmed)
         .where('active', '==', true)

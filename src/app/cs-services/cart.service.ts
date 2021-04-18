@@ -6,7 +6,7 @@ import { CartProduct, Store } from '../app-intefaces';
   providedIn: 'root'
 })
 export class CartService {
-  public store: Store;
+  //public store: Store;
   data: CartProduct[];
 
   private cart = [];
@@ -33,7 +33,7 @@ export class CartService {
   }
 
   getTotal() {
-    return this.cart.reduce((i, j) => i + ((!j.product.isGift) ? this.getProductSubTotal(j) : 0), 0) + (this.store.deliveryPrice ? this.store.deliveryPrice : 0) - this.getDiscount();
+    return this.cart.reduce((i, j) => i + ((!j.product.isGift) ? this.getProductSubTotal(j) : 0), 0) /*+ (this.store.deliveryPrice ? this.store.deliveryPrice : 0)*/ - this.getDiscount();
   }
 
   getTotalDetail(deliveryPrice: number) {

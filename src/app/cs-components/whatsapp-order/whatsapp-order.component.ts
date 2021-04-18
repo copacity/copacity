@@ -26,7 +26,7 @@ export class WhatsappOrderComponent implements OnInit {
     private storesService: StoresService) {
     this.idVendor = new FormControl('', [Validators.required]);
 
-    let subs = this.storesService.getActiveVendors(this.navParams.data.idStore).subscribe(result => {
+    let subs = this.storesService.getActiveVendors().subscribe(result => {
 
       let vendorPromises = [];
       result.forEach(vendor => {

@@ -52,7 +52,6 @@ export class ContactPage implements OnInit {
     private angularFireAuth: AngularFireAuth,
     public alertController: AlertController,
     public appService: AppService,
-    private locationStrategy: LocationStrategy,
     public location: Location) {
 
     // history.pushState(null, null, window.location.href);
@@ -61,7 +60,7 @@ export class ContactPage implements OnInit {
     // });
 
     this.buildForm();
-    this.getStores();
+    //this.getStores();
   }
 
   ngOnInit() {
@@ -129,13 +128,13 @@ export class ContactPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  getStores() {
-    this.storesService.getAll('').then(stores => {
-      stores.forEach((store: Store) => {
-        this.stores.push(store);
-      });
-    });
-  }
+  // getStores() {
+  //   this.storesService.getAll('').then(stores => {
+  //     stores.forEach((store: Store) => {
+  //       this.stores.push(store);
+  //     });
+  //   });
+  // }
 
   async presentMenuUser(e) {
     const popover = await this.popoverController.create({
@@ -166,9 +165,7 @@ export class ContactPage implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      idStore: ['', [Validators.required]],
       idType: ['', [Validators.required]],
-      //title: ['', [Validators.required, Validators.maxLength(100)]],
       message: ['', [Validators.required, Validators.maxLength(500)]]
     });
   }
@@ -264,11 +261,11 @@ export class ContactPage implements OnInit {
           this.pqrsf.userPhotoUrl = this.appService.currentUser.photoUrl;
           this.pqrsf.userEmail = this.appService.currentUser.email;
           this.pqrsf.userPhone = this.appService.currentUser.phone1.toString();
-          this.pqrsf.idStore = this.form.value.idStore;
+          this.pqrsf.idStore = "";
           this.pqrsf.idType = this.form.value.idType;
           this.pqrsf.message = this.form.value.message;
 
-          this.storesService.createPQRSF(this.form.value.idStore, this.pqrsf).then(result => {
+          this.storesService.createPQRSF(this.pqrsf).then(result => {
             this.loader.stopLoading();
             this.presentAlert("Mensaje enviado exitosamente", () => { });
             this.buildForm();

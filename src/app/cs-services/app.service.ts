@@ -22,7 +22,7 @@ export class AppService {
   appVersion: string = "2.0.0 Beta"
 
   // APP DATA
-  storeCategories: Observable<StoreCategory[]> = null;
+  //storeCategories: Observable<StoreCategory[]> = null;
   appInfo: Observable<AppInfo[]>;
   banners: Observable<Banner[]>;
   bannersFooter: Observable<Banner[]>;
@@ -71,11 +71,11 @@ export class AppService {
       console.log(error);
     }
 
-    this.storeCategories = this.storeCategoriesService.getAll();
+    // this.storeCategories = this.storeCategoriesService.getAll();
 
-    this.storeCategories.subscribe(storeCategoriesArray => {
-      this._storeCategories = storeCategoriesArray;
-    });
+    // this.storeCategories.subscribe(storeCategoriesArray => {
+    //   this._storeCategories = storeCategoriesArray;
+    // });
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
       if (user) {
@@ -112,7 +112,7 @@ export class AppService {
           });
         }
 
-        resolve();
+        resolve('');
       });
     });
   }
@@ -164,11 +164,11 @@ export class AppService {
       if (idUser) {
         this.updateUserData(idUser).then(() => {
           this.requestPermission(idUser);
-          resolve();
+          resolve('');
         });
       } else {
         this.clareSessionData();
-        resolve();
+        resolve('');
       }
     });
   }
@@ -229,6 +229,10 @@ export class AppService {
         return { id, ...data };
       }))
     );
+  }
+
+  public updateAppInfo() {
+    return this.angularFirestore.collection<AppInfo>('appInfo').doc(this._appInfo.id).update(this._appInfo);
   }
 
   async presentToast(message: string) {

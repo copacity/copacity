@@ -95,14 +95,14 @@ export class StoreShippingMethodsCreatePage implements OnInit {
         this.shippingMethod.paymentMethods = this.form.value.paymentMethods;
 
         if (this.shippingMethod.id) {
-          this.storesService.updateShippingMethod(this.appService.currentStore.id, this.shippingMethod.id, this.shippingMethod).then(doc => {
+          this.storesService.updateShippingMethod(this.shippingMethod.id, this.shippingMethod).then(doc => {
             this.loader.stopLoading();
             this.presentAlert("Metodo de envío actualizado exitosamente", "", () => { });
             this.popoverController.dismiss();
           });
         } else {
-          this.storesService.createShippingMethod(this.appService.currentStore.id, this.shippingMethod).then(doc => {
-            this.storesService.updateShippingMethod(this.appService.currentStore.id, doc.id, { id: doc.id }).then(doc => {
+          this.storesService.createShippingMethod(this.shippingMethod).then(doc => {
+            this.storesService.updateShippingMethod(doc.id, { id: doc.id }).then(doc => {
               this.loader.stopLoading();
               this.presentAlert("Metodo de envío creado exitosamente", "", () => { });
               this.popoverController.dismiss();

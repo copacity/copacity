@@ -11,7 +11,7 @@
       class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Mi
       Carrito!</a>
 
-    <label style="padding-top: 20px;" class="color-highlight bolder">{{ cartService?.store?.name }}</label>
+    <!-- <label style="padding-top: 20px;" class="color-highlight bolder">{{ cartService?.store?.name }}</label> -->
 
     <div class="content" style="margin: 0px 0px 0px 0px;padding-top: 20px;">
       <div *ngFor="let cartProduct of cart; let i = index">
@@ -122,10 +122,10 @@
       <div class="content content-box shadow-small round-medium" style="color: red;padding: 10px;"
         *ngIf="((cartService?.getTotal() < store?.orderMinAmount?store?.orderMinAmount:0 || cartService?.getTotal() == 0) && !cartService?.hasGifts())">
         <h2 class="bold top-10" style="color: red;font-size: 1.2em;">Recuerda!</h2>
-        <p class="bottom-10" style="font-size: 1.2em;color: black;">
+        <!-- <p class="bottom-10" style="font-size: 1.2em;color: black;">
           El valor mínimo para hacer un pedido en <b>{{store?.name}}</b> es de
           <b>{{ store?.orderMinAmount | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
-        </p>
+        </p> -->
         <p *ngIf="cart.length==0" class="bottom-10" style="font-size: 1.2em;color:red">
           Debes agregar al menos un producto al carrito.
         </p>

@@ -29,11 +29,11 @@ export class CartPage implements OnInit {
     private storesService: StoresService,
     private navParams: NavParams,
     public appService: AppService) {
-    this.storesService.getById(this.navParams.data.storeId).then(store => {
-      this.store = store;
-      this.cartService = this.cartManagerService.getCartService(store);
+    //this.storesService.getById(this.navParams.data.storeId).then(store => {
+      //this.store = store;
+      this.cartService = this.cartManagerService.getCartService();
       this.cart = this.cartService.getCart();
-    });
+    //});
   }
 
   ngOnInit() {

@@ -79,7 +79,7 @@ export class ProductDetailPage implements OnInit {
 
     this.storesService.getById(storeId).then(result => {
       this.store = result;
-      this.cartSevice = this.cartManagerService.getCartService(result);
+      this.cartSevice = this.cartManagerService.getCartService();
       this.appService.currentStore = result;
 
       this.productService.getById(this.appService.currentStore.id, productId).then((productResult: Product) => {
@@ -147,18 +147,28 @@ export class ProductDetailPage implements OnInit {
     }
   }
 
-  async presentMenuCart(e) {
-    const popover = await this.popoverController.create({
-      component: MenuCartComponent,
-      animated: false,
-      showBackdrop: true,
-      mode: 'ios',
-      translucent: false,
-      event: e,
-      cssClass: 'notification-popover'
+  async openCart() {
+    let modal = await this.popoverController.create({
+      component: CartPage,
+      componentProps: { storeId: '-1' },
+      cssClass: 'cs-popovers',
+      backdropDismiss: false,
     });
 
-    return await popover.present();
+    modal.onDidDismiss()
+      .then((data) => {
+        let result = data['data'];
+
+        if (result) {
+          this.goToCreateOrder();
+        }
+      });
+
+    modal.present();
+  }
+
+  async goToCreateOrder() {
+    this.router.navigate(['/order-create']);
   }
 
   async popoverReturnsPolicy() {
@@ -471,29 +481,6 @@ export class ProductDetailPage implements OnInit {
       });
 
     modal.present();
-  }
-
-  async openCart() {
-    let modal = await this.popoverCtrl.create({
-      component: CartPage,
-      cssClass: 'cs-popovers',
-      backdropDismiss: false,
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        let result = data['data'];
-
-        if (result) {
-          this.goToCreateOrder();
-        }
-      });
-
-    modal.present();
-  }
-
-  async goToCreateOrder() {
-    this.router.navigate(['/order-create', this.appService.currentStore.id]);
   }
 
   async openImageViewer(image: string) {
