@@ -196,13 +196,13 @@
   style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
     style="top: -5px;padding-left: 5px;padding-right: 5px;">
-    {{ appService?.temporalCoupon?.store?.name }}
+    {{ appService?.temporalCoupon?.name }}
   </h6>
 
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
     style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
-    un cupón con <b>{{ appService?.temporalCoupon?.storeCoupon?.discount }}%</b> de descuento para compras mayores a
-    <b>{{ appService?.temporalCoupon?.storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
+    un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
+    <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
   </h6>
 
   <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">

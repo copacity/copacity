@@ -29,7 +29,7 @@ export class ProductInventoryPage implements OnInit {
 
     this.searching = true;
     this.cartInventoryService.clearCart();
-    let subs = this.productsService.getCartInventory(this.appService.currentStore.id, this.product.id)
+    let subs = this.productsService.getCartInventory(this.product.id)
       .subscribe((cartP) => {
         this.searching = false;
         this.cartInventoryService.setCart(cartP);
@@ -47,11 +47,11 @@ export class ProductInventoryPage implements OnInit {
 
   async addToCart(e: any, product: Product) {
 
-    let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
+    let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(product.id);
 
     let subscribe = productPropertiesResult.subscribe(async productProperties => {
       productProperties.forEach(productProperty => {
-        let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
+        let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(product.id, productProperty.id);
         let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
           productProperty.productPropertyOptions = productPropertyOptions;
           subscribe2.unsubscribe();
@@ -65,7 +65,7 @@ export class ProductInventoryPage implements OnInit {
         component: ProductPropertiesSelectionComponent,
         mode: 'ios',
         event: e,
-        componentProps: { store: this.appService.currentStore, isInventory: true, product: product, productProperties: productProperties, cart: [], limitQuantity: 100, quantityByPoints: -1 }
+        componentProps: { isInventory: true, product: product, productProperties: productProperties, cart: [], limitQuantity: 100, quantityByPoints: -1 }
       });
 
       modal.onDidDismiss()
@@ -84,7 +84,7 @@ export class ProductInventoryPage implements OnInit {
   async openImageViewer(product: Product) {
     let images: string[] = [];
 
-    let result = this.productsService.getProductImages(this.appService.currentStore.id, product.id);
+    let result = this.productsService.getProductImages(product.id);
 
     let subs = result.subscribe(async (productImages: ProductImage[]) => {
       productImages.forEach(img => {
@@ -147,7 +147,7 @@ export class ProductInventoryPage implements OnInit {
           soldOut = false;
         }
 
-        this.productsService.update(this.appService.currentStore.id, this.product.id, { soldOut: soldOut }).then(() => {
+        this.productsService.update(this.product.id, { soldOut: soldOut }).then(() => {
           this.loaderComponent.stopLoading();
 
           this.presentAlert("El inventario del producto ha sido actualizado exitosamente.", "", () => {
@@ -166,11 +166,11 @@ export class ProductInventoryPage implements OnInit {
         }
         else {
           if (this.cartInventoryService.cart[index].id) {
-            this.productsService.updateCartInventory(this.appService.currentStore.id, idProduct, this.cartInventoryService.cart[index].id, { quantity: this.cartInventoryService.cart[index].quantity }).then(() => {
+            this.productsService.updateCartInventory(idProduct, this.cartInventoryService.cart[index].id, { quantity: this.cartInventoryService.cart[index].quantity }).then(() => {
               addToCart(++index);
             });
           } else {
-            this.productsService.addCartInventory(this.appService.currentStore.id, idProduct, this.cartInventoryService.cart[index]).then(() => {
+            this.productsService.addCartInventory(idProduct, this.cartInventoryService.cart[index]).then(() => {
               addToCart(++index);
             });
           }

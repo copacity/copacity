@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController, AlertController, NavParams } from '@ionic/angular';
 import { Observable } from 'rxjs';
-import { StoreCoupon, Store } from 'src/app/app-intefaces';
+import { StoreCoupon } from 'src/app/app-intefaces';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoreCouponsCreatePage } from '../store-coupons-create/store-coupons-create.page';
 import { StoresService } from 'src/app/cs-services/stores.service';
@@ -13,7 +13,6 @@ import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generat
   styleUrls: ['./store-coupons.page.scss'],
 })
 export class StoreCouponsPage implements OnInit {
-  //store: Store;
   isAdmin: boolean;
   dashboard: boolean;
   orderTotal: number;
@@ -32,7 +31,6 @@ export class StoreCouponsPage implements OnInit {
     this.isAdmin = this.navParams.data.isAdmin;
     this.dashboard = this.navParams.data.dashboard;
     this.orderTotal = this.navParams.data.orderTotal;
-    //this.store = this.navParams.data.store;
     this.getCoupons();
   }
 
@@ -101,7 +99,7 @@ export class StoreCouponsPage implements OnInit {
   async presentDeleteProductPrompt(storeCoupon: StoreCoupon) {
     this.presentConfirm('Esta seguro que desea eliminar el cupón: ' + storeCoupon.name + '?', () => {
       this.storesService.updateStoreCoupon(storeCoupon.id, { deleted: true }).then(() => {
-        this.presentAlert("Cupon eliminado exitosamente!", '', () => { });
+        this.presentAlert("Cupón eliminado exitosamente!", '', () => { });
       });
     });
   }

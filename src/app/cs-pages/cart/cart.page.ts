@@ -3,7 +3,7 @@ import { CartService } from 'src/app/cs-services/cart.service';
 import { PopoverController, NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/cs-services/app.service';
-import { CartProduct, ProductImage, Product, Store } from 'src/app/app-intefaces';
+import { CartProduct, ProductImage, Product, Category } from 'src/app/app-intefaces';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { ProductsService } from 'src/app/cs-services/products.service';
@@ -19,7 +19,7 @@ import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  store: Store;
+
   cartService: CartService;
   cart: CartProduct[] = [];
   constructor(private router: Router,
@@ -69,7 +69,7 @@ export class CartPage implements OnInit {
   async openImageViewer(product: Product) {
     let images: string[] = [];
 
-    let result = this.productService.getProductImages(this.appService.currentStore.id, product.id);
+    let result = this.productService.getProductImages(product.id);
 
     let subs = result.subscribe(async (productImages: ProductImage[]) => {
       productImages.forEach(img => {
@@ -95,7 +95,6 @@ export class CartPage implements OnInit {
   async openWhatsAppOrder() {
     let modal = await this.popoverController.create({
       component: WhatsappOrderComponent,
-      componentProps: { idStore: this.store.id },
       cssClass: 'cs-popovers',
     });
 
@@ -117,7 +116,7 @@ export class CartPage implements OnInit {
   }
 
   buildWhatsAppMessage(user: any) {
-    let message = "https://api.whatsapp.com/send?phone=57" + user.whatsapp + "&text=¡Hola " + encodeURIComponent(user.name) + "! Mi pedido en la tienda " + encodeURIComponent(this.store.name) + " es:" + encodeURIComponent("\n\n");
+    let message = "https://api.whatsapp.com/send?phone=57" + user.whatsapp + "&text=¡Hola " + encodeURIComponent(user.name) + "! Mi pedido en la tienda es:" + encodeURIComponent("\n\n");
 
     this.cart.forEach(cartProduct => {
       message += cartProduct.quantity + " unidad(es)";

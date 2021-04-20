@@ -6,7 +6,7 @@ import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notificat
 import { AppService } from 'src/app/cs-services/app.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
-import { PQRSF, Store } from 'src/app/app-intefaces';
+import { PQRSF, Category } from 'src/app/app-intefaces';
 import { Location, LocationStrategy } from '@angular/common';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
@@ -23,7 +23,6 @@ import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/as
 })
 export class ContactPage implements OnInit {
   @ViewChild('sliderContact', null) slider: any;
-  stores: Array<Store> = [];
 
   pqrsf: PQRSF = {
     id: '',

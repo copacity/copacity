@@ -75,7 +75,7 @@ export class StoreVendorsUpdatePage implements OnInit {
     if (this.form.valid) {
       this.loaderComponent.startLoading("Confirmando vendedor, por favor espere un momento...");
       setTimeout(() => {
-        this.storesService.updateVendor(this.appService.currentStore.id, this.navParams.data.vendor.vendor.id, { status: VendorStatus.Confirmed, active: this.form.value.active, commissionForSale: this.form.value.commissionForSale }).then(() => {
+        this.storesService.updateVendor(this.navParams.data.vendor.vendor.id, { status: VendorStatus.Confirmed, active: this.form.value.active, commissionForSale: this.form.value.commissionForSale }).then(() => {
           this.loaderComponent.stopLoading();
           this.presentAlert("Vendedor confirmado exitosamente!", '', () => { 
             this.popoverController.dismiss(true);

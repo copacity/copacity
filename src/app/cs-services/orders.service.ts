@@ -107,10 +107,10 @@ export class OrdersService {
       })));
   }
 
-  public getByDateRange(idStore: string, startDate: any, endDate: any): Observable<Order[]> {
+  public getByDateRange(startDate: any, endDate: any): Observable<Order[]> {
     this.ordersCollection;
     
-    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+    this.ordersCollection = this.angularFirestore
       .collection<Order>(this.collectionName, ref => ref
         .where('deleted', '==', false)
         .where('status', '==', OrderStatus.Sent)
@@ -128,10 +128,10 @@ export class OrdersService {
       })));
   }
 
-  public getByDateRangeAndIdVendor(idStore: string, idVendor: string, startDate: any, endDate: any): Observable<Order[]> {
+  public getByDateRangeAndIdVendor(idVendor: string, startDate: any, endDate: any): Observable<Order[]> {
     this.ordersCollection;
     
-    this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+    this.ordersCollection = this.angularFirestore
       .collection<Order>(this.collectionName, ref => ref
         .where('deleted', '==', false)
         .where('status', '==', OrderStatus.Sent)
@@ -172,12 +172,12 @@ export class OrdersService {
       })));
   }
 
-  public getByState(idStore: string, status: number, searchText: string /*, ordersBatch: number, lastOrderToken: Date*/): Observable<Order[]> {
+  public getByState(status: number, searchText: string /*, ordersBatch: number, lastOrderToken: Date*/): Observable<Order[]> {
     this.ordersCollection;
 
     if (status != 0) {
 
-      this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+      this.ordersCollection = this.angularFirestore
         .collection<Order>(this.collectionName, ref => ref
           .where('deleted', '==', false)
           .where('status', '==', status)
@@ -185,7 +185,7 @@ export class OrdersService {
           .limit(100));
     }
     else {
-      this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+      this.ordersCollection = this.angularFirestore
         .collection<Order>(this.collectionName, ref => ref
           .where('deleted', '==', false)
           .orderBy('dateCreated', "desc")
@@ -204,12 +204,12 @@ export class OrdersService {
     );
   }
 
-  public getByUserAndState(idUser: string, idStore: string, status: number, searchText: string/*, ordersBatch: number, lastOrderToken: Date*/): Observable<Order[]> {
+  public getByUserAndState(idUser: string, status: number, searchText: string/*, ordersBatch: number, lastOrderToken: Date*/): Observable<Order[]> {
     this.ordersCollection;
 
     if (status != 0) {
 
-      this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+      this.ordersCollection = this.angularFirestore
         .collection<Order>(this.collectionName, ref => ref
           .where('deleted', '==', false)
           .where('status', '==', status)
@@ -218,7 +218,7 @@ export class OrdersService {
           .limit(100));
 
     } else {
-      this.ordersCollection = this.angularFirestore.collection('stores').doc(idStore)
+      this.ordersCollection = this.angularFirestore
         .collection<Order>(this.collectionName, ref => ref
           .where('deleted', '==', false)
           .where('idUser', '==', idUser)

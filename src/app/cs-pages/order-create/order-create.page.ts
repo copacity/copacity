@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppService } from 'src/app/cs-services/app.service';
-import { Store, Order, CartProduct, Notification, StorePoint, StoreCoupon, PaymentMethod, ShippingMethod, Vendor, User, ProductImage, Product } from 'src/app/app-intefaces';
+import { Order, CartProduct, Notification, StorePoint, StoreCoupon, PaymentMethod, ShippingMethod, Vendor, User, ProductImage, Product } from 'src/app/app-intefaces';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -45,7 +45,6 @@ export class OrderCreatePage implements OnInit {
   idVendor: FormControl;
   storeCoupon: StoreCoupon;
 
-  //store: Store;
   cart: CartProduct[];
   isValidInventory: boolean = true;
 
@@ -86,8 +85,6 @@ export class OrderCreatePage implements OnInit {
   initialize() {
 
     this.cartService = this.cartManagerService.getCartService();
-
-    //this.store = result;
     this.cart = this.cartService.getCart();
     this.paymentMethods = this.paymentMethodsService.getAll();
     this.shippingMethods = this.storesService.getShippingMethods();
@@ -285,7 +282,7 @@ export class OrderCreatePage implements OnInit {
   async openImageViewer(product: Product) {
     let images: string[] = [];
 
-    let result = this.productsService.getProductImages(product.idStore, product.id);
+    let result = this.productsService.getProductImages(product.id);
 
     let subs = result.subscribe(async (productImages: ProductImage[]) => {
       productImages.forEach(img => {
@@ -433,7 +430,6 @@ export class OrderCreatePage implements OnInit {
   }
 
   async sendOrder() {
-    debugger;
     if (this.messageToStore.valid) {
       if (this.appService.currentUser) {
         if (this.shippingMethod) {
@@ -579,12 +575,12 @@ export class OrderCreatePage implements OnInit {
   updateCartProductInventory(cartProduct: CartProduct) {
     return new Promise((resolve, reject) => {
 
-      let subs = this.productsService.getCartInventory(cartProduct.product.idStore, cartProduct.product.id)
+      let subs = this.productsService.getCartInventory(cartProduct.product.id)
         .subscribe((cartP) => {
           for (let [index, pInventory] of cartP.entries()) {
             if (this.cartService.compareProducts(pInventory, cartProduct)) {
               let finalProductQuantity = pInventory.quantity - cartProduct.quantity;
-              this.productsService.updateCartInventory(cartProduct.product.idStore, cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
+              this.productsService.updateCartInventory(cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
             }
           }
 
@@ -604,7 +600,6 @@ export class OrderCreatePage implements OnInit {
 
         let hasPoints = false;
         StorePoints.forEach(storePoint => {
-          debugger;
           //if (storePoint.idStore === this.store.id) {
             let points = storePoint.points - this.cartService.getPoints();
             this.usersService.updateStorePoint(this.appService.currentUser.id, storePoint.id, { points: points }).then(() => {
@@ -687,7 +682,7 @@ export class OrderCreatePage implements OnInit {
   validateCartProductInventory(cartProduct: CartProduct) {
     return new Promise((resolve, reject) => {
 
-      let subs = this.productsService.getCartInventory(cartProduct.product.idStore, cartProduct.product.id)
+      let subs = this.productsService.getCartInventory(cartProduct.product.id)
         .subscribe((cartP) => {
           for (let [index, pInventory] of cartP.entries()) {
             if (this.cartService.compareProducts(pInventory, cartProduct)) {
@@ -849,7 +844,7 @@ export class OrderCreatePage implements OnInit {
 
 
   applyTemporalCoupon() {
-    this.buildStoreCoupon(this.appService.temporalCoupon.storeCoupon.id);
+    this.buildStoreCoupon(this.appService.temporalCoupon.id);
 
     this.validateCoupon().then(result => {
       if (result) {

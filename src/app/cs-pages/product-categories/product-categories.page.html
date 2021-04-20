@@ -29,12 +29,12 @@
             style="color: white;background-color: red;font-size: 10px;width: 90px;">Agregar</a>
         </td>
       </tr>
-      <tr *ngIf="(productCategories | async)?.length == 0">
+      <tr *ngIf="(subCategories | async)?.length == 0">
         <td  colspan="2">
           <span style="color: red;font-size: 1.3em;">No tienes categorias agregadas</span>
         </td>
       </tr>
-      <tr *ngFor="let productCategory of productCategories | async;">
+      <tr *ngFor="let productCategory of subCategories | async;">
         <td style="vertical-align: top;" class="bold color-theme">{{ productCategory.name }}</td>
         <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
           <a class="icon icon-s icon-round shadow-small" (click)="presentDeleteProductCategoryPrompt(productCategory)">

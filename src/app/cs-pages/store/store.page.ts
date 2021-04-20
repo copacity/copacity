@@ -8,7 +8,7 @@ import { AppService } from 'src/app/cs-services/app.service';
 import { CartService } from 'src/app/cs-services/cart.service';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { ProductCategoriesService } from 'src/app/cs-services/productCategories.service';
-import { Product, Store, ProductCategory, Order, File, Vendor } from 'src/app/app-intefaces';
+import { Product, Category, ProductCategory, Order, File, Vendor } from 'src/app/app-intefaces';
 import { CartPage } from '../cart/cart.page';
 import { SuperTabs } from '@ionic-super-tabs/angular';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -70,7 +70,7 @@ export class StorePage implements OnInit {
   @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
 
   photo: SafeResourceUrl;
-  store: Store;
+  category: Category;
   isAdmin: boolean = false;
   isBigScreen: boolean = false;
 
@@ -141,29 +141,33 @@ export class StorePage implements OnInit {
     private ordersService: OrdersService
   ) {
 
-    // history.pushState(null, null, window.location.href);
-    // this.locationStrategy.onPopState(() => {
-    //   history.pushState(null, null, window.location.href);
-    // });
-
     this.angularFireAuth.auth.onAuthStateChanged(user => {
+
       this.storesService.getById(this.route.snapshot.params.id).then(result => {
         this.cartSevice = this.cartManagerService.getCartService();
-        this.store = result;
+        this.category = result;
 
-        if (user && (this.store.idUser == user.uid)) {
-          this.isAdmin = true;
+        if (user) {
+          this.appService.updateUserData(user.uid).then(() => {
+            this.isAdmin = this.appService.currentUser.isAdmin;
+
+            if (this.category.status != StoreStatus.Published) {
+              if (!this.isAdmin) {
+                this.router.navigate(['/home']);
+              }
+            }
+
+            this.initialize(true);
+          });
         } else {
           this.isAdmin = false;
-        }
 
-        if (this.store.status != StoreStatus.Published) {
-          if (!this.isAdmin) {
+          if (this.category.status != StoreStatus.Published) {
             this.router.navigate(['/home']);
           }
-        }
 
-        this.initialize(true);
+          this.initialize(true);
+        }
       });
     });
 
@@ -193,7 +197,7 @@ export class StorePage implements OnInit {
       });
     }
 
-    this.appService.currentStore = this.store;
+    this.appService.currentCategory = this.category;
     this.productCategories = this.productCategoriesService.getAll(this.route.snapshot.params.id);
 
     this.productCategories.subscribe(pcArray => {
@@ -207,21 +211,13 @@ export class StorePage implements OnInit {
       this.getProducts(this.idProductCategory);
     }
 
-    // this.storeCategoryService.getAll().subscribe(storeCategoriesArray => {
-    //   this.appService._storeCategories.forEach(storeCategory => {
-    //     if (storeCategory.id == this.store.idStoreCategory) {
-    //       this.storeCategoryName = storeCategory.name;
-    //     }
-    //   });
-    // });
-
-    if (this.storesService.option == 4) {
-      this.storesService.option = 0;
-      this.openStorePointsPage();
-    } else if (this.storesService.option == 5) {
-      this.storesService.option = 0;
-      this.openStoreCouponsPage();
-    }
+    // if (this.storesService.option == 4) {
+    //   this.storesService.option = 0;
+    //   this.openStorePointsPage();
+    // } else if (this.storesService.option == 5) {
+    //   this.storesService.option = 0;
+    //   this.openStoreCouponsPage();
+    // }
   }
 
   ngOnInit() {
@@ -323,21 +319,29 @@ export class StorePage implements OnInit {
       this.angularFireAuth.auth.onAuthStateChanged(user => {
         this.storesService.getById(this.route.snapshot.params.id).then(result => {
           this.cartSevice = this.cartManagerService.getCartService();
-          this.store = result;
-
-          if (user && (this.store.idUser == user.uid)) {
-            this.isAdmin = true;
+          this.category = result;
+  
+          if (user) {
+            this.appService.updateUserData(user.uid).then(() => {
+              this.isAdmin = this.appService.currentUser.isAdmin;
+  
+              if (this.category.status != StoreStatus.Published) {
+                if (!this.isAdmin) {
+                  this.router.navigate(['/home']);
+                }
+              }
+  
+              this.initialize(true);
+            });
           } else {
             this.isAdmin = false;
-          }
-
-          if (this.store.status != StoreStatus.Published) {
-            if (!this.isAdmin) {
+  
+            if (this.category.status != StoreStatus.Published) {
               this.router.navigate(['/home']);
             }
+  
+            this.initialize(true);
           }
-
-          this.initialize(true);
         });
       });
       event.target.complete();
@@ -432,13 +436,8 @@ export class StorePage implements OnInit {
       .then((data) => {
         const updated = data['data'];
         if (updated) {
-          this.store.name = this.appService.currentStore.name;
-          this.store.idSector = this.appService.currentStore.idSector;
-          this.store.idStoreCategory = this.appService.currentStore.idStoreCategory;
-          this.store.description = this.appService.currentStore.description;
-
-          //this.storeCategoryName = this.storeCategoryNamePipe.transform(this.store.idStoreCategory);
-          this.sectorName = this.sectornamePipe.transform(this.store.idSector);
+          this.category.name = this.appService.currentCategory.name;
+          this.category.description = this.appService.currentCategory.description;
         }
       });
 
@@ -460,14 +459,14 @@ export class StorePage implements OnInit {
         if (image) {
           this.loaderComponent.startLoading("Actualizando imagen, por favor espere un momento...");
           setTimeout(() => {
-            this.storageService.ResizeImage(image, this.appService.currentStore.id, 500, 500).then((url) => {
-              this.storesService.update(this.appService.currentStore.id, { logo: url }).then(() => {
+            this.storageService.ResizeImage(image, this.appService.currentCategory.id, 500, 500).then((url) => {
+              this.storesService.update(this.appService.currentCategory.id, { logo: url }).then(() => {
                 setTimeout(() => {
                   this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
-                    this.storesService.update(this.appService.currentStore.id, { thumb_logo: thumbUrl }).then(() => {
+                    this.storesService.update(this.appService.currentCategory.id, { thumb_logo: thumbUrl }).then(() => {
                       this.loaderComponent.stopLoading();
-                      this.store.logo = url.toString();
-                      this.store.thumb_logo = thumbUrl.toString();
+                      this.category.logo = url.toString();
+                      this.category.thumb_logo = thumbUrl.toString();
                       this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
                     });
                   });
@@ -479,39 +478,6 @@ export class StorePage implements OnInit {
       });
 
     modal.present();
-  }
-
-  async openStoreInformationComponent(event) {
-    let subs = this.storesService.getActiveVendors().subscribe(result => {
-
-      let vendorPromises = [];
-      result.forEach(vendor => {
-        vendorPromises.push(this.fillUsers(vendor));
-      });
-
-      Promise.all(vendorPromises).then(async users => {
-        let modal = await this.popoverController.create({
-          component: StoreInformationComponent,
-          cssClass: "signin-popover",
-          //event: event,
-          componentProps: { store: this.store, isAdmin: this.isAdmin, storeCategoryName: this.storeCategoryName, users: users },
-          // backdropDismiss: false
-        });
-
-        modal.onDidDismiss()
-          .then((data) => {
-            const result = data['data'];
-
-            if (result) {
-              this.store = result;
-            }
-          });
-
-        modal.present();
-      });
-
-      subs.unsubscribe();
-    });
   }
 
   async openStoreBillingPage(event) {
@@ -527,7 +493,7 @@ export class StorePage implements OnInit {
         const result = data['data'];
 
         if (result) {
-          this.store = result;
+          this.category = result;
         }
       });
 
@@ -536,11 +502,11 @@ export class StorePage implements OnInit {
 
   shareStore(e) {
 
-    if (this.store.status == StoreStatus.Published) {
+    if (this.category.status == StoreStatus.Published) {
       this.ngNavigatorShareService.share({
-        title: this.store.name,
-        text: 'Hola! Visita nuestra tienda: ' + this.store.name + ' y sorprendete con todos los productos, promociones, cupones y regalos que tenemos para ti!. En Copacity, Tu Centro Comercial Virtual',
-        url: this.appService._appInfo.domain + "/store/" + this.store.id
+        title: this.category.name,
+        text: 'Hola! Visita nuestra tienda: ' + this.category.name + ' y sorprendete con todos los productos, promociones, cupones y regalos que tenemos para ti!. En Copacity, Tu Centro Comercial Virtual',
+        url: this.appService._appInfo.domain + "/store/" + this.category.id
       }).then((response) => {
         console.log(response);
       })
@@ -574,7 +540,7 @@ export class StorePage implements OnInit {
   }
 
   async openCopyToClipBoard(e) {
-    let text = 'Hola! Visita nuestra tienda: ' + this.store.name + ' y sorprendete con todos los productos, promociones, cupones y regalos que tenemos para ti!. En Copacity, Tu Centro Comercial Virtual. ' + this.appService._appInfo.domain + "/store/" + this.store.id;
+    let text = 'Hola! Visita nuestra tienda: ' + this.category.name + ' y sorprendete con todos los productos, promociones, cupones y regalos que tenemos para ti!. En Copacity, Tu Centro Comercial Virtual. ' + this.appService._appInfo.domain + "/store/" + this.category.id;
 
     let modal = await this.popoverController.create({
       component: CopyToClipboardComponent,
@@ -599,14 +565,14 @@ export class StorePage implements OnInit {
 
     if (!product.soldOut) {
       this.cartInventoryService.clearCart();
-      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, product.id)
+      let subs = this.productsService.getCartInventory(product.id)
         .subscribe((cartP) => {
 
-          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
+          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(product.id);
 
           let subscribe = productPropertiesResult.subscribe(async productProperties => {
             productProperties.forEach(productProperty => {
-              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
+              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(product.id, productProperty.id);
               let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
                 productProperty.productPropertyOptions = productPropertyOptions;
                 subscribe2.unsubscribe();
@@ -620,7 +586,7 @@ export class StorePage implements OnInit {
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
               event: e,
-              componentProps: { store: this.store, isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
+              componentProps: { isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
             });
 
             modal.onDidDismiss()
@@ -747,7 +713,7 @@ export class StorePage implements OnInit {
     this.productSearchHits = 0;
 
     setTimeout(() => {
-      this.products = this.productsService.getBySearchAndCategory(this.route.snapshot.params.id, this.productSearchText, idProductCategory);
+      this.products = this.productsService.getBySearchAndCategory(this.category.id, this.productSearchText, idProductCategory);
 
       this.products.subscribe((products) => {
         this.searchingProducts = false;
@@ -787,9 +753,8 @@ export class StorePage implements OnInit {
 
   async openProductCreatePage() {
 
-    if (this.appService.currentStore.productsCount < this.appService.currentStore.productsLimit) {
+    if (this.appService._appInfo.productsCount < this.appService._appInfo.productsLimit) {
       if (this.productCategoriesCount != 0) {
-        //this.router.navigate(['/product-create', this.appService.currentStore.id]);
         let modal = await this.popoverController.create({
           component: ProductCreatePage,
           componentProps: { isGift: false },
@@ -800,8 +765,6 @@ export class StorePage implements OnInit {
         modal.onDidDismiss()
           .then((data) => {
             const updated = data['data'];
-            // this.products = [];
-            // this.getProducts(this.idProductCategory);
           });
 
         modal.present();
@@ -831,7 +794,7 @@ export class StorePage implements OnInit {
   }
 
   async openProductDetailPage(idProduct: string) {
-    this.router.navigate(['product-detail/' + idProduct + "&" + this.store.id]);
+    this.router.navigate(['product-detail/' + idProduct]);
   }
 
   async openProduct(product: Product) {
@@ -845,19 +808,19 @@ export class StorePage implements OnInit {
   }
 
   productSoldOut(e: any, product: Product) {
-    this.productsService.update(this.appService.currentStore.id, product.id, { soldOut: !e.detail.checked });
+    this.productsService.update(product.id, { soldOut: !e.detail.checked });
   }
 
   productFeatured(e: any, product: Product) {
     console.log(e.detail.checked);
-    this.productsService.update(this.appService.currentStore.id, product.id, { isFeatured: e.detail.checked });
+    this.productsService.update(product.id, { isFeatured: e.detail.checked });
   }
 
   async presentDeleteProductPrompt(product: Product) {
     this.presentConfirm('Esta seguro que desea eliminar el producto: ' + product.name + '?', () => {
-      this.productsService.update(this.appService.currentStore.id, product.id, { deleted: true }).then(() => {
-        this.appService.currentStore.productsCount = this.appService.currentStore.productsCount - 1
-        this.storesService.update(this.appService.currentStore.id, { productsCount: this.appService.currentStore.productsCount }).then(() => {
+      this.productsService.update(product.id, { deleted: true }).then(() => {
+        this.appService._appInfo.productsCount = this.appService._appInfo.productsCount - 1
+        this.appService.updateAppInfo().then(() => {
           this.presentAlert("Producto eliminado exitosamente!", '', () => { });
         });
       });
@@ -891,11 +854,11 @@ export class StorePage implements OnInit {
   }
 
   takePicture() {
-    this.storageService.takePhoto(this.appService.currentStore.id, 500, 500).then((url) => {
+    this.storageService.takePhoto(this.appService.currentCategory.id, 500, 500).then((url) => {
       this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
         this.loaderComponent.startLoading("Actualizando foto, por favor espere un momento...");
-        this.storesService.update(this.appService.currentStore.id, { logo: url, thumb_logo: thumbUrl }).then(result => {
-          this.store.logo = url.toString();
+        this.storesService.update(this.appService.currentCategory.id, { logo: url, thumb_logo: thumbUrl }).then(result => {
+          this.category.logo = url.toString();
           this.presentAlert("Tu foto ha sido actualizada exitosamente!", "", () => { });
         });
       });
@@ -906,10 +869,10 @@ export class StorePage implements OnInit {
 
     this.loaderComponent.startLoading("Enviando tienda para revisión. por favor espere un momento...");
     setTimeout(() => {
-      this.storesService.update(this.store.id, { status: StoreStatus.Pending }).then(result => {
-        this.storesService.getById(this.store.id).then(result => {
+      this.storesService.update(this.category.id, { status: StoreStatus.Pending }).then(result => {
+        this.storesService.getById(this.category.id).then(result => {
           this.loaderComponent.stopLoading();
-          this.store = result;
+          this.category = result;
         });
       });
     }, 500);
@@ -951,7 +914,7 @@ export class StorePage implements OnInit {
         //this.lastOrderToken = (this.orders.length != 0 ? this.orders[this.orders.length - 1].dateCreated : null);
 
         if (this.isAdmin) {
-          this.orders = this.ordersService.getByState(this.store.id, state, this.orderSearchText);
+          this.orders = this.ordersService.getByState(state, this.orderSearchText);
 
           this.orders.subscribe(result => {
             this.searchingOrders = false;
@@ -968,7 +931,7 @@ export class StorePage implements OnInit {
           // }));
         } else {
 
-          this.orders = this.ordersService.getByUserAndState(this.appService.currentUser.id, this.store.id, state, this.orderSearchText)
+          this.orders = this.ordersService.getByUserAndState(this.appService.currentUser.id, state, this.orderSearchText)
 
           this.orders.subscribe(result => {
             this.searchingOrders = false;
@@ -991,7 +954,7 @@ export class StorePage implements OnInit {
   }
 
   async openOrderDetailPage(idOrder: string) {
-    this.router.navigate(['order-detail/' + idOrder + "&" + this.appService.currentStore.id]);
+    this.router.navigate(['order-detail/' + idOrder]);
 
     // let modal = await this.popoverController.create({
     //   component: OrderDetailPage,
@@ -1038,15 +1001,15 @@ export class StorePage implements OnInit {
   ionViewDidEnter() {
     this.storesService.getById(this.route.snapshot.params.id).then(result => {
       this.cartSevice = this.cartManagerService.getCartService();
-      this.store = result;
+      this.category = result;
 
-      if (this.appService.currentUser && (this.store.idUser == this.appService.currentUser.id)) {
+      if (this.appService.currentUser && this.appService.currentUser.isAdmin) {
         this.isAdmin = true;
       } else {
         this.isAdmin = false;
       }
 
-      if (this.store.status != StoreStatus.Published) {
+      if (this.category.status != StoreStatus.Published) {
         if (!this.isAdmin) {
           this.router.navigate(['/home']);
         }
@@ -1107,7 +1070,7 @@ export class StorePage implements OnInit {
   }
 
   async openBarCodeGenerator(product: Product) {
-    let value = this.appService._appInfo.domain + "/product-detail/" + product.id + "&" + this.store.id
+    let value = this.appService._appInfo.domain + "/product-detail/" + product.id;
 
     let modal = await this.popoverController.create({
       component: BarcodeGeneratorComponent,
@@ -1122,62 +1085,6 @@ export class StorePage implements OnInit {
       });
 
     modal.present();
-  }
-
-  async openStorePointsPage() {
-    if (this.appService.currentUser) {
-      let modal = await this.popoverController.create({
-        component: StorePointsPage,
-        componentProps: { isAdmin: this.isAdmin },
-        cssClass: 'cs-popovers',
-        backdropDismiss: false,
-      });
-
-      modal.onDidDismiss()
-        .then((data) => {
-          const result = data['data'];
-        });
-
-      modal.present();
-    } else {
-      this.SignIn();
-    }
-  }
-
-  async openStoreVendorsPage() {
-    if (this.appService.currentUser) {
-      if (this.isAdmin) {
-        let modal = await this.popoverController.create({
-          component: StoreVendorsAdminPage,
-          cssClass: 'cs-popovers',
-          backdropDismiss: false,
-        });
-
-        modal.onDidDismiss()
-          .then((data) => {
-            const result = data['data'];
-          });
-
-        modal.present();
-      } else {
-        let modal = await this.popoverController.create({
-          component: StoreVendorsPage,
-          componentProps: { idUser: this.appService.currentUser.id },
-          cssClass: 'cs-popovers',
-          backdropDismiss: false,
-        });
-
-        modal.onDidDismiss()
-          .then((data) => {
-            const result = data['data'];
-          });
-
-        modal.present();
-      }
-
-    } else {
-      this.SignIn();
-    }
   }
 
   async openStoreReportsPage() {
@@ -1203,7 +1110,7 @@ export class StorePage implements OnInit {
     //if (this.appService.currentUser) {
     let modal = await this.popoverController.create({
       component: StoreCouponsPage,
-      componentProps: { store: this.store, isAdmin: this.isAdmin, dashboard: true, orderTotal: -1 },
+      componentProps: { isAdmin: this.isAdmin, dashboard: true, orderTotal: -1 },
       cssClass: 'cs-popovers',
       backdropDismiss: false,
     });
@@ -1213,7 +1120,7 @@ export class StorePage implements OnInit {
         const result = data['data'];
 
         if (result) {
-          this.appService.temporalCoupon = { storeCoupon: result, store: this.store };
+          this.appService.temporalCoupon = result;
         }
       });
 
@@ -1223,45 +1130,7 @@ export class StorePage implements OnInit {
     // }
   }
 
-  async openStoreOrdersPage() {
-    if (this.appService.currentUser) {
-      let modal = await this.popoverController.create({
-        component: StoreOrdersPage,
-        componentProps: { isAdmin: this.isAdmin },
-        cssClass: 'cs-popovers',
-        backdropDismiss: false,
-      });
-
-      modal.onDidDismiss()
-        .then((data) => {
-          const result = data['data'];
-        });
-
-      modal.present();
-    } else {
-      this.SignIn();
-    }
-  }
-
-  async openStorePQRSFPage() {
-    if (this.appService.currentUser) {
-      let modal = await this.popoverController.create({
-        component: StorePqrsfPage,
-        componentProps: { isAdmin: this.isAdmin },
-        cssClass: 'cs-popovers',
-        backdropDismiss: false,
-      });
-
-      modal.onDidDismiss()
-        .then((data) => {
-          const result = data['data'];
-        });
-
-      modal.present();
-    } else {
-      this.SignIn();
-    }
-  }
+  
 
   async openVideoPlayerComponent(e: any, url: string) {
     let modal = await this.popoverController.create({

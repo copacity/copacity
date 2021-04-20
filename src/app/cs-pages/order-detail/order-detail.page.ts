@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, PopoverController, ToastController } from '@ionic/angular';
-import { Order, CartProduct, User, Address, Notification, Store, StorePoint, StoreCoupon, ShippingMethod, PaymentMethod, ProductImage, Product } from 'src/app/app-intefaces';
+import { Order, CartProduct, User, Address, Notification, StorePoint, StoreCoupon, ShippingMethod, PaymentMethod, ProductImage, Product } from 'src/app/app-intefaces';
 import { OrdersService } from 'src/app/cs-services/orders.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { Observable } from 'rxjs';
@@ -222,7 +222,7 @@ export class OrderDetailPage implements OnInit {
   async openImageViewer(product: Product) {
     let images: string[] = [];
 
-    let result = this.productsService.getProductImages(product.idStore, product.id);
+    let result = this.productsService.getProductImages(product.id);
 
     let subs = result.subscribe(async (productImages: ProductImage[]) => {
       productImages.forEach(img => {
@@ -586,12 +586,12 @@ export class OrderDetailPage implements OnInit {
   updateCartProductInventory(cartProduct: CartProduct) {
     return new Promise((resolve, reject) => {
 
-      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, cartProduct.product.id)
+      let subs = this.productsService.getCartInventory(cartProduct.product.id)
         .subscribe((cartP) => {
           for (let [index, pInventory] of cartP.entries()) {
             if (this.cartService.compareProducts(pInventory, cartProduct)) {
               let finalProductQuantity = pInventory.quantity + cartProduct.quantity;
-              this.productsService.updateCartInventory(this.appService.currentStore.id, cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
+              this.productsService.updateCartInventory(cartProduct.product.id, pInventory.id, { quantity: finalProductQuantity });
             }
           }
 

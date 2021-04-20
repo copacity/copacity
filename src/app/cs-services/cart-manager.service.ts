@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppService } from './app.service';
 import { CartService } from './cart.service';
-import { Store } from '../app-intefaces';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -12,10 +11,6 @@ export class CartManagerService {
 
   constructor(
     private appService: AppService) {
-  }
-
-  push(store: Store) {
-
   }
 
   getCartService() {

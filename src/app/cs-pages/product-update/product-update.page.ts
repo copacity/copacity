@@ -49,13 +49,13 @@ export class ProductUpdatePage implements OnInit {
     this.isGift = navParams.data.isGift;
 
     this.buildForm();
-    this.productCategories = this.productCategoriesService.getAll(this.appService.currentStore.id);
+    this.productCategories = this.productCategoriesService.getAll(this.appService.currentCategory.id);
 
-    let productPropertiesResult = this.productService.getAllProductProperties(this.appService.currentStore.id, this.navParams.data.id);
+    let productPropertiesResult = this.productService.getAllProductProperties(this.navParams.data.id);
 
     let subscribe = productPropertiesResult.subscribe(productProperties => {
       productProperties.forEach(productProperty => {
-        let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.navParams.data.id, productProperty.id);
+        let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.navParams.data.id, productProperty.id);
         let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
           productProperty.productPropertyOptions = productPropertyOptions;
           subscribe2.unsubscribe();
@@ -66,7 +66,7 @@ export class ProductUpdatePage implements OnInit {
       subscribe.unsubscribe();
     });
 
-    let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+    let result = this.productService.getProductImages(this.navParams.data.id);
     let subs = result.subscribe((productImageResult: ProductImage[]) => {
       setTimeout(() => {
         this.productImageCollection = productImageResult
@@ -130,7 +130,7 @@ export class ProductUpdatePage implements OnInit {
 
   changeCoverImage(img: string) {
     this.storageService.getThumbUrl(this.appService.getImageIdByUrl(img), (thumbUrl: string) => {
-      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl }).then(() => {
+      this.productService.update(this.navParams.data.id, { image: thumbUrl }).then(() => {
         this.presentToast("La foto de portada fue cambiada", "");
         this.navParams.data.image = thumbUrl;
       });
@@ -178,7 +178,7 @@ export class ProductUpdatePage implements OnInit {
   }
 
   shareProduct(e) {
-    if (this.appService.currentStore.status == StoreStatus.Published) {
+    if (this.appService.currentCategory.status == StoreStatus.Published) {
       this.createFile().then(file => {
         let navigator: any = window.navigator;
         let filesArray = [];
@@ -187,10 +187,10 @@ export class ProductUpdatePage implements OnInit {
         if (navigator.canShare && navigator.canShare({ files: filesArray })) {
           navigator.share({
             files: filesArray,
-            title: this.appService.currentStore.name,
+            title: this.appService._appInfo.name1 + this.appService._appInfo.name2,
             text: "Aprovecha y adquiere en Copacity.net " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
-              this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
-            url: this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id
+              this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService._appInfo.name1 + this.appService._appInfo.name2 + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
+            url: this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id
           })
             .then(() => console.log('Share was successful.'))
             .catch((error) => console.log('Sharing failed', error));
@@ -207,7 +207,7 @@ export class ProductUpdatePage implements OnInit {
   async openCopyToClipBoardProduct(e) {
 
     let text = "Aprovecha y adquiere en Copacity.net " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
-      this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id + "&" + this.appService.currentStore.id;
+      this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService._appInfo.name1 + this.appService._appInfo.name2 + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,
@@ -330,7 +330,7 @@ export class ProductUpdatePage implements OnInit {
       }
 
       setTimeout(() => {
-        this.productService.update(this.appService.currentStore.id, this.navParams.data.id, data).then(async (doc) => {
+        this.productService.update(this.navParams.data.id, data).then(async (doc) => {
           this.saveProperties().then(() => {
             this.loader.stopLoading();
             this.presentAlert("El producto ha sido actualizado exitosamente", "", () => {
@@ -370,25 +370,25 @@ export class ProductUpdatePage implements OnInit {
               image: ''
             }
 
-            this.productService.addProductImage(this.appService.currentStore.id, this.navParams.data.id, newImg).then((doc) => {
+            this.productService.addProductImage(this.navParams.data.id, newImg).then((doc) => {
               newImg.id = doc.id;
               this.storageService.ResizeImage(image, doc.id, 500, 500).then((url) => {
 
-                this.productService.updateProductImage(this.appService.currentStore.id, this.navParams.data.id, doc.id, { id: doc.id, image: url }).then((doc) => {
+                this.productService.updateProductImage(this.navParams.data.id, doc.id, { id: doc.id, image: url }).then((doc) => {
 
                   setTimeout(() => {
                     this.storageService.getThumbUrl(this.appService.getImageIdByUrl(url.toString()), (thumbUrl: string) => {
-                      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
+                      this.productService.update(this.navParams.data.id, { image: thumbUrl });
                       this.navParams.data.image = thumbUrl;
                       this.loader.stopLoading();
 
-                      let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+                      let result = this.productService.getProductImages(this.navParams.data.id);
                       let subs = result.subscribe((productImageResult: ProductImage[]) => {
                           if (productImageResult.length != 0) {
                             this.productImageCollection = productImageResult;
                             
                             this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), (thumbUrl: string) => {
-                              this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl }).then(() => {
+                              this.productService.update(this.navParams.data.id, { image: thumbUrl }).then(() => {
                                 this.navParams.data.image = thumbUrl;
                                 if (this.productImageCollection.length > 1) {
                                   this.sliderProducts.slideTo(this.productImageCollection.length);
@@ -420,19 +420,19 @@ export class ProductUpdatePage implements OnInit {
   removeProductImage(productImage: ProductImage) {
     this.presentConfirm("Estás seguro que deseas eliminar la imagen?", () => {
       if (this.productImageCollection.length == 1) {
-        this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: "" }).then(() => {
+        this.productService.update(this.navParams.data.id, { image: "" }).then(() => {
           this.navParams.data.image = '';
-          this.productService.deleteProductImage(this.appService.currentStore.id, this.navParams.data.id, productImage.id).then(() => {
+          this.productService.deleteProductImage(this.navParams.data.id, productImage.id).then(() => {
             this.storageService.deleteImageFromStorage(productImage.id);
 
-            let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+            let result = this.productService.getProductImages(this.navParams.data.id);
             let subs = result.subscribe((productImageResult: ProductImage[]) => {
               setTimeout(() => {
                 if (productImageResult.length != 0) {
                   this.productImageCollection = productImageResult
                   if (this.appService.getImageIdByUrl(productImage.image) === this.appService.getImageIdByUrl(this.navParams.data.image).replace('thumb_', '')) {
                     this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), (thumbUrl: string) => {
-                      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
+                      this.productService.update(this.navParams.data.id, { image: thumbUrl });
                       this.navParams.data.image = thumbUrl;
                     });
                   }
@@ -446,10 +446,10 @@ export class ProductUpdatePage implements OnInit {
           });
         });
       } else {
-        this.productService.deleteProductImage(this.appService.currentStore.id, this.navParams.data.id, productImage.id).then(() => {
+        this.productService.deleteProductImage(this.navParams.data.id, productImage.id).then(() => {
           this.storageService.deleteImageFromStorage(productImage.id);
 
-          let result = this.productService.getProductImages(this.appService.currentStore.id, this.navParams.data.id);
+          let result = this.productService.getProductImages(this.navParams.data.id);
           let subs = result.subscribe((productImageResult: ProductImage[]) => {
             setTimeout(() => {
               if (productImageResult.length != 0) {
@@ -457,7 +457,7 @@ export class ProductUpdatePage implements OnInit {
 
                 if (this.appService.getImageIdByUrl(productImage.image).replace('thumb_', '') === this.appService.getImageIdByUrl(this.navParams.data.image).replace('thumb_', '')) {
                   this.storageService.getThumbUrl(this.appService.getImageIdByUrl(productImageResult[productImageResult.length - 1].image.toString()), (thumbUrl: string) => {
-                    this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { image: thumbUrl });
+                    this.productService.update(this.navParams.data.id, { image: thumbUrl });
                     this.navParams.data.image = thumbUrl;
                   });
                 }
@@ -511,7 +511,7 @@ export class ProductUpdatePage implements OnInit {
   async openProductProperty(e) {
     let modal = await this.popoverCtrl.create({
       component: ProductPropertyComponent,
-      componentProps: { idStore: this.appService.currentStore.id, idProduct: this.navParams.data.id },
+      componentProps: { idProduct: this.navParams.data.id },
       cssClass: 'cs-popovers',
       backdropDismiss: false,
     });
@@ -546,8 +546,8 @@ export class ProductUpdatePage implements OnInit {
         }
       }
 
-      this.productService.deleteCartInventory(this.appService.currentStore.id, this.navParams.data.id);
-      this.productService.update(this.appService.currentStore.id, this.navParams.data.id, { soldOut: true });
+      this.productService.deleteCartInventory(this.navParams.data.id);
+      this.productService.update(this.navParams.data.id, { soldOut: true });
     });
   }
 
@@ -555,7 +555,7 @@ export class ProductUpdatePage implements OnInit {
     let modal = await this.popoverCtrl.create({
       component: ProductPropertyComponent,
       cssClass: 'cs-popovers',
-      componentProps: { idStore: this.appService.currentStore.id, idProduct: this.navParams.data.id, productProperty: productProperty },
+      componentProps: { idProduct: this.navParams.data.id, productProperty: productProperty },
       backdropDismiss: false,
     });
 
@@ -583,14 +583,14 @@ export class ProductUpdatePage implements OnInit {
         }
         else {
           if (this.productProperties[index].id) {
-            this.productService.updateProductProperty(this.appService.currentStore.id, this.navParams.data.id, this.productProperties[index].id, { name: this.productProperties[index].name, isMandatory: this.productProperties[index].isMandatory, userSelectable: this.productProperties[index].userSelectable, deleted: this.productProperties[index].deleted }).then(() => {
+            this.productService.updateProductProperty(this.navParams.data.id, this.productProperties[index].id, { name: this.productProperties[index].name, isMandatory: this.productProperties[index].isMandatory, userSelectable: this.productProperties[index].userSelectable, deleted: this.productProperties[index].deleted }).then(() => {
               this.savePropertyOptions(this.productProperties[index]).then(() => {
                 addProdcutProperty(++index);
               });
             });
           } else {
-            this.productService.createProductProperty(this.appService.currentStore.id, this.navParams.data.id, this.productProperties[index]).then((doc) => {
-              this.productService.updateProductProperty(this.appService.currentStore.id, this.navParams.data.id, doc.id, { id: doc.id }).then(() => {
+            this.productService.createProductProperty(this.navParams.data.id, this.productProperties[index]).then((doc) => {
+              this.productService.updateProductProperty(this.navParams.data.id, doc.id, { id: doc.id }).then(() => {
                 this.productProperties[index].id = doc.id;
                 this.savePropertyOptions(this.productProperties[index]).then(() => {
                   addProdcutProperty(++index);
@@ -616,13 +616,13 @@ export class ProductUpdatePage implements OnInit {
         }
         else {
           if (productProperty.productPropertyOptions[index].id) {
-            this.productService.updateProductPropertyOption(this.appService.currentStore.id, this.navParams.data.id, productProperty.id, productProperty.productPropertyOptions[index].id, productProperty.productPropertyOptions[index]).then(() => {
+            this.productService.updateProductPropertyOption(this.navParams.data.id, productProperty.id, productProperty.productPropertyOptions[index].id, productProperty.productPropertyOptions[index]).then(() => {
               addProdcutPropertyOption(++index);
             });
           } else {
-            this.productService.createProductPropertyOption(this.appService.currentStore.id, this.navParams.data.id, productProperty.id, productProperty.productPropertyOptions[index]).then((doc) => {
+            this.productService.createProductPropertyOption(this.navParams.data.id, productProperty.id, productProperty.productPropertyOptions[index]).then((doc) => {
               productProperty.productPropertyOptions[index].id = doc.id;
-              this.productService.updateProductPropertyOption(this.appService.currentStore.id, this.navParams.data.id, productProperty.id, doc.id, productProperty.productPropertyOptions[index]).then(() => {
+              this.productService.updateProductPropertyOption(this.navParams.data.id, productProperty.id, doc.id, productProperty.productPropertyOptions[index]).then(() => {
                 addProdcutPropertyOption(++index);
               });
             });

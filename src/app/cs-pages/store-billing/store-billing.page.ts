@@ -45,7 +45,7 @@ export class StoreBillingPage implements OnInit {
     public appService: AppService,
   ) {
 
-    let storeCreated: any = this.appService.currentStore.dateCreated;
+    let storeCreated: any = this.appService.currentCategory.dateCreated;
     storeCreated = storeCreated.toDate();
 
     // min date
@@ -63,7 +63,7 @@ export class StoreBillingPage implements OnInit {
 
     this.buildForm();
 
-    let subs = this.storesService.getPlatformFess(this.appService.currentStore.id).subscribe(pfArray => {
+    let subs = this.storesService.getPlatformFess().subscribe(pfArray => {
       pfArray.forEach(pf => {
         this.platformFee = pf;
       });
@@ -94,7 +94,7 @@ export class StoreBillingPage implements OnInit {
     let endDate = new Date(month.getFullYear().toString() + '/' + endMonth + '/01');
 
     return new Promise((resolve, reject) => {
-      let subs = this.orderService.getByDateRange(this.appService.currentStore.id, startDate, endDate
+      let subs = this.orderService.getByDateRange(startDate, endDate
       ).subscribe(result => {
 
         let orderCaculatePromises = [];
@@ -122,8 +122,8 @@ export class StoreBillingPage implements OnInit {
 
   getOrderTotal(order: Order) {
     return new Promise((resolve, reject) => {
-      let subs = this.orderService.getCartProducts(this.appService.currentStore.id, order.id).subscribe(cartProducts => {
-        let subs2 = this.orderService.getOrderCoupons(this.appService.currentStore.id, order.id).subscribe(orderCoupons => {
+      let subs = this.orderService.getCartProducts(order.id).subscribe(cartProducts => {
+        let subs2 = this.orderService.getOrderCoupons(order.id).subscribe(orderCoupons => {
 
           let coupon: StoreCoupon;
           orderCoupons.forEach(_coupon => {
@@ -160,13 +160,13 @@ export class StoreBillingPage implements OnInit {
           this.commissionForSale = result * (this.platformFee.commissionForSale / 100);
           this.saving = (this.platformFee.platformUse * (this.platformFee.platformUseDiscount / 100));
 
-          this.vendorsQuantity = this.appService.currentStore.vendorsLimit - 3;
+          this.vendorsQuantity = this.appService._appInfo.vendorsLimit - 3;
           this.vendorsPrice = (this.platformFee ? this.platformFee.additionalVendor : 0) * this.vendorsQuantity;
 
-          this.couponsQuantity = this.appService.currentStore.couponsLimit - 3;
+          this.couponsQuantity = this.appService._appInfo.couponsLimit - 3;
           this.couponsPrice = (this.platformFee ? this.platformFee.additionalCoupon : 0) * this.couponsQuantity;
 
-          this.productsQuantity = this.appService.currentStore.productsLimit - 100;
+          this.productsQuantity = this.appService._appInfo.productsLimit - 100;
           this.productsPrice = (this.platformFee ? this.platformFee.additionalProduct : 0) * this.productsQuantity;
 
           this.total = this.platformUse + this.vendorsPrice + this.couponsPrice + this.productsPrice + this.commissionForSale;

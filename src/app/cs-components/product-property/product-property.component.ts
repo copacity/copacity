@@ -57,8 +57,8 @@ export class ProductPropertyComponent implements OnInit {
           this.productProperty.name = this.form.value.name;
           this.productProperty.isMandatory = this.form.value.isMandatory;
           this.productProperty.userSelectable = this.form.value.userSelectable;
-          this.productsService.deleteCartInventory(this.navParams.data.idStore, this.navParams.data.idProduct);
-          this.productsService.update(this.navParams.data.idStore, this.navParams.data.idProduct, { soldOut: true });
+          this.productsService.deleteCartInventory(this.navParams.data.idProduct);
+          this.productsService.update(this.navParams.data.idProduct, { soldOut: true });
           this.popoverCtrl.dismiss(this.productProperty);
         });
       } else {

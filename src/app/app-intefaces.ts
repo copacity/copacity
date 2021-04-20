@@ -96,15 +96,9 @@ export interface PaymentMethod {
   deleted: boolean;
 }
 
-export interface Store {
+export interface Category {
   id: string;
-  idStoreCategory: string;
-  idSector: string;
-  idUser: string;
   name: string;
-  address: string;
-  phone1: number;
-  phone2: number;
   logo: string;
   thumb_logo: string;
   status: number;
@@ -112,20 +106,6 @@ export interface Store {
   lastUpdated: Date;
   dateCreated: Date;
   deleted: boolean;
-  visits: number;
-  deliveryPrice: number;
-  orderMinAmount: number;
-  facebook: string;
-  instagram: string;
-  whatsapp: number;
-  productsCount: number;
-  productsLimit: number;
-  couponsLimit: number;
-  vendorsLimit: number;
-  returnsPolicyTemplate: string;
-  video1: string;
-  video2: string;
-  video3: string;
 }
 
 export interface ProductCategory {
@@ -170,7 +150,7 @@ export interface StoreCategory {
 
 export interface Product {
   id: string;
-  idStore: string;
+  idCategory: string;
   idProductCategory: string;
   name: string;
   ref: string;

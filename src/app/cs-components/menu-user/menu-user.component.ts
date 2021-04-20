@@ -118,10 +118,10 @@ export class MenuUserComponent implements OnInit {
     this.popoverController.dismiss();
   }
 
-  goToUserStore() {
-    this.router.navigate(['store/' + this.appService._userStoreId]);
-    this.popoverController.dismiss();
-  }
+  // goToUserStore() {
+  //   this.router.navigate(['store/' + this.appService._userStoreId]);
+  //   this.popoverController.dismiss();
+  // }
 
   async openStoreUpdatePage() {
     this.popoverController.dismiss();

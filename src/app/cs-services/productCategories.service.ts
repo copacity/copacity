@@ -10,18 +10,18 @@ import { AppService } from './app.service';
   providedIn: 'root'
 })
 export class ProductCategoriesService {
-  private collectionName: string = 'productCategories';
+  private collectionName: string = 'subCategories';
   private productCategoryCollection: AngularFirestoreCollection<ProductCategory>;
 
   constructor(public angularFirestore: AngularFirestore, private appService: AppService) { }
 
-  public create(idStore: string, productCategory: ProductCategory): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).add(productCategory);
+  public create(idCategory: string, productCategory: ProductCategory): Promise<DocumentReference> {
+    return this.angularFirestore.collection('categories').doc(idCategory).collection(this.collectionName).add(productCategory);
   }
 
-  public getById(idStore:string, id: string) {
+  public getById(idCategory:string, id: string) {
     return new Promise((resolve, reject) => {
-      this.angularFirestore.collection("stores").doc(idStore)
+      this.angularFirestore.collection("categories").doc(idCategory)
         .collection(this.collectionName).doc(id).ref.get().then(
           function (doc) {
             if (doc.exists) {
@@ -40,8 +40,8 @@ export class ProductCategoriesService {
         });
   }
 
-  public getAll(idStore: string): Observable<ProductCategory[]> {
-    this.productCategoryCollection = this.angularFirestore.collection('stores').doc(idStore).collection<ProductCategory>(this.collectionName, ref => ref.where('deleted', '==', false));
+  public getAll(idCategory: string): Observable<ProductCategory[]> {
+    this.productCategoryCollection = this.angularFirestore.collection('categories').doc(idCategory).collection<ProductCategory>(this.collectionName, ref => ref.where('deleted', '==', false));
     return this.productCategoryCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as ProductCategory;
@@ -55,7 +55,7 @@ export class ProductCategoriesService {
     return this.angularFirestore.collection(this.collectionName).doc(id).set(data);
   }
 
-  public update(idStore: string, id: string, data: any) {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).doc(id).update(data);
+  public update(idCategory: string, id: string, data: any) {
+    return this.angularFirestore.collection('categories').doc(idCategory).collection(this.collectionName).doc(id).update(data);
   }
 }

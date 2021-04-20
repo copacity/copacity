@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AlertController, ToastController, PopoverController } from '@ionic/angular';
-import { Product, ProductImage, ProductProperty, Store } from 'src/app/app-intefaces';
+import { Product, ProductImage, ProductProperty, Category } from 'src/app/app-intefaces';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { AppService } from 'src/app/cs-services/app.service';
 import { CartService } from 'src/app/cs-services/cart.service';
@@ -23,7 +23,6 @@ import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 import { SearchPage } from '../search/search.page';
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
-import { MenuCartComponent } from 'src/app/cs-components/menu-cart/menu-cart.component';
 import { ReturnsPolicyPage } from '../returns-policy/returns-policy.page';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
@@ -35,7 +34,7 @@ import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-v
   styleUrls: ['./product-detail.page.scss'],
 })
 export class ProductDetailPage implements OnInit {
-  store: Store;
+  category: Category;
   cartSevice: CartService;
 
   @ViewChild('sliderProductDetail', null) slider: any;
@@ -67,70 +66,67 @@ export class ProductDetailPage implements OnInit {
     public appService: AppService) {
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
-      this.initialize(user);
+      this.appService.updateUserData(user.uid).then(() => {
+        {
+          this.initialize(user);
+        }
+      });
     });
 
     this.initialize();
   }
 
   initialize(user?: any) {
-    let productId = this.route.snapshot.params.id.toString().split("&")[0];
-    let storeId = this.route.snapshot.params.id.toString().split("&")[1];
+    let productId = this.route.snapshot.params.id;
+    this.cartSevice = this.cartManagerService.getCartService();
 
-    this.storesService.getById(storeId).then(result => {
-      this.store = result;
-      this.cartSevice = this.cartManagerService.getCartService();
-      this.appService.currentStore = result;
+    this.productService.getById(productId).then((productResult: Product) => {
+      this.product = productResult;
 
-      this.productService.getById(this.appService.currentStore.id, productId).then((productResult: Product) => {
-        this.product = productResult;
+      let productPropertiesResult = this.productService.getAllProductProperties(this.product.id);
 
-        let productPropertiesResult = this.productService.getAllProductProperties(this.appService.currentStore.id, this.product.id);
-
-        let subscribe = productPropertiesResult.subscribe(productProperties => {
-          productProperties.forEach(productProperty => {
-            let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
-            let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
-              productProperty.productPropertyOptions = productPropertyOptions;
-              subscribe2.unsubscribe();
-            });
+      let subscribe = productPropertiesResult.subscribe(productProperties => {
+        productProperties.forEach(productProperty => {
+          let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.product.id, productProperty.id);
+          let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
+            productProperty.productPropertyOptions = productPropertyOptions;
+            subscribe2.unsubscribe();
           });
-
-          this.productProperties = productProperties;
-          subscribe.unsubscribe();
         });
 
-        let result = this.productService.getProductImages(storeId, productId);
-        result.subscribe((productImageResult: ProductImage[]) => {
-          if (productImageResult.length == 0 && this.product.image) {
-            let img: ProductImage = {
-              id: '',
-              dateCreated: new Date(),
-              deleted: false,
-              image: this.product.image
-            }
-
-            productImageResult.push(img);
-          }
-
-          this.productImageCollection = productImageResult;
-        });
-
-        if (user && (this.appService.currentStore.idUser == user.uid)) {
-          this.isAdmin = true;
-          //this.router.navigate(['/store', this.appService.currentStore.id]);
-        } else {
-          this.isAdmin = false;
-        }
-
-        if (this.appService.currentStore.status != StoreStatus.Published) {
-          if (!this.isAdmin) {
-            this.router.navigate(['/home']);
-          }
-        }
-
-        this.animateVideo();
+        this.productProperties = productProperties;
+        subscribe.unsubscribe();
       });
+
+      let result = this.productService.getProductImages(productId);
+      result.subscribe((productImageResult: ProductImage[]) => {
+        if (productImageResult.length == 0 && this.product.image) {
+          let img: ProductImage = {
+            id: '',
+            dateCreated: new Date(),
+            deleted: false,
+            image: this.product.image
+          }
+
+          productImageResult.push(img);
+        }
+
+        this.productImageCollection = productImageResult;
+      });
+
+      if (user && (this.appService.currentUser.isAdmin)) {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+
+      // if (this.appService.currentCategory.status != StoreStatus.Published) {
+      //   if (!this.isAdmin) {
+      //     this.router.navigate(['/home']);
+      //   }
+      // }
+
+      this.animateVideo();
     });
   }
 
@@ -140,9 +136,9 @@ export class ProductDetailPage implements OnInit {
   async animateVideo() {
     if (this.product && this.product.video) {
       return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            this.animateVideoCSS('swing');
-          }, 3000);
+        setTimeout(() => {
+          this.animateVideoCSS('swing');
+        }, 3000);
       }).catch(err => { });
     }
   }
@@ -175,7 +171,7 @@ export class ProductDetailPage implements OnInit {
     const popover = await this.popoverController.create({
       component: ReturnsPolicyPage,
       cssClass: "cs-popovers",
-      componentProps: { returnsPolicy: this.store.returnsPolicyTemplate }
+      componentProps: { returnsPolicy: this.appService._appInfo.returnsPolicyTemplate }
     });
 
     popover.onDidDismiss()
@@ -282,7 +278,7 @@ export class ProductDetailPage implements OnInit {
   };
 
   close() {
-    this.router.navigate(['/store', this.appService.currentStore.id]);
+    this.router.navigate(['/store', this.product.idCategory]);
   }
 
   async SignIn() {
@@ -399,53 +395,53 @@ export class ProductDetailPage implements OnInit {
     });
   }
 
-  shareProduct(e) {
-    if (this.appService.currentStore.status == StoreStatus.Published) {
-      this.createFile().then(file => {
-        let navigator: any = window.navigator;
-        let filesArray = [];
-        filesArray.push(file);
+  // shareProduct(e) {
+  //   if (this.appService.currentCategory.status == StoreStatus.Published) {
+  //     this.createFile().then(file => {
+  //       let navigator: any = window.navigator;
+  //       let filesArray = [];
+  //       filesArray.push(file);
 
-        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
-          navigator.share({
-            files: filesArray,
-            title: this.appService.currentStore.name,
-            text: "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-              this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
-            url: this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id
-          })
-            .then(() => console.log('Share was successful.'))
-            .catch((error) => console.log('Sharing failed', error));
-        } else {
-          console.log(`Your system doesn't support sharing files.`);
-          this.openCopyToClipBoardProduct(e);
-        }
-      });
-    } else {
-      this.presentAlert("Solo puedes compartir tu tienda cuando este aprobada y publicada. Gracias", "", () => { });
-    }
-  }
+  //       if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+  //         navigator.share({
+  //           files: filesArray,
+  //           title: this.appService.currentStore.name,
+  //           text: "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
+  //             this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
+  //           url: this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id
+  //         })
+  //           .then(() => console.log('Share was successful.'))
+  //           .catch((error) => console.log('Sharing failed', error));
+  //       } else {
+  //         console.log(`Your system doesn't support sharing files.`);
+  //         this.openCopyToClipBoardProduct(e);
+  //       }
+  //     });
+  //   } else {
+  //     this.presentAlert("Solo puedes compartir tu tienda cuando este aprobada y publicada. Gracias", "", () => { });
+  //   }
+  // }
 
-  async openCopyToClipBoardProduct(e) {
+  // async openCopyToClipBoardProduct(e) {
 
-    let text = "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-      this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda: " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id;
+  //   let text = "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
+  //     this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda: " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.product.id;
 
-    let modal = await this.popoverCtrl.create({
-      component: CopyToClipboardComponent,
-      cssClass: 'notification-popover',
-      componentProps: { textLink: text },
-      event: e
-    });
+  //   let modal = await this.popoverCtrl.create({
+  //     component: CopyToClipboardComponent,
+  //     cssClass: 'notification-popover',
+  //     componentProps: { textLink: text },
+  //     event: e
+  //   });
 
-    modal.onDidDismiss()
-      .then((data) => {
-        const result = data['data'];
+  //   modal.onDidDismiss()
+  //     .then((data) => {
+  //       const result = data['data'];
 
-      });
+  //     });
 
-    modal.present();
-  }
+  //   modal.present();
+  // }
 
   shareApp(e) {
     this.ngNavigatorShareService.share({
@@ -504,13 +500,13 @@ export class ProductDetailPage implements OnInit {
   addToCart(e: any) {
     if (!this.isAdmin) {
       this.cartInventoryService.clearCart();
-      let subs = this.productService.getCartInventory(this.appService.currentStore.id, this.product.id)
+      let subs = this.productService.getCartInventory(this.product.id)
         .subscribe((cartP) => {
-          let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, this.product.id);
+          let productPropertiesResult = this.productService.getAllProductPropertiesUserSelectable(this.product.id);
 
           let subscribe = productPropertiesResult.subscribe(async productProperties => {
             productProperties.forEach(productProperty => {
-              let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.appService.currentStore.id, this.product.id, productProperty.id);
+              let productPropertyOptionsResult = this.productService.getAllProductPropertyOptions(this.product.id, productProperty.id);
               let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
                 productProperty.productPropertyOptions = productPropertyOptions;
                 subscribe2.unsubscribe();
@@ -524,7 +520,7 @@ export class ProductDetailPage implements OnInit {
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
               event: e,
-              componentProps: { store: this.store, isInventory: false, product: this.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 },
+              componentProps: { isInventory: false, product: this.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 },
               backdropDismiss: false,
             });
 

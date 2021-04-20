@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, User, StoreCategory, Banner, Address, AppInfo, Notification, ErrorMessage, StoreCoupon } from '../app-intefaces';
+import { Category, User, StoreCategory, Banner, Address, AppInfo, Notification, ErrorMessage, StoreCoupon } from '../app-intefaces';
 import { UsersService } from './users.service';
 import { StoreCategoriesService } from './storeCategories.service';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
@@ -31,10 +31,10 @@ export class AppService {
 
   // USER DATA
   currentUser: User;
-  currentStore: Store;
+  currentCategory: Category;
   notifications: Observable<Notification[]> = null;
   notificationsCount = new BehaviorSubject(0);
-  _userStoreId: string;
+  //_userStoreId: string;
   addressCollection: Observable<Address[]>;
   idAddressChecked: string = '';
   addressChecked: Address = null;
@@ -54,7 +54,6 @@ export class AppService {
     public angularFirestore: AngularFirestore,
     private usersService: UsersService,
     private afMessaging: AngularFireMessaging,
-    private storeCategoriesService: StoreCategoriesService,
     private storesService: StoresService,
     private addressesService: AddressesService,
     public toastController: ToastController,
@@ -70,12 +69,6 @@ export class AppService {
     } catch (error) {
       console.log(error);
     }
-
-    // this.storeCategories = this.storeCategoriesService.getAll();
-
-    // this.storeCategories.subscribe(storeCategoriesArray => {
-    //   this._storeCategories = storeCategoriesArray;
-    // });
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
       if (user) {
@@ -107,7 +100,7 @@ export class AppService {
 
           this.storesService.getByUserId(this.currentUser.id).then(stores => {
             stores.forEach(store => {
-              this._userStoreId = store.id;
+              //this._userStoreId = store.id;
             });
           });
         }
@@ -178,7 +171,7 @@ export class AppService {
     //this.currentStore = null;
     this.notifications = null;
     this.notificationsCount = new BehaviorSubject(0);
-    this._userStoreId = null;
+    //this._userStoreId = null;
     this.addressCollection = null;
     this.idAddressChecked = '';
     this.addressChecked = null;

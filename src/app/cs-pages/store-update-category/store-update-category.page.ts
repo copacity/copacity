@@ -46,8 +46,8 @@ export class StoreUpdateCategoryPage implements OnInit {
   private buildForm() {
 
     this.form = this.formBuilder.group({
-      name: [this.appService.currentStore.name, [Validators.required, Validators.maxLength(50)]],
-      description: [this.appService.currentStore.description, [Validators.maxLength(500)]],
+      name: [this.appService.currentCategory.name, [Validators.required, Validators.maxLength(50)]],
+      description: [this.appService.currentCategory.description, [Validators.maxLength(500)]],
     });
   }
 
@@ -56,11 +56,11 @@ export class StoreUpdateCategoryPage implements OnInit {
     if (this.form.valid) {
       this.loader.startLoading("Estamos actualizando su catgoria por favor espere un momento...");
 
-      this.appService.currentStore.name = this.form.value.name;
-      this.appService.currentStore.description = this.form.value.description;
+      this.appService.currentCategory.name = this.form.value.name;
+      this.appService.currentCategory.description = this.form.value.description;
 
       setTimeout(() => {
-        this.storesService.update(this.appService.currentStore.id, this.appService.currentStore).then(async (doc) => {
+        this.storesService.update(this.appService.currentCategory.id, this.appService.currentCategory).then(async (doc) => {
           this.loader.stopLoading();
           this.presentAlert("Tu categoria ha sido actualizada exitosamente!", '', () => this.popoverCtrl.dismiss(true));
         })

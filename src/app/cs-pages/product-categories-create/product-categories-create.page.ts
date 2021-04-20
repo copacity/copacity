@@ -33,7 +33,7 @@ export class ProductCategoriesCreatePage implements OnInit {
     public appService: AppService) {
      
     if (this.navParams.data.id) {
-      this.productCategoriesService.getById(this.appService.currentStore.id, this.navParams.data.id).then((productCategory: ProductCategory) => {
+      this.productCategoriesService.getById(this.appService.currentCategory.id, this.navParams.data.id).then((productCategory: ProductCategory) => {
         this.productCategory = productCategory;
         this.buildForm();
       });
@@ -82,15 +82,15 @@ export class ProductCategoriesCreatePage implements OnInit {
         this.productCategory.name = this.form.value.name;
 
         if (this.productCategory.id != '') {
-          this.productCategoriesService.update(this.appService.currentStore.id, this.productCategory.id, this.productCategory).then(() => {
+          this.productCategoriesService.update(this.appService.currentCategory.id, this.productCategory.id, this.productCategory).then(() => {
             this.loader.stopLoading();
             this.presentAlert("Sección actualizada exitosamente", "", () => {
               this.popoverCtrl.dismiss();
             });
           });
         } else {
-          this.productCategoriesService.create(this.appService.currentStore.id, this.productCategory).then(async (doc) => {
-            this.productCategoriesService.update(this.appService.currentStore.id, doc.id, { id: doc.id }).then(() => {
+          this.productCategoriesService.create(this.appService.currentCategory.id, this.productCategory).then(async (doc) => {
+            this.productCategoriesService.update(this.appService.currentCategory.id, doc.id, { id: doc.id }).then(() => {
               this.loader.stopLoading();
               this.presentAlert("Sección creada exitosamente", "", () => {
                 this.popoverCtrl.dismiss(doc.id);

@@ -22,7 +22,6 @@ export class WhatsappOrderComponent implements OnInit {
     public popoverController: PopoverController,
     public appService: AppService,
     private usersService: UsersService,
-    private navParams: NavParams,
     private storesService: StoresService) {
     this.idVendor = new FormControl('', [Validators.required]);
 

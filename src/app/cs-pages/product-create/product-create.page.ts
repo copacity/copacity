@@ -12,7 +12,6 @@ import { StoresService } from 'src/app/cs-services/stores.service';
 import { CropperImageComponent } from 'src/app/cs-components/cropper-image/cropper-image.component';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
-import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
@@ -56,7 +55,10 @@ export class ProductCreatePage implements OnInit {
 
     this.isGift = this.navParams.data.isGift;
     this.buildForm();
-    this.productCategories = this.productCategoriesService.getAll(this.appService.currentStore.id);
+
+    if (!this.isGift) {
+      this.productCategories = this.productCategoriesService.getAll(this.appService.currentCategory.id);
+    }
   }
 
   ngOnInit() {
@@ -221,7 +223,7 @@ export class ProductCreatePage implements OnInit {
   }
 
   async goToCreateOrder() {
-    this.router.navigate(['/order-create', this.appService.currentStore.id]);
+    this.router.navigate(['/order-create']);
   }
 
   async presentAlert(title: string, message: string, done: Function) {
@@ -280,7 +282,7 @@ export class ProductCreatePage implements OnInit {
         let newProduct: Product =
         {
           id: '',
-          idStore: this.appService.currentStore.id,
+          idCategory: this.isGift?'':this.appService.currentCategory.id,
           deleted: false,
           image: '',
           lastUpdated: new Date(),
@@ -289,20 +291,20 @@ export class ProductCreatePage implements OnInit {
           ref: this.form.value.ref,
           description: this.form.value.description,
           price: this.form.value.price,
-          video: this.isGift?'':this.form.value.video,
+          video: this.isGift ? '' : this.form.value.video,
           idProductCategory: this.form.value.category,
-          discount: this.form.value.discount,
+          discount: this.form.value.discount != "" ? parseInt(this.form.value.discount) : 0,
           soldOut: true,
           isGift: this.isGift,
           isFeatured: false
         }
 
-        this.productsService.create(this.appService.currentStore.id, newProduct).then(async (doc) => {
+        this.productsService.create(newProduct).then(async (doc) => {
           this.productId = doc.id;
-          this.productsService.update(this.appService.currentStore.id, doc.id, { id: doc.id }).then(() => {
+          this.productsService.update(doc.id, { id: doc.id }).then(() => {
             this.saveProperties().then(() => {
-              this.appService.currentStore.productsCount = this.appService.currentStore.productsCount + 1;
-              this.storesService.update(this.appService.currentStore.id, { productsCount: this.appService.currentStore.productsCount }).then(() => {
+              this.appService._appInfo.productsCount = this.appService._appInfo.productsCount + 1;
+              this.appService.updateAppInfo().then(() => {
                 if (this.imgURL.length != 0) {
                   this.saveImages(doc.id, 0).then(() => {
                     this.loader.stopLoading();
@@ -336,7 +338,7 @@ export class ProductCreatePage implements OnInit {
       let addProdcutImage = (index: number, lastImageUrl: String) => {
         if (this.imgURL.length == index) {
           this.storageService.getThumbUrl(this.appService.getImageIdByUrl(lastImageUrl.toString()), (thumbUrl: string) => {
-            this.productsService.update(this.appService.currentStore.id, idProduct, { image: thumbUrl }).then(result => {
+            this.productsService.update(idProduct, { image: thumbUrl }).then(result => {
               resolve(true);
             });
           })
@@ -350,9 +352,9 @@ export class ProductCreatePage implements OnInit {
             image: ''
           }
 
-          this.productsService.addProductImage(this.appService.currentStore.id, idProduct, img).then((doc) => {
+          this.productsService.addProductImage(idProduct, img).then((doc) => {
             this.storageService.ResizeImage(this.imgURL[index], doc.id, 500, 500).then((url) => {
-              this.productsService.updateProductImage(this.appService.currentStore.id, idProduct, doc.id, { id: doc.id, image: url }).then((doc) => {
+              this.productsService.updateProductImage(idProduct, doc.id, { id: doc.id, image: url }).then((doc) => {
                 addProdcutImage(++index, url);
               });
             });
@@ -512,14 +514,14 @@ export class ProductCreatePage implements OnInit {
         }
         else {
           if (this.productProperties[index].id) {
-            this.productsService.updateProductProperty(this.appService.currentStore.id, this.productId, this.productProperties[index].id, { name: this.productProperties[index].name, isMandatory: this.productProperties[index].isMandatory, userSelectable: this.productProperties[index].userSelectable, deleted: this.productProperties[index].deleted }).then(() => {
+            this.productsService.updateProductProperty(this.productId, this.productProperties[index].id, { name: this.productProperties[index].name, isMandatory: this.productProperties[index].isMandatory, userSelectable: this.productProperties[index].userSelectable, deleted: this.productProperties[index].deleted }).then(() => {
               this.savePropertyOptions(this.productProperties[index]).then(() => {
                 addProdcutProperty(++index);
               });
             });
           } else {
-            this.productsService.createProductProperty(this.appService.currentStore.id, this.productId, this.productProperties[index]).then((doc) => {
-              this.productsService.updateProductProperty(this.appService.currentStore.id, this.productId, doc.id, { id: doc.id }).then(() => {
+            this.productsService.createProductProperty(this.productId, this.productProperties[index]).then((doc) => {
+              this.productsService.updateProductProperty(this.productId, doc.id, { id: doc.id }).then(() => {
                 this.productProperties[index].id = doc.id;
                 this.savePropertyOptions(this.productProperties[index]).then(() => {
                   addProdcutProperty(++index);
@@ -545,13 +547,13 @@ export class ProductCreatePage implements OnInit {
         }
         else {
           if (productProperty.productPropertyOptions[index].id) {
-            this.productsService.updateProductPropertyOption(this.appService.currentStore.id, this.productId, productProperty.id, productProperty.productPropertyOptions[index].id, productProperty.productPropertyOptions[index]).then(() => {
+            this.productsService.updateProductPropertyOption(this.productId, productProperty.id, productProperty.productPropertyOptions[index].id, productProperty.productPropertyOptions[index]).then(() => {
               addProdcutPropertyOption(++index);
             });
           } else {
-            this.productsService.createProductPropertyOption(this.appService.currentStore.id, this.productId, productProperty.id, productProperty.productPropertyOptions[index]).then((doc) => {
+            this.productsService.createProductPropertyOption(this.productId, productProperty.id, productProperty.productPropertyOptions[index]).then((doc) => {
               productProperty.productPropertyOptions[index].id = doc.id;
-              this.productsService.updateProductPropertyOption(this.appService.currentStore.id, this.productId, productProperty.id, doc.id, productProperty.productPropertyOptions[index]).then(() => {
+              this.productsService.updateProductPropertyOption(this.productId, productProperty.id, doc.id, productProperty.productPropertyOptions[index]).then(() => {
                 addProdcutPropertyOption(++index);
               });
             });

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonSearchbar, PopoverController, ToastController } from '@ionic/angular';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { Store, Product, ProductImage } from 'src/app/app-intefaces';
+import { Category, Product, ProductImage } from 'src/app/app-intefaces';
 import { AppService } from 'src/app/cs-services/app.service';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { SearchService } from 'src/app/cs-services/search.service';
@@ -38,11 +38,11 @@ export class SearchPage {
 
     if (this.searchService.searchText) {
       this.storesService.getAll("").then(stores => {
-        stores.forEach((store: Store) => {
-          let subs = this.productsService.getAll(store.id).subscribe(products => {
+        stores.forEach((category: Category) => {
+          let subs = this.productsService.getAll().subscribe(products => {
             products.forEach((product: Product) => {
               if (this.removeAccents(product.name).toUpperCase().indexOf(this.removeAccents(this.searchService.searchText).toUpperCase()) != -1 || this.searchInText(product.name.split(" "), this.searchService.searchText)) {
-                this.searchService.products.push({ product: product, idStore: store.id, storeName: store.name });
+                this.searchService.products.push({ product: product, idCategory: category.id, storeName: category.name });
               }
 
               this.searchService.searching = false;
@@ -74,7 +74,7 @@ export class SearchPage {
   async openImageViewer(product: Product, storeId: string) {
     let images: string[] = [];
 
-    let result = this.productsService.getProductImages(storeId, product.id);
+    let result = this.productsService.getProductImages(product.id);
 
     let subs = result.subscribe(async (productImages: ProductImage[]) => {
       productImages.forEach(img => {
@@ -102,7 +102,7 @@ export class SearchPage {
   }
 
   goToProductDetail(product: any) {
-    this.router.navigate(['product-detail', product.product.id + "&" + product.idStore]);
+    this.router.navigate(['product-detail', product.product.id]);
     this.popoverCtrl.dismiss();
   }
 

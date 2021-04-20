@@ -77,11 +77,11 @@ export class StorePqrsfCreatePage implements OnInit {
         this.pqrsf.userPhotoUrl = this.appService.currentUser.photoUrl;
         this.pqrsf.userEmail = this.appService.currentUser.email;
         this.pqrsf.userPhone = this.appService.currentUser.phone1.toString();
-        this.pqrsf.idStore = this.appService.currentStore.id;
+        this.pqrsf.idStore = '';
         this.pqrsf.idType = this.form.value.idType;
         this.pqrsf.message = this.form.value.message;
 
-        this.storesService.createPQRSF(this.appService.currentStore.id, this.pqrsf).then(result => {
+        this.storesService.createPQRSF(this.pqrsf).then(result => {
           this.loader.stopLoading();
           this.presentAlert("Mensaje enviado exitosamente", () => { });
           this.popoverController.dismiss();

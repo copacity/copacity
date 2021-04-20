@@ -144,28 +144,27 @@
         <ion-slides id="sliderHomeProductsDiscount" #sliderHomeProductsDiscount
           [options]="appService.slideOptsProductsDiscount">
           <ion-slide
-            (click)="goToPage(featuredProduct.url, featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png')"
-            *ngFor="let featuredProduct of featuredProductsDiscount;" style="padding: 2px; padding-top: 17px;">
+            (click)="goToPage('/product-detail/' + featuredProduct.id, featuredProduct.image?featuredProduct.image:'../../../assets/icon/no-image.png')"
+            *ngFor="let featuredProduct of _featuredProductsDiscount | async" style="padding: 2px; padding-top: 17px;">
             <div class="profile-2">
               <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                 <a>
                   <img style="width: 150px;margin: 5px 0px 5px 0px;border: solid 2px #fff;border-radius: 100%"
                     class="preload-image"
-                    [src]="featuredProduct.product.image?featuredProduct.product.image:'../../../assets/icon/no-image.png'"
+                    [src]="featuredProduct?.image?featuredProduct.image:'../../../assets/icon/no-image.png'"
                     alt="img">
 
-                  <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
+                  <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
                     style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
-                    class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}">
+                    class="{{(featuredProduct?.soldOut)?'sold-out':'' }}">
                     <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
 
-                  <em *ngIf="featuredProduct.product?.discount && featuredProduct.product?.discount > 0"
-                    class="{{(featuredProduct.product?.soldOut)?'sold-out':'' }}"
+                  <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
+                    class="{{(featuredProduct?.soldOut)?'sold-out':'' }}"
                     style="background-color: transparent;color: black;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
-                    -{{ featuredProduct.product?.discount }}%</em>
+                    -{{ featuredProduct?.discount }}%</em>
                 </a>
               </div>
-
             </div>
           </ion-slide>
         </ion-slides>
@@ -188,8 +187,8 @@
                   <ion-label style="color: gray;display: none;">Categorías</ion-label>
                   <ion-select #selectCategories multiple="true" style="padding-right: 10px;" mode="ios"
                     cancelText="Cancelar" okText="Filtrar" (ionChange)="selectedCategories_OnChange($event)">
-                    <ion-select-option *ngFor="let storeCategory of _stores | async"
-                      value="{{storeCategory.id}}">{{storeCategory.name}}</ion-select-option>
+                    <ion-select-option *ngFor="let category of _categories | async"
+                      value="{{category.id}}">{{category.name}}</ion-select-option>
                   </ion-select>
                 </ion-item>
               </ion-list>
@@ -237,14 +236,14 @@
                   </ion-slide>
                 </ion-slides>
 
-                <div *ngIf="(stores && stores.length == 0) && !searchingStores" class="boxed-text-huge"
+                <div *ngIf="(_categoriesFiltered | async)?.length == 0" class="boxed-text-huge"
                   style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
                 <ion-slides id="sliderHomeStores" #sliderHomeStores
-                  *ngIf="(stores && stores.length != 0) && !searchingStores" [options]="appService.slideOptsStores">
-                  <ion-slide *ngFor="let store of stores; let i = index"
+                  *ngIf="(_categoriesFiltered | async)?.length != 0" [options]="appService.slideOptsStores">
+                  <ion-slide *ngFor="let store of _categoriesFiltered | async"
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
                     <div class="blog-col-item" style="margin-bottom: 0px">
                       <a (click)="goToStore($event, store)">
@@ -283,33 +282,33 @@
                 </ion-slides>
 
                 <div
-                  *ngIf="(featuredProductsNoDiscount && featuredProductsNoDiscount.length == 0) && !searchingProductsNoDiscount"
+                  *ngIf="(_featuredProductsNoDiscount | async)?.length == 0"
                   class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
                 <ion-slides id="sliderHomeProductsNoDiscount" #sliderHomeProductsNoDiscount
                   *ngIf="!searchingProductsNoDiscount" [options]="appService.slideOptsProductsNoDiscount">
-                  <ion-slide *ngFor="let featuredProductNoDiscount of featuredProductsNoDiscount;"
+                  <ion-slide *ngFor="let featuredProductNoDiscount of _featuredProductsNoDiscount | async;"
                     style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                         <a>
 
                           <img
-                            (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.product.image?featuredProductNoDiscount.product.image:'../../../assets/icon/no-image.png')"
+                            (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
                             style="width: 200px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
                             class="preload-image shadow-small round-small"
-                            [src]="featuredProductNoDiscount.product.image?featuredProductNoDiscount.product.image:'../../../assets/icon/no-image.png'"
+                            [src]="featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png'"
                             alt="img">
                           <em
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -25px;left: 0px">
                             <span style="padding: 0px 0px 0px 0px;" class="color-black font-15 top-10">
-                              {{ featuredProductNoDiscount.product.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
+                              {{ featuredProductNoDiscount?.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
                           </em>
 
-                          <em *ngIf="featuredProductNoDiscount.product.video"
-                            (click)="openVideoPlayerComponent($event, featuredProductNoDiscount.product.video)"
+                          <em *ngIf="featuredProductNoDiscount?.video"
+                            (click)="openVideoPlayerComponent($event, featuredProductNoDiscount?.video)"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -30px;right: 0px;padding: 3px 5px 3px 0px">
                             <span style="padding: 0px 0px 0px 0px;" class="color-black font-15">
                               <i class="fab fa-youtube"
@@ -318,12 +317,12 @@
                         </a>
 
                         <strong class="strong-store"
-                          (click)="goToPage(featuredProductNoDiscount.url, featuredProductNoDiscount.storeImage)"
-                          style="font-size: .7em;padding-top: 20px;">{{((featuredProductNoDiscount.product.name.length<=32)?featuredProductNoDiscount.product.name:featuredProductNoDiscount.product.name.substring(0, 32) + '...')}}</strong>
+                          (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
+                          style="font-size: .7em;padding-top: 20px;">{{((featuredProductNoDiscount?.name.length<=32)?featuredProductNoDiscount?.name:featuredProductNoDiscount?.name.substring(0, 32) + '...')}}</strong>
 
                         <a (click)="addToCart($event, featuredProductNoDiscount)"
                           style="background-color: red;color:white;font-size: .55em;"
-                          class="button button-round-small shadow-small button-sm button-s top-20 {{(featuredProductNoDiscount.product?.soldOut)?'sold-out':'' }}">
+                          class="button button-round-small shadow-small button-sm button-s top-20 {{(featuredProductNoDiscount?.soldOut)?'sold-out':'' }}">
                           <i class="fa fa-shopping-cart add-button" style="color: white;padding-right: 5px;"></i>LO
                           QUIERO!</a>
                       </div>
@@ -347,7 +346,7 @@
                 </ion-slides>
 
                 <div
-                  *ngIf="(featuredProductsNoFeatured && featuredProductsNoFeatured.length == 0) && !searchingProductsNoFeatured"
+                  *ngIf="(_categories | async)?.length == 0"
                   class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
@@ -355,30 +354,27 @@
                 <div class="gallery gallery-collection bottom-20 top-20">
                   <ion-slides id="sliderHomeProductsNoFeatured" #sliderHomeProductsNoFeatured
                     [options]="appService.slideOptsProductsNoFeatured">
-                    <ion-slide *ngFor="let nofeaturedProduct of featuredProductsNoFeatured;"
+                    <ion-slide *ngFor="let nfItem of _featuredProductsNoFeatured"
                       style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
 
                       <div class="profile-2">
                         <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                           <a style="width: 100%;">
-                            <i
-                              (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.thumb_logo?nofeaturedProduct.store.thumb_logo:'../../../assets/icon/no-image.png')">
+                            <i (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png')">
                               <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-                                <img
-                                  src="{{nofeaturedProduct.store.thumb_logo?nofeaturedProduct.store.thumb_logo:'../../../assets/icon/no-image.png'}}"
+                                <img src="{{ nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png'}}"
                                   alt="img" style="width: 80px;">
                               </div>
                             </i>
 
-                            <img
-                              (click)="goToPage(nofeaturedItem.url, nofeaturedItem.product.image?nofeaturedItem.product.image:'../../../assets/icon/no-image.png')"
-                              *ngFor="let nofeaturedItem of nofeaturedProduct.noFeaturedProducts;"
-                              src="{{nofeaturedItem.product.image?nofeaturedItem.product.image:'../../../assets/icon/no-image.png'}}"
+                            <img (click)="goToPage('product-detail/' + product?.id, product?.image?product?.image:'../../../assets/icon/no-image.png')"
+                              *ngFor="let product of nfItem.products | async"
+                              src="{{product?.image?product?.image:'../../../assets/icon/no-image.png'}}"
                               alt="img" class="preload-image round-small">
                             <div class="clear"></div>
                           </a>
 
-                          <a (click)="goToPage(nofeaturedProduct.url, nofeaturedProduct.store.thumb_logo?nofeaturedProduct.store.thumb_logo:'../../../assets/icon/no-image.png')"
+                          <a (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?category.thumb_logo:'../../../assets/icon/no-image.png')"
                             style="padding-top: 10px;font-size: .7em;">Ver mas...</a>
                         </div>
                       </div>
@@ -412,58 +408,58 @@
                   </ion-slide>
                 </ion-slides>
 
-                <div *ngIf="(storeCoupons && storeCoupons.length == 0) && !searchingStoreCoupons"
+                <div *ngIf="(_coupons | async)?.length == 0"
                   class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
                 <ion-slides id="sliderStoreCoupons" #sliderStoreCoupons [options]="appService.slideOptsStoreCoupons">
-                  <ion-slide *ngFor="let storeCoupon of storeCoupons;">
+                  <ion-slide *ngFor="let storeCoupon of _coupons | async">
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                         <a>
-                          <img (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
+                          <img (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
                             style="width: 250px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
                             class="preload-image shadow-large round-small" src="../../../assets/icon/couponTemplate.png"
                             alt="img">
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
+                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 45px;left: 10px">
                             <span style="padding: 0px 0px 0px 0px;">
-                              Tienda:</span>
+                              Nombre:</span>
                           </em>
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
+                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 60px;left: 10px">
                             <span style="padding: 0px 0px 0px 0px;color: black;">
-                              {{storeCoupon.store.name}}</span>
+                              {{storeCoupon?.name}}</span>
                           </em>
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
+                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 105px;left: 10px">
                             <span style="padding: 0px 0px 0px 0px;font-size: 5em;color: lawngreen;">
-                              {{storeCoupon.storeCoupon.discount}}%</span>
+                              {{storeCoupon?.discount}}%</span>
                           </em>
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
+                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 95px;left: 120px">
                             <span style="padding: 0px 0px 0px 0px;">
                               descuento!!</span>
                           </em>
 
-                          <em (click)="goToPage(storeCoupon.url, storeCoupon.store.thumb_logo)"
+                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 140px;left: 10px">
                             <label style="padding: 0px 0px 0px 0px;color: red;text-decoration: none;">
                               Compras mayores a
                               <b
-                                style="font-size: 1.5em;">{{storeCoupon.storeCoupon.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b></label>
+                                style="font-size: 1.5em;">{{storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b></label>
                           </em>
                         </a>
 
                         <strong class="strong-store" style="font-size: .7em;"
-                          class="bold">{{storeCoupon.storeCoupon.name}}</strong>
+                          class="bold">{{storeCoupon?.name}}</strong>
 
                         <strong class="strong-store" style="font-size: .6em;padding-top: 0px;height: 20px;">Vence:
-                          {{ storeCoupon.storeCoupon.dateExpiration.toDate() | date: 'dd/MM/yyyy' }}</strong>
+                          {{ storeCoupon?.dateExpiration.toDate() | date: 'dd/MM/yyyy' }}</strong>
 
                         <a (click)="takeTemporalCoupon(storeCoupon)" style="color:white;font-size: .55em;"
                           class="button button-round-small shadow-small button-sm button-s bg-highlight top-10">
@@ -492,7 +488,7 @@
                   </ion-slide>
                 </ion-slides>
 
-                <div *ngIf="(gifts && gifts.length == 0) && !searchingGifts" class="boxed-text-huge"
+                <div *ngIf="(_gifts | async)?.length == 0" class="boxed-text-huge"
                   style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
@@ -500,15 +496,15 @@
                 <ion-slides id="sliderHomeGifts" #sliderHomeGifts *ngIf="!searchingGifts"
                   [options]="appService.slideOptsGifts">
                   <ion-slide
-                    (click)="openWithOption(gift.url, gift.product.image?gift.product.image:'../../../assets/icon/no-image.png', 4)"
-                    *ngFor="let gift of gifts;" style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
+                    (click)="goToPage('/product-detail/' + gift.id, gift?.image?gift?.image:'../../../assets/icon/no-image.png', 4)"
+                    *ngFor="let gift of _gifts | async" style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                         <a>
 
                           <img style="width: 150px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
                             class="preload-image shadow-small round-small"
-                            [src]="gift.product.image?gift.product.image:'../../../assets/icon/no-image.png'" alt="img">
+                            [src]="gift?.image?gift?.image:'../../../assets/icon/no-image.png'" alt="img">
 
                           <em
                             style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 20px;left: -10px">
@@ -519,12 +515,12 @@
                           <em style="background-color: transparent;color: black;font-weight: bold;font-size: .8em; 
                               bottom: -25px;left: 0px;padding: 0px;margin-top: 0px;text-transform: none;">
                             <span style="padding: 0px 0px 0px 0px;font-size: .8em;" class="color-black top-9 bold">
-                              {{ gift.product.price }} Puntos</span>
+                              {{ gift?.price }} Puntos</span>
                           </em>
                         </a>
 
                         <strong class="strong-store"
-                          style="font-size: .7em;padding-top: 30px;">{{((gift.product.name.length<=32)?gift.product.name:gift.product.name.substring(0, 32) + '...')}}</strong>
+                          style="font-size: .7em;padding-top: 30px;">{{((gift?.name.length<=32)?gift?.name:gift?.name.substring(0, 32) + '...')}}</strong>
                       </div>
                     </div>
                   </ion-slide>
@@ -775,13 +771,13 @@
   style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
     style="top: -5px;padding-left: 5px;padding-right: 5px;">
-    {{ appService?.temporalCoupon?.store?.name }}
+    {{ appService?.temporalCoupon?.name }}
   </h6>
 
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
     style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
-    un cupón con <b>{{ appService?.temporalCoupon?.storeCoupon?.discount }}%</b> de descuento para compras mayores a
-    <b>{{ appService?.temporalCoupon?.storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
+    un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
+    <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
   </h6>
 
   <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">

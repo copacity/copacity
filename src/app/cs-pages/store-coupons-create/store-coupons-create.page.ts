@@ -19,7 +19,7 @@ export class StoreCouponsCreatePage implements OnInit {
 
   storeCoupon: StoreCoupon = {
     id: '',
-    idStore: this.appService.currentStore.id,
+    idStore: '',
     name: '',
     discount: null,
     minAmount: null,
@@ -145,7 +145,7 @@ export class StoreCouponsCreatePage implements OnInit {
         });
       } else {
         this.loader.startLoading("Creando cupón, por favor espere un moento");
-        this.storesService.createStoreCoupon(this.appService.currentStore.id, this.storeCoupon).then(doc => {
+        this.storesService.createStoreCoupon(this.storeCoupon).then(doc => {
           this.storesService.updateStoreCoupon(doc.id, { dateExpiration: new Date(new Date(this.form.value.dateExpiration).setHours(23, 59, 59, 0)) }).then(() => {
             this.loader.stopLoading();
             this.presentAlert("Cupón creado exitosamente", "", () => {

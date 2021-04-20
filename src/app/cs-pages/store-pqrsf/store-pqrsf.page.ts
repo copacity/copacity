@@ -36,7 +36,7 @@ export class StorePqrsfPage implements OnInit {
     setTimeout(() => {
 
       if (this.navParams.data.isAdmin) {
-        this.pqrsfCollection = this.storesService.getStorePQRSF(this.appService.currentStore.id);
+        this.pqrsfCollection = this.storesService.getStorePQRSF();
 
         let subs = this.pqrsfCollection.subscribe((products) => {
           this.pqrsfSearchHits = 0;
@@ -50,7 +50,7 @@ export class StorePqrsfPage implements OnInit {
           subs.unsubscribe();
         });
       } else {
-        this.pqrsfCollection = this.storesService.getStorePQRSFByUser(this.appService.currentStore.id, this.appService.currentUser.id);
+        this.pqrsfCollection = this.storesService.getStorePQRSFByUser(this.appService.currentUser.id);
 
         this.pqrsfCollection.subscribe((products) => {
           this.pqrsfSearchHits = 0;

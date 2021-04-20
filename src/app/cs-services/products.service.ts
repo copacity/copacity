@@ -15,13 +15,13 @@ export class ProductsService {
 
   constructor(public angularFirestore: AngularFirestore, private appService: AppService) { }
 
-  public create(idStore: string, product: Product): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).add(product);
+  public create(product: Product): Promise<DocumentReference> {
+    return this.angularFirestore.collection(this.collectionName).add(product);
   }
 
-  public getById(idStore: string, idProduct: string) {
+  public getById(idProduct: string) {
     return new Promise((resolve, reject) => {
-      this.angularFirestore.collection("stores").doc(idStore)
+      this.angularFirestore
         .collection(this.collectionName).doc(idProduct).ref.get().then(
           function (doc) {
             if (doc.exists) {
@@ -40,18 +40,18 @@ export class ProductsService {
     });
   }
 
-  public getByProductCategoryId(idStore: string, idProductCategory: string/*, productsBatch: number, lastProductToken: string*/) {
+  public getByProductCategoryId(idProductCategory: string/*, productsBatch: number, lastProductToken: string*/) {
     this.productCollection;
 
     if (idProductCategory != '0') {
-      this.productCollection = this.angularFirestore.collection('stores').doc(idStore).collection<Product>(this.collectionName,
+      this.productCollection = this.angularFirestore.collection<Product>(this.collectionName,
         ref => ref
           .where('idProductCategory', '==', idProductCategory)
           .where('deleted', '==', false)
           .where('isGift', '==', false)
           .orderBy('name'));
     } else {
-      this.productCollection = this.angularFirestore.collection('stores').doc(idStore).collection<Product>(this.collectionName,
+      this.productCollection = this.angularFirestore.collection<Product>(this.collectionName,
         ref => ref
           .where('deleted', '==', false)
           .where('isGift', '==', false)
@@ -67,10 +67,10 @@ export class ProductsService {
     );
   }
 
-  public getByProductGift(idStore: string) {
+  public getByProductGift() {
     this.productCollection;
 
-    this.productCollection = this.angularFirestore.collection('stores').doc(idStore).collection<Product>(this.collectionName,
+    this.productCollection = this.angularFirestore.collection<Product>(this.collectionName,
       ref => ref
         .where('deleted', '==', false)
         .where('isGift', '==', true)
@@ -85,25 +85,11 @@ export class ProductsService {
     );
   }
 
-  // public getBySearch(idStore: string, searchText: string) {
-  //   return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
-  //     .where('deleted', '==', false))
-  //     .snapshotChanges().pipe(
-  //      map(actions => actions.map(a => {
-  //         const data = a.payload.doc.data() as Product;
-  //         const id = a.payload.doc.id;
-
-  //         if (data.name.trim().toUpperCase().indexOf(searchText.toString().trim().toUpperCase()) != -1) {
-  //           return { id, ...data };
-  //         }
-  //       }))
-  //     );
-  // }
-
-  public getBySearchAndCategory(idStore: string, searchText: string, idProductCategory: string,) {
+  public getBySearchAndCategory(idCategory:string, searchText: string, idProductCategory: string,) {
     if (idProductCategory != '0') {
       if (idProductCategory != '-1') {
-        return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+        return this.angularFirestore.collection(this.collectionName, ref => ref
+          .where('idCategory', '==', idCategory)
           .where('idProductCategory', '==', idProductCategory)
           .where('deleted', '==', false)
           .where('isGift', '==', false)
@@ -119,7 +105,8 @@ export class ProductsService {
             }))
           );
       } else {
-        return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+        return this.angularFirestore.collection(this.collectionName, ref => ref
+          .where('idCategory', '==', idCategory)
           .where('deleted', '==', false)
           .where('isGift', '==', false)
           .where('isFeatured', '==', true)
@@ -136,7 +123,8 @@ export class ProductsService {
           );
       }
     } else {
-      return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+      return this.angularFirestore.collection(this.collectionName, ref => ref
+        .where('idCategory', '==', idCategory)
         .where('deleted', '==', false)
         .where('isGift', '==', false)
         .orderBy('name'))
@@ -153,8 +141,9 @@ export class ProductsService {
     }
   }
 
-  getFeaturedProductsDiscount(idStore: string, top: number) {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+  getFeaturedProductsDiscount(idCategory: string, top: number) {
+    return this.angularFirestore.collection(this.collectionName, ref => ref
+      .where('idCategory', '==', idCategory)
       .where('deleted', '==', false)
       .where('isGift', '==', false)
       .where('soldOut', '==', false)
@@ -171,8 +160,24 @@ export class ProductsService {
       );
   }
 
-  getFeaturedProductsNoDiscount(idStore: string, top: number) {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+  _getFeaturedProducts() {
+    return this.angularFirestore.collection(this.collectionName, ref => ref
+      .where('deleted', '==', false)
+      .where('isGift', '==', false)
+      .where('soldOut', '==', false)
+      .where('isFeatured', '==', true))
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Product;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+
+  getFeaturedProductsNoDiscount(idCategory: string, top: number) {
+    return this.angularFirestore.collection(this.collectionName, ref => ref
+      .where('idCategory', '==', idCategory)
       .where('deleted', '==', false)
       .where('isGift', '==', false)
       .where('soldOut', '==', false)
@@ -190,15 +195,14 @@ export class ProductsService {
       );
   }
 
-  getFeaturedProductsNoFeatured(idStore: string, top: number) {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+  getFeaturedProductsNoFeatured(idCategory: string, top: number): Observable<Product[]> {
+    return this.angularFirestore.collection(this.collectionName, ref => ref
+      .where('idCategory', '==', idCategory)
       .where('deleted', '==', false)
       .where('isGift', '==', false)
       .where('soldOut', '==', false)
       .where('isFeatured', '==', false)
-      .where('discount', '<=', "0")
-      .orderBy('discount')
-      .orderBy('dateCreated', "desc")
+      .orderBy("dateCreated", "desc")
       .limit(top))
       .snapshotChanges().pipe(
         map(actions => actions.map(a => {
@@ -209,8 +213,8 @@ export class ProductsService {
       );
   }
 
-  getGifts(idStore: string, top: number) {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName, ref => ref
+  getGifts(top: number) {
+    return this.angularFirestore.collection(this.collectionName, ref => ref
       .where('deleted', '==', false)
       .where('isGift', '==', true)
       .where('soldOut', '==', false)
@@ -224,8 +228,23 @@ export class ProductsService {
       );
   }
 
-  public getAll(idStore: string): Observable<Product[]> {
-    this.productCollection = this.angularFirestore.collection('stores').doc(idStore).collection<Product>(this.collectionName, ref => ref
+  getFeaturedGifts() {
+    return this.angularFirestore.collection(this.collectionName, ref => ref
+      .where('deleted', '==', false)
+      .where('isGift', '==', true)
+      .where('isFeatured', '==', true)
+      .where('soldOut', '==', false))
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Product;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+
+  public getAll(): Observable<Product[]> {
+    this.productCollection = this.angularFirestore.collection<Product>(this.collectionName, ref => ref
       .where('deleted', '==', false)
       .where('isGift', '==', false)
     );
@@ -239,8 +258,8 @@ export class ProductsService {
     );
   }
 
-  public getProductImages(idStore: string, idProduct: string): Observable<ProductImage[]> {
-    let productImageCollection = this.angularFirestore.collection('stores').doc(idStore)
+  public getProductImages(idProduct: string): Observable<ProductImage[]> {
+    let productImageCollection = this.angularFirestore
       .collection(this.collectionName).doc(idProduct)
       .collection<ProductImage>('images', ref =>
         ref.where('deleted', '==', false).orderBy("dateCreated"));
@@ -259,65 +278,60 @@ export class ProductsService {
     return this.angularFirestore.collection(this.collectionName).doc(id).set(data);
   }
 
-  public update(idStore: string, id: string, data: any) {
-    return this.angularFirestore.collection('stores').doc(idStore).collection(this.collectionName).doc(id).update(data);
+  public update(id: string, data: any) {
+    return this.angularFirestore.collection(this.collectionName).doc(id).update(data);
   }
 
-  public addProductImage(idStore: string, idProduct: string, img: ProductImage): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public addProductImage(idProduct: string, img: ProductImage): Promise<DocumentReference> {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idProduct)
       .collection('images').add(img);
   }
 
-  public updateProductImage(idStore: string, idProduct: string, idImage: string, data: any) {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public updateProductImage(idProduct: string, idImage: string, data: any) {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idProduct)
       .collection('images').doc(idImage).update(data);
   }
 
-  public deleteProductImage(idStore: string, idProduct: string, idImage: string) {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public deleteProductImage(idProduct: string, idImage: string) {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idProduct)
       .collection('images').doc(idImage).delete();
   }
 
   // --------------------- PROPERTIES
 
-  public createProductProperty(idStore: string, idProduct: string, productProperty: ProductProperty): Promise<DocumentReference> {
+  public createProductProperty(idProduct: string, productProperty: ProductProperty): Promise<DocumentReference> {
     return this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties').add(productProperty);
   }
 
-  public updateProductProperty(idStore: string, idProduct: string, idProductProperty: string, data: any) {
+  public updateProductProperty(idProduct: string, idProductProperty: string, data: any) {
     return this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties').doc(idProductProperty).update(data);
   }
 
   // --------------------- PROPERTY OPTIONS
 
-  public createProductPropertyOption(idStore: string, idProduct: string, idProductProperty: string, productPropertyOption: ProductPropertyOption): Promise<DocumentReference> {
+  public createProductPropertyOption(idProduct: string, idProductProperty: string, productPropertyOption: ProductPropertyOption): Promise<DocumentReference> {
     return this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties').doc(idProductProperty)
       .collection('propertyOptions').add(productPropertyOption);
   }
 
-  public updateProductPropertyOption(idStore: string, idProduct: string, idProductProperty: string, idProductPropertyOption: string, data: any) {
+  public updateProductPropertyOption(idProduct: string, idProductProperty: string, idProductPropertyOption: string, data: any) {
     return this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties').doc(idProductProperty)
       .collection('propertyOptions').doc(idProductPropertyOption).update(data);
   }
 
-  public getAllProductProperties(idStore: string, idProduct: string): Observable<ProductProperty[]> {
+  public getAllProductProperties(idProduct: string): Observable<ProductProperty[]> {
     let productProperties = this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties', ref => ref
         .where('deleted', '==', false)
@@ -333,9 +347,8 @@ export class ProductsService {
     );
   }
 
-  public getAllProductPropertiesUserSelectable(idStore: string, idProduct: string): Observable<ProductProperty[]> {
+  public getAllProductPropertiesUserSelectable(idProduct: string): Observable<ProductProperty[]> {
     let productProperties = this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties', ref => ref
         .where('userSelectable', '==', true)
@@ -354,9 +367,8 @@ export class ProductsService {
 
   // --------------------- INVENTORY
 
-  public getAllProductPropertyOptions(idStore: string, idProduct: string, idProductProperty: string): Observable<ProductPropertyOption[]> {
+  public getAllProductPropertyOptions(idProduct: string, idProductProperty: string): Observable<ProductPropertyOption[]> {
     let productPropertyOptions = this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('properties').doc(idProductProperty)
       .collection('propertyOptions', ref => ref
@@ -373,22 +385,21 @@ export class ProductsService {
     );
   }
 
-  public updateCartInventory(idStore: string, idProduct: string, idInventory: string, data: any) {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public updateCartInventory(idProduct: string, idInventory: string, data: any) {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idProduct)
       .collection('inventory').doc(idInventory).update(data);
   }
 
-  public addCartInventory(idStore: string, idProduct: string, cartProduct: CartProduct): Promise<DocumentReference> {
-    return this.angularFirestore.collection('stores').doc(idStore)
+  public addCartInventory(idProduct: string, cartProduct: CartProduct): Promise<DocumentReference> {
+    return this.angularFirestore
       .collection(this.collectionName).doc(idProduct)
       .collection('inventory').add(cartProduct);
   }
 
-  public getCartInventory(idStore: string, idProduct: string): Observable<CartProduct[]> {
+  public getCartInventory(idProduct: string): Observable<CartProduct[]> {
 
     let cartInventoryCollection = this.angularFirestore
-      .collection('stores').doc(idStore)
       .collection(this.collectionName).doc(idProduct)
       .collection('inventory', ref => ref
         .where('deleted', '==', false).orderBy("quantity"))
@@ -403,10 +414,10 @@ export class ProductsService {
     );
   }
 
-  public deleteCartInventory(idStore: string, idProduct: string) {
-    let subs = this.getCartInventory(idStore, idProduct).subscribe((cartProduct) => {
+  public deleteCartInventory(idProduct: string) {
+    let subs = this.getCartInventory(idProduct).subscribe((cartProduct) => {
       cartProduct.forEach(cart => {
-        return this.angularFirestore.collection('stores').doc(idStore)
+        return this.angularFirestore
           .collection(this.collectionName).doc(idProduct)
           .collection('inventory').doc(cart.id).delete();
       });

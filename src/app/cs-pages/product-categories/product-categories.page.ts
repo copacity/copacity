@@ -15,14 +15,14 @@ import { ProductCategoriesCreatePage } from '../product-categories-create/produc
 export class ProductCategoriesPage implements OnInit {
   categoryName = new FormControl('', [Validators.required]);
 
-  productCategories: Observable<ProductCategory[]>;
+  subCategories: Observable<ProductCategory[]>;
 
   constructor(private popoverCtrl: PopoverController,
     public alertController: AlertController,
     private productCategoriesService: ProductCategoriesService,
     private appService: AppService) {
-     
-    this.productCategories = this.productCategoriesService.getAll(this.appService.currentStore.id)
+
+    this.subCategories = this.productCategoriesService.getAll(this.appService.currentCategory.id)
   }
 
   ngOnInit() {
@@ -74,7 +74,7 @@ export class ProductCategoriesPage implements OnInit {
   async presentDeleteProductCategoryPrompt(productCategory: ProductCategory) {
      
     this.presentConfirm('Esta seguro que desea eliminar la sección: ' + productCategory.name + '?', () => {
-      this.productCategoriesService.update(this.appService.currentStore.id, productCategory.id, { deleted: true }).then(() => {
+      this.productCategoriesService.update(this.appService.currentCategory.id, productCategory.id, { deleted: true }).then(() => {
         this.presentAlert("Sección eliminada exitosamente!", '', () => { });
       });
     });

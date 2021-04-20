@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import { Store, Product, User } from 'src/app/app-intefaces';
+import { User } from 'src/app/app-intefaces';
 import { LoaderComponent } from '../loader/loader.component';
-import { StoreStatus } from 'src/app/app-enums';
 import { StoresService } from 'src/app/cs-services/stores.service';
-import { ActivatedRoute } from '@angular/router';
 import { BarcodeGeneratorComponent } from '../barcode-generator/barcode-generator.component';
 import { AppService } from 'src/app/cs-services/app.service';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';

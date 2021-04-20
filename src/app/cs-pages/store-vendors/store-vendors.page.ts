@@ -55,7 +55,7 @@ export class StoreVendorsPage implements OnInit {
       this.loaderComponent.startLoading("Cargando...");
     this.usersService.getById(this.navParams.data.idUser).then((user: User) => {
       this.user = user;
-      let subs = this.storesService.getVendorsByIdUser(this.appService.currentStore.id, user.id).subscribe(result => {
+      let subs = this.storesService.getVendorsByIdUser(user.id).subscribe(result => {
         result.forEach(vendor => {
           this.vendor = vendor;
 
@@ -100,7 +100,7 @@ export class StoreVendorsPage implements OnInit {
   }
 
   async openOrderDetailPage(orderDetail: any) {
-    this.router.navigate(['order-detail/' + orderDetail.idOrder + "&" + this.appService.currentStore.id]);
+    this.router.navigate(['order-detail/' + orderDetail.idOrder]);
 
     // let modal = await this.popoverController.create({
     //   component: OrderDetailPage,
@@ -170,13 +170,13 @@ export class StoreVendorsPage implements OnInit {
     this.loaderComponent.startLoading("Enviando Solicitud para revisión. Gracias");
 
     if (this.vendor.id) {
-      this.storesService.updateVendor(this.appService.currentStore.id, this.vendor.id, { status: VendorStatus.Pending }).then(doc => {
+      this.storesService.updateVendor(this.vendor.id, { status: VendorStatus.Pending }).then(doc => {
         this.vendor.status = VendorStatus.Pending;
         this.loaderComponent.stopLoading();
         this.presentAlert("Solicitud enviada exitosamente.", "", () => { });
       });
     } else {
-      this.storesService.createVendor(this.appService.currentStore.id, this.vendor).then(doc => {
+      this.storesService.createVendor(this.vendor).then(doc => {
         this.vendor.id = doc.id;
         this.loaderComponent.stopLoading();
         this.presentAlert("Solicitud enviada exitosamente.", "", () => { });
@@ -192,7 +192,7 @@ export class StoreVendorsPage implements OnInit {
     let endDate = new Date(month.getFullYear().toString() + '/' + endMonth + '/01');
 
     return new Promise((resolve, reject) => {
-      let subs = this.orderService.getByDateRangeAndIdVendor(this.appService.currentStore.id, this.vendor.idUser, startDate, endDate
+      let subs = this.orderService.getByDateRangeAndIdVendor(this.vendor.idUser, startDate, endDate
       ).subscribe(result => {
         let orderCaculatePromises = [];
 
@@ -219,8 +219,8 @@ export class StoreVendorsPage implements OnInit {
 
   getOrderTotal(order: Order) {
     return new Promise((resolve, reject) => {
-      let subs = this.orderService.getCartProducts(this.appService.currentStore.id, order.id).subscribe(cartProducts => {
-        let subs2 = this.orderService.getOrderCoupons(this.appService.currentStore.id, order.id).subscribe(orderCoupons => {
+      let subs = this.orderService.getCartProducts(order.id).subscribe(cartProducts => {
+        let subs2 = this.orderService.getOrderCoupons(order.id).subscribe(orderCoupons => {
 
           let coupon: StoreCoupon;
           orderCoupons.forEach(_coupon => {

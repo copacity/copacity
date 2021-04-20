@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Order, Store } from 'src/app/app-intefaces';
+import { Order, Category } from 'src/app/app-intefaces';
 import { Observable } from 'rxjs';
 import { AppService } from 'src/app/cs-services/app.service';
 import { AlertController, ToastController, PopoverController } from '@ionic/angular';
@@ -36,8 +36,6 @@ export class OrderListPage implements OnInit {
   orderSearchText: string = '';
 
   orders: Observable<Order[]>;
-  stores: Array<Store> = [];
-  store: Store;
   isAdmin: boolean = false;
 
   constructor(
@@ -64,13 +62,13 @@ export class OrderListPage implements OnInit {
 
   ngOnInit() { }
 
-  getStores() {
-    this.storesService.getAll('').then(stores => {
-      stores.forEach((store: Store) => {
-        this.stores.push(store);
-      });
-    });
-  }
+  // getStores() {
+  //   this.storesService.getAll('').then(stores => {
+  //     stores.forEach((store: Store) => {
+  //       this.stores.push(store);
+  //     });
+  //   });
+  // }
 
   getOrders() {
     this.orders = null;

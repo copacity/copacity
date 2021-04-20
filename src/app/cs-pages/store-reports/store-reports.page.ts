@@ -36,7 +36,7 @@ export class StoreReportsPage implements OnInit {
     public appService: AppService,
   ) {
 
-    let storeCreated: any = this.appService.currentStore.dateCreated;
+    let storeCreated: any = this.appService.currentCategory.dateCreated;
     storeCreated = storeCreated.toDate();
 
     // min date
@@ -77,7 +77,7 @@ export class StoreReportsPage implements OnInit {
     let endDate = new Date(month.getFullYear().toString() + '/' + endMonth + '/01');
 
     return new Promise((resolve, reject) => {
-      let subs = this.orderService.getByDateRange(this.appService.currentStore.id, startDate, endDate
+      let subs = this.orderService.getByDateRange(startDate, endDate
       ).subscribe(result => {
 
         let orderCaculatePromises = [];
@@ -104,7 +104,7 @@ export class StoreReportsPage implements OnInit {
   }
 
   async openOrderDetailPage(orderDetail: any) {
-    this.router.navigate(['order-detail/' + orderDetail.idOrder + "&" + this.appService.currentStore.id]);
+    this.router.navigate(['order-detail/' + orderDetail.idOrder]);
     this.popoverController.dismiss();
 
     // let modal = await this.popoverController.create({
@@ -123,8 +123,8 @@ export class StoreReportsPage implements OnInit {
 
   getOrderTotal(order: Order) {
     return new Promise((resolve, reject) => {
-      let subs = this.orderService.getCartProducts(this.appService.currentStore.id, order.id).subscribe(cartProducts => {
-        let subs2 = this.orderService.getOrderCoupons(this.appService.currentStore.id, order.id).subscribe(orderCoupons => {
+      let subs = this.orderService.getCartProducts(order.id).subscribe(cartProducts => {
+        let subs2 = this.orderService.getOrderCoupons(order.id).subscribe(orderCoupons => {
 
           let coupon: StoreCoupon;
           orderCoupons.forEach(_coupon => {

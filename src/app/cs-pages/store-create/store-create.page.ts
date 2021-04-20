@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
-import { Observable } from 'rxjs';
-import { StoreCategory, Store, PlatformFee } from 'src/app/app-intefaces';
+import { StoreCategory, Category, PlatformFee } from 'src/app/app-intefaces';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms'
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
@@ -31,8 +30,6 @@ export class StoreCreatePage implements OnInit {
   ) {
 
     this.buildForm();
-    //this.storeCategories = this.appService.storeCategories;
-    //this.sectors = this.appService.sectors;
   }
 
   ngOnInit() {
@@ -63,13 +60,6 @@ export class StoreCreatePage implements OnInit {
 
     this.form = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
-      // category: ['', [Validators.required]],
-      // phone1: ['', [Validators.required, Validators.max(999999999999999)]],
-      // phone2: ['', [Validators.max(999999999999999)]],
-      // whatsapp: ['', [Validators.max(999999999999999)]],
-      // facebook: ['', [Validators.maxLength(250)]],
-      // instagram: ['', [Validators.maxLength(250)]],
-      // address: ['', [Validators.maxLength(250)]],
       description: ['', [Validators.maxLength(500)]]
     });
   }
@@ -87,37 +77,17 @@ export class StoreCreatePage implements OnInit {
 
       setTimeout(() => {
 
-        let newStore: Store =
+        let newStore: Category =
         {
           id: '',
-          idUser: this.appService.currentUser.id,
-          address: '',
           deleted: false,
           logo: '',
           thumb_logo: '',
-          phone1: 0,
-          phone2: 0,
-          whatsapp: 0,
-          facebook: '',
-          instagram: '',
           lastUpdated: new Date(),
           dateCreated: new Date(),
           name: this.form.value.name,
-          idSector: '',
-          idStoreCategory: '',
           description: this.form.value.description,
           status: StoreStatus.Published,
-          visits: 0,
-          deliveryPrice: 0,
-          orderMinAmount: 0,
-          productsCount: 0,
-          productsLimit: 0,
-          couponsLimit: 0,
-          vendorsLimit: 0,
-          returnsPolicyTemplate:'',
-          video1: '',
-          video2: '',
-          video3: '',
         }
 
         this.storesService.create(newStore).then(async (doc) => {
@@ -132,12 +102,12 @@ export class StoreCreatePage implements OnInit {
             commissionForSale: 10
           };
 
-          this.storesService.createPlatformFess(doc.id, platformFee).then(async () => {
+          this.storesService.createPlatformFess(platformFee).then(async () => {
             this.storesService.update(doc.id, { id: doc.id }).then(() => {
               this.usersService.update(this.appService.currentUser.id, { isAdmin: true }).then(() => {
                 this.loader.stopLoading();
                 this.presentAlert("Tienda creada exitosamente", () => {
-                  this.appService._userStoreId = doc.id;
+                  //this.appService._userStoreId = doc.id;
                   this.appService.currentUser.isAdmin = true;
                   this.popoverCtrl.dismiss(doc.id);
                 });

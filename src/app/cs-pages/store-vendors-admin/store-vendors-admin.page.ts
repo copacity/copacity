@@ -34,7 +34,7 @@ export class StoreVendorsAdminPage implements OnInit {
     this.vendorsSearchHits = 0;
     this.searchingVendors = true;
 
-    let subs = this.storesService.getVendors(this.appService.currentStore.id).subscribe(result => {
+    let subs = this.storesService.getVendors().subscribe(result => {
 
       let vendorPromises = [];
       result.forEach(vendor => {
@@ -58,7 +58,7 @@ export class StoreVendorsAdminPage implements OnInit {
 
   async presentDeleteVendorPrompt(vendor: any) {
     this.presentConfirm('Esta seguro que desea rechazar el vendedor: ' + vendor.user.name + '?', () => {
-      this.storesService.updateVendor(this.appService.currentStore.id, vendor.vendor.id, { status: VendorStatus.Cancelled }).then(() => {
+      this.storesService.updateVendor(vendor.vendor.id, { status: VendorStatus.Cancelled }).then(() => {
         this.presentAlert("Vendedor rechazado exitosamente!", '', () => { });
         this.getVendors();
       });
@@ -73,7 +73,7 @@ export class StoreVendorsAdminPage implements OnInit {
       }
     });
 
-    if (count < this.appService.currentStore.vendorsLimit) {
+    if (count < this.appService._appInfo.vendorsLimit) {
       this.openVendorUpdateDetails(vendor);
     } else {
       this.presentAlert("Has llegado al limite máximo de vendedores en tu tienda, Si necesitas confirmar mas vendedores, comunicate con el administrador de CopaCity para incrementar la capacidad. Gracias.", "", () => { })

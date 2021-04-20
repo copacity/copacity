@@ -35,7 +35,6 @@ export class StorePointsPage implements OnInit {
     public alertController: AlertController,
     public cartInventoryService: CartInventoryService,
     public navParams: NavParams,
-    private storesService: StoresService,
     private productsService: ProductsService) {
     this.cartService = this.cartManagerService.getCartService();
     this.isAdmin = this.navParams.data.isAdmin;
@@ -49,9 +48,9 @@ export class StorePointsPage implements OnInit {
 
   async presentDeleteProductPrompt(product: Product) {
     this.presentConfirm('Esta seguro que desea eliminar el regalo: ' + product.name + '?', () => {
-      this.productsService.update(this.appService.currentStore.id, product.id, { deleted: true }).then(() => {
-        this.appService.currentStore.productsCount = this.appService.currentStore.productsCount - 1
-        this.storesService.update(this.appService.currentStore.id, { productsCount: this.appService.currentStore.productsCount }).then(() => {
+      this.productsService.update(product.id, { deleted: true }).then(() => {
+        this.appService._appInfo.productsCount = this.appService._appInfo.productsCount - 1
+        this.appService.updateAppInfo().then(() => {
           this.presentAlert("Regalo eliminado exitosamente!", '', () => { });
         });
       });
@@ -80,7 +79,7 @@ export class StorePointsPage implements OnInit {
     } else {
       let images: string[] = [];
 
-      let result = this.productsService.getProductImages(this.appService.currentStore.id, product.id);
+      let result = this.productsService.getProductImages(product.id);
 
       let subs = result.subscribe(async (productImages: ProductImage[]) => {
         productImages.forEach(img => {
@@ -105,7 +104,7 @@ export class StorePointsPage implements OnInit {
   }
 
   productSoldOut(e: any, product: Product) {
-    this.productsService.update(this.appService.currentStore.id, product.id, { soldOut: !e.detail.checked });
+    this.productsService.update(product.id, { soldOut: !e.detail.checked });
   }
 
   GetPoints() {
@@ -114,7 +113,7 @@ export class StorePointsPage implements OnInit {
 
         let currentStorePoint: StorePoint = {
           id: '',
-          idStore: this.appService.currentStore.id,
+          idStore: '',
           points: 0,
           deleted: false,
           dateCreated: new Date(),
@@ -122,9 +121,9 @@ export class StorePointsPage implements OnInit {
         };
 
         StorePoints.forEach(storePoint => {
-          if (storePoint.idStore === this.appService.currentStore.id) {
+          //if (storePoint.idStore === this.appService.currentStore.id) {
             currentStorePoint = storePoint
-          }
+          //}
         });
 
         this.points = currentStorePoint.points - this.cartService.getPoints();
@@ -179,13 +178,13 @@ export class StorePointsPage implements OnInit {
     if (!product.soldOut) {
 
       this.cartInventoryService.clearCart();
-      let subs = this.productsService.getCartInventory(this.appService.currentStore.id, product.id)
+      let subs = this.productsService.getCartInventory(product.id)
         .subscribe((cartP) => {
-          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(this.appService.currentStore.id, product.id);
+          let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(product.id);
 
           let subscribe = productPropertiesResult.subscribe(async productProperties => {
             productProperties.forEach(productProperty => {
-              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(this.appService.currentStore.id, product.id, productProperty.id);
+              let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(product.id, productProperty.id);
               let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
                 productProperty.productPropertyOptions = productPropertyOptions;
                 subscribe2.unsubscribe();
@@ -199,7 +198,7 @@ export class StorePointsPage implements OnInit {
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
               event: e,
-              componentProps: { store: this.appService.currentStore, isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: parseInt((this.points / product.price).toString()) }
+              componentProps: { isInventory: false, product: product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: parseInt((this.points / product.price).toString()) }
             });
 
             modal.onDidDismiss()
@@ -243,7 +242,7 @@ export class StorePointsPage implements OnInit {
     this.productSearchHits = 0;
 
     setTimeout(() => {
-      this.products = this.productsService.getByProductGift(this.appService.currentStore.id);
+      this.products = this.productsService.getByProductGift();
 
       this.products.subscribe((products) => {
         this.searchingProducts = false;
@@ -254,6 +253,11 @@ export class StorePointsPage implements OnInit {
         });
       });
     }, 500);
+  }
+
+  productFeatured(e: any, product: Product) {
+    console.log(e.detail.checked);
+    this.productsService.update(product.id, { isFeatured: e.detail.checked });
   }
 
   async openProductCreatePage() {

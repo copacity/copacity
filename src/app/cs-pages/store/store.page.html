@@ -136,9 +136,9 @@
         </ion-refresher>
 
         <div class="profile-2">
-          <img (click)="openImageViewer(store?.logo?store?.logo:'../../../assets/icon/no-image.png')"
+          <img (click)="openImageViewer(category?.logo?category?.logo:'../../../assets/icon/no-image.png')"
             style="width: 150px;margin: 5px auto 0px auto;" class="profile-image preload-image"
-            [src]="store?.thumb_logo?store?.thumb_logo:'../../../assets/icon/no-image.png'" alt="img">
+            [src]="category?.thumb_logo?category?.thumb_logo:'../../../assets/icon/no-image.png'" alt="img">
 
           <div *ngIf="isAdmin" class="under-slider-button" style="top: 25px;">
             <div class="cta-socials" style="text-align: center;">
@@ -158,7 +158,7 @@
 
             <a (click)="shareStore($event)"
               style="background-color: white; color: black;border-radius:15px;text-align: center;margin-bottom: 0px;"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">{{store?.name}}
+              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">{{category?.name}}
             </a>
 
             <!-- <a (click)="openBarCodeScanner()"
@@ -338,8 +338,12 @@
               </ion-slide>
             </ion-slides> -->
 
+            <p class="center-text font-13 under-heading top-10" style="margin-bottom: 10px;">
+              {{category?.description}}
+            </p>
+
             <div class="bottom-0">
-              <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 20px;">
+              <div *ngIf="isAdmin" style="margin: 0px 15px 0px 15px;padding-top: 5px;">
                 <div class="one-half">
                   <a (click)="openProductCreatePage()" class="button button-round-small button-full"
                     style="color: white;background-color: red;font-size: 12px;margin-bottom: 0px;">+ Producto</a>
@@ -356,11 +360,8 @@
 
             <div class="content gallery-view-controls" style="padding-top: 10px;padding-left: 10px;">
 
-              <p class="center-text font-13 under-heading" style="margin-bottom: 10px;">
-                {{store?.description}}
-              </p>
-
-              <a (click)="openSelectCategories()" class="bold top-10 font-12" style="text-align: left;width: 110px;"><i class="fas fas fa-filter" style="font-size: 1.5em;color: red;padding-right: 5px;"></i> Mostrando:</a>
+              <a (click)="openSelectCategories()" class="bold top-10 font-12" style="text-align: left;width: 110px;"><i
+                  class="fas fas fa-filter" style="font-size: 1.5em;color: red;padding-right: 5px;"></i> Mostrando:</a>
 
               <div class="chip top-15">
                 <div class="chip-content" style="padding-right: 0px;padding-left: 18px;">{{selectedCategoryName}}</div>
@@ -379,7 +380,7 @@
                   <ion-select #selectCategories style="padding-right: 10px;font-size: .8em;" mode="ios"
                     cancelText="Cancelar" value="{{ idProductCategory }}" okText="Okay!" interface='action-sheet'
                     (ionChange)="productCategory_OnChange($event)">
-                    <ion-select-option value="0">Todas                                             </ion-select-option>
+                    <ion-select-option value="0">Todas </ion-select-option>
                     <!-- <ion-select-option value="-1">Destacados</ion-select-option> -->
                     <ion-select-option *ngFor="let productCategory of productCategories | async;"
                       value="{{productCategory.id}}">{{productCategory.name}}</ion-select-option>
@@ -431,7 +432,8 @@
                       <span *ngIf="product?.discount && product?.discount > 0"
                         style="color:black;padding: 0px 0px 0px 0px;background-color: yellow;color: black;font-weight: bold;"
                         class="{{(product?.soldOut)?'sold-out':'' }} font-18">
-                        {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}
+                        {{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' :
+                        '1.0-0' }}
                       </span>
                     </em>
 
@@ -490,7 +492,8 @@
                         <td style="padding-bottom: 20px;">
                           <strong style="height: 35px;padding-top: 10px;"
                             class="strong-store {{(product?.soldOut)?'sold-out':'' }}">
-                            {{((product?.name.length<=30)?product?.name:product?.name.substring(0, 30) + '...')}}</strong>
+                            {{((product?.name.length<=30)?product?.name:product?.name.substring(0, 30) + '...'
+                              )}}</strong>
                         </td>
                       </tr>
                       <tr *ngIf="!isAdmin">
@@ -540,13 +543,13 @@
   style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
     style="top: -5px;padding-left: 5px;padding-right: 5px;">
-    {{ appService?.temporalCoupon?.store?.name }}
+    {{ appService?.temporalCoupon?.name }}
   </h6>
 
   <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
     style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
-    un cupón con <b>{{ appService?.temporalCoupon?.storeCoupon?.discount }}%</b> de descuento para compras mayores a
-    <b>{{ appService?.temporalCoupon?.storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
+    un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
+    <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
   </h6>
 
   <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">
