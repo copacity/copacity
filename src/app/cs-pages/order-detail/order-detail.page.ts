@@ -416,7 +416,7 @@ export class OrderDetailPage implements OnInit {
       status: NotificationStatus.Created,
       idUser: this.appService.currentUser.id,
       photoUrl: this.appService._appInfo.logo,
-      userName: this.appService._appInfo.name1 + this.appService._appInfo.name1,
+      userName: this.appService._appInfo.name1 + this.appService._appInfo.name2,
       idOrder: '',
       idUserNotification: this.order.idUser
     }

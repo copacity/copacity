@@ -169,7 +169,7 @@
           </ion-slide>
         </ion-slides>
 
-        <div class="profile-1 bottom-80 {{featuredProductsDiscount.length == 0?'top-30':'top-15'}}" style="z-index: 9;">
+        <div class="profile-1 bottom-80 {{(_featuredProductsDiscount |async)?.length == 0?'top-30':'top-15'}}" style="z-index: 9;">
           <div class="profile-body" style="margin: 0px 5px;padding: 0px 5px;">
             <a (click)="shareApp($event)" style="background-color: white; color: black;border-radius:10px;"
               class="profile-button shadow-small button button-m button-round uppercase bolder button-center-medium">{{appService?._appInfo?.homeTitle}}</a>
@@ -225,7 +225,7 @@
                   <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Categorias</h4>
                 </div>
 
-                <ion-slides *ngIf="searchingStores" [options]="appService.slideOptsStores" style="max-width: 450px;"
+                <ion-slides *ngIf="searchingCategories" [options]="appService.slideOptsStores" style="max-width: 450px;"
                   style="padding-bottom: 20px;">
                   <ion-slide *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]"
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
@@ -236,13 +236,13 @@
                   </ion-slide>
                 </ion-slides>
 
-                <div *ngIf="(_categoriesFiltered | async)?.length == 0" class="boxed-text-huge"
+                <div *ngIf="(_categoriesFiltered | async)?.length == 0 && !searchingCategories" class="boxed-text-huge"
                   style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
                 <ion-slides id="sliderHomeStores" #sliderHomeStores
-                  *ngIf="(_categoriesFiltered | async)?.length != 0" [options]="appService.slideOptsStores">
+                  [options]="appService.slideOptsStores">
                   <ion-slide *ngFor="let store of _categoriesFiltered | async"
                     style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
                     <div class="blog-col-item" style="margin-bottom: 0px">
@@ -282,13 +282,13 @@
                 </ion-slides>
 
                 <div
-                  *ngIf="(_featuredProductsNoDiscount | async)?.length == 0"
+                  *ngIf="(_featuredProductsNoDiscount | async)?.length == 0 && !searchingProductsNoDiscount"
                   class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
-                <ion-slides id="sliderHomeProductsNoDiscount" #sliderHomeProductsNoDiscount
-                  *ngIf="!searchingProductsNoDiscount" [options]="appService.slideOptsProductsNoDiscount">
+                <ion-slides id="sliderHomeProductsNoDiscount" #sliderHomeProductsNoDiscount 
+                [options]="appService.slideOptsProductsNoDiscount">
                   <ion-slide *ngFor="let featuredProductNoDiscount of _featuredProductsNoDiscount | async;"
                     style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
                     <div class="profile-2">
@@ -346,7 +346,7 @@
                 </ion-slides>
 
                 <div
-                  *ngIf="(_categories | async)?.length == 0"
+                  *ngIf="(_categories | async)?.length == 0 && !searchingProductsNoFeatured"
                   class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
@@ -374,7 +374,7 @@
                             <div class="clear"></div>
                           </a>
 
-                          <a (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?category.thumb_logo:'../../../assets/icon/no-image.png')"
+                          <a (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png')"
                             style="padding-top: 10px;font-size: .7em;">Ver mas...</a>
                         </div>
                       </div>
@@ -408,7 +408,7 @@
                   </ion-slide>
                 </ion-slides>
 
-                <div *ngIf="(_coupons | async)?.length == 0"
+                <div *ngIf="(_coupons | async)?.length == 0 && !searchingStoreCoupons"
                   class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
@@ -488,15 +488,14 @@
                   </ion-slide>
                 </ion-slides>
 
-                <div *ngIf="(_gifts | async)?.length == 0" class="boxed-text-huge"
+                <div *ngIf="(_gifts | async)?.length == 0 && !searchingGifts" class="boxed-text-huge"
                   style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
                   <h4 style="font-size: small;">No se encontraron resultados</h4>
                 </div>
 
                 <ion-slides id="sliderHomeGifts" #sliderHomeGifts *ngIf="!searchingGifts"
                   [options]="appService.slideOptsGifts">
-                  <ion-slide
-                    (click)="goToPage('/product-detail/' + gift.id, gift?.image?gift?.image:'../../../assets/icon/no-image.png', 4)"
+                  <ion-slide (click)="goToPage('/product-detail/' + gift.id, gift?.image?gift?.image:'../../../assets/icon/no-image.png')"
                     *ngFor="let gift of _gifts | async" style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
                     <div class="profile-2">
                       <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
@@ -632,7 +631,7 @@
                   </table>
                 </a>
               </ion-slide>
-              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)"
+              <!-- <ion-slide *ngIf="appService.currentUser && appService.currentUser?.isAdmin"
                 (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
@@ -649,8 +648,8 @@
                     </tr>
                   </table>
                 </a>
-              </ion-slide>
-              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)"
+              </ion-slide> -->
+              <!-- <ion-slide *ngIf="appService.currentUser && appService.currentUser?.isAdmin"
                 (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
                 <a class="button button-round-small button-full"
                   style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
@@ -667,7 +666,7 @@
                     </tr>
                   </table>
                 </a>
-              </ion-slide>
+              </ion-slide> -->
             </ion-slides>
 
 

@@ -480,26 +480,6 @@ export class StorePage implements OnInit {
     modal.present();
   }
 
-  async openStoreBillingPage(event) {
-
-    let modal = await this.popoverController.create({
-      component: StoreBillingPage,
-      cssClass: 'cs-popovers',
-      backdropDismiss: false
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        const result = data['data'];
-
-        if (result) {
-          this.category = result;
-        }
-      });
-
-    modal.present();
-  }
-
   shareStore(e) {
 
     if (this.category.status == StoreStatus.Published) {
@@ -1085,25 +1065,6 @@ export class StorePage implements OnInit {
       });
 
     modal.present();
-  }
-
-  async openStoreReportsPage() {
-    if (this.appService.currentUser) {
-      let modal = await this.popoverController.create({
-        component: StoreReportsPage,
-        cssClass: 'cs-popovers',
-        backdropDismiss: false,
-      });
-
-      modal.onDidDismiss()
-        .then((data) => {
-          const result = data['data'];
-        });
-
-      modal.present();
-    } else {
-      this.SignIn();
-    }
   }
 
   async openStoreCouponsPage() {

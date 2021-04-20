@@ -37,20 +37,20 @@ export class SearchPage {
     this.searchService.searching = true;
 
     if (this.searchService.searchText) {
-      this.storesService.getAll("").then(stores => {
-        stores.forEach((category: Category) => {
+      //this.storesService.getAll("").then(stores => {
+        //stores.forEach((category: Category) => {
           let subs = this.productsService.getAll().subscribe(products => {
             products.forEach((product: Product) => {
               if (this.removeAccents(product.name).toUpperCase().indexOf(this.removeAccents(this.searchService.searchText).toUpperCase()) != -1 || this.searchInText(product.name.split(" "), this.searchService.searchText)) {
-                this.searchService.products.push({ product: product, idCategory: category.id, storeName: category.name });
+                this.searchService.products.push(product);
               }
 
               this.searchService.searching = false;
               subs.unsubscribe();
             });
           });
-        });
-      });
+        //});
+      //});
     } else {
       this.searchService.searching = false;
     }
@@ -71,7 +71,7 @@ export class SearchPage {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
-  async openImageViewer(product: Product, storeId: string) {
+  async openImageViewer(product: Product) {
     let images: string[] = [];
 
     let result = this.productsService.getProductImages(product.id);

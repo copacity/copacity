@@ -306,7 +306,7 @@
                   </td>
                   <td style="vertical-align: top; text-align: right;background-color: yellow;">
                     <span style="color: black;">
-                      -{{ ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0)  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                      -{{ ((storeCoupon)?(cartService.getTotalDetail(0) * (storeCoupon.discount/100)):0)  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
               </table>
@@ -328,7 +328,7 @@
 
                   <td style="text-align: right; padding-right: 10px;padding: 3px 0px 3px 0px;">
                     <span
-                      class="color-highlight">{{ cartService.getDiscountDetail() + ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0)  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                      class="color-highlight">{{ cartService.getDiscountDetail() + ((storeCoupon)?(cartService.getTotalDetail(0) * (storeCoupon.discount/100)):0)  | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
                 <tr>
@@ -337,7 +337,7 @@
                   </td>
 
                   <td style="text-align: right; padding-right: 5px;padding: 3px 0px 3px 0px;padding: 3px 0px 3px 0px;">
-                    <span>{{ ((cartService.getTotalDetail(store?.deliveryPrice) - ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0)) * (appService._appInfo?.tax/100 )) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                    <span>{{ ((cartService.getTotalDetail(0) - ((storeCoupon)?(cartService.getTotalDetail(0) * (storeCoupon.discount/100)):0)) * (appService._appInfo?.tax/100 )) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
                 <tr>
@@ -352,7 +352,7 @@
 
                   <td style="text-align: right; padding-right: 5px;padding: 5px 0px 3px 0px;">
                     <span style="font-size: 18px;color: black;"
-                      class="uppercase bold">{{(cartService.getTotalDetail(store?.deliveryPrice)) + ((shippingMethod?shippingMethod.price:0)) - ((storeCoupon)?(cartService.getTotalDetail(store?.deliveryPrice) * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+                      class="uppercase bold">{{(cartService.getTotalDetail(0)) + ((shippingMethod?shippingMethod.price:0)) - ((storeCoupon)?(cartService.getTotalDetail(0) * (storeCoupon.discount/100)):0) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
                   </td>
                 </tr>
               </table>

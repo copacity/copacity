@@ -7,13 +7,13 @@ import { AppService } from '../cs-services/app.service';
 export class SectorNamePipe implements PipeTransform {
   constructor(private appService: AppService) { }
 
-  transform(idSector: string): string {
+  transform(idCategory: string): string {
     let sectorName: string ='';
-    // this.appService._sectors.forEach(sector => {
-    //   if (sector.id == idSector) {
-    //     sectorName = sector.name;
-    //   }
-    // });
+    this.appService._categories.forEach(category => {
+      if (category.id == idCategory) {
+        sectorName = category.name;
+      }
+    });
 
     return sectorName;
   }

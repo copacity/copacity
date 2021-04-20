@@ -136,6 +136,9 @@
         </ion-refresher>
 
         <div class="profile-2">
+          <div [ngStyle]="{'background-image': 'url(' + category?.logo + ')', 'position': 'fixed', 'width': '100%','top': '-1px','height': '200px', 'filter': 'blur(6px)'}">
+          </div>
+          
           <img (click)="openImageViewer(category?.logo?category?.logo:'../../../assets/icon/no-image.png')"
             style="width: 150px;margin: 5px auto 0px auto;" class="profile-image preload-image"
             [src]="category?.thumb_logo?category?.thumb_logo:'../../../assets/icon/no-image.png'" alt="img">
@@ -163,13 +166,13 @@
 
             <!-- <a (click)="openBarCodeScanner()"
               style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
-              <i class="fa fa-qrcode"></i>&nbsp;QR</a>
+              <i class="fa fa-qrcode"></i>&nbsp;QR</a> -->
+
 
             <a *ngIf="!isAdmin" (click)="openSelectCategories()"
               style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
-              <i class="fas fa-filter"></i>&nbsp;Filtro
-            </a> -->
-
+              <i class="fas fa-filter"></i>
+            </a>
             <a *ngIf="isAdmin" (click)="openStoreUpdatePage()"
               style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
               <i class="fa fa-edit"></i></a>
@@ -179,164 +182,6 @@
               <i class="fa fa-info-circle"></i></a> -->
 
             <div class="top-10"></div>
-
-            <!-- <ion-slides id="sliderMenu" #sliderMenu [options]="appService.slideOptsStoreMenu">
-              <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-info-circle" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Info</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="searchFeaturedProducts()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-star" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Destacados</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStorePointsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-gift" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Regalos</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: dotted;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-cut" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Cupones</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStoreOrdersPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-clipboard-list" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Pedidos</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStoreVendorsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-handshake" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Comisiones</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStorePQRSFPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">PQRSF</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)"
-                (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-file-invoice-dollar" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Factura</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide *ngIf="isAdmin || (appService.currentUser && appService.currentUser?.isSuperUser)"
-                (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Reportes</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-            </ion-slides> -->
 
             <p class="center-text font-13 under-heading top-10" style="margin-bottom: 10px;">
               {{category?.description}}
@@ -361,7 +206,7 @@
             <div class="content gallery-view-controls" style="padding-top: 10px;padding-left: 10px;">
 
               <a (click)="openSelectCategories()" class="bold top-10 font-12" style="text-align: left;width: 110px;"><i
-                  class="fas fas fa-filter" style="font-size: 1.5em;color: red;padding-right: 5px;"></i> Mostrando:</a>
+                  class="fas fas fa-list" style="font-size: 1.5em;color: red;padding-right: 5px;"></i> Mostrando:</a>
 
               <div class="chip top-15">
                 <div class="chip-content" style="padding-right: 0px;padding-left: 18px;">{{selectedCategoryName}}</div>

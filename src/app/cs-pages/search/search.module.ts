@@ -8,12 +8,14 @@ import { SearchPageRoutingModule } from './search-routing.module';
 
 import { SearchPage } from './search.page';
 import { SuperTabsModule } from '@ionic-super-tabs/angular';
+import { PipesModule } from 'src/app/cs-pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     SuperTabsModule,
+    PipesModule,
     IonicModule,
     SearchPageRoutingModule
   ],

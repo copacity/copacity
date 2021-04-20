@@ -66,11 +66,13 @@ export class ProductDetailPage implements OnInit {
     public appService: AppService) {
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
-      this.appService.updateUserData(user.uid).then(() => {
-        {
-          this.initialize(user);
-        }
-      });
+      if (user) {
+        this.appService.updateUserData(user.uid).then(() => {
+          {
+            this.initialize(user);
+          }
+        });
+      }
     });
 
     this.initialize();
@@ -395,53 +397,53 @@ export class ProductDetailPage implements OnInit {
     });
   }
 
-  // shareProduct(e) {
-  //   if (this.appService.currentCategory.status == StoreStatus.Published) {
-  //     this.createFile().then(file => {
-  //       let navigator: any = window.navigator;
-  //       let filesArray = [];
-  //       filesArray.push(file);
+  shareProduct(e) {
+    if (this.appService.currentCategory.status == StoreStatus.Published) {
+      this.createFile().then(file => {
+        let navigator: any = window.navigator;
+        let filesArray = [];
+        filesArray.push(file);
 
-  //       if (navigator.canShare && navigator.canShare({ files: filesArray })) {
-  //         navigator.share({
-  //           files: filesArray,
-  //           title: this.appService.currentStore.name,
-  //           text: "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-  //             this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
-  //           url: this.appService._appInfo.domain + "/product-detail/" + this.product.id + "&" + this.appService.currentStore.id
-  //         })
-  //           .then(() => console.log('Share was successful.'))
-  //           .catch((error) => console.log('Sharing failed', error));
-  //       } else {
-  //         console.log(`Your system doesn't support sharing files.`);
-  //         this.openCopyToClipBoardProduct(e);
-  //       }
-  //     });
-  //   } else {
-  //     this.presentAlert("Solo puedes compartir tu tienda cuando este aprobada y publicada. Gracias", "", () => { });
-  //   }
-  // }
+        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+          navigator.share({
+            files: filesArray,
+            title: "Copacity",
+            text: "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
+              this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados para tí. Si quieres ver mas detalle de este producto ingresa a: ",
+            url: this.appService._appInfo.domain + "/product-detail/" + this.product.id
+          })
+            .then(() => console.log('Share was successful.'))
+            .catch((error) => console.log('Sharing failed', error));
+        } else {
+          console.log(`Your system doesn't support sharing files.`);
+          this.openCopyToClipBoardProduct(e);
+        }
+      });
+    } else {
+      this.presentAlert("Solo puedes compartir tu tienda cuando este aprobada y publicada. Gracias", "", () => { });
+    }
+  }
 
-  // async openCopyToClipBoardProduct(e) {
+  async openCopyToClipBoardProduct(e) {
 
-  //   let text = "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-  //     this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda: " + this.appService.currentStore.name + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.product.id;
+    let text = "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
+      this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.product.id;
 
-  //   let modal = await this.popoverCtrl.create({
-  //     component: CopyToClipboardComponent,
-  //     cssClass: 'notification-popover',
-  //     componentProps: { textLink: text },
-  //     event: e
-  //   });
+    let modal = await this.popoverCtrl.create({
+      component: CopyToClipboardComponent,
+      cssClass: 'notification-popover',
+      componentProps: { textLink: text },
+      event: e
+    });
 
-  //   modal.onDidDismiss()
-  //     .then((data) => {
-  //       const result = data['data'];
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
 
-  //     });
+      });
 
-  //   modal.present();
-  // }
+    modal.present();
+  }
 
   shareApp(e) {
     this.ngNavigatorShareService.share({

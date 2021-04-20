@@ -229,7 +229,7 @@
               <div class="divider divider-margins top-15"></div>
             </div>
             <div class="top-20"></div>
-            <p *ngIf="store?.returnsPolicyTemplate" class="bottom-20" style="color: black;">
+            <p *ngIf="appService._appInfo?.returnsPolicyTemplate" class="bottom-20" style="color: black;">
               <a (click)="popoverReturnsPolicy()">Políticas de cambio y devoluciones.</a>
             </p>
             <a (click)="addToCart($event)"

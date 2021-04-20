@@ -36,7 +36,7 @@ export class MenuNotificationsComponent implements OnInit {
   }
 
   async openOrderDetailPage(notification: Notification) {
-    this.router.navigate(['order-detail/' + notification.idOrder + "&" + notification.idStore]);
+    this.router.navigate(['order-detail/' + notification.idOrder]);
     this.popoverController.dismiss();
 
     // let modal = await this.popoverController.create({

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Category, User, StoreCategory, Banner, Address, AppInfo, Notification, ErrorMessage, StoreCoupon } from '../app-intefaces';
 import { UsersService } from './users.service';
-import { StoreCategoriesService } from './storeCategories.service';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { BannersService } from './banners.service';
 import { AddressesService } from './addresses.service';
@@ -26,7 +25,7 @@ export class AppService {
   appInfo: Observable<AppInfo[]>;
   banners: Observable<Banner[]>;
   bannersFooter: Observable<Banner[]>;
-  _storeCategories: StoreCategory[] = [];
+  _categories: Category[] = [];
   _appInfo: AppInfo;
 
   // USER DATA
@@ -80,6 +79,10 @@ export class AppService {
 
     this.banners = this.bannersService.getByType(1);
     this.bannersFooter = this.bannersService.getByType(2);
+    
+    this.storesService._getAll().subscribe(array =>{
+      this._categories = array;
+    })
 
     this.appInfo = this.getAppInfo();
     this.appInfo.subscribe(result => {

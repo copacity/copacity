@@ -25,7 +25,7 @@ import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
 import { HostListener } from "@angular/core";
-import { concat, forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CartPage } from '../cart/cart.page';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { StoreInformationComponent } from 'src/app/cs-components/store-information/store-information.component';
@@ -36,6 +36,8 @@ import { StoreOrdersPage } from '../store-orders/store-orders.page';
 import { StorePqrsfPage } from '../store-pqrsf/store-pqrsf.page';
 import { StoreVendorsPage } from '../store-vendors/store-vendors.page';
 import { StoreVendorsAdminPage } from '../store-vendors-admin/store-vendors-admin.page';
+import { StoreBillingPage } from '../store-billing/store-billing.page';
+import { StoreReportsPage } from '../store-reports/store-reports.page';
 
 @Component({
   selector: 'app-home',
@@ -55,27 +57,13 @@ export class HomePage implements OnInit {
 
   idSelectedCategories: string[] = [];
   selectedCategories: Category[] = [];
-  batch: number = 20;
-  lastToken: string = '';
-
-  selectedStoreLogo: string = "";
-  categories: Array<Category>;
-
-  featuredProductsDiscount: Array<any> = [];
-  featuredProductsNoDiscount: Array<any> = [];
-  featuredProductsNoFeatured: Array<any> = [];
-  gifts: Array<any> = [];
-  storeCoupons: Array<any> = [];
 
   searchingProductsDiscount: boolean = false;
   searchingProductsNoDiscount: boolean = false;
   searchingProductsNoFeatured: boolean = false;
   searchingGifts: boolean = false;
   searchingStoreCoupons: boolean = false;
-  searchingStores: boolean = false;
-
-  storeSearchHits: number = 0;
-  storeSearchText: string = '';
+  searchingCategories: boolean = false;
 
   @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
   @ViewChild('cartHome', { static: false, read: ElementRef }) shoppingCart: ElementRef;
@@ -90,7 +78,7 @@ export class HomePage implements OnInit {
   @ViewChild('sliderStoreCoupons', null) sliderStoreCoupons: any;
   @ViewChild('sliderMenu', null) sliderMenu: any;
 
-  @Input('header') header: any;
+
   angularFireAuth: any;
 
   //--------------------------------------------------------------
@@ -387,13 +375,8 @@ export class HomePage implements OnInit {
       });
     }
 
-    // this.getStores();
-    // this._stores = this.storesService.getAllStores();
-
     this._categories = this.storesService._getAll();
-    this._categories.subscribe(categories => {
-      this.getProducts(categories);
-    });
+    this.getProducts();
   }
 
   //--------------------------------------------------------------
@@ -441,6 +424,41 @@ export class HomePage implements OnInit {
       });
 
     popover.present();
+  }
+
+  async openStoreBillingPage(event) {
+
+    let modal = await this.popoverController.create({
+      component: StoreBillingPage,
+      cssClass: 'cs-popovers',
+      backdropDismiss: false
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const result = data['data'];
+      });
+
+    modal.present();
+  }
+
+  async openStoreReportsPage() {
+    if (this.appService.currentUser) {
+      let modal = await this.popoverController.create({
+        component: StoreReportsPage,
+        cssClass: 'cs-popovers',
+        backdropDismiss: false,
+      });
+
+      modal.onDidDismiss()
+        .then((data) => {
+          const result = data['data'];
+        });
+
+      modal.present();
+    } else {
+      this.SignIn();
+    }
   }
 
   //--------------------------------------------------------------
@@ -615,7 +633,6 @@ export class HomePage implements OnInit {
   }
 
   async openStoreCouponsPage() {
-    //if (this.appService.currentUser) {
     let modal = await this.popoverController.create({
       component: StoreCouponsPage,
       componentProps: { isAdmin: this.appService.currentUser ? this.appService.currentUser.isAdmin : false, dashboard: true, orderTotal: -1 },
@@ -633,21 +650,19 @@ export class HomePage implements OnInit {
       });
 
     modal.present();
-    // } else {
-    //   this.SignIn();
-    // }
   }
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
-  //--------------------------------       GET STORES 
-
-  searchStores(event) {
-    this.storeSearchText = event.target.value;
-    //this.getStores();
-  }
+  //--------------------------------       GET PRODUCTS 
 
   getProducts() {
+    this.searchingCategories = true;
+    this.searchingProductsNoDiscount = true;
+    this.searchingProductsNoFeatured = true;
+    this.searchingGifts = true;
+    this.searchingStoreCoupons = true;
+
     this.fillStoreCategories();
 
     this._categoriesFiltered = this._categories.pipe(
@@ -694,142 +709,18 @@ export class HomePage implements OnInit {
         }
       })));
 
-      this.loaderComponent.stopLoading();
+    // Stop loading elements
+    this._categoriesFiltered.subscribe(() => { this.searchingCategories = false; this.loadSliderStores(() => {}) });
+    this._featuredProductsNoDiscount.subscribe(() => { this.searchingProductsNoDiscount = false; this.loadSliderProductsNoDiscount(() => {})});
+    this._categories.subscribe(() => { this.searchingProductsNoFeatured = false; this.loadSliderProductsNoFeatured(() => {}) });
+    this._gifts.subscribe(() => { this.searchingGifts = false; this.loadSliderGifts(() => {}) });
+    this._coupons.subscribe(() => { this.searchingStoreCoupons = false; this.loadSliderStoreCoupons(() => {})});
+
+    this.loadSlider(function () { });
+    this.loadSliderFooter(function () { });
+
+    this.loaderComponent.stopLoading();
   }
-
-  // getStores() {
-  //   this.categories = null;
-  //   this.searchingStores = true;
-  //   this.searchingProductsDiscount = true;
-  //   this.searchingProductsNoDiscount = true;
-  //   this.searchingProductsNoFeatured = true;
-  //   this.searchingGifts = true;
-  //   this.searchingStoreCoupons = true;
-
-  //   setTimeout(async () => {
-  //     this.categories = [];
-  //     this.selectedCategories = [];
-  //     this.featuredProductsDiscount = [];
-  //     this.featuredProductsNoDiscount = [];
-  //     this.featuredProductsNoFeatured = [];
-  //     this.gifts = [];
-  //     this.storeCoupons = [];
-
-  //     this.storesService.getAll(this.storeSearchText).then(stores => {
-  //       this.searchingStores = false;
-
-  //       stores.forEach((category: Category) => {
-  //         if (category) {
-  //           if (this.idSelectedCategories.length == 0 || this.idSelectedCategories.includes(category.id)) {
-  //             if (this.idSelectedCategories.includes(category.id)) { this.selectedCategories.push(category); }
-
-  //             this.categories.push(category);
-
-  //             // -- PRODUCTS WITH DISCOUNT
-  //             let subs = this.productsService.getFeaturedProductsDiscount(category.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
-
-  //               products.forEach((product: Product) => {
-  //                 this.featuredProductsDiscount.push({ product: product, url: "/product-detail/" + product.id, storeImage: category.logo ? category.logo : '../../../assets/icon/no-image.png' });
-  //               });
-
-  //               this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
-  //               this.searchingProductsDiscount = false;
-  //               this.loadSliderProductsDiscount(function () { });
-  //               subs.unsubscribe();
-  //             });
-
-  //             // -- PRODUCTS WITHOUT DISCOUNT
-  //             // let subs2 = this.productsService.getFeaturedProductsNoDiscount(category.id, this.appService._appInfo.featuredProductsXStore).subscribe(products => {
-
-  //             //   products.forEach((product: Product) => {
-  //             //     this.featuredProductsNoDiscount.push({ product: product, url: "/product-detail/" + product.id, store: category, storeImage: category.logo ? category.logo : '../../../assets/icon/no-image.png' });
-  //             //   });
-
-  //             //   this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
-  //             //   this.searchingProductsNoDiscount = false;
-  //             //   this.loadSliderProductsNoDiscount(function () { });
-  //             //   subs2.unsubscribe();
-  //             // });
-
-  //             // -- GIFTS
-  //             // let subs3 = this.productsService.getGifts(this.appService._appInfo.featuredProductsXStore).subscribe(products => {
-
-  //             //   products.forEach((product: Product) => {
-  //             //     this.gifts.push({ product: product, url: "/store/" + category.id, storeImage: category.logo ? category.logo : '../../../assets/icon/no-image.png' });
-  //             //   });
-
-  //             //   this.gifts = this.shuffle(this.gifts);
-  //             //   this.searchingGifts = false;
-  //             //   this.loadSliderGifts(function () { });
-  //             //   subs3.unsubscribe();
-  //             // });
-
-  //             // -- COUPONS
-  //             // let subs4 = this.storesService.getStoreCouponsXStore(this.appService._appInfo.featuredProductsXStore).subscribe(storeCoupons => {
-  //             //   storeCoupons.forEach((storeCoupon: StoreCoupon) => {
-  //             //     let today = new Date(new Date().setHours(23, 59, 59, 0));
-  //             //     let dateExpiration: any = storeCoupon.dateExpiration;
-
-  //             //     if (today.getTime() <= dateExpiration.toDate().getTime() && storeCoupon.quantity > 0) {
-  //             //       this.storeCoupons.push({ storeCoupon: storeCoupon, url: "/store-coupons-detail/" + storeCoupon.id, store: category });
-  //             //     }
-  //             //   });
-  //                 // this.loadSliderStoreCoupons(function () { });
-  //                 // subs4.unsubscribe();
-  //             // });
-
-  //             // -- PRODUCTS NO FEATURED
-  //             // let subs5 = this.productsService.getFeaturedProductsNoFeatured(4).subscribe(products => {
-
-  //             //   let noFeaturedProducts = [];
-  //             //   products.forEach((product: Product) => {
-  //             //     noFeaturedProducts.push({ product: product, url: "/product-detail/" + product.id });
-  //             //   });
-
-  //             //   this.featuredProductsNoFeatured.push({ noFeaturedProducts: this.shuffle(noFeaturedProducts), store: category, url: "/store/" + category.id });
-
-  //             //   this.featuredProductsNoFeatured = this.shuffle(this.featuredProductsNoFeatured);
-  //             //   this.searchingProductsNoFeatured = false;
-  //             //   this.loadSliderProductsNoFeatured(function () { });
-  //             //   subs5.unsubscribe();
-  //             // });
-
-  //             this.storeCoupons = this.shuffle(this.storeCoupons);
-  //             this.searchingStoreCoupons = false;
-  //           }
-
-  //           this.loadSliderStores(function () { });
-  //           this.loadSlider(function () { });
-  //           this.loadSliderFooter(function () { });
-  //         }
-  //       });
-
-  //       if (this.categories.length == 0) {
-  //         this.searchingProductsDiscount = false;
-  //         this.searchingProductsNoDiscount = false;
-  //         this.searchingProductsNoFeatured = false;
-  //         this.searchingGifts = false;
-  //         this.searchingStoreCoupons = false;
-  //       }
-
-  //       this.categories = this.shuffle(this.categories);
-  //       this.loaderComponent.stopLoading();
-  //     });
-  //   }, 500);
-  // }
-
-  // shuffle(arr) {
-  //   let i,
-  //     j,
-  //     temp;
-  //   for (i = arr.length - 1; i > 0; i--) {
-  //     j = Math.floor(Math.random() * (i + 1));
-  //     temp = arr[i];
-  //     arr[i] = arr[j];
-  //     arr[j] = temp;
-  //   }
-  //   return arr;
-  // };
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
@@ -970,12 +861,6 @@ export class HomePage implements OnInit {
 
   ionViewDidEnter() {
     this.loadAllSliders(300);
-
-    // this.featuredProductsDiscount = this.shuffle(this.featuredProductsDiscount);
-    // this.featuredProductsNoDiscount = this.shuffle(this.featuredProductsNoDiscount);
-    // this.featuredProductsNoFeatured = this.shuffle(this.featuredProductsNoFeatured);
-    // this.gifts = this.shuffle(this.gifts);
-    // this.categories = this.shuffle(this.categories);
   }
 
   loadAllSliders(timeout) {
