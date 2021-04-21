@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-menu width="100" side="start" menuId="main" contentId="main" class="ion-menu" class="main-menu">
+  <!-- <ion-menu width="100" side="start" menuId="main" contentId="main" class="ion-menu" class="main-menu">
     <ion-header>
       <ion-toolbar>
         <div class="content top-30" *ngIf="appService?.currentUser">
@@ -78,7 +78,43 @@
         </div>
       </ion-toolbar>
     </ion-content>
-  </ion-menu>
+  </ion-menu> -->
+
+  <ion-menu side="start" menuId="custom" contentId="main" class="my-custom-menu">
+    <ion-content>
+        <div class="menu" data-menu-select="page-welcome" style="width: 250px;height: 100%;">
+
+            <a href="#" class="nav-title color-theme"><span class="color-highlight">COPA</span>CITY</a>
+            <span class="nav-text color-theme opacity-50">Splendid Simplicity</span>
+
+            <div class="nav nav-medium">
+                <div class="divider"></div>
+                <ion-menu-toggle>
+                    <a id="page-home" routerLink="/home">
+                        <i class="fa fa-home color-green1-dark"></i><span>Inicio</span><i
+                            class="fa fa-angle-right"></i>
+                    </a>
+                    <a *ngIf="appService?.currentUser" id="page-components" routerLink="//order-list">
+                        <i class="fa fa-users color-blue2-dark"></i><span>Pedidos</span><i
+                            class="fa fa-angle-right"></i>
+                    </a>
+                    <a id="page-menus" routerLink="/contact">
+                        <i class="fa fa-file-invoice-dollar color-magenta2-dark"></i><span>Mensajes</span><i
+                            class="fa fa-angle-right"></i>
+                    </a>
+                    <a id="page-menus" *ngIf="appService?.currentUser" (click)="signOut()">
+                      <i class="fa fa-file-invoice-dollar color-magenta2-dark"></i><span>Cerrar Sesión</span>
+                  </a>
+                </ion-menu-toggle>
+                <div class="divider top-15"></div>
+
+                <p>Copyright <span class="copyright-year"></span> - Maothinks <br /> Todos los derechos reservados.</p>
+                <p class="footer-text"><b>Versión</b> {{ appService.appVersion }}</p>
+            </div>
+        </div>
+    </ion-content>
+</ion-menu>
+
 
   <ion-router-outlet id="main"></ion-router-outlet>
 

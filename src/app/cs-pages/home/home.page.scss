@@ -1,8 +1,22 @@
 @import "../../../assets/template/styles/styleTemplate.css";
 
-ion-title a {
-    font-size: 18px; color: black; padding-left: 5px;
+
+.blog-col-item em{
+	position:absolute;
+	margin-top:-24px;
+	font-size:10px;
+    color: unset !important;
+	font-weight:600;
+	text-transform: uppercase;
+	padding:3px 10px;
+    border-bottom-left-radius: 10px;
+	font-style: normal;
 }
+
+
+// ion-title a {
+//     font-size: 18px; color: black; padding-left: 5px;
+// }
 
 ion-menu-toggle{
     padding-top: 7px;
@@ -30,36 +44,32 @@ ion-menu-toggle{
       }
 
 @media screen and (min-width: 1180px) {
-  #main-menu-large{
-    height: 100%;
-    width: 250px;
-    background-color: white;
-    position: fixed;
-    top: 56px;
-    padding-bottom: 200px;
-  }
+    #main-menu-large {
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        top: 45px;
+    }
 
-  #main-menu-large-right {
-    height: 100%;
-    width: 250px;
-    background-color: white;
-    position: fixed;
-    top: 56px;
-    right: 0px;
-    padding-bottom: 100px;
-  }
+      #main-menu-large-right {
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        top: 55px;
+        right: 0px;
+      }
 
-  .side-content{
-    --background: white;
-  }
+//   .side-content{
+//     --background: white;
+//   }
 
-  .menu-icon-bars{
-    display: none;
-  }
+//   .menu-icon-bars{
+//     display: none;
+//   }
 
-  .notifications-icon{
-    display: none;
-  }
+//   .notifications-icon{
+//     display: none;
+//   }
 
   ion-fab {
     right:260px

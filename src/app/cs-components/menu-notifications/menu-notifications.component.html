@@ -1,16 +1,14 @@
 <ion-list>
   <ion-list-header class="notifications-header">
     <ion-toolbar>
-      <ion-title slot="start">
-        Notificaciones
+      <ion-title>
+        <h5 class="thin center-text">Notificaciones</h5>
       </ion-title>
     </ion-toolbar>
   </ion-list-header>
 
-  <ion-item-divider style="background-color: white;">
-    <ion-label style="padding-left: 10px;" slot="start" (click)="goToNotificationsHistory()"><b> <small><a>Ver
-            Historial</a></small> </b></ion-label>
-  </ion-item-divider>
+  <em style="font-size: 15px;"><a (click)="goToNotificationsHistory()" style="padding-left: 5px; padding: 10px; cursor: pointer">Ver Historial...</a></em>
+  <div class="divider"></div>
 
   <ion-item *ngIf="(appService.notifications | async)?.length == 0">
     <div class="boxed-text-huge" >
@@ -25,12 +23,12 @@
         </ion-card-header>
         <ion-card-content style="padding-left: 0px; padding-right: 0px;">
           <label style="text-align: end;padding-top: 10px;padding-bottom: 10px;"><small style="padding-right: 20px;">
-              <b> {{notification.dateCreated.toDate() | date:'MMM d, h:mm a' }} </b> </small>
-            <a (click)="markAsReaded(notification)"><i class="fa fa-times-circle" style="color: black;"></i></a>
+              <em> {{notification.dateCreated.toDate() | date:'dd/MM/yyyy' }} </em> </small>
+            <a (click)="markAsReaded(notification)"><i class="fa fa-times-circle"></i></a>
           </label>
-          <span (click)="openOrderDetailPage(notification)"> <b>{{ notification.userName }}:</b>
-            {{ notification.description }} </span>
-          <a (click)="openOrderDetailPage(notification)"><b>Ver Pedido</b></a>
+          <p (click)="openOrderDetailPage(notification)"> <b>{{ notification.userName }}:</b>
+            {{ notification.description }} </p>
+          <em><a class="text-right" style="cursor: pointer;" (click)="openOrderDetailPage(notification)">Ver Pedido...</a></em>
         </ion-card-content>
       </ion-card>
     </ion-item>
@@ -39,4 +37,6 @@
       </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
+
+  <div style="height: 150px;"></div>
 </ion-list>

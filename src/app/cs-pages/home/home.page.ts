@@ -107,6 +107,12 @@ export class HomePage implements OnInit {
 
     this.initializePage();
     this.getScreenSize();
+
+    const head = document.getElementsByTagName('head')[0];
+    const _js = document.createElement('script');
+    _js.type = 'text/javascript';
+    _js.appendChild(document.createTextNode('init_template()'));
+    head.appendChild(_js);
   }
 
   @HostListener('window:resize', ['$event'])

@@ -1,793 +1,760 @@
-<ion-header class="ion-header" style="background-color:white">
-  <ion-toolbar id="tool-bar-header">
-    <ion-buttons slot="start">
-      <ion-menu-toggle>
-        <ion-button>
-          <span style="font-size: 1em; color: black;" class="menu-icon-bars">
-            <i class="fa fa-bars" style="font-size: 1.2em"></i>
-          </span>
-        </ion-button>
-      </ion-menu-toggle>
-      <ion-button routerLink="/home">
-        <img id="img-title" src="../assets/icon/favicon.png" alt="img" style="width: 30px;padding-right: 5px;">
-        <a class="header-title bold color-highlight" style="font-size: 1.2em;"><span
-            style="color: red;">COPA</span>CITY</a>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="primary">
-      <ion-button (click)="openSearchPage()">
-        <span style="font-size: 1em; color: black;">
-          <i class="fa fa-search" style="font-size: 1.2em"></i>
-        </span>
-      </ion-button>
-      <ion-button #cartHome (click)="openCart()">
-        <i class="fa fa-shopping-cart" style="color: black;font-size: 1.2em"></i>
-        <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
-          {{ cartManagerService.getTotalCount() }}
-        </ion-badge>
-      </ion-button>
-      <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
-        <span style="font-size: 1em; color: black;">
-          <i class="fa fa-bell" style="font-size: 1.2em"></i>
-          <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
-            slot="end">{{appService.notificationsCount | async}}</ion-badge>
-        </span>
-      </ion-button>
-      <ion-button (click)="presentMenuUser($event)">
-        <span style="font-size: 1em; color: black;">
-          <i class="fa fa-user" style="font-size: 1.2em"></i>
-        </span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-
-  <div id="main-menu-large">
-    <ion-header>
-      <ion-toolbar>
-        <div class="content top-30" *ngIf="appService?.currentUser">
-          <div class="user-slider owl-carousel  bottom-0">
-            <div class="user-list-left">
-              <img
-                [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
-                alt="img" class="shadow-small">
-              <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
-              <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="content top-30" *ngIf="!appService?.currentUser">
-          <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-        </div>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="side-content">
-      <ion-list>
-        <ion-item style="padding: 3px;" routerLink="/home">
-          <i class="fa fa-home"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Inicio</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
-          <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Mis Pedidos</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;" routerLink="/contact">
-          <i class="fa fa-paper-plane"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Mensajes</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
-          <i class="fa fa-sign-out-alt"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Cerrar Sesión</ion-label>
-        </ion-item>
-      </ion-list>
-      <ion-toolbar style="padding-top: 30px;">
-        <div class="footer" style="padding: 8px 8px 8px 8px;">
-
-          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-            <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
-          </div>
-
-          <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
-              style="color: red;">COPA</span>CITY</a>
-          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
-
-          <div class="footer-socials" style="padding-left: 20px;">
-            <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
-                class="fab fa-facebook-f"></i></a>
-            <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
-                class="fa fa-phone"></i></a>
-            <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
-                class="fab fa-whatsapp"></i></a>
-            <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
-                class="fa fa-share-alt"></i></a>
-          </div>
-          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
-            {{ appService.appVersion }}
-          </p>
-          <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
-            &copy; Enabled <span id="copyright-year">2020</span>.
-            All Rights Reserved.
-          </p>
-        </div>
-      </ion-toolbar>
-    </ion-content>
-  </div>
-
-  <div id="main-menu-large-right">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title style="text-align: center;">
-          <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
-        </ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="side-content">
-      <app-menu-notifications></app-menu-notifications>
-    </ion-content>
-  </div>
+<ion-header class="ion-no-border">
+    <div class="header header-fixed header-logo-app">
+        <a class="header-title ultrabold"><span class="color-highlight">COPA</span>CITY</a>
+        <a class="header-icon header-icon-1">
+            <ion-menu-toggle><i class="fas fa-bars"></i></ion-menu-toggle>
+        </a>
+        <a class="header-icon header-icon-2"><i class="fa fa-user"></i></a>
+        <a (click)="presentMenuNotifications($event)" class="header-icon header-icon-3"><i class="fa fa-bell"></i></a>
+        <a class="header-icon header-icon-4"><i class="fa fa-shopping-cart"></i></a>
+        <a class="header-icon header-icon-5"><i class="fa fa-search"></i></a>
+        <a class="header-icon header-icon-6" data-toggle-theme><i class="fa fa-moon"></i></a>
+    </div>
 </ion-header>
 
-<super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
-  <super-tabs-container>
-    <super-tab>
-      <ion-content [scrollEvents]="true" (ionScrollStart)="scrollStart()" id="content-home" class="content-background">
-        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-          <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="crescent"
+<ion-content>
+    <!-- <div
+        [ngStyle]="{'background-image': 'url(assets/icon/cc.png)', 'position': 'fixed', 'width': '100%','top': '-1px','height': '100%', 'filter': 'blur(6px)'}">
+    </div> -->
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="crescent"
             refreshingText="Buscando actualizaciones...">
-          </ion-refresher-content>
-        </ion-refresher>
+        </ion-refresher-content>
+    </ion-refresher>
 
-        <ion-slides id="sliderHomeProductsDiscount" #sliderHomeProductsDiscount
-          [options]="appService.slideOptsProductsDiscount">
-          <ion-slide
+    <ion-slides id="sliderHomeProductsDiscount" #sliderHomeProductsDiscount
+        [options]="appService.slideOptsProductsDiscount">
+        <ion-slide
             (click)="goToPage('/product-detail/' + featuredProduct.id, featuredProduct.image?featuredProduct.image:'../../../assets/icon/no-image.png')"
             *ngFor="let featuredProduct of _featuredProductsDiscount | async" style="padding: 2px; padding-top: 17px;">
             <div class="profile-2">
-              <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                <a>
-                  <img style="width: 150px;margin: 5px 0px 5px 0px;border: solid 2px #fff;border-radius: 100%"
-                    class="preload-image"
-                    [src]="featuredProduct?.image?featuredProduct.image:'../../../assets/icon/no-image.png'"
-                    alt="img">
+                <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                    <a>
+                        <img style="width: 150px;margin: 5px 0px 5px 0px;border-radius: 100%"
+                            class="preload-image shadow-small"
+                            [src]="featuredProduct?.image?featuredProduct.image:'../../../assets/icon/no-image.png'"
+                            alt="img">
 
-                  <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
-                    style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
-                    class="{{(featuredProduct?.soldOut)?'sold-out':'' }}">
-                    <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
+                        <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
+                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
+                            class="{{(featuredProduct?.soldOut)?'sold-out':'' }}">
+                            <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
 
-                  <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
-                    class="{{(featuredProduct?.soldOut)?'sold-out':'' }}"
-                    style="background-color: transparent;color: black;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
-                    -{{ featuredProduct?.discount }}%</em>
-                </a>
-              </div>
+                        <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
+                            class="{{(featuredProduct?.soldOut)?'sold-out':'' }}"
+                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
+                            -{{ featuredProduct?.discount }}%</em>
+                    </a>
+                </div>
             </div>
-          </ion-slide>
-        </ion-slides>
+        </ion-slide>
+    </ion-slides>
 
-        <div class="profile-1 bottom-80 {{(_featuredProductsDiscount |async)?.length == 0?'top-30':'top-15'}}" style="z-index: 9;">
-          <div class="profile-body" style="margin: 0px 5px;padding: 0px 5px;">
-            <a (click)="shareApp($event)" style="background-color: white; color: black;border-radius:10px;"
-              class="profile-button shadow-small button button-m button-round uppercase bolder button-center-medium">{{appService?._appInfo?.homeTitle}}</a>
+    <div class="profile-1 bottom-80 {{(_featuredProductsDiscount |async)?.length == 0?'top-30':'top-15'}}"
+        style="z-index: 9;">
+        <div class="profile-body menuLeft" style="margin: 0px 5px;padding: 0px 5px;">
+            <a (click)="shareApp($event)" style="border-radius:10px;"
+                class="profile-button menuLeft shadow-small button button-m button-round uppercase bolder button-center-medium">
+                <h5 class="bolder">{{appService?._appInfo?.homeTitle}}</h5>
+            </a>
 
             <!-- <a (click)="openBarCodeScanner()"
-              style="z-index: 9;right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding-right: 5px;color: red;font-weight: 500;margin: 2px;cursor: pointer;">
-              <i class="fa fa-qrcode"></i>&nbsp;QR</a> -->
+                    style="z-index: 9;right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding-right: 5px;color: red;font-weight: 500;margin: 2px;cursor: pointer;">
+                    <i class="fa fa-qrcode"></i>&nbsp;QR</a> -->
 
             <a (click)="openSelectCategories()"
-              style="z-index: 9;left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding-left: 5px;font-weight: 500;margin: 2px;cursor: pointer;color: red;">
-              <i class="fas fa-filter"></i>&nbsp;Filtro
+                style="z-index: 9;left: 0px;position: absolute;top: 0;padding-left: 5px;margin: 2px;cursor: pointer;">
+                <i class="fas fa-filter"></i>&nbsp;Filtrar
 
-              <ion-list lines="full" class="ion-no-margin ion-no-padding" style="display: none;">
-                <ion-item>
-                  <ion-label style="color: gray;display: none;">Categorías</ion-label>
-                  <ion-select #selectCategories multiple="true" style="padding-right: 10px;" mode="ios"
-                    cancelText="Cancelar" okText="Filtrar" (ionChange)="selectedCategories_OnChange($event)">
-                    <ion-select-option *ngFor="let category of _categories | async"
-                      value="{{category.id}}">{{category.name}}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-list>
+                <ion-list lines="full" class="ion-no-margin ion-no-padding" style="display: none;">
+                    <ion-item>
+                        <ion-label style="color: gray;display: none;">Categorías</ion-label>
+                        <ion-select #selectCategories multiple="true" style="padding-right: 10px;" mode="ios"
+                            cancelText="Cancelar" okText="Filtrar" (ionChange)="selectedCategories_OnChange($event)">
+                            <ion-select-option *ngFor="let category of _categories | async" value="{{category.id}}">
+                                {{category.name}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
             </a>
 
             <div class="content" style="margin: 0px 5px 0px 5px;" *ngIf="idSelectedCategories.length != 0">
-              <a class="bold top-20">Mostrando:</a>
+                <a class="bold top-20">Mostrando:</a>
 
-              <div class="chip" *ngFor="let sc of selectedCategories">
-                <div class="chip-content">{{sc.name}}</div>
-                <div class="chip-close" (click)="removeFilterOption(sc.id)">
-                  <svg class="chip-svg" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z">
-                    </path>
-                  </svg>
+                <div class="chip" *ngFor="let sc of selectedCategories">
+                    <div class="chip-content">{{sc.name}}</div>
+                    <div class="chip-close" (click)="removeFilterOption(sc.id)">
+                        <svg class="chip-svg" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z">
+                            </path>
+                        </svg>
+                    </div>
                 </div>
-              </div>
             </div>
 
             <div class="content" class="{{idSelectedCategories.length == 0?'top-30':''}}"
-              style="margin: 0px 5px 0px 5px;">
+                style="margin: 0px 5px 0px 5px;">
 
-              <ion-slides id="sliderHome" #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
-                <ion-slide (click)="redirectBanner(banner)" *ngFor="let banner of appService.banners | async">
-                  <img class="round-medium" src="{{banner.image}}">
-                </ion-slide>
-              </ion-slides>
+                <ion-slides id="sliderHome" #sliderHome [options]="appService.slideOpts" style="max-width: 450px;">
+                    <ion-slide (click)="redirectBanner(banner)" *ngFor="let banner of appService.banners | async">
+                        <img class="round-medium" src="{{banner.image}}">
+                    </ion-slide>
+                </ion-slides>
             </div>
 
             <div id="page-no-apply">
-              <div class="content" style="margin: 0px 5px 0px 5px;">
-                <div style="text-align: -webkit-left;" class="top-15">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Categorias</h4>
-                </div>
-
-                <ion-slides *ngIf="searchingCategories" [options]="appService.slideOptsStores" style="max-width: 450px;"
-                  style="padding-bottom: 20px;">
-                  <ion-slide *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]"
-                    style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
-                    <ion-skeleton-text animated
-                      class="responsive-image preload-image shadow-small round-medium img-store"
-                      style="width: 100px;height: 100px;">
-                    </ion-skeleton-text>
-                  </ion-slide>
-                </ion-slides>
-
-                <div *ngIf="(_categoriesFiltered | async)?.length == 0 && !searchingCategories" class="boxed-text-huge"
-                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
-                  <h4 style="font-size: small;">No se encontraron resultados</h4>
-                </div>
-
-                <ion-slides id="sliderHomeStores" #sliderHomeStores
-                  [options]="appService.slideOptsStores">
-                  <ion-slide *ngFor="let store of _categoriesFiltered | async"
-                    style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
-                    <div class="blog-col-item" style="margin-bottom: 0px">
-                      <a (click)="goToStore($event, store)">
-                        <img src="{{store?.thumb_logo?store.thumb_logo:'../../../assets/icon/no-image.png'}}"
-                          class="responsive-image preload-image shadow-small round-medium img-store" alt="img">
-
-                        <div class="review-stars" style="padding-top: 5px;font-size: .6em;">
-                          <i class="fa fa-star color-yellow1-dark"></i>
-                          <i class="fa fa-star color-yellow1-dark"></i>
-                          <i class="fa fa-star color-yellow1-dark"></i>
-                          <i class="fa fa-star color-yellow1-dark"></i>
-                          <i class="fa fa-star color-yellow1-dark"></i>
-                        </div>
-
-                        <strong class="strong-store"
-                          style="font-size: .7em;padding-top: 0px;">{{((store?.name.length<=32)?store?.name:store?.name.substring(0, 32) + '...')}}</strong>
-                      </a>
+                <div style="margin: 0px 5px 0px 5px;">
+                    <div style="text-align: -webkit-left;" class="top-20">
+                        <h4 class="bolder">Categorias</h4>
                     </div>
-                  </ion-slide>
-                </ion-slides>
-              </div>
 
-              <div class="content" style="margin: 0px 5px 0px 5px;">
-                <div style="text-align: -webkit-left;">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Productos Destacados</h4>
-                </div>
+                    <ion-slides *ngIf="searchingCategories" [options]="appService.slideOptsStores"
+                        style="max-width: 450px;" style="padding-bottom: 20px;">
+                        <ion-slide *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]"
+                            style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
+                            <ion-skeleton-text animated
+                                class="responsive-image preload-image shadow-small round-medium img-store"
+                                style="width: 100px;height: 100px;">
+                            </ion-skeleton-text>
+                        </ion-slide>
+                    </ion-slides>
 
-                <ion-slides *ngIf="searchingProductsNoDiscount" [options]="appService.slideOptsProductsNoDiscount">
-                  <ion-slide *ngFor="let item of [1,2,3,4,5,6]">
-                    <div class="blog-col-item" style="margin-bottom: 0px;width: 100%;padding: 10px;">
-                      <a>
-                        <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
-                      </a>
+                    <div *ngIf="(_categoriesFiltered | async)?.length == 0 && !searchingCategories"
+                        class="boxed-text-huge"
+                        style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                        <h4 style="font-size: small;">No se encontraron resultados</h4>
                     </div>
-                  </ion-slide>
-                </ion-slides>
 
-                <div
-                  *ngIf="(_featuredProductsNoDiscount | async)?.length == 0 && !searchingProductsNoDiscount"
-                  class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
-                  <h4 style="font-size: small;">No se encontraron resultados</h4>
+                    <ion-slides id="sliderHomeStores" #sliderHomeStores [options]="appService.slideOptsStores">
+                        <ion-slide *ngFor="let store of _categoriesFiltered | async"
+                            style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
+                            <div class="blog-col-item" style="margin-bottom: 0px">
+                                <a (click)="goToStore($event, store)">
+                                    <img src="{{store?.thumb_logo?store.thumb_logo:'../../../assets/icon/no-image.png'}}"
+                                        class="responsive-image preload-image shadow-small round-medium img-store"
+                                        alt="img">
+
+                                    <div class="review-stars" style="padding-top: 5px;font-size: .6em;">
+                                        <i class="fa fa-star color-yellow1-dark"></i>
+                                        <i class="fa fa-star color-yellow1-dark"></i>
+                                        <i class="fa fa-star color-yellow1-dark"></i>
+                                        <i class="fa fa-star color-yellow1-dark"></i>
+                                        <i class="fa fa-star color-yellow1-dark"></i>
+                                    </div>
+
+                                    <strong class="strong-store"
+                                        style="font-size: .7em;padding-top: 0px;">{{((store?.name.length
+                                        <=32)?store?.name:store?.name.substring(0, 32) + '...' )}}</strong>
+                                </a>
+                            </div>
+                        </ion-slide>
+                    </ion-slides>
                 </div>
 
-                <ion-slides id="sliderHomeProductsNoDiscount" #sliderHomeProductsNoDiscount 
-                [options]="appService.slideOptsProductsNoDiscount">
-                  <ion-slide *ngFor="let featuredProductNoDiscount of _featuredProductsNoDiscount | async;"
-                    style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
-                    <div class="profile-2">
-                      <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                        <a>
-
-                          <img
-                            (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
-                            style="width: 200px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
-                            class="preload-image shadow-small round-small"
-                            [src]="featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png'"
-                            alt="img">
-                          <em
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -25px;left: 0px">
-                            <span style="padding: 0px 0px 0px 0px;" class="color-black font-15 top-10">
-                              {{ featuredProductNoDiscount?.price | currency: 'USD': 'symbol' : '1.0-0' }}</span>
-                          </em>
-
-                          <em *ngIf="featuredProductNoDiscount?.video"
-                            (click)="openVideoPlayerComponent($event, featuredProductNoDiscount?.video)"
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -30px;right: 0px;padding: 3px 5px 3px 0px">
-                            <span style="padding: 0px 0px 0px 0px;" class="color-black font-15">
-                              <i class="fab fa-youtube"
-                                style="font-size: 1.8em;color: red;margin-right: 0px;"></i></span>
-                          </em>
-                        </a>
-
-                        <strong class="strong-store"
-                          (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
-                          style="font-size: .7em;padding-top: 20px;">{{((featuredProductNoDiscount?.name.length<=32)?featuredProductNoDiscount?.name:featuredProductNoDiscount?.name.substring(0, 32) + '...')}}</strong>
-
-                        <a (click)="addToCart($event, featuredProductNoDiscount)"
-                          style="background-color: red;color:white;font-size: .55em;"
-                          class="button button-round-small shadow-small button-sm button-s top-20 {{(featuredProductNoDiscount?.soldOut)?'sold-out':'' }}">
-                          <i class="fa fa-shopping-cart add-button" style="color: white;padding-right: 5px;"></i>LO
-                          QUIERO!</a>
-                      </div>
+                <div style="margin: 0px 5px 0px 5px;">
+                    <div style="text-align: -webkit-left;">
+                        <!-- <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">
+                            Productos Destacados</h4> -->
+                        <h4 class="bolder">Productos Destacados</h4>
                     </div>
-                  </ion-slide>
-                </ion-slides>
 
-                <div style="text-align: -webkit-left;">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">Productos Recientes
-                  </h4>
-                </div>
+                    <ion-slides *ngIf="searchingProductsNoDiscount" [options]="appService.slideOptsProductsNoDiscount">
+                        <ion-slide *ngFor="let item of [1,2,3,4,5,6]">
+                            <div class="blog-col-item" style="margin-bottom: 0px;width: 100%;padding: 10px;">
+                                <a>
+                                    <ion-skeleton-text animated style="height: 150px;" class="round-medium">
+                                    </ion-skeleton-text>
+                                </a>
+                            </div>
+                        </ion-slide>
+                    </ion-slides>
 
-                <ion-slides *ngIf="searchingProductsNoFeatured" [options]="appService.slideOptsProductsNoFeatured">
-                  <ion-slide *ngFor="let item of [1,2,3,4,5,6]">
-                    <div class="blog-col-item" style="margin-bottom: 0px;width: 100%;padding: 10px;">
-                      <a>
-                        <ion-skeleton-text animated style="height: 150px;" class="round-medium"></ion-skeleton-text>
-                      </a>
+                    <div *ngIf="(_featuredProductsNoDiscount | async)?.length == 0 && !searchingProductsNoDiscount"
+                        class="boxed-text-huge"
+                        style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                        <h4 style="font-size: small;">No se encontraron resultados</h4>
                     </div>
-                  </ion-slide>
-                </ion-slides>
 
-                <div
-                  *ngIf="(_categories | async)?.length == 0 && !searchingProductsNoFeatured"
-                  class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
-                  <h4 style="font-size: small;">No se encontraron resultados</h4>
-                </div>
+                    <ion-slides id="sliderHomeProductsNoDiscount" #sliderHomeProductsNoDiscount
+                        [options]="appService.slideOptsProductsNoDiscount">
+                        <ion-slide *ngFor="let featuredProductNoDiscount of _featuredProductsNoDiscount | async;"
+                            style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
+                            <div class="profile-2">
+                                <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                                    <a>
 
-                <div class="gallery gallery-collection bottom-20 top-20">
-                  <ion-slides id="sliderHomeProductsNoFeatured" #sliderHomeProductsNoFeatured
-                    [options]="appService.slideOptsProductsNoFeatured">
-                    <ion-slide *ngFor="let nfItem of _featuredProductsNoFeatured"
-                      style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
+                                        <img (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
+                                            style="width: 200px;margin: 5px 0px 5px 0px;"
+                                            class="preload-image shadow-small round-small"
+                                            [src]="featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png'"
+                                            alt="img">
+                                        <em style="background-color: transparent;font-weight: bold;font-size: .6em; 
+                                            bottom: -30px;left: 0px">
+                                            <h6 style="padding: 0px 0px 0px 0px;" class="font-15 top-10 bolder">
+                                                {{ featuredProductNoDiscount?.price | currency: 'USD':
+                                                'symbol' : '1.0-0' }}</h6>
+                                        </em>
 
-                      <div class="profile-2">
-                        <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                          <a style="width: 100%;">
-                            <i (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png')">
-                              <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-                                <img src="{{ nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png'}}"
-                                  alt="img" style="width: 80px;">
-                              </div>
-                            </i>
+                                        <em *ngIf="featuredProductNoDiscount?.video"
+                                            (click)="openVideoPlayerComponent($event, featuredProductNoDiscount?.video)"
+                                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; bottom: -30px;right: 0px;padding: 3px 5px 3px 0px">
+                                            <span style="padding: 0px 0px 0px 0px;" class="color-black font-15">
+                                                <i class="fab fa-youtube"
+                                                    style="font-size: 1.8em;color: red;margin-right: 0px;"></i></span>
+                                        </em>
+                                    </a>
 
-                            <img (click)="goToPage('product-detail/' + product?.id, product?.image?product?.image:'../../../assets/icon/no-image.png')"
-                              *ngFor="let product of nfItem.products | async"
-                              src="{{product?.image?product?.image:'../../../assets/icon/no-image.png'}}"
-                              alt="img" class="preload-image round-small">
-                            <div class="clear"></div>
-                          </a>
+                                    <strong class="strong-store"
+                                        (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
+                                        style="font-size: .7em;padding-top: 20px;">{{((featuredProductNoDiscount?.name.length
+                                        <=32)?featuredProductNoDiscount?.name:featuredProductNoDiscount?.name.substring(0,
+                                            32) + '...' )}}</strong>
 
-                          <a (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png')"
-                            style="padding-top: 10px;font-size: .7em;">Ver mas...</a>
-                        </div>
-                      </div>
-                    </ion-slide>
-                  </ion-slides>
-                </div>
+                                            <a (click)="addToCart($event, featuredProductNoDiscount)"
+                                                style="font-size: .55em;"
+                                                class="bg-highlight button button-round-small shadow-small button-sm button-s top-20 {{(featuredProductNoDiscount?.soldOut)?'sold-out':'' }}">
+                                                <i class="fa fa-shopping-cart add-button"
+                                                    style="color: white;padding-right: 5px;"></i>LO QUIERO!</a>
+                                </div>
+                            </div>
+                        </ion-slide>
+                    </ion-slides>
 
-                <ion-slides #sliderHomeFooter [options]="appService.slideOpts" style="max-width: 450px;">
-                  <ion-slide (click)="redirectBanner(bannerF)" *ngFor="let bannerF of appService.bannersFooter | async">
-                    <img class="round-medium" src="{{bannerF.image}}">
-                  </ion-slide>
-                </ion-slides>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="content" style="margin: 20px 5px 0px 5px;">
-                <div style="text-align: -webkit-left;">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">&nbsp;Aprovecha los
-                    cupones para hoy!!</h4>
-                </div>
-
-                <ion-slides *ngIf="searchingStoreCoupons" [options]="appService.slideOptsStoreCoupons"
-                  style="max-width: 450px;" style="padding-bottom: 20px;">
-                  <ion-slide *ngFor="let item of [1,2,3]"
-                    style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
-                    <ion-skeleton-text animated
-                      class="responsive-image preload-image shadow-small round-medium img-store"
-                      style="width: 100px;height: 100px;">
-                    </ion-skeleton-text>
-                  </ion-slide>
-                </ion-slides>
-
-                <div *ngIf="(_coupons | async)?.length == 0 && !searchingStoreCoupons"
-                  class="boxed-text-huge" style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
-                  <h4 style="font-size: small;">No se encontraron resultados</h4>
-                </div>
-
-                <ion-slides id="sliderStoreCoupons" #sliderStoreCoupons [options]="appService.slideOptsStoreCoupons">
-                  <ion-slide *ngFor="let storeCoupon of _coupons | async">
-                    <div class="profile-2">
-                      <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                        <a>
-                          <img (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
-                            style="width: 250px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
-                            class="preload-image shadow-large round-small" src="../../../assets/icon/couponTemplate.png"
-                            alt="img">
-
-                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 45px;left: 10px">
-                            <span style="padding: 0px 0px 0px 0px;">
-                              Nombre:</span>
-                          </em>
-                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 60px;left: 10px">
-                            <span style="padding: 0px 0px 0px 0px;color: black;">
-                              {{storeCoupon?.name}}</span>
-                          </em>
-
-                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 105px;left: 10px">
-                            <span style="padding: 0px 0px 0px 0px;font-size: 5em;color: lawngreen;">
-                              {{storeCoupon?.discount}}%</span>
-                          </em>
-
-                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 95px;left: 120px">
-                            <span style="padding: 0px 0px 0px 0px;">
-                              descuento!!</span>
-                          </em>
-
-                          <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 140px;left: 10px">
-                            <label style="padding: 0px 0px 0px 0px;color: red;text-decoration: none;">
-                              Compras mayores a
-                              <b
-                                style="font-size: 1.5em;">{{storeCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b></label>
-                          </em>
-                        </a>
-
-                        <strong class="strong-store" style="font-size: .7em;"
-                          class="bold">{{storeCoupon?.name}}</strong>
-
-                        <strong class="strong-store" style="font-size: .6em;padding-top: 0px;height: 20px;">Vence:
-                          {{ storeCoupon?.dateExpiration.toDate() | date: 'dd/MM/yyyy' }}</strong>
-
-                        <a (click)="takeTemporalCoupon(storeCoupon)" style="color:white;font-size: .55em;"
-                          class="button button-round-small shadow-small button-sm button-s bg-highlight top-10">
-                          <i class="fa fa-ticket-alt add-button" style="color: white;padding-right: 5px;"></i>Tomar
-                          cupón</a>
-                      </div>
+                    <div style="text-align: -webkit-left;">
+                        <!-- <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 0px;">
+                            Productos Recientes
+                        </h4> -->
+                        <h4 class="bolder">Productos Recientes</h4>
                     </div>
-                  </ion-slide>
-                </ion-slides>
-              </div>
 
-              <div class="divider"></div>
+                    <ion-slides *ngIf="searchingProductsNoFeatured" [options]="appService.slideOptsProductsNoFeatured">
+                        <ion-slide *ngFor="let item of [1,2,3,4,5,6]">
+                            <div class="blog-col-item" style="margin-bottom: 0px;width: 100%;padding: 10px;">
+                                <a>
+                                    <ion-skeleton-text animated style="height: 150px;" class="round-medium">
+                                    </ion-skeleton-text>
+                                </a>
+                            </div>
+                        </ion-slide>
+                    </ion-slides>
 
-              <div class="content" style="margin: 30px 5px 0px 5px;">
-                <div style="text-align: -webkit-left;">
-                  <h4 class="bolder color-highlight" style="font-size: 1em;">Acumula Puntos y Reclama Regalos</h4>
-                </div>
-
-                <ion-slides *ngIf="searchingGifts" [options]="appService.slideOptsGifts" style="max-width: 450px;">
-                  <ion-slide *ngFor="let item of [1,2,3,4,5,6]"
-                    style="padding: 2px; padding-right: 5px;padding-left: 5px;">
-                    <ion-skeleton-text animated
-                      class="responsive-image preload-image shadow-small round-medium img-store"
-                      style="width: 100px;height: 100px;">
-                    </ion-skeleton-text>
-                  </ion-slide>
-                </ion-slides>
-
-                <div *ngIf="(_gifts | async)?.length == 0 && !searchingGifts" class="boxed-text-huge"
-                  style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
-                  <h4 style="font-size: small;">No se encontraron resultados</h4>
-                </div>
-
-                <ion-slides id="sliderHomeGifts" #sliderHomeGifts *ngIf="!searchingGifts"
-                  [options]="appService.slideOptsGifts">
-                  <ion-slide (click)="goToPage('/product-detail/' + gift.id, gift?.image?gift?.image:'../../../assets/icon/no-image.png')"
-                    *ngFor="let gift of _gifts | async" style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
-                    <div class="profile-2">
-                      <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                        <a>
-
-                          <img style="width: 150px;margin: 5px 0px 5px 0px;border: solid 2px #fff;"
-                            class="preload-image shadow-small round-small"
-                            [src]="gift?.image?gift?.image:'../../../assets/icon/no-image.png'" alt="img">
-
-                          <em
-                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 20px;left: -10px">
-                            <img style="width: 40px;margin: 0px 0px 0px 0px;opacity: .6;"
-                              class="preload-image round-medium" src="../../../assets/icon/gift.png" alt="img">
-                          </em>
-
-                          <em style="background-color: transparent;color: black;font-weight: bold;font-size: .8em; 
-                              bottom: -25px;left: 0px;padding: 0px;margin-top: 0px;text-transform: none;">
-                            <span style="padding: 0px 0px 0px 0px;font-size: .8em;" class="color-black top-9 bold">
-                              {{ gift?.price }} Puntos</span>
-                          </em>
-                        </a>
-
-                        <strong class="strong-store"
-                          style="font-size: .7em;padding-top: 30px;">{{((gift?.name.length<=32)?gift?.name:gift?.name.substring(0, 32) + '...')}}</strong>
-                      </div>
+                    <div *ngIf="(_categories | async)?.length == 0 && !searchingProductsNoFeatured"
+                        class="boxed-text-huge"
+                        style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                        <h4 style="font-size: small;">No se encontraron resultados</h4>
                     </div>
-                  </ion-slide>
-                </ion-slides>
-              </div>
+
+                    <div class="gallery gallery-collection bottom-20 top-20">
+                        <ion-slides id="sliderHomeProductsNoFeatured" #sliderHomeProductsNoFeatured
+                            [options]="appService.slideOptsProductsNoFeatured">
+                            <ion-slide *ngFor="let nfItem of _featuredProductsNoFeatured"
+                                style="padding: 2px; padding-top: 2px;padding-bottom: 12px;">
+
+                                <div class="profile-2">
+                                    <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                                        <a style="width: 100%;">
+                                            <i
+                                                (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png')">
+                                                <div class="user-list-left"
+                                                    style="text-align: -webkit-center;padding-bottom: 15px;">
+                                                    <img src="{{ nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png'}}"
+                                                        alt="img" style="width: 80px;">
+                                                </div>
+                                            </i>
+
+                                            <img (click)="goToPage('product-detail/' + product?.id, product?.image?product?.image:'../../../assets/icon/no-image.png')"
+                                                *ngFor="let product of nfItem.products | async"
+                                                src="{{product?.image?product?.image:'../../../assets/icon/no-image.png'}}"
+                                                alt="img" class="preload-image round-small">
+                                            <div class="clear"></div>
+                                        </a>
+
+                                        <a (click)="goToPage('/store/' + nfItem.category.id, nfItem.category.thumb_logo?nfItem.category.thumb_logo:'../../../assets/icon/no-image.png')"
+                                            style="padding-top: 10px;font-size: .7em;">Ver mas...</a>
+                                    </div>
+                                </div>
+                            </ion-slide>
+                        </ion-slides>
+                    </div>
+
+                    <ion-slides #sliderHomeFooter [options]="appService.slideOpts" style="max-width: 450px;">
+                        <ion-slide (click)="redirectBanner(bannerF)"
+                            *ngFor="let bannerF of appService.bannersFooter | async">
+                            <img class="round-medium" src="{{bannerF.image}}">
+                        </ion-slide>
+                    </ion-slides>
+                </div>
+
+                <!-- <div class="divider"></div> -->
+
+                <div style="margin: 20px 5px 0px 5px;">
+                    <div style="text-align: -webkit-left;">
+                        <!-- <h4 class="bolder color-highlight" style="font-size: 1em;margin-top: 10px;">
+                            &nbsp;Aprovecha los
+                            cupones para hoy!!</h4> -->
+
+                        <h4 class="bolder">Cupones para hoy!!</h4>
+                    </div>
+
+                    <ion-slides *ngIf="searchingStoreCoupons" [options]="appService.slideOptsStoreCoupons"
+                        style="max-width: 450px;" style="padding-bottom: 20px;">
+                        <ion-slide *ngFor="let item of [1,2,3]"
+                            style="padding: 2px; padding-top: 17px;padding-right: 5px;padding-left: 5px;">
+                            <ion-skeleton-text animated
+                                class="responsive-image preload-image shadow-small round-medium img-store"
+                                style="width: 100px;height: 100px;">
+                            </ion-skeleton-text>
+                        </ion-slide>
+                    </ion-slides>
+
+                    <div *ngIf="(_coupons | async)?.length == 0 && !searchingStoreCoupons" class="boxed-text-huge"
+                        style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                        <h4 style="font-size: small;">No se encontraron resultados</h4>
+                    </div>
+
+                    <ion-slides id="sliderStoreCoupons" #sliderStoreCoupons
+                        [options]="appService.slideOptsStoreCoupons">
+                        <ion-slide *ngFor="let storeCoupon of _coupons | async">
+                            <div class="profile-2">
+                                <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                                    <a>
+                                        <img (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
+                                            style="width: 250px;margin: 5px 0px 5px 0px"
+                                            class="preload-image shadow-large round-small"
+                                            src="../../../assets/icon/couponTemplate.png" alt="img">
+
+                                        <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
+                                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 45px;left: 10px">
+                                            <span style="padding: 0px 0px 0px 0px;">
+                                                Nombre:</span>
+                                        </em>
+                                        <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
+                                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 60px;left: 10px">
+                                            <span style="padding: 0px 0px 0px 0px;color: black;">
+                                                {{storeCoupon?.name}}</span>
+                                        </em>
+
+                                        <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
+                                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 105px;left: 10px">
+                                            <span style="padding: 0px 0px 0px 0px;font-size: 5em;color: lawngreen;">
+                                                {{storeCoupon?.discount}}%</span>
+                                        </em>
+
+                                        <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
+                                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 95px;left: 120px">
+                                            <span style="padding: 0px 0px 0px 0px;">
+                                                descuento!!</span>
+                                        </em>
+
+                                        <em (click)="goToPage('/store-coupons-detail/' + storeCoupon.id, '../../../assets/icon/coupon.png')"
+                                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 140px;left: 10px">
+                                            <label style="padding: 0px 0px 0px 0px;color: red;text-decoration: none;">
+                                                Compras mayores a
+                                                <b style="font-size: 1.5em;">{{storeCoupon?.minAmount |
+                                                    currency: 'USD': 'symbol' : '1.0-0' }}</b></label>
+                                        </em>
+                                    </a>
+
+                                    <strong class="strong-store" style="font-size: .7em;"
+                                        class="bold">{{storeCoupon?.name}}</strong>
+
+                                    <strong class="strong-store"
+                                        style="font-size: .6em;padding-top: 0px;height: 20px;">Vence:
+                                        {{ storeCoupon?.dateExpiration.toDate() | date: 'dd/MM/yyyy'
+                                        }}</strong>
+
+                                    <a (click)="takeTemporalCoupon(storeCoupon)" style="color:white;font-size: .55em;"
+                                        class="button button-round-small shadow-small button-sm button-s bg-highlight top-10">
+                                        <i class="fa fa-ticket-alt add-button"
+                                            style="color: white;padding-right: 5px;"></i>Tomar
+                                        cupón</a>
+                                </div>
+                            </div>
+                        </ion-slide>
+                    </ion-slides>
+                </div>
+
+                <!-- <div class="divider"></div> -->
+
+                <div style="margin: 30px 5px 0px 5px;">
+                    <div style="text-align: -webkit-left;">
+                        <!-- <h4 class="bolder color-highlight" style="font-size: 1em;">Acumula Puntos y
+                            Reclama Regalos</h4> -->
+
+                        <h4 class="bolder">Regalos X Puntos!</h4>
+                    </div>
+
+                    <ion-slides *ngIf="searchingGifts" [options]="appService.slideOptsGifts" style="max-width: 450px;">
+                        <ion-slide *ngFor="let item of [1,2,3,4,5,6]"
+                            style="padding: 2px; padding-right: 5px;padding-left: 5px;">
+                            <ion-skeleton-text animated
+                                class="responsive-image preload-image shadow-small round-medium img-store"
+                                style="width: 100px;height: 100px;">
+                            </ion-skeleton-text>
+                        </ion-slide>
+                    </ion-slides>
+
+                    <div *ngIf="(_gifts | async)?.length == 0 && !searchingGifts" class="boxed-text-huge"
+                        style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                        <h4 style="font-size: small;">No se encontraron resultados</h4>
+                    </div>
+
+                    <ion-slides id="sliderHomeGifts" #sliderHomeGifts *ngIf="!searchingGifts"
+                        [options]="appService.slideOptsGifts">
+                        <ion-slide
+                            (click)="goToPage('/product-detail/' + gift.id, gift?.image?gift?.image:'../../../assets/icon/no-image.png')"
+                            *ngFor="let gift of _gifts | async"
+                            style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
+                            <div class="profile-2">
+                                <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                                    <a>
+
+                                        <img style="width: 150px;margin: 5px 0px 5px 0px;"
+                                            class="preload-image shadow-small round-small"
+                                            [src]="gift?.image?gift?.image:'../../../assets/icon/no-image.png'"
+                                            alt="img">
+
+                                        <em
+                                            style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 20px;left: -10px">
+                                            <img style="width: 40px;margin: 0px 0px 0px 0px;opacity: .6;"
+                                                class="preload-image round-medium" src="../../../assets/icon/gift.png"
+                                                alt="img">
+                                        </em>
+
+                                        <em style="font-weight: bold;font-size: .8em; bottom: -30px;left: 0px;
+                                            padding: 0px;margin-top: 0px;text-transform: none;">
+                                            <h6 style="padding: 0px 0px 0px 0px;" class="font-15 top-10 bolder">
+                                                {{ gift?.price }} Puntos</h6>
+                                            <!-- <span style="padding: 0px 0px 0px 0px;font-size: .8em;"
+                                                class="color-black top-9 bold">
+                                                {{ gift?.price }} Puntos</span> -->
+                                        </em>
+                                    </a>
+
+                                    <strong class="strong-store"
+                                        style="font-size: .7em;padding-top: 30px;">{{((gift?.name.length
+                                        <=32)?gift?.name:gift?.name.substring(0, 32) + '...' )}}</strong>
+                                </div>
+                            </div>
+                        </ion-slide>
+                    </ion-slides>
+                </div>
             </div>
             <div class="divider divider-margins"></div>
 
             <ion-slides id="sliderMenu" #sliderMenu [options]="appService.slideOptsStoreMenu">
-              <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-info-circle" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Info</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStorePointsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-gift" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Regalos</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: dotted;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-cut" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Cupones</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStoreOrdersPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-clipboard-list" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Pedidos</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStoreVendorsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-handshake" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Comisiones</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <ion-slide (click)="openStorePQRSFPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">PQRSF</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide>
-              <!-- <ion-slide *ngIf="appService.currentUser && appService.currentUser?.isAdmin"
-                (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-file-invoice-dollar" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Plan</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide> -->
-              <!-- <ion-slide *ngIf="appService.currentUser && appService.currentUser?.isAdmin"
-                (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
-                <a class="button button-round-small button-full"
-                  style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
-                  <table>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 0px 0px 0px 0px;">
-                        <span style="font-size: .7em;color: black;">Reportes</span>
-                      </td>
-                    </tr>
-                  </table>
-                </a>
-              </ion-slide> -->
+                <ion-slide (click)="openStoreInformationComponent($event)" style="margin: 3px;width: 60px;">
+                    <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                        <table>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <i class="fas fa-info-circle" style="font-size: 2.5em;color: red;"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <span style="font-size: .7em;color: black;">Info</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </ion-slide>
+                <ion-slide (click)="openStorePointsPage()" style="margin: 3px;width: 60px;">
+                    <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                        <table>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <i class="fas fa-gift" style="font-size: 2.5em;color: red;"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <span style="font-size: .7em;color: black;">Regalos</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </ion-slide>
+                <ion-slide (click)="openStoreCouponsPage()" style="margin: 3px;width: 60px;">
+                    <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: dotted;">
+                        <table>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <i class="fas fa-cut" style="font-size: 2.5em;color: red;"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <span style="font-size: .7em;color: black;">Cupones</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </ion-slide>
+                <ion-slide (click)="openStoreOrdersPage()" style="margin: 3px;width: 60px;">
+                    <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                        <table>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <i class="fas fa-clipboard-list" style="font-size: 2.5em;color: red;"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <span style="font-size: .7em;color: black;">Pedidos</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </ion-slide>
+                <ion-slide (click)="openStoreVendorsPage()" style="margin: 3px;width: 60px;">
+                    <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                        <table>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <i class="fas fa-handshake" style="font-size: 2.5em;color: red;"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <span style="font-size: .7em;color: black;">Comisiones</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </ion-slide>
+                <ion-slide (click)="openStorePQRSFPage()" style="margin: 3px;width: 60px;">
+                    <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                        <table>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <i class="fas fa-paper-plane" style="font-size: 2.5em;color: red;"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 0px 0px 0px;">
+                                    <span style="font-size: .7em;color: black;">PQRSF</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </ion-slide>
+                <!-- <ion-slide *ngIf="appService.currentUser && appService.currentUser?.isAdmin"
+                      (click)="openStoreBillingPage($event)" style="margin: 3px;width: 60px;">
+                      <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;width: 80px;height: 70px;border: double;">
+                        <table>
+                          <tr>
+                            <td style="padding: 0px 0px 0px 0px;">
+                              <i class="fas fa-file-invoice-dollar" style="font-size: 2.5em;color: red;"></i>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 0px 0px 0px 0px;">
+                              <span style="font-size: .7em;color: black;">Plan</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </a>
+                    </ion-slide> -->
+                <!-- <ion-slide *ngIf="appService.currentUser && appService.currentUser?.isAdmin"
+                      (click)="openStoreReportsPage()" style="margin: 3px;width: 60px;">
+                      <a class="button button-round-small button-full"
+                        style="color: red;font-size: 12px;margin-bottom: 0px;padding-top: 10px;;width: 80px;height: 70px;border: double;">
+                        <table>
+                          <tr>
+                            <td style="padding: 0px 0px 0px 0px;">
+                              <i class="fas fa-chart-bar" style="font-size: 2.5em;color: red;"></i>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 0px 0px 0px 0px;">
+                              <span style="font-size: .7em;color: black;">Reportes</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </a>
+                    </ion-slide> -->
             </ion-slides>
 
 
             <div class="content top-20">
-              <div class="divider"></div>
-              <div class="list-columns-left">
-                <div class="bottom-15">
-                  <i class="fas fa-award color-yellow1-light fa-3x"></i>
-                  <h1 class="bolder">Calidad Garantizada</h1>
-                  <p>
-                    Escogemos los mejores productos del mercado en cuanto a calidad para venderlos al mejor precio!
-                  </p>
+                <div class="divider"></div>
+                <div class="list-columns-left">
+                    <div class="bottom-15">
+                        <i class="fas fa-award color-yellow1-light fa-3x"></i>
+                        <h1 class="bolder">Calidad Garantizada</h1>
+                        <p>
+                            Escogemos los mejores productos del mercado en cuanto a calidad para
+                            venderlos al mejor precio!
+                        </p>
+                    </div>
+                    <div class="bottom-15">
+                        <i class="fas fa-shipping-fast color-green1-light fa-2x"></i>
+                        <h1 class="bolder">Rápida Entrega</h1>
+                        <p>
+                            Procuramos entregar de manera efectiva, rápida y segura.
+                        </p>
+                    </div>
+                    <div>
+                        <i class="fab fa-earlybirds color-blue2-dark fa-3x"></i>
+                        <h1 class="bolder">Servimos con el Alma</h1>
+                        <p>
+                            Nos gusta ver a nuestros clientes satisfechos, por eso ponemos todo de
+                            nuestra parte para que su
+                            experiencia con nosotros sea gratificante.
+                        </p>
+                    </div>
                 </div>
-                <div class="bottom-15">
-                  <i class="fas fa-shipping-fast color-green1-light fa-2x"></i>
-                  <h1 class="bolder">Rápida Entrega</h1>
-                  <p>
-                    Procuramos entregar de manera efectiva, rápida y segura.
-                  </p>
-                </div>
-                <div>
-                  <i class="fab fa-earlybirds color-blue2-dark fa-3x"></i>
-                  <h1 class="bolder">Servimos con el Alma</h1>
-                  <p>
-                    Nos gusta ver a nuestros clientes satisfechos, por eso ponemos todo de nuestra parte para que su
-                    experiencia con nosotros sea gratificante.
-                  </p>
-                </div>
-              </div>
-              <div class="clear"></div>
+                <div class="clear"></div>
             </div>
 
             <div class="content top-40">
-              <h2 class="bold center-text">Y Lo Mejor!! <i class="fa fa-cocktail color-red2-dark fa-2x"></i></h2>
-              <p class="boxed-text-huge">
-                Tenemos grandes descuentos, cupones, regalos y muchas sorpresas más!!
-              </p>
-              <div class="link-list-1">
-                <a><i class="fa fa-gift color-red2-dark"></i><span>Regalos</span><i
-                    class="fa fa-check color-green1-dark"></i></a>
-                <a><i class="fa fa-tags color-yellow2-dark"></i><span>Descuentos</span><i
-                    class="fa fa-check color-green1-dark"></i></a>
-                <a><i class="fa fa-ticket-alt color-blue2-dark"></i><span>Cupones</span><i
-                    class="fa fa-check color-green1-dark"></i></a>
-                <a><i class="fa fa-percentage color-magenta2-dark"></i><span>Promociones</span><i
-                    class="fa fa-check color-green1-dark"></i></a>
-                <a><i class="fa fa-handshake color-blue1-dark"></i><span>Comisiones para vendedores</span><i
-                    class="fa fa-check color-green1-dark"></i></a>
-                <a><i class="fa fa-dollar-sign color-yellow2-dark"></i><span>Métodos de pago</span><i
-                    class="fa fa-check color-green1-dark"></i></a>
-                <a><i class="fa fa-truck color-pink1-dark"></i><span>Envíos Nacionales</span><i
-                    class="fa fa-check color-green1-dark"></i></a>
-                <a class="no-border"><i class="fa fa-trophy color-yellow2-dark"></i><span class="no-border">Satisfacción
-                    Garantizada</span><i class="fa fa-check color-green1-dark"></i></a>
-              </div>
+                <h2 class="bold center-text">Y Lo Mejor!! <i class="fa fa-cocktail color-red2-dark fa-2x"></i></h2>
+                <p class="boxed-text-huge">
+                    Tenemos grandes descuentos, cupones, regalos y muchas sorpresas más!!
+                </p>
+                <div class="link-list-1">
+                    <a><i class="fa fa-gift color-red2-dark"></i><span>Regalos</span><i
+                            class="fa fa-check color-green1-dark"></i></a>
+                    <a><i class="fa fa-tags color-yellow2-dark"></i><span>Descuentos</span><i
+                            class="fa fa-check color-green1-dark"></i></a>
+                    <a><i class="fa fa-ticket-alt color-blue2-dark"></i><span>Cupones</span><i
+                            class="fa fa-check color-green1-dark"></i></a>
+                    <a><i class="fa fa-percentage color-magenta2-dark"></i><span>Promociones</span><i
+                            class="fa fa-check color-green1-dark"></i></a>
+                    <a><i class="fa fa-handshake color-blue1-dark"></i><span>Comisiones para
+                            vendedores</span><i class="fa fa-check color-green1-dark"></i></a>
+                    <a><i class="fa fa-dollar-sign color-yellow2-dark"></i><span>Métodos de
+                            pago</span><i class="fa fa-check color-green1-dark"></i></a>
+                    <a><i class="fa fa-truck color-pink1-dark"></i><span>Envíos Nacionales</span><i
+                            class="fa fa-check color-green1-dark"></i></a>
+                    <a class="no-border"><i class="fa fa-trophy color-yellow2-dark"></i><span
+                            class="no-border">Satisfacción
+                            Garantizada</span><i class="fa fa-check color-green1-dark"></i></a>
+                </div>
             </div>
 
             <div class="footer" style="box-shadow:none;padding: 0px 30px 10px 30px;">
-              <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-                <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
-              </div>
-              <a class="footer-title color-highlight"><span style="color: red;">COPA</span>CITY</a>
-              <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro Comercial Virtual</p>
-              <div class="footer-socials" style="padding-left: 24px;">
-                <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
-                    class="fab fa-facebook-f"></i></a>
-                <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
-                    class="fa fa-phone"></i></a>
-                <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"
-                  class="icon icon-round icon-s bg-whatsapp"><i class="fab fa-whatsapp"></i></a>
-                <a data-menu="menu-share" (click)="shareApp($event)" class="round-tiny shadow-medium bg-red2-dark"><i
-                    class="fa fa-share-alt"></i></a>
-                <div class="clear"></div>
-              </div>
-              <p class="footer-copyright">Copyright &copy; Enabled <span id="copyright-year">2020</span>. All Rights
-                Reserved.
-              </p>
+                <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+                    <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
+                </div>
+                <a class="footer-title color-highlight"><span style="color: red;">COPA</span>CITY</a>
+                <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro
+                    Comercial Virtual</p>
+                <div class="footer-socials" style="padding-left: 24px;">
+                    <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+                            class="fa fa-phone"></i></a>
+                    <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"
+                        class="icon icon-round icon-s bg-whatsapp"><i class="fab fa-whatsapp"></i></a>
+                    <a data-menu="menu-share" (click)="shareApp($event)"
+                        class="round-tiny shadow-medium bg-red2-dark"><i class="fa fa-share-alt"></i></a>
+                    <div class="clear"></div>
+                </div>
+                <p class="footer-copyright">Copyright &copy; Enabled <span id="copyright-year">2020</span>. All Rights
+                    Reserved.
+                </p>
             </div>
-          </div>
         </div>
-        <ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button color="success" (click)="openVendorList($event)">
+    </div>
+    <ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="success" (click)="openVendorList($event)">
             <a style="color: white;">
-              <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+                <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
-          </ion-fab-button>
-        </ion-fab>
-        <ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-80">
-          <ion-fab-button color="success" (click)="openVendorList($event)">
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-80">
+        <ion-fab-button color="success" (click)="openVendorList($event)">
             <a style="color: white;">
-              <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+                <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
             </a>
-          </ion-fab-button>
-        </ion-fab>
-      </ion-content>
-    </super-tab>
-  </super-tabs-container>
-</super-tabs>
+        </ion-fab-button>
+    </ion-fab>
 
-<div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
-  style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
-  <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
-    style="top: -5px;padding-left: 5px;padding-right: 5px;">
-    {{ appService?.temporalCoupon?.name }}
-  </h6>
+    <div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
+        style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
+        <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
+            style="top: -5px;padding-left: 5px;padding-right: 5px;">
+            {{ appService?.temporalCoupon?.name }}
+        </h6>
 
-  <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
-    style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
-    un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
-    <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
-  </h6>
+        <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
+            style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
+            un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
+            <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
+        </h6>
 
-  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">
-    <table>
-      <tr>
-        <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()"
-            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
-        <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
-            style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
-      </tr>
-    </table>
-  </h6>
+        <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">
+            <table>
+                <tr>
+                    <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
+                            (click)="appService.discardTemoralCoupon()"
+                            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
+                    <td style="background-color: red;padding: 0px 0px 9px 0px;"><a
+                            (click)="appService.applyTemporalCoupon()"
+                            style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
+                </tr>
+            </table>
+        </h6>
+    </div>
+</ion-content>
+
+<div id="main-menu-large" class="menuLeft shadow-small">
+    <ion-header class="ion-no-border" style="height: 100%;">
+        <ion-toolbar style="height: 100%;">
+            <ion-title>
+                <div data-menu-select="page-welcome top-10" style="width: 250px;height: 100%;">
+                    <div class="nav nav-medium top-10" style="padding: 10px;">
+                        <a id="page-home" routerLink="/home">
+                            <i class="fa fa-home color-green1-dark"></i><span>Inicio</span><i
+                                class="fa fa-angle-right"></i>
+                        </a>
+                        <a *ngIf="appService?.currentUser" id="page-components" routerLink="//order-list">
+                            <i class="fa fa-users color-blue2-dark"></i><span>Pedidos</span><i
+                                class="fa fa-angle-right"></i>
+                        </a>
+                        <a id="page-menus" routerLink="/contact">
+                            <i class="fa fa-file-invoice-dollar color-magenta2-dark"></i><span>Mensajes</span><i
+                                class="fa fa-angle-right"></i>
+                        </a>
+                        <a id="page-menus" *ngIf="appService?.currentUser" (click)="signOut()">
+                            <i class="fa fa-file-invoice-dollar color-magenta2-dark"></i><span>Cerrar Sesión</span>
+                        </a>
+
+                        <div class="divider top-15"></div>
+
+                        <p>Copyright <span class="copyright-year"></span> - Maothinks <br /> Todos los derechos
+                            reservados.
+                        </p>
+                        <p class="footer-text"><b>Versión</b> {{ appService.appVersion }}</p>
+                    </div>
+                </div>
+            </ion-title>
+        </ion-toolbar>
+
+    </ion-header>
+</div>
+
+<div id="main-menu-large-right" class="menuLeft shadow-small">
+    <ion-header class="ion-no-border">
+        <ion-toolbar>
+            <ion-title>
+                <h5 class="thin center-text">Notificaciones</h5>
+            </ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="side-content">
+        <app-menu-notifications></app-menu-notifications>
+    </ion-content>
 </div>
