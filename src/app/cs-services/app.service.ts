@@ -235,6 +235,7 @@ export class AppService {
     const toast = await this.toastController.create({
       message: message,
       position: 'top',
+      //color: "success",
       buttons: ['Cerrar']
     });
 

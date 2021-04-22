@@ -1443,8 +1443,8 @@ function init_template() {
             return false;
         });
     }, 500);
-    if (readCookie('Eazy_dark_mode')) { $('body').removeClass('theme-light').addClass('theme-dark'); document.body.classList.toggle('dark', true); }
-    if (readCookie('Eazy_light_mode')) { $('body').removeClass('theme-dark').addClass('theme-light'); document.body.classList.toggle('dark', false);}
+    if (readCookie('Eazy_dark_mode')) { $('body').removeClass('theme-light').addClass('theme-dark'); document.body.classList.add('dark'); document.body.classList.remove('light'); }
+    if (readCookie('Eazy_light_mode')) { $('body').removeClass('theme-dark').addClass('theme-light'); document.body.classList.add('light'); document.body.classList.remove('dark');}
 
     //Menu Required Variables
     var menu = $('.menu'),

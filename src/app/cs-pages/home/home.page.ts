@@ -1045,11 +1045,11 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(event) {
-    setTimeout(() => {
-      //this.initializePage();
-      location.reload();
-      event.target.complete();
-    }, 500);
+    // setTimeout(() => {
+    //   //this.initializePage();
+    //   location.reload();
+    //   event.target.complete();
+    // }, 500);
   }
 
   takeTemporalCoupon(storeCoupon: any) {

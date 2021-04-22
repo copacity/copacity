@@ -27,27 +27,28 @@ export class AppComponent {
     private statusBar: StatusBar,
     private swUpdate: SwUpdate,
     public popoverController: PopoverController,
-    public appService:AppService,
+    public appService: AppService,
     private angularFireAuth: AngularFireAuth,
     private loaderComponent: LoaderComponent,
     public toastController: ToastController,
     public alertController: AlertController
   ) {
-    this.initializeApp();  
-    this.checkUpdate(); 
+    this.initializeApp();
+    this.checkUpdate();
+    this.changeDarkMode();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide();      
+      this.splashScreen.hide();
     });
   }
 
   checkUpdate() {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(async () => {
-          window.location.reload();
+        window.location.reload();
       });
     }
   }
@@ -98,7 +99,7 @@ export class AppComponent {
   }
 
   async presentAlert(title: string, message: string, done: Function) {
-     
+
     const alert = await this.alertController.create({
       header: title,
       message: message,
@@ -112,7 +113,7 @@ export class AppComponent {
     alert.onDidDismiss().then(() => done());
     await alert.present();
   }
-  
+
   shareApp(e) {
     this.ngNavigatorShareService.share({
       title: "COPACITY",
@@ -136,7 +137,7 @@ export class AppComponent {
     let modal = await this.popoverController.create({
       component: CopyToClipboardComponent,
       cssClass: 'notification-popover',
-      componentProps: { textLink:  text},
+      componentProps: { textLink: text },
       event: e
     });
 
@@ -191,4 +192,38 @@ export class AppComponent {
 
     popover.present();
   }
+
+  changeDarkMode() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    //this.updateTheme(prefersDark);
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      this.updateTheme(e);
+    });
+  }
+
+  updateTheme(element){
+    if (element.matches) {
+      document.body.classList.add("dark")
+      document.body.classList.add("theme-dark")
+
+      document.body.classList.remove("light")
+      document.body.classList.remove("theme-light")
+
+      this.eraseCookie('Eazy_light_mode'); 
+      this.createCookie('Eazy_dark_mode', true, 1);
+    } else {
+      document.body.classList.remove("dark")
+      document.body.classList.remove("theme-dark")
+
+      document.body.classList.add("light")
+      document.body.classList.add("theme-light")
+
+      this.eraseCookie('Eazy_dark_mode'); 
+      this.createCookie('Eazy_light_mode', true, 1);
+    }
+  }
+
+  createCookie(e, t, n) { if (n) { var o: any = new Date; o.setTime(o.getTime() + 48 * n * 60 * 60 * 1e3); var r = "; expires=" + o.toGMTString() } else var r = ""; document.cookie = e + "=" + t + r + "; path=/" }
+  eraseCookie(e) { this.createCookie(e, "", -1) }
 }
