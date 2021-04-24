@@ -428,7 +428,7 @@ h5{font-size:16px; line-height:22px}
 .content-background{z-index:1; background-size:cover;}
 
 /*--Page Content Settings---*/
-.page-content{background-color:#FFF; transition:transform 300ms ease;}
+.page-content{background-color:#f0f2f5; transition:transform 300ms ease;}
 .header, .menu-active, .menu{transition: transform 300ms ease; will-change: transform, opacity;}
 .menu-hider{transition:opacity 300ms ease; will-change:opacity;}
 .page-content{box-shadow:0 5px 30px 0 rgba(0,0,0,0.11); z-index:98;}
@@ -436,7 +436,7 @@ h5{font-size:16px; line-height:22px}
 /*---Page Transitions---*/
 #page{
     display:block;
-    background-color:#FFF;
+    background-color:#f0f2f5;
     left:0px;
     right:0px;
     overflow:hidden;
@@ -3492,7 +3492,7 @@ span.input-style-1-active{padding-right:10px!important; right:auto!important;}
 
 .theme-dark .divider{background-color:rgba(255,255,255,0.15);}
 .theme-dark .menu-hider{background-color:rgba(0,0,0,0.7);}
-.theme-dark .footer{background-color:#161616;}
+.theme-dark .footer{background-color:#1f1f1f;}
 .theme-dark .menu .nav-submenu a,
 .theme-dark .menuLeft .nav-submenu a{color:rgba(255,255,255,0.5);}
 

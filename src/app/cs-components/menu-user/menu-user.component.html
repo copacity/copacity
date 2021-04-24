@@ -1,17 +1,24 @@
-<ion-list style="padding-top: 10px;" mode="ios" lines="none">
-  <ion-item style="padding: 3px;" (click)="SignIn()" *ngIf="!appService.currentUser">
-    <ion-label>Iniciar Sesión</ion-label>
-  </ion-item>
-  <ion-item style="padding: 3px;" *ngIf="appService.currentUser" (click)="goToUserProfile()">
-    <ion-label>Ir a mi Perfil</ion-label>
-  </ion-item>
-  <ion-item style="padding: 3px;" *ngIf="appService.currentUser && appService.currentUser.isAdmin" (click)="openStoreCreatePage()">
-    <ion-label>Crear Categoria</ion-label>
-  </ion-item>
-  <ion-item style="padding: 3px;" *ngIf="appService.currentUser && appService.currentUser.isAdmin" (click)="openStoreUpdatePage()">
-    <ion-label>Configuración</ion-label>
-  </ion-item>
-  <ion-item style="padding: 3px;" *ngIf="appService.currentUser" (click)="signOut()">
-    <ion-label>Cerrar Sesión</ion-label>
-  </ion-item>
-</ion-list>
+<div class="menuLeft">
+  <div data-menu-select="page-welcome top-10" style="width: 205px;height: 100%;">
+    <div class="nav nav-medium top-10 menuLeft">
+      <a id="page-home" (click)="SignIn()" *ngIf="!appService.currentUser">
+        <i class="fa fa-home color-green1-dark"></i><span>Iniciar Sesión</span><i class="fa fa-angle-right"></i>
+      </a>
+      <a id="page-components" *ngIf="appService.currentUser" (click)="goToUserProfile()">
+        <i class="fa fa-users color-blue2-dark"></i><span>Ir a mi Perfil</span><i class="fa fa-angle-right"></i>
+      </a>
+      <a id="page-menus" *ngIf="appService.currentUser && appService.currentUser.isAdmin"
+        (click)="openStoreCreatePage()">
+        <i class="fa fa-paper-plane color-magenta2-dark"></i><span>Crear Categoria</span><i
+          class="fa fa-angle-right"></i>
+      </a>
+      <a id="page-menus" *ngIf="appService.currentUser && appService.currentUser.isAdmin"
+        (click)="openStoreUpdatePage()">
+        <i class="fa fa-paper-plane color-magenta2-dark"></i><span>Configuración</span><i class="fa fa-angle-right"></i>
+      </a>
+      <a id="page-menus" *ngIf="appService.currentUser" (click)="signOut()">
+        <i class="fa fa-sign-out-alt color-red1-dark"></i><span>Cerrar Sesión</span>
+      </a>
+    </div>
+  </div>
+</div>

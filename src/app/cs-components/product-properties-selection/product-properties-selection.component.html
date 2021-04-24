@@ -1,5 +1,4 @@
-<div class="profile-popover">
-
+<div class="profile-popover menuLeft">
   <i (click)="close()" class="fa fa-times-circle"
     style="right: 0px;position: absolute;top: 0;font-size: 1.6em;padding: 2px;z-index: 9;"></i>
 
@@ -8,7 +7,8 @@
     </ion-list-header>
 
     <ion-item *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
-      <ion-label>{{productProperty.name}}</ion-label>
+      <!-- <ion-label>{{productProperty.name}}</ion-label> -->
+      <strong class="bolder">{{productProperty.name}}</strong>
       <ion-select (ionChange)="propertyChange($event, productProperty)" mode="ios" interface="action-sheet"
         cancelText="Cancelar" style="padding-right: 10px;">
         <ion-select-option
@@ -32,9 +32,9 @@
     </ion-item>
   </ion-list>
 
-  <div>
+  <div class="center-text top-20">
     <a (click)="accept()"
-      style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-      class="button button-round-small shadow-large button-full button-s round-small {{ (!buttonEnabled)?'sold-out':'' }}">Aceptar!</a>
+      style="font-size: 15px;font-weight: bold;margin-bottom: 0px;"
+      class="button button-s bg-highlight {{ (!buttonEnabled)?'sold-out':'' }}">Aceptar!</a>
   </div>
 </div>

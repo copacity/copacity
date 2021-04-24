@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { PopoverController, AlertController, ToastController, IonSelect } from '@ionic/angular';
+import { PopoverController, AlertController, ToastController, IonSelect, LoadingController } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { Category, Product, Banner, StoreCoupon, Vendor } from 'src/app/app-intefaces';
@@ -45,6 +45,8 @@ import { StoreReportsPage } from '../store-reports/store-reports.page';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+  loading: HTMLIonLoadingElement;
+
   _categories: Observable<Category[]>;
   _categoriesFiltered: Observable<Category[]>;
 
@@ -87,6 +89,7 @@ export class HomePage implements OnInit {
 
   constructor(private router: Router,
     private loaderComponent: LoaderComponent,
+    private loadingCtrl: LoadingController,
     public cartInventoryService: CartInventoryService,
     public cartManagerService: CartManagerService,
     private ngNavigatorShareService: NgNavigatorShareService,
@@ -227,21 +230,23 @@ export class HomePage implements OnInit {
   }
 
   async addToCart(e: any, featuredProductNoDiscount: any) {
-    if (!this.appService.currentUser || this.appService.currentUser.id != featuredProductNoDiscount.store.iduser) {
+    this.loading = await this.loadingCtrl.create({});
+    this.loading.present();
+    if (!this.appService.currentUser || (this.appService.currentUser && !this.appService.currentUser.isAdmin)) {
       this.sliderProductsNoDiscount.stopAutoplay();
 
       let cartSevice = this.cartManagerService.getCartService(/*featuredProductNoDiscount.store*/)
 
-      if (!featuredProductNoDiscount.product.soldOut) {
+      if (!featuredProductNoDiscount.soldOut) {
         this.cartInventoryService.clearCart();
-        let subs = this.productsService.getCartInventory(featuredProductNoDiscount.product.id)
+        let subs = this.productsService.getCartInventory(featuredProductNoDiscount.id)
           .subscribe((cartP) => {
 
-            let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(featuredProductNoDiscount.product.id);
+            let productPropertiesResult = this.productsService.getAllProductPropertiesUserSelectable(featuredProductNoDiscount.id);
 
             let subscribe = productPropertiesResult.subscribe(async productProperties => {
               productProperties.forEach(productProperty => {
-                let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(featuredProductNoDiscount.product.id, productProperty.id);
+                let productPropertyOptionsResult = this.productsService.getAllProductPropertyOptions(featuredProductNoDiscount.id, productProperty.id);
                 let subscribe2 = productPropertyOptionsResult.subscribe(productPropertyOptions => {
                   productProperty.productPropertyOptions = productPropertyOptions;
                   subscribe2.unsubscribe();
@@ -251,11 +256,16 @@ export class HomePage implements OnInit {
               productProperties = productProperties;
               subscribe.unsubscribe();
 
+              if (this.loading) {
+                await this.loading.dismiss();
+                this.loading = null;
+              }
+
               let modal = await this.popoverController.create({
                 component: ProductPropertiesSelectionComponent,
                 mode: 'ios',
                 event: e,
-                componentProps: { store: featuredProductNoDiscount.store, isInventory: false, product: featuredProductNoDiscount.product, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
+                componentProps: { isInventory: false, product: featuredProductNoDiscount, productProperties: productProperties, cart: cartP, limitQuantity: 0, quantityByPoints: -1 }
               });
 
               modal.onDidDismiss()
@@ -266,7 +276,7 @@ export class HomePage implements OnInit {
                   if (result) {
                     this.animateCSS('tada');
                     cartSevice.addProduct(result);
-                    this.presentToastCart(featuredProductNoDiscount.product.name + ' ha sido agregado al carrito!', result.product.image);
+                    this.presentToastCart(featuredProductNoDiscount.name + ' ha sido agregado al carrito!', result.image);
                   }
                 });
 
@@ -303,6 +313,7 @@ export class HomePage implements OnInit {
       duration: 3000,
       message: message,
       position: 'bottom',
+      color: 'warning',
       buttons: ['Cerrar']
     });
     toast.present();
@@ -1045,11 +1056,11 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(event) {
-    // setTimeout(() => {
-    //   //this.initializePage();
-    //   location.reload();
-    //   event.target.complete();
-    // }, 500);
+    setTimeout(() => {
+      //this.initializePage();
+      location.reload();
+      event.target.complete();
+    }, 500);
   }
 
   takeTemporalCoupon(storeCoupon: any) {
@@ -1061,6 +1072,8 @@ export class HomePage implements OnInit {
   }
 
   async openVendorList(e: any) {
+    this.loading = await this.loadingCtrl.create({});
+    this.loading.present();
 
     let subs = this.storesService.getActiveVendors().subscribe(result => {
 
@@ -1070,6 +1083,12 @@ export class HomePage implements OnInit {
       });
 
       Promise.all(vendorPromises).then(async users => {
+
+        if (this.loading) {
+          await this.loading.dismiss();
+          this.loading = null;
+        }
+        
         let modal = await this.popoverController.create({
           component: VendorsListComponent,
           mode: 'ios',
