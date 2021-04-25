@@ -1,6 +1,15 @@
-<div class="menuLeft">
+<div class="menuLeft" style="margin: 5px;">
   <div data-menu-select="page-welcome top-10" style="width: 205px;height: 100%;">
-    <div class="nav nav-medium top-10 menuLeft">
+    <div *ngIf="appService?.currentUser" class="user-slider bottom-0">
+      <div class="user-list-left">
+        <img
+          [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
+          alt="img" class="shadow-small">
+          <h4>{{appService.currentUser?.name}}</h4>
+      </div>
+      <div class="divider divider-margins" style="margin: 0px 15px 10px 15px"></div>
+    </div>
+    <div class="nav nav-medium menuLeft">
       <a id="page-home" (click)="SignIn()" *ngIf="!appService.currentUser">
         <i class="fa fa-home color-green1-dark"></i><span>Iniciar Sesión</span><i class="fa fa-angle-right"></i>
       </a>

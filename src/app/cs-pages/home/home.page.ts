@@ -7,7 +7,6 @@ import { Category, Product, Banner, StoreCoupon, Vendor } from 'src/app/app-inte
 import { LoaderComponent } from '../../cs-components/loader/loader.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
-import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { SearchPage } from '../search/search.page';
 import { SwUpdate } from '@angular/service-worker';
@@ -30,7 +29,7 @@ import { CartPage } from '../cart/cart.page';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { StoreInformationComponent } from 'src/app/cs-components/store-information/store-information.component';
 import { StorePointsPage } from '../store-points/store-points.page';
-import { map } from 'rxjs/operators';
+import { map, tap, timeout } from 'rxjs/operators';
 import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
 import { StoreOrdersPage } from '../store-orders/store-orders.page';
 import { StorePqrsfPage } from '../store-pqrsf/store-pqrsf.page';
@@ -38,6 +37,7 @@ import { StoreVendorsPage } from '../store-vendors/store-vendors.page';
 import { StoreVendorsAdminPage } from '../store-vendors-admin/store-vendors-admin.page';
 import { StoreBillingPage } from '../store-billing/store-billing.page';
 import { StoreReportsPage } from '../store-reports/store-reports.page';
+import { MenuService } from 'src/app/cs-services/menu.service';
 
 @Component({
   selector: 'app-home',
@@ -94,13 +94,14 @@ export class HomePage implements OnInit {
     public cartManagerService: CartManagerService,
     private ngNavigatorShareService: NgNavigatorShareService,
     public appService: AppService,
+    public menuService: MenuService,
     private swUpdate: SwUpdate,
+    private usersService: UsersService,
     public alertController: AlertController,
     private locationStrategy: LocationStrategy,
     public toastController: ToastController,
     public popoverController: PopoverController,
     private storesService: StoresService,
-    private usersService: UsersService,
     private productsService: ProductsService) {
 
     history.pushState(null, null, window.location.href);
@@ -148,17 +149,7 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void { }
 
-  signOut() {
-    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
-      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
-      setTimeout(() => {
-        this.angularFireAuth.auth.signOut();
-        this.popoverController.dismiss();
-        this.presentToast("Has abandonado la sesión!");
-        this.loaderComponent.stopLoading();
-      }, 500);
-    });
-  }
+  
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -312,7 +303,8 @@ export class HomePage implements OnInit {
     const toast = await this.toastController.create({
       duration: 3000,
       message: message,
-      position: 'bottom',
+      position: 'top',
+      cssClass: 'toast-cart',
       color: 'warning',
       buttons: ['Cerrar']
     });
@@ -347,20 +339,6 @@ export class HomePage implements OnInit {
       mode: 'ios',
       translucent: false,
       event: e
-    });
-
-    return await popover.present();
-  }
-
-  async presentMenuNotifications(e) {
-    const popover = await this.popoverController.create({
-      component: MenuNotificationsComponent,
-      animated: false,
-      showBackdrop: true,
-      mode: 'ios',
-      translucent: false,
-      event: e,
-      cssClass: 'notification-popover'
     });
 
     return await popover.present();
@@ -620,30 +598,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  async openCart() {
-    let modal = await this.popoverController.create({
-      component: CartPage,
-      componentProps: { storeId: '-1' },
-      cssClass: 'cs-popovers',
-      backdropDismiss: false,
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        let result = data['data'];
-
-        if (result) {
-          this.goToCreateOrder();
-        }
-      });
-
-    modal.present();
-  }
-
-  async goToCreateOrder() {
-    this.router.navigate(['/order-create']);
-  }
-
   openWithOption(url: string, image: string, option: number) {
     this.storesService.option = option;
     this.goToPage(url, image)
@@ -675,6 +629,7 @@ export class HomePage implements OnInit {
 
   getProducts() {
     this.searchingCategories = true;
+    this.searchingProductsDiscount = true;
     this.searchingProductsNoDiscount = true;
     this.searchingProductsNoFeatured = true;
     this.searchingGifts = true;
@@ -687,7 +642,7 @@ export class HomePage implements OnInit {
         if (this.idSelectedCategories.length == 0 || this.idSelectedCategories.includes(item.id)) {
           return item
         }
-      })));
+      })), tap(() => { this.searchingCategories = false; this.loadSliderStores(() => { }); }));
 
     this._featuredProducts = this.productsService._getFeaturedProducts()
 
@@ -696,14 +651,14 @@ export class HomePage implements OnInit {
         if (this.idSelectedCategories.length == 0 || this.idSelectedCategories.includes(item.idCategory)) {
           return item.discount > 0
         }
-      })));
+      })), tap(() => { this.searchingProductsDiscount = false; this.loadSliderProductsDiscount(() => { }); }));
 
     this._featuredProductsNoDiscount = this._featuredProducts.pipe(
       map(items => items.filter(item => {
         if (this.idSelectedCategories.length == 0 || this.idSelectedCategories.includes(item.idCategory)) {
           return item.discount <= 0
         }
-      })));
+      })), tap(() => { this.searchingProductsNoDiscount = false; this.loadSliderProductsNoDiscount(() => { }); }));
 
     this._featuredProductsNoFeatured = [];
     this._categories.forEach(array => {
@@ -714,7 +669,9 @@ export class HomePage implements OnInit {
       });
     });
 
-    this._gifts = this.productsService.getFeaturedGifts();
+    this._gifts = this.productsService.getFeaturedGifts().pipe(
+      tap(() => { this.searchingGifts = false; this.loadSliderGifts(() => { }); })
+    );
 
     this._coupons = this.storesService.getStoreCouponsXStore().pipe(
       map(items => items.filter(item => {
@@ -724,14 +681,9 @@ export class HomePage implements OnInit {
         if (today.getTime() <= dateExpiration.toDate().getTime() && item.quantity > 0) {
           return item
         }
-      })));
+      })), tap(() => { this.searchingStoreCoupons = false; this.loadSliderStoreCoupons(() => { }); }));
 
-    // Stop loading elements
-    this._categoriesFiltered.subscribe(() => { this.searchingCategories = false; this.loadSliderStores(() => {}) });
-    this._featuredProductsNoDiscount.subscribe(() => { this.searchingProductsNoDiscount = false; this.loadSliderProductsNoDiscount(() => {})});
-    this._categories.subscribe(() => { this.searchingProductsNoFeatured = false; this.loadSliderProductsNoFeatured(() => {}) });
-    this._gifts.subscribe(() => { this.searchingGifts = false; this.loadSliderGifts(() => {}) });
-    this._coupons.subscribe(() => { this.searchingStoreCoupons = false; this.loadSliderStoreCoupons(() => {})});
+    this._categories.subscribe(() => { this.searchingProductsNoFeatured = false; this.loadSliderProductsNoFeatured(() => { }) });
 
     this.loadSlider(function () { });
     this.loadSliderFooter(function () { });
@@ -832,6 +784,17 @@ export class HomePage implements OnInit {
     }
   }
 
+  fillUsers(vendor: Vendor) {
+    return new Promise((resolve, reject) => {
+      this.usersService.getById(vendor.idUser).then(user => {
+        resolve(user);
+      });
+    }).catch(err => {
+      alert(err);
+      this.appService.logError({ id: '', message: err, function: 'fillUsers', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
+    });
+  }
+
   async openStoreInformationComponent(event) {
     let subs = this.storesService.getActiveVendors().subscribe(result => {
 
@@ -861,17 +824,6 @@ export class HomePage implements OnInit {
     });
   }
 
-  fillUsers(vendor: Vendor) {
-    return new Promise((resolve, reject) => {
-      this.usersService.getById(vendor.idUser).then(user => {
-        resolve(user);
-      });
-    }).catch(err => {
-      alert(err);
-      this.appService.logError({ id: '', message: err, function: 'fillUsers', idUser: (this.appService.currentUser.id ? this.appService.currentUser.id : '0'), dateCreated: new Date() });
-    });
-  }
-
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------       SLIDER VALIDATIONS
@@ -890,8 +842,8 @@ export class HomePage implements OnInit {
                 this.loadSliderGifts(() => {
                   this.loadSliderStoreCoupons(() => {
                     this.loadSliderProductsNoFeatured(() => {
-                      this.loadSliderMenu(() => {
-                      });
+                      // this.loadSliderMenu(() => {
+                      // });
                     });
                   });
                 });
@@ -1069,43 +1021,5 @@ export class HomePage implements OnInit {
     } else {
       this.presentAlert("Ya tienes un cupón en tus manos, debes descartarlo primero si quieres tomar otro", "", () => { });
     }
-  }
-
-  async openVendorList(e: any) {
-    this.loading = await this.loadingCtrl.create({});
-    this.loading.present();
-
-    let subs = this.storesService.getActiveVendors().subscribe(result => {
-
-      let vendorPromises = [];
-      result.forEach(vendor => {
-        vendorPromises.push(this.fillUsers(vendor));
-      });
-
-      Promise.all(vendorPromises).then(async users => {
-
-        if (this.loading) {
-          await this.loading.dismiss();
-          this.loading = null;
-        }
-        
-        let modal = await this.popoverController.create({
-          component: VendorsListComponent,
-          mode: 'ios',
-          event: e,
-          componentProps: { users: users },
-          cssClass: 'notification-popover'
-        });
-
-        modal.onDidDismiss()
-          .then((data) => {
-            let result = data['data'];
-          });
-
-        modal.present();
-      });
-
-      subs.unsubscribe();
-    });
   }
 }

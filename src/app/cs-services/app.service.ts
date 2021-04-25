@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Category, User, StoreCategory, Banner, Address, AppInfo, Notification, ErrorMessage, StoreCoupon } from '../app-intefaces';
+import { Category, User, StoreCategory, Banner, Address, AppInfo, Notification, ErrorMessage } from '../app-intefaces';
 import { UsersService } from './users.service';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { BannersService } from './banners.service';
@@ -8,10 +8,11 @@ import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { StoresService } from './stores.service';
 import { NotificationsService } from './notifications.service';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, PopoverController } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AngularFireMessaging } from '@angular/fire/messaging';
+import { LoaderComponent } from '../cs-components/loader/loader.component';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,8 @@ export class AppService {
     public toastController: ToastController,
     public alertController: AlertController,
     public router: Router,
+    public popoverController: PopoverController,
+    private loaderComponent: LoaderComponent,
     private notificationsService: NotificationsService,
     private bannersService: BannersService) {
 
@@ -396,5 +399,17 @@ export class AppService {
 
   public applyTemporalCoupon() {
     this.presentAlert("Debes aplicar el cupón cuando tengas listos los artículos que vas a comprar e ingreses a la opción 'Preparar pedido' en tu carrito de compras. Gracias","", () => {});
+  }
+
+  signOut() {
+    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
+      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
+      setTimeout(() => {
+        this.angularFireAuth.auth.signOut();
+        this.popoverController.dismiss();
+        this.presentToast("Has abandonado la sesión!");
+        this.loaderComponent.stopLoading();
+      }, 500);
+    });
   }
 }

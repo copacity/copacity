@@ -1,0 +1,86 @@
+<ion-split-pane contentId="main">
+  <ion-menu contentId="main">
+    <ion-content class="popover-content">
+      <div class="menu" data-menu-select="page-welcome" style="width: 250px;height: 100%;">
+
+        <a href="#" class="nav-title color-theme"><span class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+        <span class="nav-text color-theme opacity-50">Splendid Simplicity</span>
+
+        <div class="nav nav-medium">
+          <div class="divider"></div>
+          <!-- <ion-menu-toggle> -->
+          <a id="page-home" routerLink="/home">
+            <i class="fa fa-home color-green1-dark"></i><span>Inicio</span><i class="fa fa-angle-right"></i>
+          </a>
+          <a *ngIf="appService?.currentUser" id="page-components" routerLink="//order-list">
+            <i class="fa fa-users color-blue2-dark"></i><span>Pedidos</span><i class="fa fa-angle-right"></i>
+          </a>
+          <a id="page-menus" routerLink="/contact">
+            <i class="fa fa-paper-plane color-magenta2-dark"></i><span>Mensajes</span><i class="fa fa-angle-right"></i>
+          </a>
+          <a id="page-menus" *ngIf="appService?.currentUser" (click)="appService?.signOut()">
+            <i class="fa fa-sign-out-alt color-red1-dark"></i><span>Cerrar Sesión</span>
+          </a>
+          <!-- </ion-menu-toggle> -->
+          <div class="divider top-15"></div>
+
+          <p>Copyright <span class="copyright-year"></span> - Maothinks <br /> Todos los derechos reservados.</p>
+          <p class="footer-text"><b>Versión</b> {{ appService.appVersion }}</p>
+        </div>
+      </div>
+    </ion-content>
+  </ion-menu>
+
+  <ion-menu contentId="main" side="end" style="width: 250px;">
+    <ion-content class="popover-content">
+      <app-menu-notifications></app-menu-notifications>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
+
+  <div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
+    style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
+    <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
+      style="top: -5px;padding-left: 5px;padding-right: 5px;">
+      {{ appService?.temporalCoupon?.name }}
+    </h6>
+
+    <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
+      style="top: 30px;padding-left: 5px;padding-right: 5px; color:black">Tomaste
+      un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
+      <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
+    </h6>
+
+    <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">
+      <table style="margin-bottom: 0px;background-color: transparent;">
+        <tr>
+          <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%">
+            <a (click)="appService.discardTemoralCoupon()"
+              style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a>
+          </td>
+          <td style="background-color: red;padding: 0px 0px 9px 0px;">
+            <a (click)="appService.applyTemporalCoupon()"
+              style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a>
+          </td>
+        </tr>
+      </table>
+    </h6>
+  </div>
+</ion-split-pane>
+
+<ion-fab *ngIf="!appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="success" (click)="openVendorList($event)">
+    <a style="color: white;">
+      <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+    </a>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-fab *ngIf="appService.temporalCoupon" vertical="bottom" horizontal="end" slot="fixed" class="bottom-80">
+  <ion-fab-button color="success" (click)="openVendorList($event)">
+    <a style="color: white;">
+      <i class="fab fa-whatsapp" style="font-size: 2.5em;"></i>
+    </a>
+  </ion-fab-button>
+</ion-fab>

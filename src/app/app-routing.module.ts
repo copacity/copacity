@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'app', pathMatch: 'full' },
+  {
+    path: 'app',
+    loadChildren: () => import('./cs-pages/split-layout/split-layout.module').then( m => m.SplitLayoutPageModule)
+  },
   { path: 'home', loadChildren: () => import('./cs-pages/home/home.module').then( m => m.HomePageModule)},
   {
     path: 'store/:id',
