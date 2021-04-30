@@ -176,7 +176,7 @@ export class StoreCouponsDetailPage implements OnInit {
             this.router.navigate(['store-coupons-detail/', value[value.length - 1]]);
           } else if (result.indexOf("product-detail") != -1) {
             let value = result.toString().split("/");
-            this.router.navigate(['product-detail/', value[value.length - 1]]);
+            this.router.navigate(['app/product-detail/', value[value.length - 1]]);
           } else if (result.indexOf("store") != -1) {
             let value = result.toString().split("/");
             this.router.navigate(['store/', value[value.length - 1]]);

@@ -1,7 +1,8 @@
 <ion-header class="ion-no-border">
     <div class="header header-fixed header-logo-app">
-        <a class="header-title ultrabold font-15" style="top: -2px;"><span
-                class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+        <ion-menu-toggle><a routerLink="/app/home" class="header-title ultrabold font-15" style="top: -2px;"><span
+                    class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+        </ion-menu-toggle>
         <a class="header-icon header-icon-1">
             <ion-menu-toggle><i class="fas fa-bars"></i></ion-menu-toggle>
         </a>
@@ -31,55 +32,18 @@
     <div id="page">
         <div class="page-content" style="box-shadow: none;">
             <div class="profile-1" y style="z-index: 9;">
-
-                <ion-slides id="sliderHomeProductsDiscount" #sliderHomeProductsDiscount
-                    [options]="appService.slideOptsProductsDiscount">
-                    <ion-slide
-                        (click)="goToPage('/product-detail/' + featuredProduct.id, featuredProduct.image?featuredProduct.image:'../../../assets/icon/no-image.png')"
-                        *ngFor="let featuredProduct of _featuredProductsDiscount | async"
-                        style="padding: 2px; padding-top: 17px;">
-                        <div class="profile-2">
-                            <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                                <a>
-                                    <img style="width: 150px;margin: 5px 0px 5px 0px;border-radius: 100%"
-                                        class="preload-image shadow-small"
-                                        [src]="featuredProduct?.image?featuredProduct.image:'../../../assets/icon/no-image.png'"
-                                        alt="img">
-
-                                    <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
-                                        style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
-                                        class="{{(featuredProduct?.soldOut)?'sold-out':'' }}">
-                                        <i class="fa fa-certificate" style="color: yellow;font-size: 2.8em;"></i></em>
-
-                                    <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
-                                        class="{{(featuredProduct?.soldOut)?'sold-out':'' }}"
-                                        style="background-color: transparent;color: black;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
-                                        -{{ featuredProduct?.discount }}%</em>
-                                </a>
-                            </div>
-                        </div>
-                    </ion-slide>
-                </ion-slides>
-
-                <ion-slides *ngIf="searchingProductsDiscount" [options]="appService.slideOptsProductsDiscount">
-                    <ion-slide *ngFor="let item of [1,2,3,4,5,6,7,8]" style="padding: 5px; padding-top: 17px;">
-                        <div class="profile-2">
-                            <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
-                                <a>
-                                    <ion-skeleton-text animated
-                                        class="responsive-image preload-image shadow-small img-store"
-                                        style="width: 80px;height: 80px;border-radius: 100%">
-                                    </ion-skeleton-text>
-                                </a>
-                            </div>
-                        </div>
-                    </ion-slide>
-                </ion-slides>
+                <div class="content" style="margin: 0px 5px 0px 5px;">
+                    <ion-slides id="sliderHome" #sliderHome [options]="appService.slideOpts">
+                        <ion-slide (click)="redirectBanner(banner)" *ngFor="let banner of appService.banners | async">
+                            <img style="width: 100%;" src="{{banner.image}}">
+                        </ion-slide>
+                    </ion-slides>
+                </div>
 
                 <div class="profile-body menuLeft {{(_featuredProductsDiscount |async)?.length == 0?'top-30':'top-20'}}"
-                    style="margin: 0px 5px;padding: 0px 0px;">
+                    style="margin: 0px 5px;padding: 0px 0px;top:-20px">
                     <a (click)="shareApp($event)" style="border-radius:10px;"
-                        class="profile-button menuLeft shadow-small button button-m button-round uppercase bolder button-center-medium">
+                        class="profile-button-none menuLeft button button-m button-round uppercase bolder button-center-medium">
                         <h5 class="bolder" style="margin-bottom: 0px;">{{appService?._appInfo?.homeTitle}}</h5>
 
                         <ion-skeleton-text *ngIf="!appService?._appInfo?.homeTitle" style="height: 30px;" animated
@@ -92,7 +56,7 @@
                     <i class="fa fa-qrcode"></i>&nbsp;QR</a> -->
 
                     <a (click)="openSelectCategories()"
-                        style="z-index: 9;left: 0px;position: absolute;top: 0;padding-left: 5px;margin: 2px;cursor: pointer;">
+                        style="z-index: 9;left: 0px;position: absolute;top: 6px;padding-left: 5px;margin: 2px;cursor: pointer;">
                         <i class="fas fa-filter"></i>&nbsp;Filtrar
                         <ion-list lines="full" class="ion-no-margin ion-no-padding" style="display: none;">
                             <ion-item>
@@ -109,7 +73,7 @@
                     </a>
 
                     <div class="content" style="margin: 0px 5px 0px 5px;" *ngIf="idSelectedCategories.length != 0">
-                        <a class="bold top-20 bottom-5"><strong>Mostrando:</strong></a>
+                        <a class="bold top-10 bottom-5"><strong>Mostrando:</strong></a>
                         <div class="chip" *ngFor="let sc of selectedCategories">
                             <div class="chip-content">{{sc.name}}</div>
                             <div class="chip-close" (click)="removeFilterOption(sc.id)">
@@ -122,22 +86,10 @@
                         </div>
                     </div>
 
-                    <div class="content" class="bottom-20 {{idSelectedCategories.length == 0?'top-20':''}}"
-                        style="margin: 0px 5px 0px 5px;">
-                        <div class="divider divider-margins" style="margin: 0px 15px 20px 15px;"></div>
-                        <ion-slides id="sliderHome" #sliderHome [options]="appService.slideOpts">
-                            <ion-slide (click)="redirectBanner(banner)"
-                                *ngFor="let banner of appService.banners | async" class="round-medium">
-                                <img style="width: 100%;" class="round-medium" src="{{banner.image}}">
-                            </ion-slide>
-                        </ion-slides>
-                    </div>
-
-                    <div class="content" style="margin: 0px 5px 0px 5px;">
-                        <div class="divider divider-margins"></div>
-                        <div style="text-align: -webkit-left;" class="top-20">
-                            <h5 class="bolder top-20 left-10">Categorias</h5>
-                        </div>
+                    <div class="content bottom-20" style="margin: 0px 5px 0px 5px;">
+                        <!-- <div style="text-align: -webkit-left;" class="top-20">
+                            <h5 class="bolder top-20">Categorias</h5>
+                        </div> -->
 
                         <ion-slides *ngIf="searchingCategories" [options]="appService.slideOptsStores"
                             style="max-width: 450px;" style="padding-bottom: 20px;">
@@ -182,11 +134,71 @@
                         </ion-slides>
                     </div>
 
+                    <div class="content bottom-20" style="margin: 0px 5px 0px 5px;">
+                        <div class="divider divider-margins"></div>
+                        <div style="text-align: -webkit-left;" class="top-20 bottom-20">
+                            <h5 class="bolder top-20">Promociones</h5>
+                        </div>
+
+                        <div *ngIf="(_featuredProductsDiscount | async)?.length == 0 && !searchingCategories"
+                            class="boxed-text-huge"
+                            style="padding-top: 20px;color: red;padding-bottom: 20px;font-size: small;">
+                            <h4 style="font-size: small;">No se encontraron resultados</h4>
+                        </div>
+
+                        <ion-slides *ngIf="searchingProductsDiscount" [options]="appService.slideOptsProductsDiscount">
+                            <ion-slide *ngFor="let item of [1,2,3,4,5,6,7,8]" style="padding: 5px; padding-top: 17px;">
+                                <div class="profile-2">
+                                    <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                                        <a>
+                                            <ion-skeleton-text animated
+                                                class="responsive-image preload-image shadow-small img-store"
+                                                style="width: 80px;height: 80px;border-radius: 100%">
+                                            </ion-skeleton-text>
+                                        </a>
+                                    </div>
+                                </div>
+                            </ion-slide>
+                        </ion-slides>
+
+                        <ion-slides id="sliderHomeProductsDiscount" #sliderHomeProductsDiscount
+                            [options]="appService.slideOptsProductsDiscount">
+                            <ion-slide
+                                (click)="goToPage('/app/product-detail/' + featuredProduct.id, featuredProduct.image?featuredProduct.image:'../../../assets/icon/no-image.png')"
+                                *ngFor="let featuredProduct of _featuredProductsDiscount | async"
+                                style="padding: 2px; padding-top: 17px;">
+                                <div class="profile-2">
+                                    <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
+                                        <a>
+                                            <img style="width: 150px;border-radius: 100%"
+                                                class="preload-image shadow-small"
+                                                [src]="featuredProduct?.image?featuredProduct.image:'../../../assets/icon/no-image.png'"
+                                                alt="img">
+
+                                            <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
+                                                style="background-color: transparent;color: black;font-weight: bold;font-size: .6em; top: 5px;right: -17px"
+                                                class="{{(featuredProduct?.soldOut)?'sold-out':'' }}">
+                                                <i class="fa fa-certificate"
+                                                    style="color: yellow;font-size: 2.8em;"></i></em>
+
+                                            <em *ngIf="featuredProduct?.discount && featuredProduct?.discount > 0"
+                                                class="{{(featuredProduct?.soldOut)?'sold-out':'' }}"
+                                                style="background-color: transparent;font-weight: bold;font-size: .6em;top: 11px;right: -15px;">
+                                                <h6 class="bolder" style="color: black;">-{{ featuredProduct?.discount
+                                                    }}%</h6>
+                                            </em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </ion-slide>
+                        </ion-slides>
+                    </div>
+
                     <div class="content" style="margin: 0px 5px 0px 5px;">
                         <div class="divider divider-margins"></div>
 
-                        <div style="text-align: -webkit-left;" class="top-20 bottom-10">
-                            <h5 class="bolder left-10">Productos Destacados</h5>
+                        <div style="text-align: -webkit-left;" class="top-20 bottom-20">
+                            <h5 class="bolder">Productos Destacados</h5>
                         </div>
 
                         <ion-slides *ngIf="searchingProductsNoDiscount"
@@ -215,7 +227,7 @@
                                     <div class="blog-col-item" style="margin-bottom: 0px;padding-bottom: 5px;">
                                         <a>
 
-                                            <img (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
+                                            <img (click)="goToPage('/app/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
                                                 style="width: 200px;margin: 5px 0px 5px 0px;"
                                                 class="preload-image shadow-small round-small"
                                                 [src]="featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png'"
@@ -237,7 +249,7 @@
                                         </a>
 
                                         <strong class="strong-store"
-                                            (click)="goToPage('/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
+                                            (click)="goToPage('/app/product-detail/' + featuredProductNoDiscount?.id, featuredProductNoDiscount?.image?featuredProductNoDiscount?.image:'../../../assets/icon/no-image.png')"
                                             style="font-size: .7em;padding-top: 20px;">{{((featuredProductNoDiscount?.name.length
                                             <=32)?featuredProductNoDiscount?.name:featuredProductNoDiscount?.name.substring(0,
                                                 32) + '...' )}}</strong>
@@ -256,7 +268,7 @@
                     <div class="content" style="margin: 0px 5px 0px 5px;">
                         <div class="divider divider-margins"></div>
                         <div style="text-align: -webkit-left;">
-                            <h5 class="bolder top-10 left-10">Productos Recientes</h5>
+                            <h5 class="bolder top-10">Productos Recientes</h5>
                         </div>
 
                         <ion-slides *ngIf="searchingProductsNoFeatured"
@@ -295,7 +307,7 @@
                                                     </div>
                                                 </i> -->
 
-                                                <img (click)="goToPage('product-detail/' + product?.id, product?.image?product?.image:'../../../assets/icon/no-image.png')"
+                                                <img (click)="goToPage('app/product-detail/' + product?.id, product?.image?product?.image:'../../../assets/icon/no-image.png')"
                                                     *ngFor="let product of nfItem.products | async"
                                                     src="{{product?.image?product?.image:'../../../assets/icon/no-image.png'}}"
                                                     alt="img" class="preload-image round-small">
@@ -311,12 +323,12 @@
                         </div>
                     </div>
 
-                    <div class="content" style="margin: 0px 5px 0px 5px;">
+                    <div class="content" style="margin: 0px 0px 0px 0px;">
                         <div class="divider divider-margins"></div>
                         <ion-slides #sliderHomeFooter [options]="appService.slideOpts" style="width: 100%;">
                             <ion-slide (click)="redirectBanner(bannerF)"
                                 *ngFor="let bannerF of appService.bannersFooter | async">
-                                <img class="round-medium" src="{{bannerF.image}}">
+                                <img src="{{bannerF.image}}">
                             </ion-slide>
                         </ion-slides>
                     </div>
@@ -324,7 +336,7 @@
                     <div class="content" style="margin: 40px 5px 0px 5px;">
                         <div class="divider divider-margins"></div>
                         <div style="text-align: -webkit-left;">
-                            <h5 class="bolder bottom-20 left-10">Cupones</h5>
+                            <h5 class="bolder bottom-20">Cupones</h5>
                         </div>
 
                         <ion-slides *ngIf="searchingStoreCoupons" [options]="appService.slideOptsStoreCoupons"
@@ -410,7 +422,7 @@
                     <div class="content" style="margin: 30px 5px 0px 5px;">
                         <div class="divider divider-margins"></div>
                         <div style="text-align: -webkit-left;">
-                            <h5 class="bolder bottom-20 left-10">Regalos</h5>
+                            <h5 class="bolder bottom-20">Regalos</h5>
                         </div>
 
                         <ion-slides *ngIf="searchingGifts" [options]="appService.slideOptsGifts"
@@ -432,7 +444,7 @@
                         <ion-slides id="sliderHomeGifts" #sliderHomeGifts *ngIf="!searchingGifts"
                             [options]="appService.slideOptsGifts">
                             <ion-slide
-                                (click)="goToPage('/product-detail/' + gift.id, gift?.image?gift?.image:'../../../assets/icon/no-image.png')"
+                                (click)="goToPage('/app/product-detail/' + gift.id, gift?.image?gift?.image:'../../../assets/icon/no-image.png')"
                                 *ngFor="let gift of _gifts | async"
                                 style="padding: 2px; padding-top: 12px;padding-bottom: 12px;">
                                 <div class="profile-2">
@@ -560,8 +572,8 @@
                         </div>
                         <a class="footer-title"><span
                                 class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
-                        <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro
-                            Comercial Virtual</p>
+                        <!-- <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro
+                            Comercial Virtual</p> -->
                         <div class="footer-socials" style="padding-left: 24px;">
                             <a href="{{ appService._appInfo?.facebook }}"
                                 class="round-tiny shadow-medium bg-facebook"><i class="fab fa-facebook-f"></i></a>

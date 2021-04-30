@@ -1,0 +1,151 @@
+<div class="content menuLeft bottom-80">
+  <h4 class="bolder center-text top-25 bottom-25">Mi Carrito</h4>
+  <div class="divider divider-margins"></div>
+
+  <div *ngIf="cart.length == 0" class="boxed-text-huge top-10 bottom-30" style="color: red;font-size: small;">
+    <h4 style="font-size: small;">Aún no tienes productos agregados</h4>
+  </div>
+
+  <div *ngFor="let cartProduct of cart; let i = index">
+    <div class="store-cart-1-none">
+      <table style="border: solid 0px rgba(0,0,0,0.08);">
+        <tr>
+          <td colspan="2">
+            <a (click)="removeCartItem(cartProduct)" style="text-align: end;" class="left-text"><i
+                style="font-size: 1.4em;color: red;" class="fa fa-times-circle"></i></a>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;width: 80px;text-align: left;">
+            <img (click)="openImageViewer(cartProduct.product)" class="round-small preload-image"
+              src="{{cartProduct.product.image?cartProduct.product.image:'../../../assets/icon/no-image.png'}}"
+              alt="img" style="height: 80px;width: 80px;">
+
+          </td>
+          <td style="vertical-align: top;">
+            <table style="border: solid 0px rgba(0,0,0,0.08);">
+              <tr>
+                <td colspan="2" style="text-align: left;padding: 0px 0px 0px 10px;">
+                  <h5 class="bolder left-text">{{cartProduct.product.name}}</h5>
+                </td>
+              </tr>
+              <tr *ngIf="!cartProduct.product?.isGift">
+                <td colspan="2" style="text-align: center;padding: 10px 0px 10px 0px;">
+      
+      
+                  <!-- <div style="position: unset; text-align: center;" class="store-cart-qty">
+                    <a href="#"><i class="fa fa-minus"></i></a>
+                    <input type="text" placeholder="1">
+                    <a href="#"><i class="fa fa-plus"></i></a>
+                  </div> -->
+      
+      
+                  <!-- <div style="display: -webkit-inline-box;" class="store-cart-qty-cart">
+                    <a (click)="add(cartProduct)" class="{{(cartProduct?.maxLimit == 0)?'sold-out1':'' }}"><i
+                        class="fa fa-plus"></i></a>
+                    <input disabled type="number" value="{{cartProduct?.quantity}}">
+                    <a (click)="remove(cartProduct)" class="{{(cartProduct?.quantity == 1)?'sold-out1':'' }}"><i
+                        class="fa fa-minus"></i></a>
+                  </div> -->
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr *ngFor="let property of cartProduct.propertiesSelection; let i = index"
+          class="{{(cartProduct.product?.isGift)?'hidden':'' }}">
+          <td style="text-align: left;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1em;font-weight: 700;color: blue;">
+              {{property.propertyName }}: {{property.propertyOptionName }} </span>
+          </td>
+          <td style="text-align: right;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1.2em;font-weight: 700;">{{ property.price | currency: 'USD':
+              'symbol' : '1.0-0' }}</span>
+          </td>
+        </tr>
+        <tr *ngIf="(cartProduct.product?.isGift)">
+          <td style="text-align: left;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Puntos:</span>
+          </td>
+          <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ cartProduct.product.price
+              }}</span>
+          </td>
+        </tr>
+        <tr *ngIf="(cartProduct.product?.isGift)">
+          <td style="text-align: left;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Cantidad:</span>
+          </td>
+          <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ cartProduct.quantity
+              }}</span>
+          </td>
+        </tr>
+        <tr *ngIf="(cartProduct.product?.isGift)">
+          <td colspan="3" style="text-align: left;padding: 20px 0px 0px 0px;">
+            <span style="font-size: 1em;font-weight: 700;font-weight: bold;" class="round-small">🎁
+              REGALO! 🥳🎉</span>
+          </td>
+        </tr>
+        <tr
+          *ngIf="((cartProduct.product?.discount && cartProduct.product?.discount > 0)) && !cartProduct.product?.isGift">
+          <td style="text-align: left;padding: 0px 0px 0px 0px;">
+            <div class="divider" style="margin-bottom: 10px;"></div>
+            <span style="font-size: 1em;font-weight: 700;"></span>
+          </td>
+          <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
+            <div style="margin-bottom: 10px;" class="divider bg-red1-light opacity-50"></div>
+            <span style="font-size: 1.2em;font-weight: 700;">{{
+              cartService?.getProductSubTotal(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+          </td>
+        </tr>
+        <tr
+          *ngIf="((cartProduct.product?.discount && cartProduct.product?.discount > 0) && !cartProduct.product?.isGift)">
+          <td style="text-align: left;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Descuento:</span>
+          </td>
+          <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
+            <span *ngIf="cartProduct.product?.discount && cartProduct.product?.discount > 0"
+              style="font-size: 1em;font-weight: 700;color: black;background-color: yellow;">
+              {{cartProduct.product.discount}}% </span>
+            <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">-{{
+              cartService?.getProductDiscount(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+          </td>
+        </tr>
+        <tr *ngIf="!cartProduct.product?.isGift">
+          <td style="text-align: left;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1em;font-weight: 700;">Precio:</span>
+          </td>
+          <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
+            <span style="font-size: 1.2em;font-weight: 700">{{
+              cartService?.getProductTotal(cartProduct) | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="divider divider-margins"></div>
+    <div class="store-cart-total">
+      <strong>Descuento</strong>
+      <span>- {{ cartService?.getDiscount() | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+      <div class="clear"></div>
+    </div>
+    <div class="store-cart-total">
+      <strong class="color-highlight">Iva</strong>
+      <span class="color-highlight">{{ (cartService?.getTotal() * (appService?._appInfo?.tax/100 )) | currency: 'USD' :
+        'symbol' : '1.0-0' }}</span>
+      <div class="clear"></div>
+    </div>
+    <div class="store-cart-total bottom-20">
+      <strong class="uppercase ultrabold">Gran Total</strong>
+      <span class="uppercase ultrabold">{{ cartService?.getTotal() | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+      <div class="clear"></div>
+    </div>
+    <div class="divider"></div>
+    <a href="#"
+      class="button bg-highlight button-round-small shadow-large button-full button-s {{(cart.length == 0)?'sold-out':'' }}">Hacer
+      Pedido</a>
+  </div>
+</div>

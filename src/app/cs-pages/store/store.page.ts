@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AlertController, PopoverController, ToastController, IonSelect } from '@ionic/angular';
+import { AlertController, PopoverController, ToastController, IonSelect, LoadingController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { NgNavigatorShareService } from 'ng-navigator-share';
@@ -36,12 +36,6 @@ import { BarcodeGeneratorComponent } from 'src/app/cs-components/barcode-generat
 import { ProductInventoryPage } from '../product-inventory/product-inventory.page';
 import { CartInventoryService } from 'src/app/cs-services/cart-inventory.service';
 import { StoreCouponsPage } from '../store-coupons/store-coupons.page';
-import { StoreOrdersPage } from '../store-orders/store-orders.page';
-import { StorePqrsfPage } from 'src/app/cs-pages/store-pqrsf/store-pqrsf.page';
-import { StoreBillingPage } from '../store-billing/store-billing.page';
-import { StoreVendorsPage } from '../store-vendors/store-vendors.page';
-import { StoreReportsPage } from '../store-reports/store-reports.page';
-import { StoreVendorsAdminPage } from '../store-vendors-admin/store-vendors-admin.page';
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 import { SearchPage } from '../search/search.page';
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
@@ -52,6 +46,7 @@ import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors
 import { UsersService } from 'src/app/cs-services/users.service';
 import { HostListener } from "@angular/core";
 import { StoreUpdateCategoryPage } from '../store-update-category/store-update-category.page';
+import { MenuService } from 'src/app/cs-services/menu.service';
 
 @Component({
   selector: 'app-store',
@@ -59,13 +54,15 @@ import { StoreUpdateCategoryPage } from '../store-update-category/store-update-c
   styleUrls: ['./store.page.scss'],
 })
 export class StorePage implements OnInit {
+  loading: HTMLIonLoadingElement;
+
   public cartSevice: CartService;
 
   //--------------------------------------------------------------
   //--------------------------------------------------------------
   //--------------------------------      MAIN VARIABLES 
   @ViewChild('sliderMenu', null) slider: any;
-  @ViewChild('cart', { static: false, read: ElementRef }) shoppingCart: ElementRef;
+  @ViewChild('cartHome', { static: false, read: ElementRef }) shoppingCart: ElementRef;
   @ViewChild(SuperTabs, { static: false }) superTabs: SuperTabs;
   @ViewChild('selectCategories', { static: false }) selectRef: IonSelect;
 
@@ -126,6 +123,7 @@ export class StorePage implements OnInit {
     public popoverController: PopoverController,
     public cartManagerService: CartManagerService,
     private usersService: UsersService,
+    private loadingCtrl: LoadingController,
     private route: ActivatedRoute,
     private swUpdate: SwUpdate,
     private loaderComponent: LoaderComponent,
@@ -137,7 +135,7 @@ export class StorePage implements OnInit {
     private productsService: ProductsService,
     private ngNavigatorShareService: NgNavigatorShareService,
     private productCategoriesService: ProductCategoriesService,
-    private sectornamePipe: SectorNamePipe,
+    public menuService: MenuService,
     private ordersService: OrdersService
   ) {
 
@@ -172,6 +170,8 @@ export class StorePage implements OnInit {
     });
 
     this.getScreenSize();
+
+    this.appService.loadCustomScript();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -291,55 +291,32 @@ export class StorePage implements OnInit {
     popover.present();
   }
 
-
-  signOut() {
-    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
-      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
-      setTimeout(() => {
-        this.angularFireAuth.auth.signOut();
-        this.popoverController.dismiss();
-        this.presentToast("Has abandonado la sesión!", null);
-        this.loaderComponent.stopLoading();
-      }, 500);
-    });
-  }
-
-  async presentToast(message: string, image: string) {
-    const toast = await this.toastController.create({
-      duration: 3000,
-      message: message,
-      position: 'bottom',
-      buttons: ['Cerrar']
-    });
-    toast.present();
-  }
-
   doRefreshMain(event) {
     setTimeout(() => {
       this.angularFireAuth.auth.onAuthStateChanged(user => {
         this.storesService.getById(this.route.snapshot.params.id).then(result => {
           this.cartSevice = this.cartManagerService.getCartService();
           this.category = result;
-  
+
           if (user) {
             this.appService.updateUserData(user.uid).then(() => {
               this.isAdmin = this.appService.currentUser.isAdmin;
-  
+
               if (this.category.status != StoreStatus.Published) {
                 if (!this.isAdmin) {
                   this.router.navigate(['/home']);
                 }
               }
-  
+
               this.initialize(true);
             });
           } else {
             this.isAdmin = false;
-  
+
             if (this.category.status != StoreStatus.Published) {
               this.router.navigate(['/home']);
             }
-  
+
             this.initialize(true);
           }
         });
@@ -544,6 +521,8 @@ export class StorePage implements OnInit {
   async addToCart(e: any, product: Product) {
 
     if (!product.soldOut) {
+      this.loading = await this.loadingCtrl.create({});
+      this.loading.present();
       this.cartInventoryService.clearCart();
       let subs = this.productsService.getCartInventory(product.id)
         .subscribe((cartP) => {
@@ -562,6 +541,11 @@ export class StorePage implements OnInit {
             productProperties = productProperties;
             subscribe.unsubscribe();
 
+            if (this.loading) {
+              await this.loading.dismiss();
+              this.loading = null;
+            }
+
             let modal = await this.popoverController.create({
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
@@ -576,7 +560,7 @@ export class StorePage implements OnInit {
                 if (result) {
                   this.animateCSS('tada');
                   this.cartSevice.addProduct(result);
-                  this.presentToast(product.name + ' ha sido agregado al carrito!', result.product.image);
+                  this.appService.presentToastCart(product.name + ' ha sido agregado al carrito!', result.product.image);
                 }
               });
 
@@ -774,7 +758,7 @@ export class StorePage implements OnInit {
   }
 
   async openProductDetailPage(idProduct: string) {
-    this.router.navigate(['product-detail/' + idProduct]);
+    this.router.navigate(['app/product-detail/' + idProduct]);
   }
 
   async openProduct(product: Product) {
@@ -1038,7 +1022,7 @@ export class StorePage implements OnInit {
             this.router.navigate(['store-coupons-detail/', value[value.length - 1]]);
           } else if (result.indexOf("product-detail") != -1) {
             let value = result.toString().split("/");
-            this.router.navigate(['product-detail/', value[value.length - 1]]);
+            this.router.navigate(['app/product-detail/', value[value.length - 1]]);
           } else if (result.indexOf("store") != -1) {
             let value = result.toString().split("/");
             this.router.navigate(['store/', value[value.length - 1]]);
@@ -1050,7 +1034,7 @@ export class StorePage implements OnInit {
   }
 
   async openBarCodeGenerator(product: Product) {
-    let value = this.appService._appInfo.domain + "/product-detail/" + product.id;
+    let value = this.appService._appInfo.domain + "/app/product-detail/" + product.id;
 
     let modal = await this.popoverController.create({
       component: BarcodeGeneratorComponent,
@@ -1091,7 +1075,7 @@ export class StorePage implements OnInit {
     // }
   }
 
-  
+
 
   async openVideoPlayerComponent(e: any, url: string) {
     let modal = await this.popoverController.create({
@@ -1140,11 +1124,6 @@ export class StorePage implements OnInit {
       });
 
     modal.present();
-  }
-
-  searchFeaturedProducts() {
-    this.idProductCategory = '-1';
-    this.presentToast("Los productos destacados se estan mostrando ahora", null);
   }
 
   openSelectCategories() {

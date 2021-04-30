@@ -7,11 +7,6 @@ const routes: Routes = [
     path: 'app',
     loadChildren: () => import('./cs-pages/split-layout/split-layout.module').then( m => m.SplitLayoutPageModule)
   },
-  { path: 'home', loadChildren: () => import('./cs-pages/home/home.module').then( m => m.HomePageModule)},
-  {
-    path: 'store/:id',
-    loadChildren: () => import('./cs-pages/store/store.module').then( m => m.StorePageModule)
-  },
   {
     path: 'cart',
     loadChildren: () => import('./cs-pages/cart/cart.module').then( m => m.CartPageModule)
@@ -47,10 +42,6 @@ const routes: Routes = [
   {
     path: 'order-create',
     loadChildren: () => import('./cs-pages/order-create/order-create.module').then( m => m.OrderCreatePageModule)
-  },
-  {
-    path: 'product-detail/:id',
-    loadChildren: () => import('./cs-pages/product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
   },
   {
     path: 'order-detail/:id',

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { MenuNotificationsComponent } from '../cs-components/menu-notifications/menu-notifications.component';
 import { MenuUserComponent } from '../cs-components/menu-user/menu-user.component';
+import { ShoppingCartComponent } from '../cs-components/shopping-cart/shopping-cart.component';
 import { CartPage } from '../cs-pages/cart/cart.page';
 
 @Injectable({
@@ -15,7 +16,7 @@ export class MenuService {
 
    async openCart(e) {
     let modal = await this.popoverController.create({
-      component: CartPage,
+      component: ShoppingCartComponent,
       componentProps: { storeId: '-1' },
       cssClass: 'cs-popovers',
       backdropDismiss: true,

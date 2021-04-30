@@ -9,7 +9,18 @@ const routes: Routes = [
     path: '',
     component: SplitLayoutPage,
     children: [
-      { path: 'home', loadChildren: () => import('../home/home.module').then( m => m.HomePageModule)}
+      {
+        path: 'home',
+        loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+      },
+      {
+        path: 'store/:id',
+        loadChildren: () => import('../store/store.module').then(m => m.StorePageModule)
+      },
+      {
+        path: 'product-detail/:id',
+        loadChildren: () => import('../product-detail/product-detail.module').then(m => m.ProductDetailPageModule)
+      }
     ]
   }
 ];
@@ -18,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SplitLayoutPageRoutingModule {}
+export class SplitLayoutPageRoutingModule { }

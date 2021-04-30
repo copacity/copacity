@@ -190,7 +190,7 @@ export class ProductUpdatePage implements OnInit {
             title: this.appService._appInfo.name1 + this.appService._appInfo.name2,
             text: "Aprovecha y adquiere en Copacity.net " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
               this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService._appInfo.name1 + this.appService._appInfo.name2 + " para tí. Si quieres ver mas detalles de este producto ingresa a: ",
-            url: this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id
+            url: this.appService._appInfo.domain + "/app/product-detail/" + this.navParams.data.id
           })
             .then(() => console.log('Share was successful.'))
             .catch((error) => console.log('Sharing failed', error));
@@ -207,7 +207,7 @@ export class ProductUpdatePage implements OnInit {
   async openCopyToClipBoardProduct(e) {
 
     let text = "Aprovecha y adquiere en Copacity.net " + this.navParams.data.name + ((this.navParams.data.discount && this.navParams.data.discount > 0) ? (" con el " +
-      this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService._appInfo.name1 + this.appService._appInfo.name2 + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.navParams.data.id;
+      this.navParams.data.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados en la tienda " + this.appService._appInfo.name1 + this.appService._appInfo.name2 + " para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/app/product-detail/" + this.navParams.data.id;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,

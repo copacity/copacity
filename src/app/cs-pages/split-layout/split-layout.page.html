@@ -3,16 +3,20 @@
     <ion-content class="popover-content">
       <div class="menu" data-menu-select="page-welcome" style="width: 250px;height: 100%;">
 
-        <a href="#" class="nav-title color-theme"><span class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
-        <span class="nav-text color-theme opacity-50">Splendid Simplicity</span>
+        <div class="user-list-left top-20" style="text-align: -webkit-center;padding-bottom: 15px;">
+          <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+        </div>
+        <a style="padding: 5px 0px 20px 0px;" href="#" class="nav-title color-theme"><span
+            class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+        <!-- <span class="nav-text color-theme opacity-50">Splendid Simplicity</span> -->
 
         <div class="nav nav-medium">
           <div class="divider"></div>
           <!-- <ion-menu-toggle> -->
-          <a id="page-home" routerLink="/home">
+          <a id="page-home" routerLink="/app/home">
             <i class="fa fa-home color-green1-dark"></i><span>Inicio</span><i class="fa fa-angle-right"></i>
           </a>
-          <a *ngIf="appService?.currentUser" id="page-components" routerLink="//order-list">
+          <a *ngIf="appService?.currentUser" id="page-components" routerLink="/order-list">
             <i class="fa fa-users color-blue2-dark"></i><span>Pedidos</span><i class="fa fa-angle-right"></i>
           </a>
           <a id="page-menus" routerLink="/contact">
@@ -24,8 +28,8 @@
           <!-- </ion-menu-toggle> -->
           <div class="divider top-15"></div>
 
-          <p>Copyright <span class="copyright-year"></span> - Maothinks <br /> Todos los derechos reservados.</p>
           <p class="footer-text"><b>Versión</b> {{ appService.appVersion }}</p>
+          <p>Copyright <span class="copyright-year"></span> - Maothinks <br /> Todos los derechos reservados.</p>
         </div>
       </div>
     </ion-content>
@@ -33,7 +37,8 @@
 
   <ion-menu contentId="main" side="end" style="width: 250px;">
     <ion-content class="popover-content">
-      <app-menu-notifications></app-menu-notifications>
+      <app-menu-notifications *ngIf="appService?.currentUser && appService?.currentUser?.isAdmin"></app-menu-notifications>
+      <app-shopping-cart *ngIf="!appService?.currentUser || (appService?.currentUser && !appService?.currentUser?.isAdmin)"></app-shopping-cart>
     </ion-content>
   </ion-menu>
 

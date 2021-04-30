@@ -1,269 +1,146 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="close()">
-        <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
-      </ion-button>
-      <ion-button routerLink="/home">
-        <img id="img-title" src="../assets/icon/favicon.png" alt="img" style="width: 30px;padding-right: 5px;">
-        <a class="header-title bold color-highlight" style="font-size: 1.2em;"><span
-            style="color: red;">COPA</span>CITY</a>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="primary">
-      <ion-button (click)="openSearchPage()">
-        <span style="font-size: 1em; color: black;">
-          <i class="fa fa-search" style="font-size: 1.2em"></i>
-        </span>
-      </ion-button>
-      <ion-button #cartProductDetail (click)="openCart()">
-        <i class="fa fa-shopping-cart" style="color: black;font-size: 1.2em"></i>
-        <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
-          {{ cartManagerService.getTotalCount() }}
-        </ion-badge>
-      </ion-button>
-      <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
-        <i class="fa fa-bell" style="color: black"></i>
-        <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
-          slot="end">{{appService.notificationsCount | async}}</ion-badge>
-      </ion-button>
-      <ion-button (click)="presentMenuUser($event)">
-        <i class="fa fa-user" style="color: black"></i>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-
-  <!-- Left Side Menu Only To Big Browsers -->
-  <div id="main-menu-large">
-    <ion-header>
-      <ion-toolbar>
-        <div class="content top-30" *ngIf="appService?.currentUser">
-          <div class="user-slider owl-carousel  bottom-0">
-            <div class="user-list-left">
-              <img
-                [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
-                alt="img" class="shadow-small">
-              <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
-              <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="content top-30" *ngIf="!appService?.currentUser">
-          <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-        </div>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="side-content">
-      <ion-list>
-        <ion-item style="padding: 3px;" routerLink="/home">
-          <i class="fa fa-home"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Inicio</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
-          <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Mis Pedidos</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;" routerLink="/contact">
-          <i class="fa fa-paper-plane"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Mensajes</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
-          <i class="fa fa-sign-out-alt"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Cerrar Sesión</ion-label>
-        </ion-item>
-      </ion-list>
-      <ion-toolbar style="padding-top: 30px;">
-        <div class="footer" style="padding: 8px 8px 8px 8px;">
-
-          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-            <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
-          </div>
-
-          <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
-              style="color: red;">COPA</span>CITY</a>
-          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
-
-          <div class="footer-socials" style="padding-left: 20px;">
-            <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
-                class="fab fa-facebook-f"></i></a>
-            <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
-                class="fa fa-phone"></i></a>
-            <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
-                class="fab fa-whatsapp"></i></a>
-            <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
-                class="fa fa-share-alt"></i></a>
-          </div>
-          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
-            {{ appService.appVersion }}
-          </p>
-          <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
-            &copy; Enabled <span id="copyright-year">2020</span>.
-            All Rights Reserved.
-          </p>
-        </div>
-      </ion-toolbar>
-    </ion-content>
-  </div>
-
-  <!-- Right Side Menu Only To Big Browsers -->
-  <div id="main-menu-large-right">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title style="text-align: center;">
-          <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
-        </ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="side-content">
-      <app-menu-notifications></app-menu-notifications>
-    </ion-content>
+<ion-header class="ion-no-border">
+  <div class="header header-fixed header-logo-app">
+    <ion-menu-toggle><a class="header-title ultrabold font-15" style="top: -2px;"><span class="color-highlight"
+          routerLink="/app/home">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+    </ion-menu-toggle>
+    <a class="header-icon header-icon-1">
+      <ion-menu-toggle><i class="fas fa-bars"></i></ion-menu-toggle>
+    </a>
+    <a class="header-icon header-icon-2" (click)="menuService.presentMenuUser($event)"><i class="fa fa-user"></i></a>
+    <a (click)="menuService.presentMenuNotifications($event)" class="header-icon header-icon-3"><i
+        class="fa fa-bell"></i>
+      <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger" slot="end">
+        {{appService.notificationsCount | async}}</ion-badge>
+    </a>
+    <a #cartHome class="header-icon header-icon-4" (click)="menuService.openCart($event)"><i
+        class="fa fa-shopping-cart"></i>
+      <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
+        {{ cartManagerService.getTotalCount() }}</ion-badge>
+    </a>
+    <a class="header-icon header-icon-5" (click)="openSearchPage()"><i class="fa fa-search"></i></a>
+    <a class="header-icon header-icon-6" data-toggle-theme><i class="fa fa-moon"></i></a>
   </div>
 </ion-header>
 
-<super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
-  <super-tabs-container>
-    <super-tab>
-      <ion-content class="content-background">
-        <div class="profile-1 bottom-80 top-30">
-          <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
+<ion-content>
+  <div id="page">
+    <div class="page-content menuLeft product-detail">
 
-            <a (click)="openBarCodeScanner()"
-              style="right: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
-              <i class="fa fa-qrcode"></i>&nbsp;QR</a>
+      <a (click)="openBarCodeScanner()"
+        style="right: 5px;position: absolute;top: 0;font-size: 2em;font-size: 1em;color: red;font-weight: bolder;margin: 2px;;z-index: 999;">
+        <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
-            <a #video *ngIf="product?.video" (click)="openVideoPlayerComponent($event, product?.video)"
-              style="left: 0px;position: absolute;top: 0;font-size: 2em;font-size: 1em;padding: 5px;color: red;font-weight: 500;margin: 2px;">
-              <i class="fab fa-youtube"></i>&nbsp;Video</a>
+      <a (click)="shareProduct($event)" 
+        style="right: 60px;position: absolute;top: 0;font-size: 2em;font-size: 1em;color: red;font-weight: bolder;margin: 2px;;z-index: 999;">
+        <i class="fa fa-share-alt"></i>&nbsp;Compartir</a>
 
-            <a (click)="shareProduct($event)" style="background-color: white; color: black;border-radius:15px"
-              class="profile-button button shadow-large button-m button-round round-medium uppercase bolder button-center-medium">
-              <i class="fa fa-share-alt" style="padding-right: 10px;color: black;"></i>
-              <strong>Compartir</strong>
-            </a>
+      <a #video *ngIf="product?.video" (click)="openVideoPlayerComponent($event, product?.video)"
+        style="left: 5px;position: absolute;top: 0;font-size: 2em;font-size: 1em;color: red;font-weight: bolder;margin: 2px;z-index: 999;">
+        <i class="fab fa-youtube"></i>&nbsp;Video</a>
 
-            <ion-slides *ngIf="productImageCollection.length != 0" #sliderImageProductUpdate [options]="slideOpts"
-              pager="true" style="padding-top: 20px;">
-              <ion-slide *ngFor="let productImage of productImageCollection">
-                <img class="round-medium" [src]="productImage.image" alt="img"
-                  (click)='openImageViewer(productImage.image)'>
-                <!-- <em (click)="removeProductImage(productImage)" class="round-small" style="margin: 5px;position: absolute;background-color: white;font-weight: bold;font-size: 1.2em;
-                  top: 0px;right: 0px">
-                  <i class="fa fa-times-circle" style="margin: 5px;color: black;font-size: 2em;"></i></em> -->
-              </ion-slide>
-            </ion-slides>
+      <ion-slides *ngIf="productImageCollection.length != 0" #sliderImageProductUpdate [options]="slideOpts"
+        pager="true" style="padding-top: 30px;">
+        <ion-slide *ngFor="let productImage of productImageCollection">
+          <img [src]="productImage.image" alt="img" (click)='openImageViewer(productImage.image)'>
+        </ion-slide>
+      </ion-slides>
 
-            <img *ngIf="productImageCollection.length == 0" class="profile-image-product preload-image"
-              src="../../../assets/icon/no-image.png" alt="img">
+      <div class="content">
+        <div class="store-product">
+          <h2 class="store-product-title" style="font-size: 1.5em;padding-top: 5px;padding-right: 140px;">
+            {{product?.name }}</h2>
 
-            <div class="profile-body-no-apply">
+          <span class="store-product-price">
+            <em *ngIf="product?.discount && product?.discount > 0" style="font-size: 1em;font-weight: 500;"
+              class="menuLeft">Antes
+              <del>{{product?.price | currency: 'USD' : 'symbol' : '1.0-0'}}</del></em>
 
-              <div class="store-product">
-                <h2 class="store-product-title" style="font-size: 1.5em;padding-top: 5px;padding-right: 140px;">
-                  {{product?.name }}</h2>
+            <strong *ngIf="!product?.discount || product?.discount <= 0" style="padding-top: 5px;">{{product?.price |
+              currency: 'USD' : 'symbol' : '1.0-0'}}</strong>
+            <strong *ngIf="product?.discount && product?.discount > 0" style="padding-top: 5px;">{{ product?.price -
+              (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</strong>
+          </span>
+          <span *ngIf="product?.discount && product?.discount > 0" class="store-product-discount"
+            style="color: black; background-color: yellow;font-size: 1em;font-weight: bold;top:70px">{{
+            product?.discount }}%
+            Descuento</span>
+        </div>
 
-                <span class="store-product-price">
-                  <em *ngIf="product?.discount && product?.discount > 0"
-                    style="font-size: 1.2em;color: black;font-weight: 500;">Antes
-                    <del>{{product?.price | currency: 'USD' : 'symbol' : '1.0-0'}}</del></em>
+        <div *ngIf="product?.description">
+          <div *ngIf="(!product?.discount || product?.discount <= 0)" class="divider top-10"></div>
+          <div *ngIf="(product?.discount && product?.discount > 0)" class="divider top-50"></div>
 
-                  <strong *ngIf="!product?.discount || product?.discount <= 0"
-                    style="padding-top: 5px;">{{product?.price | currency: 'USD' : 'symbol' : '1.0-0'}}</strong>
-                  <strong *ngIf="product?.discount && product?.discount > 0"
-                    style="padding-top: 5px;">{{ product?.price - (product?.price * (product?.discount / 100)) | currency: 'USD': 'symbol' : '1.0-0' }}</strong>
-                </span>
-                <!-- <span class="store-product-reviews">
-                  <strong>4.98<i class="fa fa-star"></i></strong>
-                  <a href="#">Based on: 421 Reviews</a>
-                </span> -->
-                <span *ngIf="product?.discount && product?.discount > 0" class="store-product-discount"
-                  style="color: black; background-color: yellow;font-size: 1em;font-weight: bold;top:70px">{{ product?.discount }}%
-                  Descuento</span>
-              </div>
-
-              <div *ngIf="product?.description">
-                <div *ngIf="(!product?.discount || product?.discount <= 0)" class="divider top-10"></div>
-                <div *ngIf="(product?.discount && product?.discount > 0)" class="divider top-50"></div>
-
-                <h4 class="bold color-highlight">Descripción del producto</h4>
-                <div class="container">
-                  <p>
-                    {{product?.description}}
-                  </p>
-                </div>
-              </div>
-
-              <!-- <div>
-                <div class="divider top-50"></div>
-                <h4 class="bold color-highlight">Políticas de cambios y devoluciones</h4>
-                <div class="container">
-                  <p>
-                    Para ver las políticas de cambios y devoluciones has click <a (click)="popoverReturnsPolicy()" class="bold" style="text-decoration-line: underline;">AQUI</a>
-                  </p>
-                </div>
-              </div> -->
-
-              <div *ngIf="productProperties.length != 0">
-                <div class="divider top-50"></div>
-                <h4 class="bold color-highlight">Características</h4>
-                <table class="table-borders-dark store-product-table" style="border: solid 1px rgba(0,0,0,0.08);">
-                  <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
-                    <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}</td>
-                    <td style="vertical-align: top;">
-                      <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
-                        class="{{productPropertyOption.deleted?'hidden':''}}">
-                        {{productPropertyOption.name}}<b
-                          *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
-                        <br />
-                      </div>
-
-                    </td>
-                  </tr>
-                </table>
-              </div>
-
-              <div class="divider divider-margins top-15"></div>
-            </div>
-            <div class="top-20"></div>
-            <p *ngIf="appService._appInfo?.returnsPolicyTemplate" class="bottom-20" style="color: black;">
-              <a (click)="popoverReturnsPolicy()">Políticas de cambio y devoluciones.</a>
+          <h4 class="bold color-highlight">Descripción del producto</h4>
+          <div class="container">
+            <p>
+              {{product?.description}}
             </p>
-            <a (click)="addToCart($event)"
-              style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-              class="button button-round-small shadow-large button-full button-s">AGREGAR AL CARRITO!</a>
           </div>
         </div>
-      </ion-content>
-    </super-tab>
-  </super-tabs-container>
-</super-tabs>
 
-<div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
-  style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
-  <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
-    style="top: -5px;padding-left: 5px;padding-right: 5px;">
-    {{ appService?.temporalCoupon?.name }}
-  </h6>
+        <div *ngIf="productProperties.length != 0">
+          <div class="divider top-50"></div>
+          <h4 class="bold color-highlight">Características</h4>
+          <table class="table-borders-dark store-product-table" style="border: solid 1px rgba(0,0,0,0.08);">
+            <tr *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
+              <td style="vertical-align: top;" class="bold color-theme">{{productProperty.name}}</td>
+              <td style="vertical-align: top;">
+                <div *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
+                  class="{{productPropertyOption.deleted?'hidden':''}}">
+                  {{productPropertyOption.name}}<b
+                    *ngIf="(productPropertyOption.price || productPropertyOption.price != 0)">+{{productPropertyOption.price
+                    | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+                  <br />
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
 
-  <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
-    style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
-    un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
-    <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
-  </h6>
+        <div class="divider divider-margins top-15"></div>
 
-  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">
-    <table>
-      <tr>
-        <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()"
-            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
-        <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
-            style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
-      </tr>
-    </table>
-  </h6>
-</div>
+        <div class="top-20"></div>
+        <p *ngIf="appService._appInfo?.returnsPolicyTemplate" class="bottom-20">
+          <a (click)="popoverReturnsPolicy()">Políticas de cambio y devoluciones.</a>
+        </p>
+        <!-- <a (click)="addToCart($event)"
+          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
+          class="button button-round-small shadow-large button-full button-s bottom-20">AGREGAR AL CARRITO!</a> -->
+
+        <div class="center-text">
+          <a (click)="addToCart($event)"
+            class="bg-highlight button button-round-small shadow-small button-sm button-s bottom-20">
+            <i class="fa fa-shopping-cart add-button" style="color: white;padding-right: 5px;"></i>AGREGAR AL
+            CARRITO</a>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="footer" style="box-shadow:none;padding: 0px 30px 10px 30px;">
+        <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+          <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
+        </div>
+        <a class="footer-title"><span
+            class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+        <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro
+          Comercial Virtual</p>
+        <div class="footer-socials" style="padding-left: 24px;">
+          <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+              class="fab fa-facebook-f"></i></a>
+          <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+              class="fa fa-phone"></i></a>
+          <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
+              class="fab fa-whatsapp"></i></a>
+          <a data-menu="menu-share" (click)="shareApp($event)" class="round-tiny shadow-medium bg-red2-dark"><i
+              class="fa fa-share-alt"></i></a>
+          <div class="clear"></div>
+        </div>
+
+        <p class="footer-copyright">Copyright &copy; Maothinks <span class="copyright-year">2021</span>.
+          All Rights
+          Reserved.
+        </p>
+      </div>
+    </div>
+  </div>
+</ion-content>

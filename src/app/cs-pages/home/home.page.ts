@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController, AlertController, ToastController, IonSelect, LoadingController } from '@ionic/angular';
 import { AppService } from 'src/app/cs-services/app.service';
@@ -22,10 +22,8 @@ import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/produ
 import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-player.component';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
-import { VendorsListComponent } from 'src/app/cs-components/vendors-list/vendors-list.component';
 import { HostListener } from "@angular/core";
 import { Observable } from 'rxjs';
-import { CartPage } from '../cart/cart.page';
 import { UsersService } from 'src/app/cs-services/users.service';
 import { StoreInformationComponent } from 'src/app/cs-components/store-information/store-information.component';
 import { StorePointsPage } from '../store-points/store-points.page';
@@ -112,11 +110,7 @@ export class HomePage implements OnInit {
     this.initializePage();
     this.getScreenSize();
 
-    const head = document.getElementsByTagName('head')[0];
-    const _js = document.createElement('script');
-    _js.type = 'text/javascript';
-    _js.appendChild(document.createTextNode('init_template()'));
-    head.appendChild(_js);
+    this.appService.loadCustomScript();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -149,7 +143,7 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void { }
 
-  
+
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -221,14 +215,14 @@ export class HomePage implements OnInit {
   }
 
   async addToCart(e: any, featuredProductNoDiscount: any) {
-    this.loading = await this.loadingCtrl.create({});
-    this.loading.present();
     if (!this.appService.currentUser || (this.appService.currentUser && !this.appService.currentUser.isAdmin)) {
       this.sliderProductsNoDiscount.stopAutoplay();
 
       let cartSevice = this.cartManagerService.getCartService(/*featuredProductNoDiscount.store*/)
 
       if (!featuredProductNoDiscount.soldOut) {
+        this.loading = await this.loadingCtrl.create({});
+        this.loading.present();
         this.cartInventoryService.clearCart();
         let subs = this.productsService.getCartInventory(featuredProductNoDiscount.id)
           .subscribe((cartP) => {
@@ -267,7 +261,7 @@ export class HomePage implements OnInit {
                   if (result) {
                     this.animateCSS('tada');
                     cartSevice.addProduct(result);
-                    this.presentToastCart(featuredProductNoDiscount.name + ' ha sido agregado al carrito!', result.image);
+                    this.appService.presentToastCart(featuredProductNoDiscount.name + ' ha sido agregado al carrito!', result.image);
                   }
                 });
 
@@ -297,18 +291,6 @@ export class HomePage implements OnInit {
 
     alert.onDidDismiss().then(done());
     await alert.present();
-  }
-
-  async presentToastCart(message: string, image: string) {
-    const toast = await this.toastController.create({
-      duration: 3000,
-      message: message,
-      position: 'top',
-      cssClass: 'toast-cart',
-      color: 'warning',
-      buttons: ['Cerrar']
-    });
-    toast.present();
   }
 
   animateCSS(animationName: any, keepAnimated = false) {
@@ -462,7 +444,7 @@ export class HomePage implements OnInit {
 
   goToStore(e: any, category: Category) {
     this.loaderComponent.start(category.thumb_logo ? category.thumb_logo : "../../assets/icon/no-image.png").then(result => {
-      this.router.navigate(['/store', category.id]);
+      this.router.navigate(['/app/store', category.id]);
       this.loaderComponent.stop();
     });
   }
@@ -572,22 +554,22 @@ export class HomePage implements OnInit {
   redirectBanner(banner: Banner) {
     switch (banner.redirectType) {
       case BannerRedirectTypes.Store: {
-        this.goToPage('/store/' + banner.idStore, banner.storeImage);
+        this.goToPage('/app/store/' + banner.idStore, banner.storeImage);
         break;
       }
       case BannerRedirectTypes.Product: {
-        this.goToPage('/product-detail/' + banner.redirectTypeId + '&' + banner.idStore, banner.storeImage)
+        this.goToPage('/app/product-detail/' + banner.redirectTypeId + '&' + banner.idStore, banner.storeImage)
         this.router.navigate([]);
         break;
       }
       case BannerRedirectTypes.Coupon: {
         this.storesService.option = BannerRedirectTypes.Coupon;
-        this.goToPage('/store/' + banner.idStore, banner.storeImage);
+        this.goToPage('/app/store/' + banner.idStore, banner.storeImage);
         break;
       }
       case BannerRedirectTypes.Gift: {
         this.storesService.option = BannerRedirectTypes.Gift;
-        this.goToPage('/store/' + banner.idStore, banner.storeImage);
+        this.goToPage('app/store/' + banner.idStore, banner.storeImage);
         break;
       }
       case BannerRedirectTypes.ExternalUrl: {
@@ -722,10 +704,10 @@ export class HomePage implements OnInit {
             this.router.navigate(['store-coupons-detail/', value[value.length - 1]]);
           } else if (result.indexOf("product-detail") != -1) {
             let value = result.toString().split("/");
-            this.router.navigate(['product-detail/', value[value.length - 1]]);
+            this.router.navigate(['app/product-detail/', value[value.length - 1]]);
           } else if (result.indexOf("store") != -1) {
             let value = result.toString().split("/");
-            this.router.navigate(['store/', value[value.length - 1]]);
+            this.router.navigate(['app/store/', value[value.length - 1]]);
           }
         }
       });

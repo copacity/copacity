@@ -21,7 +21,6 @@ export class SearchPage {
     private popoverCtrl: PopoverController,
     public toastController: ToastController,
     private productsService: ProductsService,
-    private storesService: StoresService,
     public searchService: SearchService,
     public appService: AppService) {
 
@@ -102,7 +101,7 @@ export class SearchPage {
   }
 
   goToProductDetail(product: any) {
-    this.router.navigate(['product-detail', product.product.id]);
+    this.router.navigate(['app/product-detail', product.product.id]);
     this.popoverCtrl.dismiss();
   }
 

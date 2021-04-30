@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { AlertController, ToastController, PopoverController } from '@ionic/angular';
+import { AlertController, ToastController, PopoverController, LoadingController } from '@ionic/angular';
 import { Product, ProductImage, ProductProperty, Category } from 'src/app/app-intefaces';
 import { ProductsService } from 'src/app/cs-services/products.service';
 import { AppService } from 'src/app/cs-services/app.service';
@@ -11,11 +11,9 @@ import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notificat
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
-import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { StoreStatus } from 'src/app/app-enums';
-import { StoresService } from 'src/app/cs-services/stores.service';
 import { Subscription } from 'rxjs';
 import { ProductPropertiesSelectionComponent } from 'src/app/cs-components/product-properties-selection/product-properties-selection.component';
 import { BarcodeScannerComponent } from 'src/app/cs-components/barcode-scanner/barcode-scanner.component';
@@ -24,9 +22,8 @@ import { VideoPlayerComponent } from 'src/app/cs-components/video-player/video-p
 import { SearchPage } from '../search/search.page';
 import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 import { ReturnsPolicyPage } from '../returns-policy/returns-policy.page';
-import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
-import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
+import { MenuService } from 'src/app/cs-services/menu.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -34,13 +31,15 @@ import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-v
   styleUrls: ['./product-detail.page.scss'],
 })
 export class ProductDetailPage implements OnInit {
+  loading: HTMLIonLoadingElement;
+
   category: Category;
   cartSevice: CartService;
 
   @ViewChild('sliderProductDetail', null) slider: any;
   product: Product;
   productImageCollection: ProductImage[] = [];
-  @ViewChild('cartProductDetail', { static: false, read: ElementRef }) shoppingCart: ElementRef;
+  @ViewChild('cartHome', { static: false, read: ElementRef }) shoppingCart: ElementRef;
   @ViewChild('video', { static: false, read: ElementRef }) videoIcon: ElementRef;
   isAdmin: boolean = false;
 
@@ -58,9 +57,9 @@ export class ProductDetailPage implements OnInit {
     public cartInventoryService: CartInventoryService,
     public alertController: AlertController,
     private angularFireAuth: AngularFireAuth,
-    private loaderComponent: LoaderComponent,
+    public menuService: MenuService,
     private ngNavigatorShareService: NgNavigatorShareService,
-    private storesService: StoresService,
+    private loadingCtrl: LoadingController,
     private productService: ProductsService,
     private popoverController: PopoverController,
     public appService: AppService) {
@@ -76,6 +75,7 @@ export class ProductDetailPage implements OnInit {
     });
 
     this.initialize();
+    this.appService.loadCustomScript();
   }
 
   initialize(user?: any) {
@@ -271,72 +271,16 @@ export class ProductDetailPage implements OnInit {
       el: '.swiper-pagination',
       type: 'fraction',
       renderFraction: function (currentClass, totalClass) {
-        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;opacity:.8">' +
-          '<span  class="' + currentClass + '"></span>' +
+        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;opacity:.8" class="color-black">' +
+          '<span  class="' + currentClass + ' color-black"></span>' +
           ' / ' +
-          '<span class="' + totalClass + '"></span></div></div>';
+          '<span class="' + totalClass + ' color-black"></span></div></div>';
       }
     }
   };
 
   close() {
-    this.router.navigate(['/store', this.product.idCategory]);
-  }
-
-  async SignIn() {
-    this.popoverController.dismiss();
-
-    const popover = await this.popoverController.create({
-      component: AskForAccountComponent,
-      cssClass: 'cs-popovers',
-    });
-
-    popover.onDidDismiss()
-      .then(async (data) => {
-        const result = data['data'];
-
-        this.popoverController.dismiss();
-        if (result == 0) {
-          const popover2 = await this.popoverController.create({
-            component: SignupComponent,
-            cssClass: "signin-popover",
-          });
-
-          popover2.onDidDismiss()
-            .then((data) => {
-              const result = data['data'];
-            });
-
-          popover2.present();
-        } else if (result == 1) {
-          const popover3 = await this.popoverController.create({
-            component: SigninComponent,
-            cssClass: "signin-popover",
-          });
-
-          popover3.onDidDismiss()
-            .then((data) => {
-              const result = data['data'];
-            });
-
-          popover3.present();
-        }
-      });
-
-    popover.present();
-  }
-
-
-  signOut() {
-    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
-      this.loaderComponent.startLoading("Cerrando sesión, por favor espere un momento...")
-      setTimeout(() => {
-        this.angularFireAuth.auth.signOut();
-        //this.popoverCtrl.dismiss();
-        this.presentToast("Has abandonado la sesión!");
-        this.loaderComponent.stopLoading();
-      }, 500);
-    });
+    this.router.navigate(['app/store', this.product.idCategory]);
   }
 
   async presentConfirm(message: string, done: Function, cancel?: Function) {
@@ -410,7 +354,7 @@ export class ProductDetailPage implements OnInit {
             title: "Copacity",
             text: "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
               this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados para tí. Si quieres ver mas detalle de este producto ingresa a: ",
-            url: this.appService._appInfo.domain + "/product-detail/" + this.product.id
+            url: this.appService._appInfo.domain + "/app/product-detail/" + this.product.id
           })
             .then(() => console.log('Share was successful.'))
             .catch((error) => console.log('Sharing failed', error));
@@ -427,7 +371,7 @@ export class ProductDetailPage implements OnInit {
   async openCopyToClipBoardProduct(e) {
 
     let text = "Aprovecha y adquiere en Copacity.net " + this.product.name + ((this.product.discount && this.product.discount > 0) ? (" con el " +
-      this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/product-detail/" + this.product.id;
+      this.product.discount + "% de descuento!!") : "") + ". Tenemos muchos mas productos relacionados para tí. Si quieres ver mas detalles de este producto ingresa a: " + this.appService._appInfo.domain + "/app/product-detail/" + this.product.id;
 
     let modal = await this.popoverCtrl.create({
       component: CopyToClipboardComponent,
@@ -499,8 +443,11 @@ export class ProductDetailPage implements OnInit {
     modal.present();
   }
 
-  addToCart(e: any) {
+  async addToCart(e: any) {
     if (!this.isAdmin) {
+      this.loading = await this.loadingCtrl.create({});
+      this.loading.present();
+
       this.cartInventoryService.clearCart();
       let subs = this.productService.getCartInventory(this.product.id)
         .subscribe((cartP) => {
@@ -518,6 +465,11 @@ export class ProductDetailPage implements OnInit {
             productProperties = productProperties;
             subscribe.unsubscribe();
 
+            if (this.loading) {
+              await this.loading.dismiss();
+              this.loading = null;
+            }
+
             let modal = await this.popoverCtrl.create({
               component: ProductPropertiesSelectionComponent,
               mode: 'ios',
@@ -533,8 +485,8 @@ export class ProductDetailPage implements OnInit {
                 if (result) {
                   this.animateCSS('tada');
                   this.cartSevice.addProduct(result);
-                  this.presentToast(this.product.name + ' ha sido agregado al carrito!');
-                  this.close();
+                  this.appService.presentToastCart(this.product.name + ' ha sido agregado al carrito!', this.product.image);
+                  //this.close();
                 }
               });
 
@@ -565,10 +517,10 @@ export class ProductDetailPage implements OnInit {
             this.router.navigate(['store-coupons-detail/', value[value.length - 1]]);
           } else if (result.indexOf("product-detail") != -1) {
             let value = result.toString().split("/");
-            this.router.navigate(['product-detail/', value[value.length - 1]]);
+            this.router.navigate(['app/product-detail/', value[value.length - 1]]);
           } else if (result.indexOf("store") != -1) {
             let value = result.toString().split("/");
-            this.router.navigate(['store/', value[value.length - 1]]);
+            this.router.navigate(['app/store/', value[value.length - 1]]);
           }
         }
       });
@@ -611,15 +563,5 @@ export class ProductDetailPage implements OnInit {
   ionViewDidEnter() {
     this.animateVideo();
     try { this.slider.startAutoplay(); } catch (error) { }
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000,
-      position: 'bottom',
-      buttons: ['Cerrar']
-    });
-    toast.present();
   }
 }

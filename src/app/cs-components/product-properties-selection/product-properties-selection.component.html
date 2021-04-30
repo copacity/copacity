@@ -3,7 +3,7 @@
     style="right: 0px;position: absolute;top: 0;font-size: 1.6em;padding: 2px;z-index: 9;"></i>
 
   <ion-list>
-    <ion-list-header style="margin: 10px;top: -5px; padding-right: 50px;">{{navParams.data.product.name}}
+    <ion-list-header style="margin: 10px;top: -5px; padding-right: 50px;"><h5 style="width: 100%;" class="bolder">{{navParams.data.product.name}}</h5>
     </ion-list-header>
 
     <ion-item *ngFor="let productProperty of productProperties" class="{{productProperty.deleted?'hidden':''}}">
@@ -34,7 +34,7 @@
 
   <div class="center-text top-20">
     <a (click)="accept()"
-      style="font-size: 15px;font-weight: bold;margin-bottom: 0px;"
-      class="button button-s round-small bg-highlight {{ (!buttonEnabled)?'sold-out':'' }}">Aceptar!</a>
+      style="font-weight: bold;margin-bottom: 0px;"
+      class="button button-s round-small bg-highlight {{ (!buttonEnabled)?'sold-out':'' }}">Agregar</a>
   </div>
 </div>

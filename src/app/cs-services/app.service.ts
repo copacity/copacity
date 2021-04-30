@@ -82,8 +82,8 @@ export class AppService {
 
     this.banners = this.bannersService.getByType(1);
     this.bannersFooter = this.bannersService.getByType(2);
-    
-    this.storesService._getAll().subscribe(array =>{
+
+    this.storesService._getAll().subscribe(array => {
       this._categories = array;
     })
 
@@ -93,6 +93,26 @@ export class AppService {
         this._appInfo = appInfo;
       });
     });
+  }
+
+  loadCustomScript() {
+    const head = document.getElementsByTagName('head')[0];
+    const _js = document.createElement('script');
+    _js.type = 'text/javascript';
+    _js.appendChild(document.createTextNode('init_template()'));
+    head.appendChild(_js);
+  }
+
+  async presentToastCart(message: string, image: string) {
+    const toast = await this.toastController.create({
+      duration: 3000,
+      message: message,
+      position: 'top',
+      cssClass: 'toast-cart',
+      color: 'warning',
+      buttons: ['Cerrar']
+    });
+    toast.present();
   }
 
   updateUserData(idUser: string) {
@@ -370,7 +390,7 @@ export class AppService {
   }
 
   async presentConfirm(message: string, done: Function, cancel?: Function) {
-     
+
     const alert = await this.alertController.create({
       header: message,
       mode: 'ios',
@@ -398,7 +418,7 @@ export class AppService {
   }
 
   public applyTemporalCoupon() {
-    this.presentAlert("Debes aplicar el cupón cuando tengas listos los artículos que vas a comprar e ingreses a la opción 'Preparar pedido' en tu carrito de compras. Gracias","", () => {});
+    this.presentAlert("Debes aplicar el cupón cuando tengas listos los artículos que vas a comprar e ingreses a la opción 'Preparar pedido' en tu carrito de compras. Gracias", "", () => { });
   }
 
   signOut() {
