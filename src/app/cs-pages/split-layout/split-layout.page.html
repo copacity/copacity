@@ -16,11 +16,11 @@
           <a id="page-home" routerLink="/app/home">
             <i class="fa fa-home color-green1-dark"></i><span>Inicio</span><i class="fa fa-angle-right"></i>
           </a>
-          <a *ngIf="appService?.currentUser" id="page-components" routerLink="/order-list">
+          <a *ngIf="appService?.currentUser" id="page-components" routerLink="/app/order-list">
             <i class="fa fa-users color-blue2-dark"></i><span>Pedidos</span><i class="fa fa-angle-right"></i>
           </a>
-          <a id="page-menus" routerLink="/contact">
-            <i class="fa fa-paper-plane color-magenta2-dark"></i><span>Mensajes</span><i class="fa fa-angle-right"></i>
+          <a id="page-menus" routerLink="/app/contact">
+            <i class="fa fa-paper-plane color-magenta2-dark"></i><span>Contacto</span><i class="fa fa-angle-right"></i>
           </a>
           <a id="page-menus" *ngIf="appService?.currentUser" (click)="appService?.signOut()">
             <i class="fa fa-sign-out-alt color-red1-dark"></i><span>Cerrar Sesión</span>
@@ -35,10 +35,18 @@
     </ion-content>
   </ion-menu>
 
-  <ion-menu contentId="main" side="end" style="width: 250px;">
+  <ion-menu menuId="menu-right" contentId="main" side="end" style="width: 100%;">
+
+    <!-- <ion-menu-toggle menu="menu-right"><i class="fa fa-times-circle round-large menuLeft"
+        style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;z-index: 9;"></i>
+    </ion-menu-toggle> -->
+
     <ion-content class="popover-content">
-      <app-menu-notifications *ngIf="appService?.currentUser && appService?.currentUser?.isAdmin"></app-menu-notifications>
-      <app-shopping-cart *ngIf="!appService?.currentUser || (appService?.currentUser && !appService?.currentUser?.isAdmin)"></app-shopping-cart>
+      <app-menu-notifications *ngIf="appService?.currentUser && appService?.currentUser?.isAdmin">
+      </app-menu-notifications>
+      <app-shopping-cart
+        *ngIf="!appService?.currentUser || (appService?.currentUser && !appService?.currentUser?.isAdmin)">
+      </app-shopping-cart>
     </ion-content>
   </ion-menu>
 

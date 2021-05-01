@@ -18,7 +18,8 @@
             <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
                 {{ cartManagerService.getTotalCount() }}</ion-badge>
         </a>
-        <a class="header-icon header-icon-5" (click)="openSearchPage()"><i class="fa fa-search"></i></a>
+        <a class="header-icon header-icon-5" (click)="menuService.openSearchPage($event)"><i
+                class="fa fa-search"></i></a>
         <a class="header-icon header-icon-6" data-toggle-theme><i class="fa fa-moon"></i></a>
     </div>
 </ion-header>

@@ -6,15 +6,16 @@ import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notificat
 import { AppService } from 'src/app/cs-services/app.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
-import { PQRSF, Category } from 'src/app/app-intefaces';
-import { Location, LocationStrategy } from '@angular/common';
+import { PQRSF } from 'src/app/app-intefaces';
+import { Location } from '@angular/common';
 import { SigninComponent } from 'src/app/cs-components/signin/signin.component';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { StoresService } from 'src/app/cs-services/stores.service';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
+import { MenuService } from 'src/app/cs-services/menu.service';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 
 @Component({
   selector: 'app-contact',
@@ -46,9 +47,10 @@ export class ContactPage implements OnInit {
     private formBuilder: FormBuilder,
     private loader: LoaderComponent,
     private router: Router,
+    public menuService: MenuService,
     private storesService: StoresService,
     public toastController: ToastController,
-    private angularFireAuth: AngularFireAuth,
+    public cartManagerService: CartManagerService,
     public alertController: AlertController,
     public appService: AppService,
     public location: Location) {
@@ -59,10 +61,14 @@ export class ContactPage implements OnInit {
     // });
 
     this.buildForm();
-    //this.getStores();
+    this.appService.loadCustomScript();
   }
 
   ngOnInit() {
+  }
+
+  back() {
+    window.history.back();
   }
 
   async presentAlert(message: string, done: Function) {
@@ -164,20 +170,10 @@ export class ContactPage implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      idType: ['', [Validators.required]],
+      idType: ['-1', [Validators.required]],
+      userName: ['', [Validators.required]],
+      userEmail: ['', [Validators.required]],
       message: ['', [Validators.required, Validators.maxLength(500)]]
-    });
-  }
-
-  signOut() {
-    this.presentConfirm("Estás seguro que deseas cerrar la sesión?", () => {
-      this.loader.startLoading("Cerrando sesión, por favor espere un momento...")
-      setTimeout(() => {
-        this.angularFireAuth.auth.signOut();
-        this.popoverController.dismiss();
-        this.presentToast("Has abandonado la sesión!", null);
-        this.loader.stopLoading();
-      }, 500);
     });
   }
 
@@ -189,7 +185,6 @@ export class ContactPage implements OnInit {
     });
     toast.present();
   }
-
 
   async presentConfirm(message: string, done: Function, cancel?: Function) {
 
@@ -255,11 +250,11 @@ export class ContactPage implements OnInit {
         this.loader.startLoading("Enviando mensaje por favor espere un momento...");
         setTimeout(() => {
 
-          this.pqrsf.idUser = this.appService.currentUser.id;
-          this.pqrsf.userName = this.appService.currentUser.name;
-          this.pqrsf.userPhotoUrl = this.appService.currentUser.photoUrl;
+          this.pqrsf.idUser = "";
+          this.pqrsf.userName = this.form.value.userName;
+          this.pqrsf.userPhotoUrl = "";
           this.pqrsf.userEmail = this.appService.currentUser.email;
-          this.pqrsf.userPhone = this.appService.currentUser.phone1.toString();
+          this.pqrsf.userPhone = "";
           this.pqrsf.idStore = "";
           this.pqrsf.idType = this.form.value.idType;
           this.pqrsf.message = this.form.value.message;

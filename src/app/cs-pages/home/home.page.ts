@@ -730,22 +730,6 @@ export class HomePage implements OnInit {
     modal.present();
   }
 
-  async openSearchPage() {
-    let modal = await this.popoverController.create({
-      component: SearchPage,
-      cssClass: 'cs-search-popover',
-      backdropDismiss: true,
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        const result = data['data'];
-
-      });
-
-    modal.present();
-  }
-
   async openStorePointsPage() {
     if (this.appService.currentUser) {
       let modal = await this.popoverController.create({

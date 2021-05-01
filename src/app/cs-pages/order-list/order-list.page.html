@@ -1,276 +1,128 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button routerLink="/home">
-        <i class="fa fa-arrow-left" style="color: black;font-size: 1.2em;"></i>
-      </ion-button>
-      <ion-button routerLink="/home">
-        <img id="img-title" src="../assets/icon/favicon.png" alt="img" style="width: 30px;padding-right: 5px;">
-        <a class="header-title bold color-highlight" style="font-size: 1.2em;"><span
-            style="color: red;">COPA</span>CITY</a>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="primary">
-      <ion-button (click)="presentMenuNotifications($event)" class="notifications-icon">
-        <i class="fa fa-bell" style="font-size: 1.2em;color: black"></i>
-        <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger"
-          slot="end">{{appService.notificationsCount | async}}</ion-badge>
-      </ion-button>
-      <ion-button (click)="presentMenuUser($event)">
-        <i class="fa fa-user" style="font-size: 1.2em;color: black"></i>
-      </ion-button>
-      <ion-button (click)="shareApp($event)">
-        <i class="fa fa-share-alt" style="font-size: 1.2em; color: black;"></i>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-
-  <!-- Left Side Menu Only To Big Browsers -->
-  <div id="main-menu-large">
-    <ion-header>
-      <ion-toolbar>
-        <div class="content top-30" *ngIf="appService?.currentUser">
-          <div class="user-slider owl-carousel  bottom-0">
-            <div class="user-list-left">
-              <img
-                [src]="this.appService.currentUser?.photoUrl?this.appService.currentUser?.photoUrl:'../../../assets/icon/no-image.png'"
-                alt="img" class="shadow-small">
-              <h4 style="top: -15px;">{{appService.currentUser?.name}}</h4>
-              <a routerLink="/profile" class="next-slide-user" style="top: 70px;background-color: red;">VER PERFIL</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="content top-30" *ngIf="!appService?.currentUser">
-          <a (click)="SignIn()"
-            style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small shadow-large button-full button-s">INICIAR SESIÓN</a>
-        </div>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="side-content">
-      <ion-list>
-        <ion-item style="padding: 3px;" routerLink="/home">
-          <i class="fa fa-home"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Inicio</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;" *ngIf="appService?.currentUser" routerLink="/order-list">
-          <i style="padding-left: 5px;" class="fa fa-clipboard-list"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Mis Pedidos</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px;" routerLink="/contact">
-          <i class="fa fa-paper-plane"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Mensajes</ion-label>
-        </ion-item>
-        <ion-item style="padding: 3px; cursor: pointer;" *ngIf="appService?.currentUser" (click)="signOut()">
-          <i class="fa fa-sign-out-alt"></i>
-          <ion-label style="padding-left:10px;font-size: 15px;">Cerrar Sesión</ion-label>
-        </ion-item>
-      </ion-list>
-      <ion-toolbar style="padding-top: 30px;">
-        <div class="footer" style="padding: 8px 8px 8px 8px;">
-
-          <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
-            <img src="../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
-          </div>
-
-          <a class="nav-title" style="font-size: 20px;padding: 0px 0px 0px 0px;"><span
-              style="color: red;">COPA</span>CITY</a>
-          <p class="footer-text" style="margin-bottom: 10px;padding: 0px 0px 0px 0px;">Tu Centro Comercial Virtual</p>
-
-          <div class="footer-socials" style="padding-left: 20px;">
-            <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
-                class="fab fa-facebook-f"></i></a>
-            <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
-                class="fa fa-phone"></i></a>
-            <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}" class="icon icon-round icon-s bg-whatsapp"><i
-                class="fab fa-whatsapp"></i></a>
-            <a (click)="shareApp($event)" data-menu="menu-share" class="round-tiny shadow-medium bg-red2-dark"><i
-                class="fa fa-share-alt"></i></a>
-          </div>
-          <p style="margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-text"><b>Versión</b>
-            {{ appService.appVersion }}
-          </p>
-          <p style="margin: 0px;margin-bottom: 10px;padding: 0px 0px 0px 0px;" class="footer-copyright">Copyright
-            &copy; Enabled <span id="copyright-year">2020</span>.
-            All Rights Reserved.
-          </p>
-        </div>
-      </ion-toolbar>
-    </ion-content>
-  </div>
-
-  <!-- Right Side Menu Only To Big Browsers -->
-  <div id="main-menu-large-right">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title style="text-align: center;">
-          <h4 style="top: -15px;padding-left: 10px;font-weight: 700;">Notificaciones</h4>
-        </ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="side-content">
-      <app-menu-notifications></app-menu-notifications>
-    </ion-content>
+<ion-header class="ion-no-border">
+  <div class="header header-fixed header-logo-app">
+    <ion-menu-toggle><a class="header-title ultrabold font-15" style="top: -2px;"><span class="color-highlight"
+          routerLink="/app/home">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+    </ion-menu-toggle>
+    <a class="header-icon header-icon-1" routerLink="/app/home">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <a class="header-icon header-icon-2" (click)="menuService.presentMenuUser($event)"><i class="fa fa-user"></i></a>
+    <a (click)="menuService.presentMenuNotifications($event)" class="header-icon header-icon-3"><i
+        class="fa fa-bell"></i>
+      <ion-badge *ngIf="(appService.notificationsCount | async) > 0" id="badge-notifications" color="danger" slot="end">
+        {{appService.notificationsCount | async}}</ion-badge>
+    </a>
+    <a #cartHome class="header-icon header-icon-4" (click)="menuService.openCart($event)"><i
+        class="fa fa-shopping-cart"></i>
+      <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
+        {{ cartManagerService.getTotalCount() }}</ion-badge>
+    </a>
+    <a class="header-icon header-icon-5" (click)="menuService.openSearchPage($event)"><i class="fa fa-search"></i></a>
+    <a class="header-icon header-icon-6" data-toggle-theme><i class="fa fa-moon"></i></a>
   </div>
 </ion-header>
 
-<super-tabs [config]="{ sideMenu: 'left', allowElementScroll: true }">
-  <super-tabs-container>
-    <super-tab>
-      <ion-content class="content-background">
-        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-          <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="crescent"
-            refreshingText="Actualizando...">
-          </ion-refresher-content>
-        </ion-refresher>
+<ion-content>
+  <div id="page">
+    <div class="page-content" style="box-shadow: none;">
+      <div class="profile-1" y style="z-index: 9;">
+        <div class="profile-body menuLeft" style="margin: 0px 5px;padding: 15px 0px;">
 
-        <!-- <ion-slides #sliderOrderList [options]="appService.slideOpts" style="max-width: 450px;">
-          <ion-slide *ngFor="let banner of appService.banners | async">
-            <img src="{{banner.image}}">
-          </ion-slide>
-        </ion-slides> -->
+          <a (click)="shareStore($event)" style="border-radius:10px;"
+            class="profile-button-none menuLeft button button-m button-round uppercase bolder button-center-medium">
+            <h5 class="bolder" style="margin-bottom: 30px;">Pedidos</h5>
+          </a>
 
-        <div class="profile-1 bottom-80 top-30">
-          <!-- <div class="profile-header" style="background-color: transparent;margin: 0px 0px 0px 0px;">
-
-            <ion-slides #sliderOrderList [options]="appService.slideOpts" style="height: 150px">
-              <ion-slide style="padding-right: 10px;padding-left: 10px;padding-top: 10px;"
-                *ngFor="let banner of appService.banners | async">
-                <img src="{{banner.image}}" class="round-medium">
-              </ion-slide>
-            </ion-slides>
-          </div>
-          <div class="profile-header-clear" style="height: 30px;"></div> -->
-          <div class="profile-body" style="border-radius:15px;margin: 0px 5px;">
-
-            <a style="background-color: white; color: black;font-size: 15px;border-radius:15px"
-              class="profile-button button shadow-large button-m button-round uppercase bolder button-center-medium">PEDIDOS</a>
-
-            <div id="page">
-              <div class="content header-clear-small">
-                <!-- <ion-list style="padding-top: 10px;padding-top: 10px;">
-                  <ion-item>
-                    <ion-label>Selecciona Tienda:</ion-label>
-                    <ion-select style="padding-right: 10px;" mode="ios" cancelText="Cancelar" okText="Okay!"
-                      interface='action-sheet' (ionChange)="stores_OnChange($event)">
-                      <ion-select-option *ngFor="let store of stores" value="{{store.id}}">{{store.name}}
-                      </ion-select-option>
-                    </ion-select>
-                  </ion-item>
-                </ion-list> -->
-
-                <div *ngIf="searchingOrders">
-                  <div class="store-slide-2" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
-                    <a class="store-slide-image">
-                      <ion-skeleton-text animated style="height: 50px; top:-10px" class="round-medium">
-                      </ion-skeleton-text>
-                    </a>
-                    <div class="store-slide-title">
-                      <strong>
-                        <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                      </strong>
-                      <em class="color-gray2-dark">
-                        <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                      </em>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="boxed-text-huge">
-                  <label *ngIf="orderSearchHits == 0 && !searchingOrders"
-                    style="color: red;padding-top: 20px;font-size: 1em;">No se
-                    encontraron pedidos</label>
-                </div>
-
-                <div *ngFor="let order of orders | async" class="{{ !order?'hidden':'' }}">
-                  <a class="user-group">
-                    <div
-                      class="user-group-manager {{ order?.status == 1?'border-red1-light':order?.status == 2?'border-green1-light':order?.status == 3?'border-dark2-dark':'' }}"
-                      style="border-width: 5px;">
-                      <img style="z-index: 9;"
-                        (click)="openImageViewer(order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png')"
-                        class="shadow-large"
-                        src="{{order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
-                      <h4 class="color-theme">{{ order?.userName }}</h4>
-                      <span style="font-size: 10px;margin-top: 0px;" class="color-theme bolder">
-                        {{order?.dateCreated.toDate() | date:'MMM d, h:mm a' }}</span>
-                    </div>
-                    <div>
-
-                      <h4 style="font-size: 20px;"
-                        class="bolder {{ order?.status == 1?'color-red1-light':order?.status == 2?'color-green1-light':order?.status == 3?'color-dark2-dark':'' }}">
-                        Pedido {{ order?.status | orderStatusName }}</h4>
-                      <p class="under-heading font-15 bold top-15" style="margin-bottom: 0px;"><b
-                          class="font-14 bolder">Ref:</b>{{ order?.ref }}
-                      </p>
-                      <h4 *ngIf="order?.status != 1" style="font-size: 10px;margin-top: 0px;padding-bottom: 10px;"
-                        class="color-theme bolder">
-                        Actualizado: {{order?.lastUpdated.toDate() | date:'MMM d, h:mm a' }}</h4>
-                      <h6 class="color-theme bolder bottom-0"></h6>
-                    </div>
-                    <div class="user-group-users">
-                      <a *ngIf="order?.status == 1 && isAdmin" (click)='openOrderDetailPage(order.id)'
-                        style="color:white;font-size: 12px;font-weight: bold;background-color: red;"
-                        class="button button-round-small shadow-large button-full button-s">ATENDER</a>
-
-                      <a *ngIf="order?.status == 1 && !isAdmin" (click)='openOrderDetailPage(order.id)'
-                        style="color:white;font-size: 12px;font-weight: bold;background-color: red;"
-                        class="button button-round-small shadow-large button-full button-s">VER DETALLE</a>
-
-                      <a *ngIf="order?.status == 2" (click)='openOrderDetailPage(order.id)'
-                        style="color:white;font-size: 12px;font-weight: bold;"
-                        class="button button-round-small shadow-large button-full button-s bg-gradient-green1">VER
-                        DETALLE</a>
-
-                      <a *ngIf="order?.status == 3" (click)='openOrderDetailPage(order.id)'
-                        style="color:white;font-size: 12px;font-weight: bold;background-color: black;"
-                        class="button button-round-small shadow-large button-full button-s">VER DETALLE</a>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="clear"></div>
-                  </a>
-
-                  <div class="divider"></div>
-                </div>
+          <div *ngIf="searchingOrders">
+            <div class="store-slide-2" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+              <a class="store-slide-image">
+                <ion-skeleton-text animated style="height: 50px; top:-10px" class="round-medium">
+                </ion-skeleton-text>
+              </a>
+              <div class="store-slide-title">
+                <strong>
+                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                </strong>
+                <em class="color-gray2-dark">
+                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                </em>
               </div>
             </div>
           </div>
+
+          <div class="boxed-text-huge">
+            <label *ngIf="orderSearchHits == 0 && !searchingOrders"
+              style="color: red;padding-top: 20px;font-size: 1em;">No se
+              encontraron pedidos</label>
+          </div>
+
+          <div class="content">
+            <div *ngFor="let order of orders | async" class="{{ !order?'hidden':'' }}">
+              <a href="#" class="user-group">
+                <div class="user-group-manager {{ order?.status == 1?'border-red1-light':order?.status == 2?'border-green1-light':order?.status == 3?'border-dark2-dark':'' }}">
+                  <img class="shadow-large"
+                    src="{{order?.photoUrl?order?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
+                  <h4 class="color-theme">{{ order?.userName }}</h4>
+                  <em class="color-highlight">{{order?.dateCreated.toDate() | date:'MMM d, h:mm a' }}</em>
+                </div>
+                <div class="user-group-title">
+                  <h5 class="bolder bottom-0 {{ order?.status == 1?'color-red1-light':order?.status == 2?'color-green1-light':order?.status == 3?'color-dark2-dark':'' }}">
+                    {{ order?.status | orderStatusName }}</h5>
+                  <p *ngIf="order?.status != 1" class="under-heading font-10 color-highlight bottom-15">Actualizado: {{order?.lastUpdated.toDate() | date:'MMM d, h:mm a' }}</p>
+                </div>
+                <div class="user-group-users">
+                  <a *ngIf="order?.status == 1 && isAdmin" (click)='openOrderDetailPage(order.id)'
+                    style="color:white;font-size: 10px;font-weight: bold;background-color: red;"
+                    class="button button-round-small shadow-small button-s">ATENDER</a>
+  
+                  <a *ngIf="order?.status == 1 && !isAdmin" (click)='openOrderDetailPage(order.id)'
+                    style="color:white;font-size: 10px;font-weight: bold;background-color: red;"
+                    class="button button-round-small shadow-small button-s">VER DETALLE</a>
+  
+                  <a *ngIf="order?.status == 2" (click)='openOrderDetailPage(order.id)'
+                    style="color:white;font-size: 10px;font-weight: bold;"
+                    class="button button-round-small shadow-small button-s bg-gradient-green1">VER
+                    DETALLE</a>
+  
+                  <a *ngIf="order?.status == 3" (click)='openOrderDetailPage(order.id)'
+                    style="color:white;font-size: 10px;font-weight: bold;background-color: black;"
+                    class="button button-round-small shadow-small button-s">VER DETALLE</a>
+                  <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+              </a>
+
+              <div class="divider bottom-15"></div>
+            </div>
+          </div>
+
+          <div class="footer" style="box-shadow:none;padding: 0px 30px 10px 30px;">
+            <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+              <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
+            </div>
+            <a class="footer-title"><span
+                class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+            <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro
+              Comercial Virtual</p>
+            <div class="footer-socials" style="padding-left: 24px;">
+              <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+                  class="fab fa-facebook-f"></i></a>
+              <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+                  class="fa fa-phone"></i></a>
+              <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"
+                class="icon icon-round icon-s bg-whatsapp"><i class="fab fa-whatsapp"></i></a>
+              <a data-menu="menu-share" (click)="shareApp($event)" class="round-tiny shadow-medium bg-red2-dark"><i
+                  class="fa fa-share-alt"></i></a>
+              <div class="clear"></div>
+            </div>
+
+            <p class="footer-copyright">Copyright &copy; Maothinks <span class="copyright-year">2021</span>.
+              All Rights
+              Reserved.
+            </p>
+          </div>
         </div>
-
-        <!-- <ion-infinite-scroll threshold="1%" position="bottom" (ionInfinite)="loadMoreNotifications($event)">
-          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas notificaciones...">
-          </ion-infinite-scroll-content>
-        </ion-infinite-scroll> -->
-      </ion-content>
-    </super-tab>
-  </super-tabs-container>
-</super-tabs>
-
-<div #temporalCoupon class="ad-300x50-fixed round-small" *ngIf="appService.temporalCoupon"
-  style="position: fixed;height: 80px;background: rgb(255,255,0);bottom:5px">
-  <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red bolder font-12"
-    style="top: -5px;padding-left: 5px;padding-right: 5px;">
-    {{ appService?.temporalCoupon?.name }}
-  </h6>
-
-  <h6 (click)="appService.applyTemporalCoupon()" class="center-vertical center-text color-red font-12"
-    style="top: 22px;padding-left: 5px;padding-right: 5px;">Tomaste
-    un cupón con <b>{{ appService?.temporalCoupon?.discount }}%</b> de descuento para compras mayores a
-    <b>{{ appService?.temporalCoupon?.minAmount | currency: 'USD': 'symbol' : '1.0-0' }}</b>
-  </h6>
-
-  <h6 class="center-vertical center-text color-red uppercase bolder font-10" style="top: 70px;">
-    <table>
-      <tr>
-        <td style="background-color: red;padding: 0px 0px 9px 0px;width: 50%"><a
-            (click)="appService.discardTemoralCoupon()"
-            style="font-size: .95em;color: white;padding-top: 2px;">Descartar</a></td>
-        <td style="background-color: red;padding: 0px 0px 9px 0px;"><a (click)="appService.applyTemporalCoupon()"
-            style="font-size: .95em;color: white;padding-top: 2px;">Aplicar</a></td>
-      </tr>
-    </table>
-  </h6>
-</div>
+      </div>
+    </div>
+  </div>
+</ion-content>

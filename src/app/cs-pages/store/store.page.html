@@ -1,10 +1,10 @@
 <ion-header class="ion-no-border">
   <div class="header header-fixed header-logo-app">
-    <ion-menu-toggle><a class="header-title ultrabold font-15" style="top: -2px;"><span
-          class="color-highlight" routerLink="/app/home">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
+    <ion-menu-toggle><a class="header-title ultrabold font-15" style="top: -2px;"><span class="color-highlight"
+          routerLink="/app/home">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
     </ion-menu-toggle>
-    <a class="header-icon header-icon-1">
-      <ion-menu-toggle><i class="fas fa-bars"></i></ion-menu-toggle>
+    <a class="header-icon header-icon-1" routerLink="/app/home">
+      <i class="fas fa-arrow-left"></i>
     </a>
     <a class="header-icon header-icon-2" (click)="menuService.presentMenuUser($event)"><i class="fa fa-user"></i></a>
     <a (click)="menuService.presentMenuNotifications($event)" class="header-icon header-icon-3"><i
@@ -17,7 +17,7 @@
       <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
         {{ cartManagerService.getTotalCount() }}</ion-badge>
     </a>
-    <a class="header-icon header-icon-5" (click)="openSearchPage()"><i class="fa fa-search"></i></a>
+    <a class="header-icon header-icon-5" (click)="menuService.openSearchPage($event)"><i class="fa fa-search"></i></a>
     <a class="header-icon header-icon-6" data-toggle-theme><i class="fa fa-moon"></i></a>
   </div>
 </ion-header>
@@ -56,8 +56,7 @@
           </div>
         </div>
 
-        <div class="profile-body menuLeft"
-          style="margin: 0px 5px;padding: 0px 0px;top:-20px">
+        <div class="profile-body menuLeft" style="margin: 0px 5px;padding: 0px 0px;top:-20px">
 
           <a (click)="shareStore($event)" style="border-radius:10px;"
             class="profile-button-none menuLeft button button-m button-round uppercase bolder button-center-medium">

@@ -132,6 +132,11 @@ export class ProductDetailPage implements OnInit {
     });
   }
 
+
+  back() {
+    window.history.back();
+  }
+
   ngOnInit() {
   }
 
@@ -182,22 +187,6 @@ export class ProductDetailPage implements OnInit {
       });
 
     return await popover.present();
-  }
-
-  async openSearchPage() {
-    let modal = await this.popoverController.create({
-      component: SearchPage,
-      cssClass: 'cs-search-popover',
-      backdropDismiss: true,
-    });
-
-    modal.onDidDismiss()
-      .then((data) => {
-        const result = data['data'];
-
-      });
-
-    modal.present();
   }
 
   async openVideoPlayerComponent(e: any, url: string) {

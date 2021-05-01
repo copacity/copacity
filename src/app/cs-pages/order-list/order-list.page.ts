@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Order, Category } from 'src/app/app-intefaces';
+import { Order } from 'src/app/app-intefaces';
 import { Observable } from 'rxjs';
 import { AppService } from 'src/app/cs-services/app.service';
 import { AlertController, ToastController, PopoverController } from '@ionic/angular';
 import { LoaderComponent } from 'src/app/cs-components/loader/loader.component';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { NotificationsService } from 'src/app/cs-services/notifications.service';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 import { OrdersService } from 'src/app/cs-services/orders.service';
-import { OrderDetailPage } from '../order-detail/order-detail.page';
 import { MenuUserComponent } from 'src/app/cs-components/menu-user/menu-user.component';
 import { MenuNotificationsComponent } from 'src/app/cs-components/menu-notifications/menu-notifications.component';
 import { CopyToClipboardComponent } from 'src/app/cs-components/copy-to-clipboard/copy-to-clipboard.component';
@@ -18,6 +16,8 @@ import { Router } from '@angular/router';
 import { ImageViewerComponent } from 'src/app/cs-components/image-viewer/image-viewer.component';
 import { SignupComponent } from 'src/app/cs-components/signup/signup.component';
 import { AskForAccountComponent } from 'src/app/cs-components/ask-for-account/ask-for-account.component';
+import { MenuService } from 'src/app/cs-services/menu.service';
+import { CartManagerService } from 'src/app/cs-services/cart-manager.service';
 
 @Component({
   selector: 'app-order-list',
@@ -41,23 +41,28 @@ export class OrderListPage implements OnInit {
   constructor(
     private router: Router,
     public appService: AppService,
-    private storesService: StoresService,
+    public menuService: MenuService,
     public alertController: AlertController,
     private loaderComponent: LoaderComponent,
     public toastController: ToastController,
     private angularFireAuth: AngularFireAuth,
     private ordersService: OrdersService,
+    public cartManagerService: CartManagerService,
     private ngNavigatorShareService: NgNavigatorShareService,
     private popoverController: PopoverController
   ) {
 
     this.angularFireAuth.auth.onAuthStateChanged(user => {
       if (!user) {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/app/home']);
       } else {
-        this.getOrders();
+        this.appService.updateUserData(user.uid).then(() => {
+          this.getOrders();
+        });
       }
     });
+
+    this.appService.loadCustomScript();
   }
 
   ngOnInit() { }

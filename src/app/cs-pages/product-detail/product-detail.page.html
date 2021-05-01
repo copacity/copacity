@@ -3,8 +3,8 @@
     <ion-menu-toggle><a class="header-title ultrabold font-15" style="top: -2px;"><span class="color-highlight"
           routerLink="/app/home">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a>
     </ion-menu-toggle>
-    <a class="header-icon header-icon-1">
-      <ion-menu-toggle><i class="fas fa-bars"></i></ion-menu-toggle>
+    <a class="header-icon header-icon-1" (click)="back()">
+      <i class="fas fa-arrow-left"></i>
     </a>
     <a class="header-icon header-icon-2" (click)="menuService.presentMenuUser($event)"><i class="fa fa-user"></i></a>
     <a (click)="menuService.presentMenuNotifications($event)" class="header-icon header-icon-3"><i
@@ -17,7 +17,7 @@
       <ion-badge *ngIf="cartManagerService.getTotalCount() > 0" id="badge-cart" color="danger" slot="end">
         {{ cartManagerService.getTotalCount() }}</ion-badge>
     </a>
-    <a class="header-icon header-icon-5" (click)="openSearchPage()"><i class="fa fa-search"></i></a>
+    <a class="header-icon header-icon-5" (click)="menuService.openSearchPage($event)"><i class="fa fa-search"></i></a>
     <a class="header-icon header-icon-6" data-toggle-theme><i class="fa fa-moon"></i></a>
   </div>
 </ion-header>
@@ -30,7 +30,7 @@
         style="right: 5px;position: absolute;top: 0;font-size: 2em;font-size: 1em;color: red;font-weight: bolder;margin: 2px;;z-index: 999;">
         <i class="fa fa-qrcode"></i>&nbsp;QR</a>
 
-      <a (click)="shareProduct($event)" 
+      <a (click)="shareProduct($event)"
         style="right: 60px;position: absolute;top: 0;font-size: 2em;font-size: 1em;color: red;font-weight: bolder;margin: 2px;;z-index: 999;">
         <i class="fa fa-share-alt"></i>&nbsp;Compartir</a>
 

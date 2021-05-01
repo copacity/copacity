@@ -1,4 +1,11 @@
 <ion-app>
+  <!-- <ion-menu menuId="menu-right" contentId="main" side="end" style="width: 250px;top: 55px;">
+    <ion-content class="popover-content">
+      <app-menu-notifications *ngIf="appService?.currentUser && appService?.currentUser?.isAdmin"></app-menu-notifications>
+      <app-shopping-cart *ngIf="!appService?.currentUser || (appService?.currentUser && !appService?.currentUser?.isAdmin)"></app-shopping-cart>
+    </ion-content>
+  </ion-menu> -->
+
   <ion-router-outlet></ion-router-outlet>
   <app-loader></app-loader>
 </ion-app>

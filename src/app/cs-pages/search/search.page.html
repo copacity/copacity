@@ -1,95 +1,86 @@
-<div class="profile-popover">
-  <i (click)="close()" class="fa fa-times-circle round-large"
-      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;color: red;background-color: white;z-index: 9;"></i>
-
-  <div class="profile-header">
-  </div>
-  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
-  </div>
-  <div class="profile-body" style="margin: 0px 5px;padding: 0px 0px;">
-
-    <ion-searchbar animated placeholder="Que artículo buscas?" [value]="searchService.searchText"
-      (ionChange)="search($event)" debounce="1000"></ion-searchbar>
-
-    <div class="content" style="margin: 0px 10px 0px 10px;">
-      <div>
-        <table *ngIf="searchService.searchText" class="top-10">
-          <tr *ngIf="searchService.searching">
-            <td colspan="2" style="text-align: center;">
-              <div>
-                <div class="store-slide-2" *ngFor="let item of [1,2,3,4]">
-                  <a class="store-slide-image">
-                    <ion-skeleton-text animated style="height: 50px; top:-10px" class="round-medium">
-                    </ion-skeleton-text>
-                  </a>
-                  <div class="store-slide-title">
-                    <strong>
-                      <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                    </strong>
-                    <em class="color-gray2-dark">
-                      <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                    </em>
-                  </div>
-                </div>
+<i (click)="close()" class="fa fa-times-circle round-large"
+  style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;;z-index: 9;"></i>
+  
+<div class="content top-30" style="margin: 0px 10px 0px 10px;">
+  <h4 class="center-text bolder">Busqueda</h4>
+  <ion-searchbar animated placeholder="Que artículo buscas?" [value]="searchService.searchText"
+    (ionChange)="search($event)" debounce="1000"></ion-searchbar>
+  <div>
+    <table *ngIf="searchService.searchText" class="top-10" style="border: none;">
+      <tr *ngIf="searchService.searching">
+        <td colspan="2" style="text-align: center;">
+          <div>
+            <div class="store-slide-2" *ngFor="let item of [1,2,3,4]">
+              <a class="store-slide-image">
+                <ion-skeleton-text animated style="height: 50px; top:-10px" class="round-medium">
+                </ion-skeleton-text>
+              </a>
+              <div class="store-slide-title">
+                <strong>
+                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                </strong>
+                <em class="color-gray2-dark">
+                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                </em>
               </div>
-            </td>
-          </tr>
+            </div>
+          </div>
+        </td>
+      </tr>
 
-          <tr *ngIf="(!searchService.products || searchService.products.length == 0) && !searchService.searching">
-            <td colspan="2" style="text-align: center;">
-              <div class="boxed-text-huge">
-                <label style="color: red;padding-top: 20px;font-size: 1.2em;">No se
-                  encontraron resultados</label>
-              </div>
-            </td>
-          </tr>
+      <tr *ngIf="(!searchService.products || searchService.products.length == 0) && !searchService.searching">
+        <td class="menuLeft" colspan="2" style="text-align: center;">
+          <div class="boxed-text-huge menuLeft">
+            <label style="color: red;padding-top: 20px;font-size: 1.2em;">No se
+              encontraron resultados</label>
+          </div>
+        </td>
+      </tr>
 
-          <tr *ngFor="let product of searchService.products; let i = index">
-            <td style="vertical-align: top;text-align: left;position: relative;">
-              <img (click)="openImageViewer(product)"
-                class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}"
-                src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
-                style="height: 80px;width: 80px;">
-              <em *ngIf="product?.soldOut"
-                style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 78px;position: absolute;left: 5px;top: 20px;"
-                class="{{(product?.discount && product?.discount > 0)?'line-through':''}}">
-                <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium"
-                  alt="img">
-              </em>
-            </td>
-            <td>
-              <table>
-                <tr>
-                  <td colspan="2" style="text-align: left;padding: 0px 5px 10px 5px;vertical-align: top;"> <span
-                      style="font-weight: 700;color: black;"
-                      class="{{(product?.soldOut)?'sold-out':'' }} color-highlight">{{product.idCategory | sectorName }}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: left;padding: 0px 5px 10px 5px;vertical-align: top;"> <span
-                      style="font-weight: 700;color: black;"
-                      class="{{(product?.soldOut)?'sold-out':'' }}">{{product?.name}}</span>
+      <tr *ngFor="let product of searchService.products; let i = index">
+        <td class="menuLeft" style="vertical-align: top;text-align: left;position: relative;">
+          <img (click)="openImageViewer(product)"
+            class="round-small preload-image {{(product?.soldOut)?'sold-out':'' }}"
+            src="{{product?.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
+            style="height: 80px;width: 80px;">
+          <em *ngIf="product?.soldOut"
+            style="background-color: transparent;color: black;font-weight: bold;font-size: 1.2em;top: 78px;position: absolute;left: 5px;top: 20px;"
+            class="{{(product?.discount && product?.discount > 0)?'line-through':''}}">
+            <img src="../../../assets/icon/agotado.png" class="responsive-image preload-image round-medium" alt="img">
+          </em>
+        </td>
+        <td class="menuLeft">
+          <table style="border: none;">
+            <tr>
+              <td class="menuLeft" colspan="2" style="text-align: left;padding: 0px 5px 10px 5px;vertical-align: top;">
+                <h6 class="{{(product?.soldOut)?'sold-out':'' }}">{{product.idCategory | sectorName
+                  }}</h6>
+              </td>
+            </tr>
+            <tr>
+              <td class="menuLeft" style="text-align: left;padding: 0px 5px 10px 5px;vertical-align: top;">
+                <h6 class="{{(product?.soldOut)?'sold-out':'' }} bolder">{{product?.name}}</h6>
 
-                    <span *ngIf="product?.discount > 0" style="font-weight: 700;color: black;background-color: yellow;"
-                      class="{{(product?.soldOut)?'sold-out':'' }}"> (-{{product?.discount}}%)</span>
-                  </td>
-                  <td style="text-align: right;padding: 0px 0px 10px 0px;vertical-align: top;">
-                    <span style="font-size: 1.2em;font-weight: 700;color: black;"
-                      class="{{(product?.soldOut)?'sold-out':'' }}">{{product?.price - (product?.price * (product?.discount/100)) | currency: 'USD': 'symbol' : '1.0-0'}}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a *ngIf="!product?.soldOut" (click)="goToProductDetail(product)" style="color:white;background-color: red;padding: 5px 10px;font-size: .7em;"
-                      class="button button-round-small shadow-small button-sm button-s">
-                      Ver Detalle</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
+                <span *ngIf="product?.discount > 0"
+                  style="font-weight: 700;color: black;background-color: yellow;padding: 2px;"
+                  class="{{(product?.soldOut)?'sold-out':'' }}"> (-{{product?.discount}}%)</span>
+              </td>
+              <td class="menuLeft" style="text-align: right;padding: 0px 0px 10px 0px;vertical-align: top;">
+                <h6 class="{{(product?.soldOut)?'sold-out':'' }} bolder">{{product?.price - (product?.price *
+                  (product?.discount/100)) | currency: 'USD': 'symbol' : '1.0-0'}}</h6>
+              </td>
+            </tr>
+            <tr>
+              <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
+                <a *ngIf="!product?.soldOut" (click)="goToProductDetail(product)"
+                  style="padding: 5px 10px;font-size: .7em;"
+                  class="button button-round-small shadow-small button-sm button-s bg-highlight">
+                  Ver Detalle</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>

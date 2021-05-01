@@ -101,7 +101,7 @@ export class SearchPage {
   }
 
   goToProductDetail(product: any) {
-    this.router.navigate(['app/product-detail', product.product.id]);
+    this.router.navigate(['app/product-detail', product.id]);
     this.popoverCtrl.dismiss();
   }
 

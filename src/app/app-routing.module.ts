@@ -60,10 +60,6 @@ const routes: Routes = [
     loadChildren: () => import('./cs-pages/product-categories-create/product-categories-create.module').then( m => m.ProductCategoriesCreatePageModule)
   },
   {
-    path: 'contact',
-    loadChildren: () => import('./cs-pages/contact/contact.module').then( m => m.ContactPageModule)
-  },
-  {
     path: 'profile-update',
     loadChildren: () => import('./cs-pages/profile-update/profile-update.module').then( m => m.ProfileUpdatePageModule)
   },
@@ -78,10 +74,6 @@ const routes: Routes = [
   {
     path: 'terms-service',
     loadChildren: () => import('./cs-pages/terms-service/terms-service.module').then( m => m.TermsServicePageModule)
-  },
-  {
-    path: 'order-list',
-    loadChildren: () => import('./cs-pages/order-list/order-list.module').then( m => m.OrderListPageModule)
   },
   {
     path: 'store-coupons',
