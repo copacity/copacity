@@ -1,48 +1,41 @@
-<div class="profile-popover">
-  <div class="profile-header">
+<i (click)="close()" class="fa fa-times-circle"
+  style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+
+<h4 class="menuLeft center-text top-20 bolder">Opción</h4>
+
+<div class="profile-header-clear" style="height: 0px;margin: 0px 0px 0px 0px;"></div>
+<div class="profile-body" style="margin: 0px 5px;">
+  <form [formGroup]="form">
+    <div class="content header-clear-small">
+      <ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-item>
+          <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b style="color: red;">(*)</b>
+          </ion-label>
+          <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating" style="color: gray;font-size: 15px;">Valor Adicional
+          </ion-label>
+          <ion-input type="number" formControlName="price" style="font-size: 15px;"></ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+  </form>
+
+  <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;" class="content content-box round-small shadow-large">
+    <p style="color: red;" *ngIf="form.get('name').errors">
+      <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
+      <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
+        caracteres</span>
+    </p>
+    <p style="color: red;" *ngIf="form.get('price').errors">
+      <span *ngIf="form.get('price').hasError('max')">Valor Adicional debe ser máximo de 10
+        caracteres</span>
+    </p>
   </div>
-  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;"></div>
-  <div class="profile-body" style="margin: 0px 5px;">
-    <i (click)="close()" class="fa fa-times-circle"
-      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Opción</a>
-
-    <form [formGroup]="form">
-      <div class="content header-clear-small">
-        <ion-list lines="full" class="ion-no-margin ion-no-padding">
-          <ion-item>
-            <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b style="color: red;">(*)</b>
-            </ion-label>
-            <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating" style="color: gray;font-size: 15px;">Valor Adicional
-            </ion-label>
-            <ion-input type="number" formControlName="price" style="font-size: 15px;"></ion-input>
-          </ion-item>
-        </ion-list>
-      </div>
-    </form>
-
-    <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
-      class="content content-box round-small shadow-large">
-      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
-        <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-        <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
-          caracteres</span>
-      </p>
-      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('price').errors">
-        <span *ngIf="form.get('price').hasError('max')">Valor Adicional debe ser máximo de 10
-          caracteres</span>
-      </p>
-    </div>
-
-    <div>
-      <a (click)="saveProductProperty()"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">Aceptar</a>
-    </div>
+  <div>
+    <a (click)="saveProductProperty()"
+      class="button button-round-small shadow-large button-full button-s bg-highlight">Aceptar</a>
   </div>
 </div>

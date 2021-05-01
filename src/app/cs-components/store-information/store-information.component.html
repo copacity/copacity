@@ -3,7 +3,7 @@
   </div>
   <div class="profile-header-clear" style="height: 30px;">
   </div>
-  <div class="profile-body" style="margin: 0px 0px; padding: 0px 0px;">
+  <div class="profile-body menuLeft" style="margin: 0px 0px; padding: 0px 0px;">
     <i (click)="close()" class="fa fa-times-circle"
       style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
@@ -12,9 +12,8 @@
       <div class="user-list-left" style="text-align: -webkit-center;">
         <!-- <img [src]="appService._appInfo?.logo?appService._appInfo?.logo:'../../../assets/icon/no-image.png'" alt="img" class="shadow-small"
           style="width: 60px;"> -->
-        <img src="../../../assets/icon/favicon.png" alt="img"
-          class="shadow-small" style="width: 60px;">
-        
+        <img src="../../../assets/icon/favicon.png" alt="img" class="shadow-small" style="width: 60px;">
+
       </div>
     </a>
 
@@ -25,7 +24,7 @@
           <a class="nav-title color-theme"
             style="font-size: 20px;padding: 0px 0px 0px 0px;">{{appService._appInfo?.name1}}{{appService._appInfo?.name2}}</a>
 
-          <p class="center-text font-13 under-heading bottom-20 top-20">
+          <p class="center-text font-13 under-heading bottom-20 top-20 menuLeft">
             {{appService._appInfo?.description}}
           </p>
 
@@ -43,7 +42,7 @@
 
           <app-vendors-list [usersAtt]="users"></app-vendors-list>
 
-          <div class="boxed-text-huge">
+          <!-- <div class="boxed-text-huge">
             <div style="padding-top: 10px;text-align: -webkit-center;">
               <a style="border: double;margin-bottom: 0px;"
                 href="https://www.facebook.com/{{ appService._appInfo?.facebook }}"
@@ -63,6 +62,32 @@
                 class="button button-round-small button-s"><i class="fa fa-qrcode"
                   style="font-size: 1.5em;"></i>&nbsp;Código QR Tienda</a>
             </div>
+          </div> -->
+
+          <div class="footer" style="box-shadow:none;padding: 0px 30px 10px 30px;">
+            <!-- <div class="user-list-left" style="text-align: -webkit-center;padding-bottom: 15px;">
+              <img src="../assets/icon/favicon.png" alt="img" style="width: 80px;">
+            </div>
+            <a class="footer-title"><span
+                class="color-highlight">{{appService?._appInfo?.name1}}</span>{{appService?._appInfo?.name2}}</a> -->
+            <!-- <p class="footer-text" style="padding-top: 10px;margin-bottom: 15px;">Tu Centro
+                Comercial Virtual</p> -->
+            <div class="footer-socials" style="padding-left: 24px;">
+              <a href="{{ appService._appInfo?.facebook }}" class="round-tiny shadow-medium bg-facebook"><i
+                  class="fab fa-facebook-f"></i></a>
+              <a href="tel:{{ appService._appInfo?.phone }}" class="round-tiny shadow-medium bg-phone"><i
+                  class="fa fa-phone"></i></a>
+              <a href="https://wa.me/57{{ appService._appInfo?.whatsapp }}"
+                class="icon icon-round icon-s bg-whatsapp"><i class="fab fa-whatsapp"></i></a>
+              <a data-menu="menu-share" (click)="shareApp($event)" class="round-tiny shadow-medium bg-red2-dark"><i
+                  class="fa fa-share-alt"></i></a>
+              <div class="clear"></div>
+            </div>
+
+            <p class="footer-copyright">Copyright &copy; Maothinks <span class="copyright-year">2021</span>.
+              All Rights
+              Reserved.
+            </p>
           </div>
         </div>
       </div>

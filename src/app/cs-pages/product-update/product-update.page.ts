@@ -94,10 +94,10 @@ export class ProductUpdatePage implements OnInit {
       el: '.swiper-pagination',
       type: 'fraction',
       renderFraction: function (currentClass, totalClass) {
-        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;;opacity:.8">' +
-          '<span  class="' + currentClass + '"></span>' +
+        return '<div style="font-weight:bolder;font-size: 1.5em;text-align: -webkit-center;"><div style="width:70px;background-color: white;;opacity:.8" class="color-black">' +
+          '<span  class="' + currentClass + ' color-black"></span>' +
           ' / ' +
-          '<span class="' + totalClass + '"></span></div></div>';
+          '<span class="' + totalClass + ' color-black"></span></div></div>';
       }
     }
   };

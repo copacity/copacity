@@ -1,81 +1,73 @@
-<div class="profile-popover">
-  <div class="profile-header">
-  </div>
-  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;"></div>
-  <div class="profile-body" style="margin: 0px 5px;">
-    <i (click)="close()" class="fa fa-times-circle"
-      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+<i (click)="close()" class="fa fa-times-circle"
+  style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Caracteristica</a>
+<h4 class="menuLeft center-text top-20 bolder">Caracteristica</h4>
 
-    <form [formGroup]="form">
-      <div class="content header-clear-small">
-        <ion-list lines="full" class="ion-no-margin ion-no-padding">
-          <ion-item>
-            <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b style="color: red;">(*)</b>
-            </ion-label>
-            <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
-          </ion-item>
-          <!-- <ion-item>
+<div class="profile-header-clear" style="height: 0px;margin: 0px 0px 0px 0px;"></div>
+<div class="profile-body" style="margin: 0px 5px;">
+  <form [formGroup]="form">
+    <div class="content header-clear-small">
+      <ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-item>
+          <ion-label position="floating" style="color: gray;font-size: 15px;">Nombre <b style="color: red;">(*)</b>
+          </ion-label>
+          <ion-input formControlName="name" style="font-size: 15px;"></ion-input>
+        </ion-item>
+        <!-- <ion-item>
             <ion-checkbox formControlName="isMandatory" [checked]="productProperty.isMandatory"></ion-checkbox>
             <ion-label style="color: gray;font-size: 15px;padding-left: 10px;">Obligatorio
             </ion-label>
           </ion-item> -->
-          <ion-item>
-            <ion-checkbox formControlName="userSelectable" [checked]="productProperty.userSelectable"></ion-checkbox>
-            <ion-label style="color: gray;font-size: 15px;padding-left: 10px;">Seleccionable por el cliente
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </div>
-    </form>
-
-    <table class="table-borders-dark store-product-table"
-      style="padding-left: 5px;padding-right: 5px;border: solid 1px rgba(0,0,0,0.08);">
-      <tr>
-        <td colspan="2" style="text-align: left;padding-left: 10px;">
-          <h4 class="bold" style="color: black;margin-top: 0px;">Opciones</h4>
-        </td>
-        <td style="text-align: -webkit-right;padding-right: 5px;">
-          <a (click)="openProductPropertyOption($event)" class="button button-round-small button-xs button-full"
-            style="color: white;background-color: red;font-size: 10px;width: 90px;">Agregar</a>
-        </td>
-      </tr>
-      <tr *ngIf="productProperty.productPropertyOptions.length == 0">
-        <td colspan="3">
-          <span style="color: red;font-size: 1.3em;">Debes agregar al menos una opción</span>
-        </td>
-      </tr>
-      <tr *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
-        class="{{productPropertyOption.deleted?'hidden':''}}">
-        <td style="vertical-align: top;" class="bold color-theme">{{productPropertyOption.name}}</td>
-        <td style="vertical-align: top;">+ {{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
-        <td style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
-          <a (click)="productPropertyOptionDelete(productPropertyOption)" class="icon icon-s icon-round shadow-small">
-            <i class="fa fa-trash" style="color: black"></i></a>
-          <a (click)="productPropertyOptionUpdate(productPropertyOption)" class="icon icon-s icon-round shadow-small">
-            <i class="fa fa-edit" style="color: black"></i></a>
-        </td>
-
-        <!-- *ngIf="productPropertyOption.id" -->
-      </tr>
-
-    </table>
-
-    <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
-      class="content content-box round-small shadow-large">
-      <p style="color: red;font-size: 1.3em;" *ngIf="form.get('name').errors">
-        <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
-        <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
-          caracteres</span>
-      </p>
+        <ion-item>
+          <ion-checkbox formControlName="userSelectable" [checked]="productProperty.userSelectable"></ion-checkbox>
+          <ion-label style="color: gray;font-size: 15px;padding-left: 10px;">Seleccionable por el cliente
+          </ion-label>
+        </ion-item>
+      </ion-list>
     </div>
+  </form>
 
-    <div>
-      <a (click)="saveProductProperty()"
-        style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-        class="button button-round-small shadow-large button-full button-s">Aceptar</a>
-    </div>
+  <table class="table-borders-dark store-product-table"
+    style="padding-left: 5px;padding-right: 5px;border: solid 1px rgba(0,0,0,0.08);">
+    <tr>
+      <td class="menuLeft" colspan="2" style="text-align: left;padding-left: 10px;">
+        <h4 class="bolder" style="margin-top: 0px;">Opciones</h4>
+      </td>
+      <td class="menuLeft" style="text-align: -webkit-right;padding-right: 5px;">
+        <a (click)="openProductPropertyOption($event)" class="button button-round-small button-xs button-full bg-highlight"
+          style="color: white;font-size: 10px;text-align: center">Agregar</a>
+      </td>
+    </tr>
+    <tr *ngIf="productProperty.productPropertyOptions.length == 0">
+      <td class="menuLeft" colspan="3">
+        <span style="color: red;">Debes agregar al menos una opción</span>
+      </td>
+    </tr>
+    <tr *ngFor="let productPropertyOption of productProperty.productPropertyOptions"
+      class="{{productPropertyOption.deleted?'hidden':''}}">
+      <td style="vertical-align: top;" class="bold color-theme menuLeft">{{productPropertyOption.name}}</td>
+      <td class="menuLeft" style="vertical-align: top;">+ {{productPropertyOption.price | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
+      <td class="menuLeft" style="width: 130px;vertical-align: top;padding-right: 5px;text-align: right;padding-right: 5px;">
+        <a (click)="productPropertyOptionDelete(productPropertyOption)" class="icon icon-s icon-round shadow-small menuLeft">
+          <i class="fa fa-trash"></i></a>
+        <a (click)="productPropertyOptionUpdate(productPropertyOption)" class="icon icon-s icon-round shadow-small menuLeft">
+          <i class="fa fa-edit"></i></a>
+      </td>
+
+      <!-- *ngIf="productPropertyOption.id" -->
+    </tr>
+
+  </table>
+
+  <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;" class="content content-box">
+    <p style="color: red;" *ngIf="form.get('name').errors">
+      <span *ngIf="form.get('name').hasError('required')">Nombre es requerido</span>
+      <span *ngIf="form.get('name').hasError('maxlength')">Nombre debe ser máximo de 50
+        caracteres</span>
+    </p>
   </div>
-</div>
+
+  <div>
+    <a (click)="saveProductProperty()"
+      class="button button-round-small shadow-large button-full button-s bg-highlight">Aceptar</a>
+  </div>

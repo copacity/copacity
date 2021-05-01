@@ -1,39 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button (click)="close()">
-        <i class="fa fa-times" style="font-size: 1.5em;color: black;"></i>
-      </ion-button>
-    </ion-buttons>
-    <ion-title style="font-size: large;color: black;padding-left: 10px;">
-      Editar imagen
-    </ion-title>
-  </ion-toolbar>
+<i (click)="close()" class="fa fa-times-circle"
+  style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-</ion-header>
+<h4 class="menuLeft center-text top-20 bottom-20 bolder">Editar Imagen</h4>
 
 <div id="page">
-  <div class="content">
-    <table style="margin-bottom: 0px;">
+  <div class="content" style="margin: 0px 5px 30px 5px;">
+    <table style="margin-bottom: 0px;border: none;">
       <tr>
-        <td style="text-align: left;">
-          <a (click)="zoom(0.1)" class="icon icon-s icon-round shadow-small">
-            <i class="fa fa-search-plus" style="color: black"></i></a>
-          <a (click)="zoom(-0.1)" class="icon icon-s icon-round shadow-small">
-            <i class="fa fa-search-minus" style="color: black"></i></a>
-          <a (click)="rotate(-45)" class="icon icon-s icon-round shadow-small">
-            <i class="fa fa-undo-alt" style="color: black"></i></a>
-          <a (click)="rotate(45)" class="icon icon-s icon-round shadow-small">
-            <i class="fa fa-redo-alt" style="color: black"></i></a>
+        <td class="menuLeft" style="text-align: left;">
+          <a (click)="zoom(0.1)" class="icon icon-s icon-round shadow-small menuLeft">
+            <i class="fa fa-search-plus"></i></a>
+          <a (click)="zoom(-0.1)" class="icon icon-s icon-round shadow-small menuLeft">
+            <i class="fa fa-search-minus"></i></a>
+          <a (click)="rotate(-45)" class="icon icon-s icon-round shadow-small menuLeft">
+            <i class="fa fa-undo-alt"></i></a>
+          <a (click)="rotate(45)" class="icon icon-s icon-round shadow-small menuLeft">
+            <i class="fa fa-redo-alt"></i></a>
         </td>
-        <td style="text-align: right;vertical-align: top;">
-          <a (click)="acceptCropper()" style="background-color: red;"
-            class="button button-round-small shadow-large button-full button-s">ACEPTAR</a>
+        <td class="menuLeft" style="text-align: right;vertical-align: top;">
+          <a (click)="acceptCropper()"
+            class="button button-round-small shadow-large button-full button-s bg-highlight">ACEPTAR</a>
         </td>
       </tr>
     </table>
     <div>
-      <span style="color: red;">Desliza por el borde hacia abajo si la imagen no se ve completa</span>
+      <h6 class="menuLeft">Desliza por el borde hacia abajo si la imagen no se ve completa</h6>
       <img #image src="{{imageSource}}" crossorigin />
     </div>
   </div>

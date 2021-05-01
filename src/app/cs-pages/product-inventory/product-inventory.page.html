@@ -1,140 +1,124 @@
-<div class="profile-popover">
-  <div class="profile-header">
-  </div>
-  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
-  </div>
-  <div class="profile-body" style="margin: 0px 5px;">
-    <i (click)="close()" class="fa fa-times-circle"
-      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+<i (click)="close()" class="fa fa-times-circle"
+  style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Inventario</a>
+<h4 class="menuLeft center-text top-20 bolder">Inventario</h4>
 
-    <div class="content" style="margin: 0px 0px 0px 0px;padding-top: 20px;">
-      <div>
-        <table style="margin-bottom: 0px;">
-          <tr>
-            <td style="vertical-align: top;width: 120px;text-align: left;">
-              <img (click)="openImageViewer(product)" class="round-small preload-image"
-                src="{{product.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
-                style="height: 100px;width: 100px;">
-            </td>
-            <td style="vertical-align: top;">
-              <table style="margin-bottom: 0px;">
-                <tr>
-                  <td colspan="2" style="text-align: left;padding: 0px 0px 0px 0px;"> <span
-                      style="font-size: 2em;font-weight: 700;color: black;">{{product.name}}</span>
-                  </td>
-                </tr>
-                <tr *ngIf="(product?.isGift)">
-                  <td style="text-align: left;padding: 0px 0px 0px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Puntos:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ product.price }}</span>
-                  </td>
-                </tr>
-                <tr *ngIf="(product?.isGift)">
-                  <td colspan="3" style="text-align: left;padding: 20px 0px 0px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;font-weight: bold;color:black" class="round-small">🎁
-                      REGALO! 🥳🎉</span>
-                  </td>
-                </tr>
-                <!-- <tr>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a style="text-align: end;background-color: red;margin-bottom: 0px;"
-                      class="button button-round-small button-s">+ MERCANCIA</a>
-                  </td>
-                </tr> -->
-              </table>
-            </td>
-          </tr>
-        </table>
-        <div class="divider" style="background-color: white;margin-bottom: 5px"></div>
-        <div class="bottom-20" style="text-align: end;">
-          <a (click)="addToCart($event, product)" style="background-color: red;margin-bottom: 0px;"
-            class="button button-round-small button-s">+ MERCANCIA</a>
+<div class="profile-header-clear" style="height: 10px;margin: 0px 0px 0px 0px;">
+</div>
+<div class="profile-body" style="margin: 0px 5px;">
+  <div class="content" style="margin: 0px 0px 0px 0px;padding-top: 20px;">
+    <div>
+      <table style="margin-bottom: 0px;border: none;">
+        <tr>
+          <td class="menuLeft" style="vertical-align: top;width: 120px;text-align: left;">
+            <img (click)="openImageViewer(product)" class="round-small preload-image"
+              src="{{product.image?product.image:'../../../assets/icon/no-image.png'}}" alt="img"
+              style="height: 100px;width: 100px;">
+          </td>
+          <td class="menuLeft" style="vertical-align: top;">
+            <table style="margin-bottom: 0px;border: none;">
+              <tr>
+                <td class="menuLeft" colspan="2" style="text-align: left;padding: 0px 0px 0px 0px;"> <span
+                    style="font-size: 1.3em;font-weight: 700;">{{product.name}}</span>
+                </td>
+              </tr>
+              <tr *ngIf="(product?.isGift)">
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 0px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Puntos:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 0px 0px;">
+                  <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ product.price }}</span>
+                </td>
+              </tr>
+              <tr *ngIf="(product?.isGift)">
+                <td class="menuLeft" colspan="3" style="text-align: left;padding: 20px 0px 0px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;font-weight: bold;" class="round-small">🎁
+                    REGALO! 🥳🎉</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <div class="divider" style="background-color: transparent;margin-bottom: 5px"></div>
+      <div class="bottom-20" style="text-align: end;">
+        <a (click)="addToCart($event, product)" style="margin-bottom: 0px;"
+          class="button button-round-small button-s bg-highlight">+ MERCANCIA</a>
+      </div>
+    </div>
+
+    <div *ngIf="searching">
+      <div class="one-half" *ngFor="let item of [1,2,3,4,5,6]">
+        <div class="blog-col-item">
+          <a>
+            <ion-label>
+              <h3>
+                <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </a>
         </div>
       </div>
+    </div>
 
-      <div *ngIf="searching">
-        <div class="one-half" *ngFor="let item of [1,2,3,4,5,6]">
-          <div class="blog-col-item">
-            <a>
-              <ion-label>
-                <h3>
-                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                </h3>
-                <p>
-                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                </p>
-                <p>
-                  <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                </p>
-              </ion-label>
-            </a>
-          </div>
-        </div>
+    <div *ngFor="let cartProduct of cartInventoryService.cart; let i = index">
+      <table style="margin-bottom: 0px;border: none;">
+        <tr>
+          <td class="menuLeft" style="vertical-align: top;">
+            <table style="border: none;">
+              <tr>
+                <td class="menuLeft" colspan="2" style="text-align: left;padding: 0px 0px 0px 0px;"> <span class="bolder"
+                    style="font-size: 1.2em;">{{cartProduct.product.name}}</span>
+                </td>
+              </tr>
+              <tr *ngFor="let property of cartProduct.propertiesSelection; let i = index"
+                class="{{(cartProduct.product?.isGift)?'hidden':'' }}">
+                <td class="menuLeft" class="menuLeft" style="text-align: left;padding: 10px 0px 0px 0px;">
+                  <span style="font-size: 1em;font-weight: 500;">
+                    {{property.propertyName }}: </span>
+                </td>
+                <td class="menuLeft" style="text-align: right;padding: 0px 0px 0px 0px;">
+                  <span style="font-weight: 500;">{{property.propertyOptionName }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="menuLeft" colspan="2" style="text-align: center;padding: 10px 0px 10px 0px;width: 120px;">
+                  <div class="store-cart-qty-cart">
+                    <a (click)="add(cartProduct)"><i class="fa fa-plus"></i></a>
+                    <input disabled type="number" value="{{cartProduct?.quantity}}" style="background-color: white; color: black;">
+                    <a (click)="remove(cartProduct)"><i class="fa fa-minus"></i></a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div *ngIf="cartInventoryService.cart.length == 0 && !searching" class="boxed-text-huge"
+      style="padding-top: 20px;padding-bottom: 20px;">
+      <h6 style="color: red">No se tienes mercancia de este producto</h6>
+    </div>
+
+    <div *ngIf="cartInventoryService.cart.length != 0" class="store-cart-total bottom-40">
+      <div class="divider" style="background-color: red;margin-bottom: 5px"></div>
+
+      <strong style="font-size: 1.2em;" class="uppercase ultrabold">Total Unidades</strong>
+      <span style="font-size: 1.2em;" class="uppercase ultrabold">{{ cartInventoryService.cartItemCount.value }}</span>
+      <div class="clear">
       </div>
+    </div>
 
-      <div *ngFor="let cartProduct of cartInventoryService.cart; let i = index">
-        <table style="margin-bottom: 0px;">
-          <tr>
-            <td style="vertical-align: top;">
-              <table>
-                <tr>
-                  <td colspan="2" style="text-align: left;padding: 0px 0px 0px 0px;"> <span
-                      style="font-size: 1.2em;font-weight: 700;color: black;">{{cartProduct.product.name}}</span>
-                  </td>
-                </tr>
-                <tr *ngFor="let property of cartProduct.propertiesSelection; let i = index"
-                  class="{{(cartProduct.product?.isGift)?'hidden':'' }}">
-                  <td style="text-align: left;padding: 10px 0px 0px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;color: blue;">
-                      {{property.propertyName }}: </span>
-                  </td>
-                  <td style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <span
-                      style="font-size: 1.2em;font-weight: 700;color: black;">{{property.propertyOptionName }}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="text-align: center;padding: 10px 0px 10px 0px;width: 120px;">
-                    <div class="store-cart-qty-cart">
-                      <a (click)="add(cartProduct)"><i class="fa fa-plus"></i></a>
-                      <input disabled type="number" value="{{cartProduct?.quantity}}">
-                      <a (click)="remove(cartProduct)"><i class="fa fa-minus"></i></a>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <div *ngIf="cartInventoryService.cart.length == 0 && !searching" class="boxed-text-huge"
-        style="padding-top: 20px;color: red;padding-bottom: 20px;">
-        <h4>No se tienes mercancia de este producto</h4>
-      </div>
-
-      <div *ngIf="cartInventoryService.cart.length != 0" class="store-cart-total bottom-40">
-        <div class="divider" style="background-color: red;margin-bottom: 5px"></div>
-
-        <strong style="font-size: 1.2em;" class="uppercase ultrabold">Total Unidades</strong>
-        <span style="font-size: 1.2em;" class="uppercase ultrabold">{{ cartInventoryService.cartItemCount.value }}</span>
-        <div class="clear">
-        </div>
-      </div>
-
-      <div class="top-20">
-        <!-- <a (click)="close()"
-          style="background-color: white;color:red;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;border: double;border-color: red;"
-          class="button button-round-small shadow-large button-full button-s">CANCELAR</a> -->
-        <a (click)="saveChanges()"
-          style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-          class="button button-round-small shadow-large button-full button-s">GUARDAR CAMBIOS</a>
-      </div>
+    <div class="top-20">
+      <a (click)="saveChanges()"
+        class="button button-round-small shadow-large button-full button-s bg-highlight">GUARDAR CAMBIOS</a>
     </div>
   </div>
 </div>

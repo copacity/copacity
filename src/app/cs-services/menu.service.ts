@@ -16,26 +16,8 @@ export class MenuService {
     public router: Router,
     private menu: MenuController) { }
 
-   async openCart(e) {
-     this.menu.toggle("menu-right");
-    // let modal = await this.popoverController.create({
-    //   component: ShoppingCartComponent,
-    //   componentProps: { storeId: '-1' },
-    //   cssClass: 'cs-popovers',
-    //   backdropDismiss: true,
-    //   event: e
-    // });
-
-    // modal.onDidDismiss()
-    //   .then((data) => {
-    //     let result = data['data'];
-
-    //     if (result) {
-    //       this.goToCreateOrder();
-    //     }
-    //   });
-
-    // modal.present();
+  async openCart(e) {
+    this.menu.toggle("menu-right");
   }
 
   async presentMenuNotifications(e) {
