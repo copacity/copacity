@@ -1,147 +1,143 @@
-<div class="profile-popover">
-  <div class="profile-header">
-  </div>
-  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
-  </div>
-  <div class="profile-body" style="margin: 0px 5px;">
-    <i (click)="close()" class="fa fa-times-circle"
-      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+<i (click)="close()" class="fa fa-times-circle"
+  style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Comisiones</a>
+<h4 class="menuLeft center-text top-20 bolder">Comisiones</h4>
 
-    <div class="content" style="margin: 0px 0px 0px 0px;">
-      <div class="top-40">
-        <table>
-          <tr *ngIf="searchingVendors">
-            <td colspan="2" style="text-align: center;">
-              <div>
-                <div class="store-slide-2" *ngFor="let item of [1,2,3,4,5,6]">
-                  <a class="store-slide-image">
-                    <ion-skeleton-text animated style="height: 50px; top:-10px" class="round-medium">
-                    </ion-skeleton-text>
-                  </a>
-                  <div class="store-slide-title">
-                    <strong>
-                      <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                    </strong>
-                    <em class="color-gray2-dark">
-                      <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
-                    </em>
-                  </div>
+<div class="profile-header-clear" style="height: 0px;margin: 0px 0px 0px 0px;">
+</div>
+<div class="profile-body" style="margin: 0px 5px;">
+  <div class="content" style="margin: 0px 0px 0px 0px;">
+    <div class="top-40">
+      <table style="border: none;">
+        <tr *ngIf="searchingVendors">
+          <td class="menuLeft" colspan="2" style="text-align: center;">
+            <div>
+              <div class="store-slide-2" *ngFor="let item of [1,2,3,4,5,6]">
+                <a class="store-slide-image">
+                  <ion-skeleton-text animated style="height: 50px; top:-10px" class="round-medium">
+                  </ion-skeleton-text>
+                </a>
+                <div class="store-slide-title">
+                  <strong>
+                    <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                  </strong>
+                  <em class="color-gray2-dark">
+                    <ion-skeleton-text animated style="width: 100%" class="round-medium"></ion-skeleton-text>
+                  </em>
                 </div>
               </div>
-            </td>
-          </tr>
+            </div>
+          </td>
+        </tr>
 
-          <tr *ngIf="vendorsSearchHits == 0 && !searchingVendors">
-            <td colspan="2" style="text-align: center;">
-              <div class="boxed-text-huge">
-                <label style="color: red;padding-top: 20px;font-size: 1em;">No se
-                  encontraron vendedores</label>
-              </div>
-            </td>
-          </tr>
+        <tr *ngIf="vendorsSearchHits == 0 && !searchingVendors">
+          <td class="menuLeft" colspan="2" style="text-align: center;">
+            <div class="boxed-text-huge">
+              <label style="color: red;padding-top: 20px;font-size: 1em;">No se
+                encontraron vendedores</label>
+            </div>
+          </td>
+        </tr>
 
-          <tr *ngFor="let vendor of vendors" class="{{vendor.vendor.status==3?'hidden':''}}">
-            <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
-              <img
-                (click)="openImageViewer(vendor.user?.photoUrl?vendor.user?.photoUrl:'../../../assets/icon/no-image.png')"
-                class="round-small preload-image"
-                src="{{vendor.user?.photoUrl?vendor.user?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img"
-                style="height: 100px;width: 100px;">
-            </td>
-            <td style="padding-left: 10px;">
-              <table>
-                <tr>
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;"> Vendedor:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-weight: 700;">
-                      {{ vendor.user?.name }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;">Estado:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-weight: 700;">
-                      {{ vendor.vendor.status ==1?'Pendiente':vendor.vendor.status ==2?'Confirmado':'Rechazado' }}
-                    </span>
-                  </td>
-                </tr>
-                <tr *ngIf="vendor.vendor.status != 1">
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Activo:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight">{{ vendor.vendor.active?'Si':'No' }}</span>
-                  </td>
-                </tr>
-                <tr *ngIf="vendor.vendor.status != 1">
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">comisión por venta:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight">{{ vendor.vendor.commissionForSale }}%</span>
-                  </td>
-                </tr>
-                <tr *ngIf="vendor.vendor.status != 1">
-                  <td colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
-                    <a (click)="openVendorDetail(vendor)" class="icon icon-s icon-round shadow-small">
-                      <i class="fa fa-chart-pie" style="color: black"></i></a>
-                    <a (click)="presentDeleteVendorPrompt(vendor)" class="icon icon-s icon-round shadow-small">
-                      <i class="fa fa-trash" style="color: black"></i></a>
-                    <a (click)="openVendorUpdateDetails(vendor)" class="icon icon-s icon-round shadow-small">
-                      <i class="fa fa-edit" style="color: black"></i></a>
-                  </td>
-                </tr>
-                <tr *ngIf="vendor.vendor.status == 1">
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Teléfono:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;vertical-align: top;">
-                    <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight">{{ vendor.user.phone1 }}</span>
-                  </td>
-                </tr>
-                <tr *ngIf="vendor.vendor.status == 1">
-                  <td style="text-align: left;padding: 0px 0px 40px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;" class="color-highlight">Whatsapp:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 40px 0px;vertical-align: top;">
-                    <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight">{{ vendor.user.whatsapp }}</span>
-                  </td>
-                </tr>
-                <tr *ngIf="vendor.vendor.status == 1">
-                  <td colspan="3" style="padding: 0px 0px 0px 0px;text-align: center;">
-                    <table>
-                      <tr>
-                        <td style="text-align: left;padding: 2px;">
-                          <a (click)="presentDeleteVendorPrompt(vendor)" style="color:red;background-color: white;"
-                            class="button button-round-small shadow-large button-full button-s">
-                            Rechazar</a>
-                        </td>
-                        <td style="text-align: right;padding: 2px;">
-                          <a (click)="confirmVendor(vendor)" style="color:white;background-color: red;"
-                            class="button button-round-small shadow-large button-full button-s">
-                            Confirmar</a>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </div>
+        <tr *ngFor="let vendor of vendors" class="{{vendor.vendor.status==3?'hidden':''}}">
+          <td class="menuLeft" style="vertical-align: top;width: 120px;text-align: left;position: relative;">
+            <img
+              (click)="openImageViewer(vendor.user?.photoUrl?vendor.user?.photoUrl:'../../../assets/icon/no-image.png')"
+              class="round-small preload-image"
+              src="{{vendor.user?.photoUrl?vendor.user?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img">
+          </td>
+          <td class="menuLeft" style="padding-left: 10px;">
+            <table style="border: none;">
+              <tr>
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;"> Vendedor:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-weight: 700;">
+                    {{ vendor.user?.name }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">Estado:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-weight: 700;">
+                    {{ vendor.vendor.status ==1?'Pendiente':vendor.vendor.status ==2?'Confirmado':'Rechazado' }}
+                  </span>
+                </td>
+              </tr>
+              <tr *ngIf="vendor.vendor.status != 1">
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">Activo:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{
+                    vendor.vendor.active?'Si':'No' }}</span>
+                </td>
+              </tr>
+              <tr *ngIf="vendor.vendor.status != 1">
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">comisión por venta:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{
+                    vendor.vendor.commissionForSale }}%</span>
+                </td>
+              </tr>
+              <tr *ngIf="vendor.vendor.status != 1">
+                <td class="menuLeft" colspan="3" style="text-align: right;padding: 0px 0px 0px 0px;">
+                  <a (click)="openVendorDetail(vendor)" class="icon icon-s icon-round shadow-small menuLeft">
+                    <i class="fa fa-chart-pie"></i></a>
+                  <a (click)="presentDeleteVendorPrompt(vendor)" class="icon icon-s icon-round shadow-small menuLeft">
+                    <i class="fa fa-trash"></i></a>
+                  <a (click)="openVendorUpdateDetails(vendor)" class="icon icon-s icon-round shadow-small menuLeft">
+                    <i class="fa fa-edit"></i></a>
+                </td>
+              </tr>
+              <tr *ngIf="vendor.vendor.status == 1">
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">Teléfono:</span>
+                </td>
+                <td class="menuLeft" colspan="2"
+                  style="text-align: right;padding: 0px 0px 10px 0px;vertical-align: top;">
+                  <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ vendor.user.phone1
+                    }}</span>
+                </td>
+              </tr>
+              <tr *ngIf="vendor.vendor.status == 1">
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 40px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">Whatsapp:</span>
+                </td>
+                <td class="menuLeft" colspan="2"
+                  style="text-align: right;padding: 0px 0px 40px 0px;vertical-align: top;">
+                  <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ vendor.user.whatsapp
+                    }}</span>
+                </td>
+              </tr>
+              <tr *ngIf="vendor.vendor.status == 1">
+                <td class="menuLeft" colspan="3" style="padding: 0px 0px 0px 0px;text-align: center;">
+                  <table style="border: none;">
+                    <tr>
+                      <td class="menuLeft" style="text-align: left;padding: 2px;">
+                        <a (click)="presentDeleteVendorPrompt(vendor)" style="color:red;background-color: white;"
+                          class="button button-round-small shadow-large button-full button-s">
+                          Rechazar</a>
+                      </td>
+                      <td class="menuLeft" style="text-align: right;padding: 2px;">
+                        <a (click)="confirmVendor(vendor)"
+                          class="button button-round-small shadow-large button-full button-s bg-highlight">
+                          Confirmar</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

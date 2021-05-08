@@ -1,164 +1,159 @@
-<div class="profile-popover">
-  <div class="profile-header">
-  </div>
-  <div class="profile-header-clear" style="height: 30px;margin: 0px 0px 0px 0px;">
-  </div>
-  <div class="profile-body" style="margin: 0px 5px;">
-    <i (click)="close()" class="fa fa-times-circle"
-      style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
+<i (click)="close()" class="fa fa-times-circle"
+  style="right: 0px;position: absolute;top: 0;font-size: 2em;padding: 2px;"></i>
 
-    <a style="background-color: white; color: black;"
-      class="profile-button button shadow-large button-m button-round uppercase bolder button-center-large">Comisiones</a>
+<h4 class="menuLeft center-text top-20 bolder">Comisiones</h4>
 
-    <div *ngIf="!vendor.id || (vendor.id && vendor.status != 2)" class="content contact-message top-20"
-      style="margin: 0px 0px 0px 0px;">
-      <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
-        <span style="color: black;margin-bottom: 0px;line-height: 15px;font-size: 1.2em;">
-          Si deseas trabajar con nosotros como vendedor y ganar comisión por ventas, debes dar click al botón <b>"QUIERO SER
-            VENDEDOR"</b> y esperar que nuestro equipo de ventas se comunique contigo para negociar los porcentajes. Recuerda actualizar tus datos de contacto. <a
-              (click)="openProfileUpdatePage()">Actualizar Datos Aquí!</a>
-        </span>
+<div class="profile-header-clear" style="height: 0px;margin: 0px 0px 0px 0px;">
+</div>
+<div class="profile-body" style="margin: 0px 5px;">
+  <div *ngIf="!vendor.id || (vendor.id && vendor.status != 2)" class="content contact-message top-20"
+    style="margin: 0px 0px 0px 0px;">
+    <div class="content content-box round-small" style="padding: 5px;margin: 0px 0px 0px 0px;">
+      <span style="margin-bottom: 0px;line-height: 15px;" class="menuLeft">
+        Si deseas trabajar con nosotros como vendedor y ganar comisión por ventas, debes dar click al botón <b>"QUIERO
+          SER
+          VENDEDOR"</b> y esperar que nuestro equipo de ventas se comunique contigo para negociar los porcentajes.
+        Recuerda actualizar tus datos de contacto. <a (click)="openProfileUpdatePage()">Actualizar Datos Aquí!</a>
+      </span>
+    </div>
+  </div>
+
+  <div class="content" style="margin: 0px 0px 0px 0px;">
+    <div class="top-20">
+      <div (click)="sendToRevission()" *ngIf="!vendor.id || (vendor.id && vendor.status == 3)">
+        <a class="button button-round-small shadow-large button-full button-s bg-highlight">Quiero ser vendedor</a>
       </div>
+
+      <div (click)="sendToRevission()" *ngIf="vendor.id && vendor.status == 1"
+        style="text-align: center;color: red;font-size: 1.2em;padding-bottom: 20px;">
+        Solicitud enviada y pendiente de revisión.
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="vendor && vendor.status == 2" class="content" style="margin: 0px 0px 0px 0px;">
+    <div class="top-40">
+      <table style="margin-bottom: 0px;border: none;">
+        <tr>
+          <td class="menuLeft" style="vertical-align: top;width: 120px;text-align: left;position: relative;">
+            <img (click)="openImageViewer(user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png')"
+              class="round-small preload-image"
+              src="{{user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img"
+              style="height: 100px;width: 100px;">
+          </td>
+          <td class="menuLeft">
+            <table style="border: none">
+              <tr>
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;"> Vendedor:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-weight: 700;">
+                    {{ user?.name }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">Estado:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-weight: 700;">
+                    Confirmado
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">Activo:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ vendor.active?'Si':'No'
+                    }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="menuLeft" style="text-align: left;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1em;font-weight: 700;">Comisión por venta:</span>
+                </td>
+                <td class="menuLeft" colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
+                  <span style="font-size: 1.2em;font-weight: 700;" class="color-highlight">{{ vendor.commissionForSale
+                    }}%</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="content" style="margin: 0px 0px 0px 0px;">
-      <div class="top-20">
-        <div (click)="sendToRevission()" *ngIf="!vendor.id || (vendor.id && vendor.status == 3)">
-          <a style="background-color: red;color:white;font-size: 15px;font-weight: bold;padding: 12px;height: 50px;margin: 10px 15px 10px 15px;padding-top: 15px;"
-            class="button button-round-small shadow-large button-full button-s">Quiero ser vendedor</a>
-        </div>
+      <h4 class="bold" >Consulta de comisiones</h4>
+      <div>
+        <form [formGroup]="form">
+          <div class="content header-clear-small">
+            <ion-list lines="full" class="ion-no-margin ion-no-padding">
+              <ion-item>
+                <ion-label>Fecha</ion-label>
+                <ion-datetime formControlName="billingDate" value="{{ billingDate }}"
+                  placeholder="Seleccionar Fecha"
+                  monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+                  [min]="minDate" [max]="maxDate" displayFormat="MMMM YYYY" cancelText="Cancelar" doneText="Aceptar">
+                </ion-datetime>
+              </ion-item>
+            </ion-list>
+          </div>
+        </form>
 
-        <div (click)="sendToRevission()" *ngIf="vendor.id && vendor.status == 1"
-          style="text-align: center;color: red;font-size: 1.2em;padding-bottom: 20px;">
-          Solicitud enviada y pendiente de revisión.
+        <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
+          class="content content-box">
+          <p style="color: red;" *ngIf="form.get('billingDate').errors">
+            <span *ngIf="form.get('billingDate').hasError('required')">Fecha es requerido</span>
+          </p>
         </div>
+      </div>
+
+      <div>
+        <a (click)="generate()"
+          class="button button-round-small button-full button-s bg-highlight">Calcular Comisión</a>
       </div>
     </div>
 
-    <div *ngIf="vendor && vendor.status == 2" class="content" style="margin: 0px 0px 0px 0px;">
-      <div class="top-40">
-        <table style="margin-bottom: 0px;">
-          <tr>
-            <td style="vertical-align: top;width: 120px;text-align: left;position: relative;">
-              <img (click)="openImageViewer(user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png')"
-                class="round-small preload-image"
-                src="{{user?.photoUrl?user?.photoUrl:'../../../assets/icon/no-image.png'}}" alt="img"
-                style="height: 100px;width: 100px;">
-            </td>
-            <td>
-              <table>
-                <tr>
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;color: black;"> Vendedor:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-weight: 700;color: black;">
-                      {{ user?.name }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;color: black;">Estado:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-weight: 700;color: black;">
-                      Confirmado
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;color: black;">Activo:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight">{{ vendor.active?'Si':'No' }}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: left;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1em;font-weight: 700;color: black;">Comisión por venta:</span>
-                  </td>
-                  <td colspan="2" style="text-align: right;padding: 0px 0px 10px 0px;">
-                    <span style="font-size: 1.2em;font-weight: 700;"
-                      class="color-highlight">{{ vendor.commissionForSale }}%</span>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </div>
-
+    <div id="page menuLeft" *ngIf="billingDate">
       <div class="content" style="margin: 0px 0px 0px 0px;">
-        <h4 class="bold color-highlight" style="font-size: 1.2em;">Consulta de comisiones</h4>
-        <div>
-          <form [formGroup]="form">
-            <div class="content header-clear-small">
-              <ion-list lines="full" class="ion-no-margin ion-no-padding">
-                <ion-item>
-                  <ion-label style="font-size: .8em;">Fecha</ion-label>
-                  <ion-datetime style="font-size: .8em;" formControlName="billingDate" value="{{ billingDate }}" placeholder="Seleccionar Fecha"
-                    monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-                    [min]="minDate" [max]="maxDate" displayFormat="MMMM YYYY" cancelText="Cancelar" doneText="Aceptar">
-                  </ion-datetime>
-                </ion-item>
-              </ion-list>
-            </div>
-          </form>
-
-          <div *ngIf="(!form.valid && form.touched)" style="margin: 15px;"
-            class="content content-box round-small shadow-large">
-            <p style="color: red;font-size: 1.3em;" *ngIf="form.get('billingDate').errors">
-              <span *ngIf="form.get('billingDate').hasError('required')">Fecha es requerido</span>
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <a (click)="generate()"
-            style="background-color: red;color:white;"
-            class="button button-round-small button-full button-s">Calcular Comisión</a>
-        </div>
-      </div>
-
-      <div id="page" *ngIf="billingDate">
-        <div class="content" style="margin: 0px 0px 0px 0px;">
-          <div class="bottom-30">
-            <h4 class="bold color-highlight" style="font-size: 1.2em;">Comisión {{ billingDate | date: 'MM/yyyy' }}</h4>
-            <div class="container top-20">
-              <table class="table-borders" style="font-size: 18px;">
-                <tr>
-                  <th style="text-align: left; padding-left: 5px;">Pedido
-                  </th>
-                  <th style="text-align: right;">Total</th>
-                </tr>
-                <tr *ngFor="let orderDetail of ordersDetail">
-                  <td style="text-align: left; padding-left: 5px;vertical-align: top">
-                    <a (click)="openOrderDetailPage(orderDetail)">#{{orderDetail.ref}}</a>
-                  </td>
-                  <td style="vertical-align: top; text-align: right;" class="color-green1-dark">
-                    {{ orderDetail.value | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </td>
-                </tr>
-              </table>
-              <div style="margin: 10px 15px 5px 15px;">
-                <div style="background-color: red;" class="divider opacity-350"></div>
-                <div class="store-cart-total bottom-20">
-                  <strong class="uppercase font-15">Venta Total</strong>
-                  <span class="uppercase font-15">
-                    {{ total | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
-                <div class="store-cart-total bottom-20">
-                  <strong class="uppercase bold font-15">Comisión ({{ vendor.commissionForSale }}%)</strong>
-                  <span class="uppercase bold font-15">
-                    {{ commissionForSale | currency: 'USD': 'symbol' : '1.0-0' }}
-                  </span>
-                  <div class="clear"></div>
-                </div>
+        <div class="bottom-30 menuLeft">
+          <h4>Comisión {{ billingDate | date: 'MM/yyyy' }}</h4>
+          <div class="container top-20">
+            <table class="table-borders">
+              <tr>
+                <th style="text-align: left; padding-left: 5px;">Pedido
+                </th>
+                <th style="text-align: right;">Total</th>
+              </tr>
+              <tr *ngFor="let orderDetail of ordersDetail">
+                <td class="menuLeft" style="text-align: left; padding-left: 5px;vertical-align: top">
+                  <a (click)="openOrderDetailPage(orderDetail)">#{{orderDetail.ref}}</a>
+                </td>
+                <td style="vertical-align: top; text-align: right;" class=" menuLeft color-green1-dark">
+                  {{ orderDetail.value | currency: 'USD': 'symbol' : '1.0-0' }}
+                </td>
+              </tr>
+            </table>
+            <div style="margin: 10px 15px 5px 15px;">
+              <div style="background-color: red;" class="divider opacity-350"></div>
+              <div class="store-cart-total bottom-20">
+                <strong class="uppercase font-15">Venta Total</strong>
+                <span class="uppercase font-15">
+                  {{ total | currency: 'USD': 'symbol' : '1.0-0' }}
+                </span>
+                <div class="clear"></div>
+              </div>
+              <div class="store-cart-total bottom-20">
+                <strong class="uppercase bold font-15">Comisión ({{ vendor.commissionForSale }}%)</strong>
+                <span class="uppercase bold font-15">
+                  {{ commissionForSale | currency: 'USD': 'symbol' : '1.0-0' }}
+                </span>
+                <div class="clear"></div>
               </div>
             </div>
           </div>
